@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html><head>
+		<title>jQuery TextExt Plugin - Arrow With Autocomplete</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+		<link rel="stylesheet" href="jQuery%20TextExt%20Plugin%20-%20Arrow%20With%20Autocomplete_files/css.css" type="text/css">
+		<link rel="stylesheet" href="jQuery%20TextExt%20Plugin%20-%20Arrow%20With%20Autocomplete_files/main.css" type="text/css">
+
+		<script type="text/javascript" async="" src="jQuery%20TextExt%20Plugin%20-%20Arrow%20With%20Autocomplete_files/ga.js"></script><script id="twitter-wjs" src="jQuery%20TextExt%20Plugin%20-%20Arrow%20With%20Autocomplete_files/widgets.js"></script><script src="jQuery%20TextExt%20Plugin%20-%20Arrow%20With%20Autocomplete_files/jquery-1.js" type="text/javascript" charset="utf-8"></script>
+		<script src="jQuery%20TextExt%20Plugin%20-%20Arrow%20With%20Autocomplete_files/doc.js" type="text/javascript" charset="utf-8"></script>
+
+		<link rel="stylesheet" href="jQuery%20TextExt%20Plugin%20-%20Arrow%20With%20Autocomplete_files/textext_006.css" type="text/css">
+		<link rel="stylesheet" href="jQuery%20TextExt%20Plugin%20-%20Arrow%20With%20Autocomplete_files/textext_003.css" type="text/css">
+		<link rel="stylesheet" href="jQuery%20TextExt%20Plugin%20-%20Arrow%20With%20Autocomplete_files/textext_002.css" type="text/css">
+		<link rel="stylesheet" href="jQuery%20TextExt%20Plugin%20-%20Arrow%20With%20Autocomplete_files/textext_004.css" type="text/css">
+		<link rel="stylesheet" href="jQuery%20TextExt%20Plugin%20-%20Arrow%20With%20Autocomplete_files/textext.css" type="text/css">
+		<link rel="stylesheet" href="jQuery%20TextExt%20Plugin%20-%20Arrow%20With%20Autocomplete_files/textext_005.css" type="text/css">
+		<script src="jQuery%20TextExt%20Plugin%20-%20Arrow%20With%20Autocomplete_files/textext_005.js" type="text/javascript" charset="utf-8"></script>
+		<script src="jQuery%20TextExt%20Plugin%20-%20Arrow%20With%20Autocomplete_files/textext_002.js" type="text/javascript" charset="utf-8"></script>
+		<script src="jQuery%20TextExt%20Plugin%20-%20Arrow%20With%20Autocomplete_files/textext_004.js" type="text/javascript" charset="utf-8"></script>
+		<script src="jQuery%20TextExt%20Plugin%20-%20Arrow%20With%20Autocomplete_files/textext_006.js" type="text/javascript" charset="utf-8"></script>
+		<script src="jQuery%20TextExt%20Plugin%20-%20Arrow%20With%20Autocomplete_files/textext_009.js" type="text/javascript" charset="utf-8"></script>
+		<script src="jQuery%20TextExt%20Plugin%20-%20Arrow%20With%20Autocomplete_files/textext_008.js" type="text/javascript" charset="utf-8"></script>
+		<script src="jQuery%20TextExt%20Plugin%20-%20Arrow%20With%20Autocomplete_files/textext_003.js" type="text/javascript" charset="utf-8"></script>
+		<script src="jQuery%20TextExt%20Plugin%20-%20Arrow%20With%20Autocomplete_files/textext_007.js" type="text/javascript" charset="utf-8"></script>
+		<script src="jQuery%20TextExt%20Plugin%20-%20Arrow%20With%20Autocomplete_files/textext.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" charset="utf-8" async="" src="jQuery%20TextExt%20Plugin%20-%20Arrow%20With%20Autocomplete_files/button.js"></script></head>
+
+	<body data-section="examples">
+		<div class="navbar navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<a href="http://textextjs.com/" class="brand">jQuery TextExt v1.3.1</a>
+					<ul class="nav" id="nav">
+						<li class="manual"><a href="http://textextjs.com/manual/index.html">Manual</a></li>
+						<li class="examples active"><a href="http://textextjs.com/manual/examples.html">Examples</a></li>
+						<li class="download"><a href="https://github.com/alexgorbatchev/jquery-textext/archive/master.zip" class="external">Download</a></li>
+						<li class="issues"><a href="https://github.com/alexgorbatchev/jquery-textext/issues" class="external">Issues</a></li>
+						<li class="contact"><a href="http://textextjs.com/contact.html">Contact</a></li>
+					</ul>
+					<ul class="nav pull-right">
+						<li id="twitter-follow" class="plain">
+							<iframe id="twitter-widget-0" scrolling="no" allowtransparency="true" class="twitter-follow-button twitter-follow-button-rendered" style="position: static; visibility: visible; width: 125px; height: 20px;" title="Twitter Follow Button" src="jQuery%20TextExt%20Plugin%20-%20Arrow%20With%20Autocomplete_files/follow_button.html" data-screen-name="TextExtJs" frameborder="0"></iframe>
+							<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+						</li>
+						<li id="github-watch" class="plain">
+							<iframe src="jQuery%20TextExt%20Plugin%20-%20Arrow%20With%20Autocomplete_files/github-btn.html" allowtransparency="true" scrolling="0" width="52px" height="20px" frameborder="0"></iframe>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		
+			<div id="donate-alert" class="container">
+				<div class="alert alert-info">
+					<h4 class="alert-heading">Hey there stanger! My name is Alex Gorbatchev and I wrote TextExt.</h4>
+					<p>
+						Did you know that it took months of hard work and two full weeks of vacation time to bring this
+						awesome plugin to you completly free? Did you also know that I love coffee and beer and it makes
+						me feel that my hard work is really appreciated when you buy me one or say thanks?
+					</p>
+					<p>
+						Please take a second to show your appreciation and donate to keep development going! Click the button
+						thingy below, it won't bite!
+					</p>
+					<form id="donate-form" method="post" action="https://www.paypal.com/cgi-bin/webscr">
+	<input name="cmd" value="_s-xclick" type="hidden">
+	<input name="hosted_button_id" value="TBJLSNWZN6DL6" type="hidden">
+	<img alt="" src="jQuery%20TextExt%20Plugin%20-%20Arrow%20With%20Autocomplete_files/pixel.gif" style="position: absolute; top: 0; left: 0" width="1" height="1" border="0">
+
+	<div class="btn-group btn-big">
+		<label class="btn">Be awesome - support TextExt!</label>
+		<input class="btn btn-primary" value="PayPal" type="submit">
+		<a class="btn btn-primary" href="http://textextjs.com/donate_bitcoin.html" style="font-weight: normal;">BitCoint</a>
+	</div>
+</form>
+
+				</div>
+			</div>
+		
+
+
+<div class="container">
+	<div class="page-header">
+		<h2>Arrow With Autocomplete <small>example</small></h2>
+	</div>
+	<div class="row">
+		<div class="span3">
+			<nav id="side-nav">
+	<section class="api">
+		<h3>Core</h3>
+		<ul>
+			<li id="nav-textext"><a href="http://textextjs.com/manual/textext.html">TextExt</a></li>
+			<li id="nav-textextplugin"><a href="http://textextjs.com/manual/textextplugin.html">TextExtPlugin</a></li>
+			<li id="nav-itemmanager"><a href="http://textextjs.com/manual/itemmanager.html">ItemManager</a></li>
+		</ul>
+	</section>
+
+	<section class="api">
+		<h3>Plugins</h3>
+		<ul>
+			
+				
+			
+				
+			
+				
+					<li id="nav-ajax"><a href="http://textextjs.com/manual/plugins/ajax.html">Ajax</a></li>
+				
+			
+				
+			
+				
+			
+				
+					<li id="nav-arrow"><a href="http://textextjs.com/manual/plugins/arrow.html">Arrow</a></li>
+				
+			
+				
+			
+				
+			
+				
+					<li id="nav-autocomplete"><a href="http://textextjs.com/manual/plugins/autocomplete.html">Autocomplete</a></li>
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+					<li id="nav-filter"><a href="http://textextjs.com/manual/plugins/filter.html">Filter</a></li>
+				
+			
+				
+			
+				
+			
+				
+			
+				
+					<li id="nav-focus"><a href="http://textextjs.com/manual/plugins/focus.html">Focus</a></li>
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+					<li id="nav-prompt"><a href="http://textextjs.com/manual/plugins/prompt.html">Prompt</a></li>
+				
+			
+				
+			
+				
+			
+				
+			
+				
+					<li id="nav-suggestions"><a href="http://textextjs.com/manual/plugins/suggestions.html">Suggestions</a></li>
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+					<li id="nav-tags"><a href="http://textextjs.com/manual/plugins/tags.html">Tags</a></li>
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+				
+			
+		</ul>
+	</section>
+
+	<section id="toc"></section>
+</nav>
+
+&nbsp;
+
+		</div>
+
+		<div id="content" class="span9">
+			
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="example">
+
+	
+
+	<h4>Live Demo</h4>
+
+	
+<div class="text-core" style="height: 22px;"><div class="text-wrap" style="width: 400px; height: 22px;"><textarea id="textarea" class="example" rows="1" style="width: 400px;">ba</textarea><div class="text-dropdown text-position-below" style="max-height: 100px; top: 22px;"><div class="text-list"></div></div><input value="&quot;&quot;" type="hidden"><div class="text-arrow"></div></div></div>
+
+	
+<script type="text/javascript">
+	$('#textarea')
+		.textext({
+			plugins : 'arrow autocomplete'
+		})
+		.bind('getSuggestions', function(e, data)
+		{
+			var list = [
+					'Basic',
+					'Closure',
+					'Cobol',
+					'Delphi',
+					'Erlang',
+					'Fortran',
+					'Go',
+					'Groovy',
+					'Haskel',
+					'Java',
+					'JavaScript',
+					'OCAML',
+					'PHP',
+					'Perl',
+					'Python',
+					'Ruby',
+					'Scala'
+				],
+				textext = $(e.target).textext()[0],
+				query = (data ? data.query : '') || ''
+				;
+
+			$(this).trigger(
+				'setSuggestions',
+				{ result : textext.itemManager().filter(list, query) }
+			);
+		})
+		;
+</script>
+
+
+	<h4>Form Content</h4>
+
+	<p class="hint">This is the data that will be submitted with HTML form.</p>
+	<pre id="output" class="output">""</pre>
+
+	<script>
+	(function()
+	{
+		var textarea = $('textarea.example:last'),
+			output   = $('pre.output:last')
+			;
+
+		textarea.bind('setFormData', function(e, data, isEmpty)
+		{
+			var textext = $(e.target).textext()[0];
+			output.text(textext.hiddenInput().val());
+		});
+
+		// force this for the sake of the example so that we get one extra
+		// `setFormData` event fire and we would set the #output value
+		textarea.textext()[0].getFormData();
+	})();
+	</script>
+
+	<h4>Source</h4>
+
+	<p class="hint">This is the original input HTML.</p>
+	<pre class="brush: html">&lt;textarea id="textarea" class="example" rows="1"&gt;&lt;/textarea&gt;
+</pre>
+
+	<p class="hint">This is the JavaScript source that was used to initialize this demo instance of TextExt.</p>
+	<pre class="brush: js; html-script: true">&lt;script type="text/javascript"&gt;
+    $('#textarea')
+        .textext({
+            plugins : 'arrow autocomplete'
+        })
+        .bind('getSuggestions', function(e, data)
+        {
+            var list = [
+                    'Basic',
+                    'Closure',
+                    'Cobol',
+                    'Delphi',
+                    'Erlang',
+                    'Fortran',
+                    'Go',
+                    'Groovy',
+                    'Haskel',
+                    'Java',
+                    'JavaScript',
+                    'OCAML',
+                    'PHP',
+                    'Perl',
+                    'Python',
+                    'Ruby',
+                    'Scala'
+                ],
+                textext = $(e.target).textext()[0],
+                query = (data ? data.query : '') || ''
+                ;
+
+            $(this).trigger(
+                'setSuggestions',
+                { result : textext.itemManager().filter(list, query) }
+            );
+        })
+        ;
+&lt;/script&gt;
+</pre>
+
+</div>
+
+
+
+		</div>
+	</div>
+</div>
+
+		<div class="container">
+			<footer class="footer">
+				<p class="pull-right"><a href="#">Back to top</a></p>
+				<p>
+					Built with all love and care by <a href="http://alexgorbatchev.com/" class="external">Alex Gorbatchev</a>.<br>
+					Copyright 2011-2012 Alex Gorbatchev. MIT License.
+				</p>
+			</footer>
+		</div>
+
+		<a id="github" href="https://github.com/alexgorbatchev/jquery-textext" class="external"><img src="jQuery%20TextExt%20Plugin%20-%20Arrow%20With%20Autocomplete_files/forkme_left_red_aa0000.png" alt="Fork me on GitHub"></a>
+	
+
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-83229-17']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+
+<iframe scrolling="no" allowtransparency="true" src="jQuery%20TextExt%20Plugin%20-%20Arrow%20With%20Autocomplete_files/widget_iframe.html" title="Twitter settings iframe" style="display: none;" frameborder="0"></iframe><iframe id="rufous-sandbox" scrolling="no" allowtransparency="true" allowfullscreen="true" style="position: absolute; visibility: hidden; display: none; width: 0px; height: 0px; padding: 0px; border: medium none;" title="Twitter analytics iframe" frameborder="0"></iframe></body></html>
