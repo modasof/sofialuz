@@ -171,7 +171,7 @@ date_default_timezone_set("America/Bogota");
         <td><?php echo ($nomunidadmedida); ?></td>
     <td><input disabled="" class='input input-group-sm' type="text" value="<?php echo ($cantidadcot); ?>"></td>
  <td>
-    <input disabled="" class='input input-group-sm' type="text" value="<?php echo ($cant_anteriores); ?>">
+    <input type="number" step="any" disabled="" class='input input-group-sm'  value="<?php echo ($cant_anteriores); ?>">
     <a data-toggle="modal" data-target="#modal-form-<?php echo ($id); ?>" href="#"  class=""><i class="fa fa-calendar text-success"></i></a>
 
         <!-- Inicio Modal Clientes -->
@@ -264,10 +264,10 @@ date_default_timezone_set("America/Bogota");
     $contadorpagos += $variable;
 
     ?>
-    <input disabled="" class='input input-group-sm' type="text" value="<?php echo ($cant_anteriorestemp); ?>">
+    <input disabled="" class='input input-group-sm' type="number" step="any" value="<?php echo ($cant_anteriorestemp); ?>">
     <a href="?controller=inventario&action=deletedellentradatemp&&id=<?php echo ($getOrden); ?>&&iddelete=<?php echo ($id); ?>"><i class="fa fa-close text-danger"></i></a>
  </td>
-        <td><input id="" class='input input-sm' type="text" name="cantidad" value="<?php echo ($pendiente); ?>"></td>
+        <td><input id="" class='input input-sm' type="number" step="any" name="cantidad" value="<?php echo ($pendiente); ?>"></td>
         <td><button type="submit" class="btn btn-success fa fa-check"></button></td>
     </form>
 
