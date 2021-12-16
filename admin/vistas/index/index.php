@@ -75,8 +75,6 @@ function dias_transcurridos($fecha_i,$fecha_f)
   <link rel="stylesheet" href="dist/css/jquery.dataTables.min.css">
   <link rel="stylesheet" href="dist/css/buttons.dataTables.min.css">
   
-  
-
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -109,7 +107,7 @@ document.cookie = 'same-site-cookie=foo; SameSite=Lax';
 document.cookie = 'cross-site-cookie=bar; SameSite=None; Secure';
 </script>
 
-<!-- Smartsupp Live Chat script -->
+<!-- Smartsupp Live Chat script 
 <script type="text/javascript">
 var _smartsupp = _smartsupp || {};
 _smartsupp.key = 'dc790a7c9fd8941ae3c27cd53f10d0704b4b1564';
@@ -120,7 +118,7 @@ window.smartsupp||(function(d) {
   c.src='https://www.smartsuppchat.com/loader.js?';s.parentNode.insertBefore(c,s);
 })(document);
 </script>
-
+-->
 
 </head>
   <body class="hold-transition skin-blue sidebar-mini sidebar-collapse">

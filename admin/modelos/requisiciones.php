@@ -165,7 +165,7 @@ public static function todos(){
 public static function pendienteaprobarpor($area){
 	try {
 		$db=Db::getConnect();
-		$sql="SELECT * FROM requisiciones WHERE ".$area." order by fecha_reporte DESC";
+		$sql="SELECT * FROM requisiciones WHERE ".$area."  and requisicion_publicada ='1' order by fecha_reporte DESC";
 		$select=$db->query($sql);
 		//echo ($sql);
     	$camposs=$select->fetchAll();

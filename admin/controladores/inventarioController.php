@@ -68,6 +68,19 @@ class InventarioController
         require_once 'vistas/inventario/totalentradas.php';
     }
 
+
+ /*=============================================
+=  Section para visualizar todas los insumos por recibir           =
+=============================================*/
+    
+    function entregaspendientesusuario() {
+        $id=$_GET['id'];
+        $estado="Despachado";
+        $campos=Inventario::todosporusuariorecibir($id,$estado);;
+        require_once 'vistas/inventario/recibirinsumos.php';
+    }
+
+
 # -----------  Subsection comment block  -----------
 
     public function entradasdetalle()
@@ -257,6 +270,30 @@ class InventarioController
             echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
         $this->cargarentradaoc();
+
+    }
+
+     # =============================================
+    # =           Section Aceptar Despachos           =
+    # =============================================
+
+    public function recibirdespacho()
+    {
+        $idsalida       = $_GET['id'];
+        $idusuario = $_GET['idusuario'];
+        $estado="Despachado";
+
+        $res = Inventario::actualizarestadodespacho($idusuario, $idsalida);
+        $res = Inventario::actualizardetalledespacho($idsalida);
+        if ($res) {
+            # ======  Se redirecciona a la url original para eviar doble envío de datos  =======
+            echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se han actualizado correctamente los datos\", \"success\");});</script>";
+        } else {
+            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+        }
+        
+        $campos=Inventario::todosporusuariorecibir($idusuario,$estado);;
+        require_once 'vistas/inventario/recibirinsumos.php';
 
     }
 

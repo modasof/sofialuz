@@ -78,7 +78,7 @@ foreach ($campos as $campo) {
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="?controller=index&&action=index">Inicio</a></li>
-            <li class="breadcrumb-item active"><a href="?controller=requisiciones&&action=reqparaentrega&&estadosolicitado=12&&cargo=<?php echo($RolSesion); ?>">RQ. Para Entrega</a></li>
+            <li class="breadcrumb-item active"><a href="?controller=requisiciones&&action=reqparaentrega&&estadosolicitado=12&&cargo=<?php echo ($RolSesion); ?>">RQ. Para Entrega</a></li>
 
           </ol>
         </div><!-- /.col -->
@@ -104,7 +104,7 @@ foreach ($campos as $campo) {
                                     <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Despacho Requisición RQ<?php echo ($idreq) ?></h3>
+              <h3 class="box-title">Despacho Requisición RQ</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body table-responsive no-padding">
@@ -126,6 +126,7 @@ foreach ($items as $key => $despachounico) {
 
     $insumo_id_insumo = Requisicionesitems::sqlinsumoitem($despachounico);
     $usuario_creador  = Requisicionesitems::sqlusuariocreador($despachounico);
+    $rqprincipal      = Requisicionesitems::sqlrq($despachounico);
     $cantidad         = Requisicionesitems::sqlcantidaditem($despachounico);
 
     $nomsolicita         = Usuarios::obtenerNombreUsuario($usuario_creador);
@@ -144,9 +145,9 @@ foreach ($items as $key => $despachounico) {
     $sumatotal += $cantidad;
     $sumaanteriores += $cant_anteriores;
     $sumaanteriorestemp += $cant_anteriorestemp;
-    $pendientetotal = $sumatotal - $sumaanteriores;
-    $valorpromedio      = Valorpromedioinsumo($insumo_id_insumo);
-    $totalvalorentregado=$valorpromedio*$sumaanteriorestemp;
+    $pendientetotal      = $sumatotal - $sumaanteriores;
+    $valorpromedio       = Valorpromedioinsumo($insumo_id_insumo);
+    $totalvalorentregado = $valorpromedio * $sumaanteriorestemp;
 
     ?>
             <tr>
@@ -167,12 +168,13 @@ date_default_timezone_set("America/Bogota");
                                 <input type="hidden" name="marca_temporal" value="<?php echo ($TiempoActual) ?>">
                                 <input type="hidden" name="creado_por" value="<?php echo ($IdSesion) ?>">
                                 <input type="hidden" name="salida_por" value="Entrega RQ">
+                                <input type="hidden" name="estado_recibido" value="Pendiente">
 
 
-        <td>RQ<?php echo ($idreq . "-IT" . $despachounico); ?></td>
+        <td>RQ<?php echo ($rqprincipal . "-IT" . $despachounico); ?></td>
         <td><?php echo ($nombreinsumo); ?></td>
         <td><?php echo ($Unombredmedida); ?></td>
-    <td><input id="campocomprado<?php echo($despachounico); ?>" disabled="" class='input input-group-sm' type="text" value="<?php echo ($cantidad); ?>"></td>
+    <td><input id="campocomprado<?php echo ($despachounico); ?>" disabled="" class='input input-group-sm' type="text" value="<?php echo ($cantidad); ?>"></td>
  <td>
     <input disabled="" class='input input-group-sm' type="text" value="<?php echo ($cant_anteriores); ?>">
     <a data-toggle="modal" data-target="#modal-form-<?php echo ($despachounico); ?>" href="#"  class=""><i class="fa fa-calendar text-success"></i></a>
@@ -251,30 +253,27 @@ date_default_timezone_set("America/Bogota");
 
  </td>
  <td>
-  <?php 
-    if ($sumaanteriorestemp == 0) {
+  <?php
+if ($sumaanteriorestemp == 0) {
         $variable = 1;
     } else {
         $variable = 0;
     }
     $contadorpagos += $variable;
-    $valorinsumos=$cant_anteriorestemp*$valorpromedio;
+    $valorinsumos = $cant_anteriorestemp * $valorpromedio;
 
-    $contadorsumainsumo+=$valorinsumos;
-
-
-    
+    $contadorsumainsumo += $valorinsumos;
 
     ?>
-    <input type="hidden" value="<?php echo(round($valorpromedio,0)); ?>" name="valor_entregado">
+    <input type="hidden" value="<?php echo (round($valorpromedio, 0)); ?>" name="valor_entregado">
 
-<input disabled="" id="campocarga<?php echo($despachounico); ?>" class='input input-group-sm' type="text" value="<?php echo ($cant_anteriorestemp); ?>">
+<input disabled="" id="campocarga<?php echo ($despachounico); ?>" class='input input-group-sm' type="text" value="<?php echo ($cant_anteriorestemp); ?>">
  <a href="?controller=inventario&action=deletedellsalidatemp&&id=<?php echo ($idreq); ?>&&iddelete=<?php echo ($despachounico); ?>&&des=<?php echo ($itemsget); ?>"><i class="fa fa-close text-danger"></i></a>
 <br>
-<?php 
-        if ($cant_anteriorestemp==0) {
-            echo("<span><small class='text-danger'  id='<?php echo($despachounico); ?>msjporitem1'>Campo en cero</small></span>");
-            ?>
+<?php
+if ($cant_anteriorestemp == 0) {
+        echo ("<span><small class='text-danger'  id='<?php echo($despachounico); ?>msjporitem1'>Campo en cero</small></span>");
+        ?>
             <script>
                 $(document).ready(function(){
                     document.getElementById("botonguardar").disabled = true;
@@ -283,18 +282,15 @@ date_default_timezone_set("America/Bogota");
             </script>
 
             <?php
-        }
-        elseif ($cant_anteriorestemp<$pendiente) {
-           echo("<span><small class='text-success'  id='<?php echo($despachounico); ?>msjporitem1'>Entrega Parcial</small></span>");
-        }
-        elseif ($cant_anteriorestemp>$pendiente) {
-           echo("<span><small class='text-danger' id='<?php echo($despachounico); ?>msjporitem1'>Supera el Valor</small></span>");
-        }
-       elseif ($cant_anteriorestemp==$pendiente) {
-             echo("<span><small class='text-success' id='<?php echo($despachounico); ?>msjporitem1'>Entrega Completa</small></span>");
-        }
- ?>
-   
+} elseif ($cant_anteriorestemp < $pendiente) {
+        echo ("<span><small class='text-success'  id='<?php echo($despachounico); ?>msjporitem1'>Entrega Parcial</small></span>");
+    } elseif ($cant_anteriorestemp > $pendiente) {
+        echo ("<span><small class='text-danger' id='<?php echo($despachounico); ?>msjporitem1'>Supera el Valor</small></span>");
+    } elseif ($cant_anteriorestemp == $pendiente) {
+        echo ("<span><small class='text-success' id='<?php echo($despachounico); ?>msjporitem1'>Entrega Completa</small></span>");
+    }
+    ?>
+
  </td>
         <td><input id="" class='input input-sm' type="text" name="cantidad" value="<?php echo ($pendiente); ?>"></td>
         <td><button type="submit" class="btn btn-success fa fa-check"></button></td>
@@ -313,7 +309,7 @@ date_default_timezone_set("America/Bogota");
                 <td> <strong><?php echo ($sumaanteriorestemp); ?> </strong></td>
                 <td> <strong><?php echo ($pendientetotal); ?> </strong></td>
 
-    <input id="inputcantidadrecibida" type="hidden" value="<?php echo ($sumaanteriorestemp); ?>"> 
+    <input id="inputcantidadrecibida" type="hidden" value="<?php echo ($sumaanteriorestemp); ?>">
     <input id="inputcantidacomprada" type="hidden" value="<?php echo ($pendientetotal); ?>">
 
             </tr>
@@ -325,7 +321,7 @@ date_default_timezone_set("America/Bogota");
           <!-- /.box -->
         </div>
 
-    <form role="form" action="?controller=inventario&action=actualizarsalidarq&&id=<?php echo ($idreq); ?>&&des=<?php echo($itemsget) ?>" method="POST" enctype="multipart/form-data">
+    <form role="form" action="?controller=inventario&action=actualizarsalidarq&&id=<?php echo ($idreq); ?>&&des=<?php echo ($itemsget) ?>" method="POST" enctype="multipart/form-data">
 
                                 <?php
 
@@ -342,8 +338,8 @@ $campofecha   = date('Y-m-d');
                     <input type="hidden" name="estado_salida" value="Despachado">
                     <input type="hidden" name="tipo_salida" value="Despacho RQ-<?php echo ($idreq); ?>">
                     <input type="hidden" name="items" value="<?php echo ($itemsget); ?>">
-                    <input  type="hidden" name="valor_salida" value="<?php echo($contadorsumainsumo); ?>">
-                    
+                    <input  type="hidden" name="valor_salida" value="<?php echo ($contadorsumainsumo); ?>">
+
                               <div class="card-body">
 
 <div  id="" class="col-md-4">
@@ -389,7 +385,7 @@ foreach ($rubros as $campo) {
                     <option value="" selected="">Seleccionar...</option>
                     <option value="Si">Si</option>
                     <option value="No" >No</option>
-                    
+
                 </select>
                         </div>
 </div>
@@ -399,14 +395,14 @@ foreach ($rubros as $campo) {
                          <select style="width:300px;" class="form-control mi-selector" id="selectequipo" name="equipo_id_equipo" >
                             <option value="" selected>Seleccionar...</option>
                              <option value="10000" >Otros</option>
-                            <?php                     
-                        $campamentos = Equipos::obtenerListaEquiposAsf(); 
-                            foreach ($campamentos as $campamento ){
-                              $id_equipo  = $campamento['id_equipo'];
-                              $nombre_equipo = $campamento['nombre_equipo'];
-                            ?>
-                            <option value="<?php echo $id_equipo ; ?>"><?php echo utf8_encode($nombre_equipo); ?></option>
-                            <?php } ?>
+                            <?php
+$campamentos = Equipos::obtenerListaEquiposAsf();
+foreach ($campamentos as $campamento) {
+    $id_equipo     = $campamento['id_equipo'];
+    $nombre_equipo = $campamento['nombre_equipo'];
+    ?>
+                            <option value="<?php echo $id_equipo; ?>"><?php echo utf8_encode($nombre_equipo); ?></option>
+                            <?php }?>
                           </select>
 
                         </div>
@@ -418,20 +414,20 @@ foreach ($rubros as $campo) {
       alert("Selecione el Equipo");
           $('#campoequipo').show();
           document.getElementById("selectequipo").required = true;
-           
-    } else {   
-          $('#campoequipo').show();
 
+    } else {
+          $('#campoequipo').hide();
+         document.getElementById("selectequipo").required = false;
         var mySelect = document.getElementById("selectequipo");
         var addOption2 = function(select,txt,value){
         var opt = new Option(txt,value);
             console.log(typeof opt)
             select.appendChild(opt);
             }
-            addOption2(mySelect,"0","0");  
+            addOption2(mySelect,"0","0");
 
-           
-    }      
+
+    }
 });
 </script>
             <div  id="" class="col-md-4">
@@ -465,13 +461,13 @@ foreach ($rubros as $campo) {
                           <select style="width:300px;" class="mi-selector" name="estadoOC" id="estadoOC" required="">
                           </select>
                         </div>
-                        
+
                 </div>
 
 
 
                                 </div>
-                  
+
 
                          <div class="card-footer">
                               <button id="botonguardar" style="display:none;" name="Submit" type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Haz clic aqui para guardar la información">Enviar y notificar a Usuario</button>
@@ -489,7 +485,7 @@ foreach ($rubros as $campo) {
                           </small>
                         </div>
 
-                      
+
 
                           </div>
                           <!-- /.card -->
@@ -510,15 +506,15 @@ foreach ($rubros as $campo) {
 
 <script type="text/javascript">
 $(document).ready(function(){
-   
-        
-        var recibido = $("#inputcantidadrecibida").val();
-        var pendiente = $("#inputcantidacomprada").val(); 
 
-       // Verificar que las cantidades recibidas no superen las compradas. 
+
+        var recibido = $("#inputcantidadrecibida").val();
+        var pendiente = $("#inputcantidacomprada").val();
+
+       // Verificar que las cantidades recibidas no superen las compradas.
 
         if (recibido<pendiente) {
-         $("#botonguardar").slideToggle(100); 
+         $("#botonguardar").slideToggle(100);
         var mySelect = document.getElementById("estadoOC");
         var addOption2 = function(select,txt,value){
         var opt = new Option(txt,value);
@@ -526,20 +522,20 @@ $(document).ready(function(){
             select.appendChild(opt);
             }
             addOption2(mySelect,"Entrega Parcial","Entrega Parcial");
-        
+
         }
         else if(recibido==pendiente){
-             $("#botonguardar").slideToggle(100); 
+             $("#botonguardar").slideToggle(100);
             var mySelect = document.getElementById("estadoOC");
         var addOption2 = function(select,txt,value){
         var opt = new Option(txt,value);
             console.log(typeof opt)
             select.appendChild(opt);
             }
-            addOption2(mySelect,"Entrega Completa","Entrega Completa");  
+            addOption2(mySelect,"Entrega Completa","Entrega Completa");
         }
         else if(recibido>pendiente){
-             $("#botonguardar").hide(100); 
+             $("#botonguardar").hide(100);
               $("#mensajealerta2").slideToggle(100);
             var mySelect = document.getElementById("estadoOC");
         var addOption2 = function(select,txt,value){
@@ -547,18 +543,18 @@ $(document).ready(function(){
             console.log(typeof opt)
             select.appendChild(opt);
             }
-            addOption2(mySelect,"Verificar Cantidades","Verificar Cantidades");  
+            addOption2(mySelect,"Verificar Cantidades","Verificar Cantidades");
         }
         else{
-             $("#botonguardar").hide(100); 
-             $("#mensajealerta").slideToggle(100); 
+             $("#botonguardar").hide(100);
+             $("#mensajealerta").slideToggle(100);
              var mySelect = document.getElementById("estadoOC");
         var addOption2 = function(select,txt,value){
         var opt = new Option(txt,value);
             console.log(typeof opt)
             select.appendChild(opt);
             }
-            addOption2(mySelect,"Campo en Cero","");  
+            addOption2(mySelect,"Campo en Cero","");
         }
 
 
@@ -596,7 +592,7 @@ $(document).ready(function(){
 </script>
 <!-- Inicio Libreria formato moneda -->
 <script src="dist/js/jquery.maskMoney.js" type="text/javascript"></script>
-<script type="text/javascript">         
+<script type="text/javascript">
 $("#demo").maskMoney({
 prefix:'$ ', // The symbol to be displayed before the value entered by the user
 allowZero:true, // Prevent users from inputing zero
@@ -605,7 +601,7 @@ defaultZero:false, // when the user enters the field, it sets a default mask usi
 thousands: '.', // The thousands separator
 decimal: '.' , // The decimal separator
 precision: 0, // How many decimal places are allowed
-affixesStay : true, // set if the symbol will stay in the field after the user exits the field. 
+affixesStay : true, // set if the symbol will stay in the field after the user exits the field.
 symbolPosition : 'left' // use this setting to position the symbol at the left or right side of the value. default 'left'
 }); //
         </script>

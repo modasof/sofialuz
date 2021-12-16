@@ -117,7 +117,7 @@ WHERE  MONTH(fecha_reporte)='".$mes."' and YEAR(fecha_reporte)='".$ano."' and re
 	function Contarrqporaprobar($area){
 	$db = Db::getConnect();
 	//$mesactual = date("n");
-	$sql="SELECT COUNT(id) as totales FROM requisiciones WHERE ".$area." order by fecha_reporte DESC";
+	$sql="SELECT COUNT(id) as totales FROM requisiciones WHERE ".$area." and requisicion_publicada='1' order by fecha_reporte DESC";
 	//echo($sql);
 	$select = $db->prepare($sql);
 	$select->execute();

@@ -999,6 +999,29 @@ class Requisicionesitems
         }
     }
 
+    /*******************************************************
+ ** FUNCION PARA MOSTRAR  **
+ ********************************************************/
+    public static function sqlrq($id)
+    {
+        try {
+            $db  = Db::getConnect();
+            $sql = "SELECT requisicion_id FROM requisiciones_items WHERE id='" . $id . "'";
+            //echo($sql);
+            $select  = $db->query($sql);
+            $camposs = $select->fetchAll();
+            $campos  = new Requisicionesitems('', $camposs);
+            $marcas  = $campos->getCampos();
+            foreach ($marcas as $marca) {
+                $mar = $marca['requisicion_id'];
+            }
+            return $mar;
+        } catch (PDOException $e) {
+            echo '{"error en obtener la pagina":{"text":' . $e->getMessage() . '}}';
+        }
+    }
+
+
 /*******************************************************
  ** FUNCION PARA MOSTRAR  **
  ********************************************************/

@@ -125,6 +125,24 @@ class Inventario
     }
 
 /*******************************************************
+ ** FUNCION PARA MOSTRAR TODOS LOS CAMPOS DE FECHAS      **
+ ********************************************************/
+    public static function todosporusuariorecibir($id, $estadosolicitado)
+    {
+        try {
+            $db  = Db::getConnect();
+            $sql = "SELECT * FROM salidas_ins WHERE recibido_por='" . $id . "' and estado_salida='" . $estadosolicitado . "'order by fecha_reporte DESC";
+            //echo($sql);
+            $select  = $db->query($sql);
+            $camposs = $select->fetchAll();
+            $campos  = new Inventario('', $camposs);
+            return $campos;
+        } catch (PDOException $e) {
+            echo '{"error en obtener la pagina":{"text":' . $e->getMessage() . '}}';
+        }
+    }
+
+/*******************************************************
  ** FUNCION PARA MOSTRAR TODOS LOS CAMPOS DE FECHAS    **
  ********************************************************/
     public static function totalsalidas()
@@ -136,6 +154,67 @@ class Inventario
             $camposs = $select->fetchAll();
             $campos  = new Inventario('', $camposs);
             return $campos;
+        } catch (PDOException $e) {
+            echo '{"error en obtener la pagina":{"text":' . $e->getMessage() . '}}';
+        }
+    }
+
+/*******************************************************
+ ** FUNCION PARA MOSTRAR EL NOMBRE DEL EQUIPO **
+ ********************************************************/
+    public static function Aplicaequipo($id)
+    {
+        try {
+            $db     = Db::getConnect();
+            $sql    = "SELECT aplica_equipo FROM salidas_ins WHERE id_salida_ins='" . $id . "'";
+            $select = $db->query($sql);
+            //echo($sql);
+            $camposs = $select->fetchAll();
+            $campos  = new Inventario('', $camposs);
+            $marcas  = $campos->getCampos();
+            foreach ($marcas as $marca) {
+                $mar = $marca['aplica_equipo'];
+            }
+            return $mar;
+        } catch (PDOException $e) {
+            echo '{"error en obtener la pagina":{"text":' . $e->getMessage() . '}}';
+        }
+    }
+
+/*******************************************************
+ ** FUNCION PARA MOSTRAR EL NOMBRE DEL EQUIPO **
+ ********************************************************/
+    public static function Idequipo($id)
+    {
+        try {
+            $db     = Db::getConnect();
+            $sql    = "SELECT equipo_id_equipo FROM salidas_ins WHERE id_salida_ins='" . $id . "'";
+            $select = $db->query($sql);
+            //echo($sql);
+            $camposs = $select->fetchAll();
+            $campos  = new Inventario('', $camposs);
+            $marcas  = $campos->getCampos();
+            foreach ($marcas as $marca) {
+                $mar = $marca['equipo_id_equipo'];
+            }
+            return $mar;
+        } catch (PDOException $e) {
+            echo '{"error en obtener la pagina":{"text":' . $e->getMessage() . '}}';
+        }
+    }
+
+    /*******************************************************
+     ** FUNCION PARA MOSTRAR TODOS LOS CAMPOS DE FECHAS    **
+     ********************************************************/
+    public static function totalsalidasporentrega($id)
+    {
+        try {
+            $db            = Db::getConnect();
+            $select        = $db->query("SELECT * FROM detalle_salida_ins WHERE salida_id='" . $id . "' and estado_recibido='Pendiente' order by fecha_registro DESC");
+            $campos        = $select->fetchAll();
+            $camposs       = new Inventario('', $campos);
+            $campostraidos = $camposs->getCampos();
+            return $campostraidos;
         } catch (PDOException $e) {
             echo '{"error en obtener la pagina":{"text":' . $e->getMessage() . '}}';
         }
@@ -303,7 +382,7 @@ LEFT JOIN detalle_salida_ins ON  detalle_salida_ins.fecha_registro=detalle_entra
         try {
 
             $db      = Db::getConnect();
-            $select  = $db->query("SELECT * FROM detalle_salida_ins  order by fecha_registro DESC");
+            $select  = $db->query("SELECT * FROM detalle_salida_ins  WHERE estado_detalle_salida<>'0' order by fecha_registro DESC");
             $camposs = $select->fetchAll();
             $campos  = new Inventario('', $camposs);
             return $campos;
@@ -401,8 +480,8 @@ LEFT JOIN detalle_salida_ins ON  detalle_salida_ins.fecha_registro=detalle_entra
     public static function sqlvalorsalida($id)
     {
         try {
-            $db = Db::getConnect();
-            $sql="SELECT IFNULL(sum(valor_entregado),0) as Valorsalidas FROM detalle_salida_ins WHERE item_id='" . $id . "' and estado_detalle_salida LIKE '%Entrega%'";
+            $db  = Db::getConnect();
+            $sql = "SELECT IFNULL(sum(valor_entregado),0) as Valorsalidas FROM detalle_salida_ins WHERE item_id='" . $id . "' and estado_detalle_salida LIKE '%Entrega%'";
             //echo($sql);
             $select  = $db->query($sql);
             $camposs = $select->fetchAll();
@@ -492,7 +571,7 @@ LEFT JOIN detalle_salida_ins ON  detalle_salida_ins.fecha_registro=detalle_entra
 
 /***************************************************************
  *** FUNCION PARA GUARDAR INGRESO DE PAGO DE ORDEN DE COMPRA ****
- * (`id`, `item_id`, `requisicion_id`, `insumo_id`, `cantidad`, `salida_id`, `fecha_registro`, `estado_detalle_salida`, `marca_temporal`, `creado_por`, `salida_por`)
+ * (`id`, `item_id`, `requisicion_id`, `insumo_id`, `cantidad`, `valor_entregado`, `salida_id`, `fecha_registro`, `estado_detalle_salida`, `estado_recibido`, `marca_temporal`, `creado_por`, `salida_por`)
  ***************************************************************/
     public static function guardarsalidadetalletem($campos)
     {
@@ -502,7 +581,7 @@ LEFT JOIN detalle_salida_ins ON  detalle_salida_ins.fecha_registro=detalle_entra
             $campostraidos = $campos->getCampos();
             extract($campostraidos);
 
-            $insert = $db->prepare('INSERT INTO detalle_salida_ins VALUES (NULL,:item_id,:requisicion_id,:insumo_id,:cantidad,:valor_entregado,:salida_id,:fecha_registro,:estado_detalle_salida,:marca_temporal,:creado_por,:salida_por)');
+            $insert = $db->prepare('INSERT INTO detalle_salida_ins VALUES (NULL,:item_id,:requisicion_id,:insumo_id,:cantidad,:valor_entregado,:salida_id,:fecha_registro,:estado_detalle_salida,:estado_recibido,:marca_temporal,:creado_por,:salida_por)');
 
             $V1          = str_replace(".", "", $valor_entregado);
             $V2          = str_replace(" ", "", $V1);
@@ -519,6 +598,7 @@ LEFT JOIN detalle_salida_ins ON  detalle_salida_ins.fecha_registro=detalle_entra
             $insert->bindValue('salida_id', utf8_decode($salida_id));
             $insert->bindValue('fecha_registro', utf8_decode($fecha_registro));
             $insert->bindValue('estado_detalle_salida', utf8_decode($estado_detalle_salida));
+            $insert->bindValue('estado_recibido', utf8_decode($estado_recibido));
             $insert->bindValue('marca_temporal', utf8_decode($marca_temporal));
             $insert->bindValue('creado_por', utf8_decode($creado_por));
             $insert->bindValue('salida_por', utf8_decode($salida_por));
@@ -541,6 +621,52 @@ LEFT JOIN detalle_salida_ins ON  detalle_salida_ins.fecha_registro=detalle_entra
             $db = DB::getConnect();
 
             $select = $db->query("DELETE FROM detalle_entrada_ins WHERE cotizacion_item_id='" . $id . "' and estado_detalle_entrada='0'");
+            if ($select) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            echo '{"error en obtener la pagina":{"text":' . $e->getMessage() . '}}';
+        }
+    }
+
+    # ============================================================
+    # =           Actualizar estado a despachos        =
+    # ============================================================
+    public static function actualizarestadodespacho($idusuario, $idsalida)
+    {
+
+        try {
+            $db = DB::getConnect();
+
+            date_default_timezone_set("America/Bogota");
+            $fecha_recepcion = date('Y-m-d');
+
+            $select = $db->query("UPDATE  salidas_ins SET recibido_por='" . $idusuario . "', estado_salida='Recibido', fecha_recepcion='" . $fecha_recepcion . "' WHERE id_salida_ins='" . $idsalida . "'");
+            if ($select) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            echo '{"error en obtener la pagina":{"text":' . $e->getMessage() . '}}';
+        }
+    }
+
+ # ============================================================
+    # =           Actualizar estado a despachos        =
+    # ============================================================
+    public static function actualizardetalledespacho($idsalida)
+    {
+
+        try {
+            $db = DB::getConnect();
+
+            date_default_timezone_set("America/Bogota");
+            $fecha_recepcion = date('Y-m-d');
+
+            $select = $db->query("UPDATE  detalle_salida_ins  SET  estado_recibido='Recibido Ok' WHERE salida_id='" . $idsalida . "'");
             if ($select) {
                 return true;
             } else {

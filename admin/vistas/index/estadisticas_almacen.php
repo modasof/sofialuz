@@ -262,6 +262,18 @@ function contarregistrosporestado($id,$usuario){
 	return $totalitems;
 	}
 
+function contarregistrospararecibir($estado,$usuario){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$select = $db->prepare("SELECT COUNT(id_salida_ins) as totalitems FROM salidas_ins WHERE estado_salida='".$estado."' and recibido_por='".$usuario."'");
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$totalitems = $campo['totalitems'];
+		}
+	return $totalitems;
+	}
+
 function contarregistrosporestadototal($id){
 	$db = Db::getConnect();
 	//$mesactual = date("n");

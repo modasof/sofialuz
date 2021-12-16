@@ -87,6 +87,19 @@ foreach ($campos2 as $campo1) {
   <div class="content">
     <div class="container-fluid">
       <div class="row">
+       
+<script type="text/javascript">
+    Push.create("Hello world!", {
+    body: "How's it hangin'?",
+    icon: '../Login/logonomadas.png',
+    timeout: 4000,
+    onClick: function () {
+        window.focus();
+        this.close();
+    }
+});
+ </script>
+      
 
             <div class="col-md-9">
                 <section class="invoice">
@@ -95,7 +108,7 @@ foreach ($campos2 as $campo1) {
         <div class="col-xs-12">
           <h2 class="page-header">
             <i class="">
-              <img width="150px" height="50px" src="../Login/logonomadas.png" >
+              <img width="150px" height="100px" src="../Login/logonomadas.png" >
             </i> Comprobante de Entrega
             <small class="pull-right">Fecha: <?php
 $imprfechalarga = fechalarga($MarcaTemporal);
@@ -111,7 +124,7 @@ echo ($imprfechalarga);
           Entregado a:
           <address>
             <strong><?php echo($nomrecibe); ?></strong><br>
-            Proyecto: <br>
+            Destino: <br>
             <strong><?php echo($nombreproyecto); ?></strong><br>
             Fecha Entrega: <?php echo($fecha_reporte); ?><br>
           </address>
@@ -121,7 +134,7 @@ echo ($imprfechalarga);
           Despachado por:
           <address>
             <strong><?php echo ($nomdespacha) ?></strong><br>
-            Total Items: 2<br>
+            Total Items: <br>
             Fecha y hora Entrega: <?php echo ($marca_temporal); ?><br>
            <strong>Tipo Salida: <?php echo ($tipo_salida); ?></strong> <br>
           </address>
@@ -129,14 +142,8 @@ echo ($imprfechalarga);
         </div>
         <!-- /.col -->
         <div class="col-sm-2 invoice-col">
-          <b>Comprobante Entrega ENT-00<?php echo ($Getsalida); ?></b><br>
-          <br>
-
-          <b>Valor Entregado:</b>
-          <?php
-echo ("234.000");
-?>
-          <br>
+          <b>Comprobante Entrega <br>ENT-00<?php echo ($Getsalida); ?></b><br>
+         
         </div>
         <!-- /.col -->
       </div>
@@ -208,32 +215,16 @@ foreach ($campos as $campo) {
 
       <div class="row">
         <!-- accepted payments column -->
-        <div class="col-xs-7">
+        <div class="col-xs-12">
 
          <p class="lead"><strong>Observaciones</strong></p>
-          <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;font-size: 8px; text-align: justify;">
+          <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;font-size: 14px; text-align: justify;">
            <?php echo($observaciones); ?>
           </p>
         </div>
         <!-- /.col -->
-        <div class="col-xs-5">
-          <div class="table-responsive">
-            <table class="table">
-              <tr>
-                <th style="width:50%">Subtotal:</th>
-                <td>
-                  <?php
-
-echo ("$" . number_format($Subtotalcot, 0));
-?>
-                </td>
-              </tr>
-
-             
-
-            </table>
-          </div>
-        </div>
+       <br>
+       <hr>
         <div class="col-xs-4">
           <div class="table-responsive">
             <table class="table">
@@ -274,8 +265,6 @@ echo ("$" . number_format($Subtotalcot, 0));
       <div class="row no-print">
         <div class="col-xs-12">
           <a href="vistas/requisiciones/cotizaciones_print.php?id=<?php echo ($idproveedor); ?>" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
-
-         
 
         </div>
       </div>
@@ -365,3 +354,5 @@ function formatmoneda(n, currency) {
     } );
 } );
     </script>
+
+
