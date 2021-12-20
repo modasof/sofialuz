@@ -533,7 +533,7 @@ public static function obtenerIdproyecto($id){
 	try {
 		$db=Db::getConnect();
 
-		$select=$db->query("SELECT proyecto_id_proyecto FROM requisiciones WHERE id='".$id."'");
+		$select=$db->query("SELECT proyecto_id_proyecto FROM salidas_ins WHERE id_salida_ins='".$id."'");
     	$camposs=$select->fetchAll();
     	$campos = new Requisiciones('',$camposs);
     	$marcas = $campos->getCampos();

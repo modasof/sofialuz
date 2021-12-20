@@ -12,6 +12,9 @@ include_once 'modelos/unidadesmed.php';
 include_once 'controladores/proveedoresController.php';
 include_once 'modelos/proveedores.php';
 
+include_once 'controladores/equiposController.php';
+include_once 'modelos/equipos.php';
+
 include_once 'controladores/proyectosController.php';
 include_once 'modelos/proyectos.php';
 
@@ -40,13 +43,37 @@ foreach ($campos2 as $campo1) {
     $creado_por           = $campo1['creado_por'];
     $recibido_por         = $campo1['recibido_por'];
     $observaciones        = $campo1['observaciones'];
+    $estado_salida = $campo1['estado_salida'];
     $tipo_salida          = $campo1['tipo_salida'];
-    $estado_salida        = $campo1['estado_salida'];
-    $fecha_recepcion      = $campo1['fecha_recepcion'];
+    $estado_recibido      = $campo1['estado_recibido'];
+   
     $marca_temporal      = $campo1['marca_temporal'];
+    $aplica_equipo      = $campo1['aplica_equipo'];
+    $equipo_id_equipo      = $campo1['equipo_id_equipo'];
     $nomdespacha          = Usuarios::obtenerNombreUsuario($creado_por);
     $nomrecibe          = Usuarios::obtenerNombreUsuario($recibido_por);
     $nombreproyecto       = Proyectos::obtenerNombreProyecto($proyecto_id_proyecto);
+
+     if ($aplica_equipo == "Si") {
+        $nombreequipo     = Equipos::ObtenerNombreEquipo($equipo_id_equipo);
+    } else {
+        $nombreequipo = "No Aplica";
+    }
+
+     if ($estado_salida=="Recibido") {
+        $estadoactual = "<span class='badge bg-green'> Recibido Ok</span>";
+        $nomrecibefirma          = Usuarios::obtenerNombreUsuario($recibido_por);
+        $fecha_recepcion      = $campo1['fecha_recepcion'];
+        $fechadata = fechalarga($fecha_recepcion);
+    }
+    else{
+         $estadoactual = "<span class='badge bg-red'> Pendiente Recibir</span>";
+         $nomrecibefirma= "_____________________";
+        $fecha_recepcion= "____________________";
+        $fechadata= "_________________________";
+    }
+
+
 }
 
 ?>
@@ -69,12 +96,12 @@ foreach ($campos2 as $campo1) {
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0 text-dark">Detalle Salida</h1>
+          <h1 class="m-0 text-dark">Detalle Despacho</h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
              <li class="breadcrumb-item"><a href="?controller=index&&action=index">Inicio</a></li>
-            <li class="breadcrumb-item"><a href="?controller=inventario&&action=totalsalidas">Ver Salidas</a></li>
+            <li class="breadcrumb-item"><a href="?controller=inventario&&action=totalsalidas">Ver Despachos</a></li>
             <!--<li class="breadcrumb-item active"><a href="?controller=equipos&&action=todos">Equipos</a></li>-->
           </ol>
         </div><!-- /.col -->
@@ -102,7 +129,7 @@ foreach ($campos2 as $campo1) {
       
 
             <div class="col-md-9">
-                <section class="invoice">
+                <section class="invoice" id="invoice">
       <!-- title row -->
       <div class="row">
         <div class="col-xs-12">
@@ -126,7 +153,7 @@ echo ($imprfechalarga);
             <strong><?php echo($nomrecibe); ?></strong><br>
             Destino: <br>
             <strong><?php echo($nombreproyecto); ?></strong><br>
-            Fecha Entrega: <?php echo($fecha_reporte); ?><br>
+            Fecha Recibe: <?php echo($fecha_recepcion); ?><br>
           </address>
         </div>
         <!-- /.col -->
@@ -134,16 +161,15 @@ echo ($imprfechalarga);
           Despachado por:
           <address>
             <strong><?php echo ($nomdespacha) ?></strong><br>
-            Total Items: <br>
             Fecha y hora Entrega: <?php echo ($marca_temporal); ?><br>
-           <strong>Tipo Salida: <?php echo ($tipo_salida); ?></strong> <br>
+           <strong>Equipo : <?php echo ($nombreequipo); ?></strong> <br>
           </address>
 
         </div>
         <!-- /.col -->
         <div class="col-sm-2 invoice-col">
-          <b>Comprobante Entrega <br>ENT-00<?php echo ($Getsalida); ?></b><br>
-         
+          <b>Comprobante Despacho <br>DES-<?php echo ($Getsalida); ?></b><br>
+          <b>Estado: <br></b><?php echo ($estado_salida); ?>
         </div>
         <!-- /.col -->
       </div>
@@ -229,8 +255,8 @@ foreach ($campos as $campo) {
           <div class="table-responsive">
             <table class="table">
               <tbody><tr>
-                <th style="width:50%"><small>VoBo Jefe de compra</small></th>
-                <td></td>
+                <th style="width:50%"><small>VoBo Despacha</small></th>
+                <td><?php echo($nomdespacha); ?></td>
               </tr>
             </tbody></table>
           </div>
@@ -240,7 +266,7 @@ foreach ($campos as $campo) {
             <table class="table">
               <tbody><tr>
                 <th style="width:50%"><small>VoBo Recibe</small></th>
-                <td></td>
+                <td><?php echo($nomrecibefirma); ?></td>
               </tr>
             </tbody></table>
           </div>
@@ -249,9 +275,9 @@ foreach ($campos as $campo) {
           <div class="table-responsive">
             <table class="table">
               <tbody><tr>
-                <th style="width:50%"><small>Firma Ing. Residente</small></th>
+                <th style="width:50%"><small>Recibido en Sistema el</small></th>
 
-                <td></td>
+                <td><?php echo($fechadata); ?></td>
               </tr>
             </tbody></table>
           </div>
@@ -264,10 +290,13 @@ foreach ($campos as $campo) {
 
       <div class="row no-print">
         <div class="col-xs-12">
-          <a href="vistas/requisiciones/cotizaciones_print.php?id=<?php echo ($idproveedor); ?>" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
+         <button id="print" onclick="printContent('invoice');" >Imprimir</button>
 
         </div>
+
+
       </div>
+
     </section>
             </div>
           </div> <!-- FIN DE ROW-->
@@ -280,7 +309,15 @@ foreach ($campos as $campo) {
 </div> <!-- Fin Content-Wrapper -->
 
 <!-- Inicio Libreria formato moneda -->
-
+<script>
+function printContent(el){
+var restorepage = $('body').html();
+var printcontent = $('#' + el).clone();
+$('body').empty().html(printcontent);
+window.print();
+$('body').html(restorepage);
+}
+</script>
 
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
       <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>

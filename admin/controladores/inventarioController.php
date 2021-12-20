@@ -80,6 +80,17 @@ class InventarioController
         require_once 'vistas/inventario/recibirinsumos.php';
     }
 
+ /*=============================================
+=  Section para visualizar todas los insumos por recibir           =
+=============================================*/
+    
+    function entregasrecibidasusuario() {
+        $id=$_GET['id'];
+        $estado="Recibido";
+        $campos=Inventario::todosporusuariorecibir($id,$estado);;
+        require_once 'vistas/inventario/detalle-salidas-porusuario.php';
+    }
+
 
 # -----------  Subsection comment block  -----------
 

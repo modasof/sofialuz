@@ -32,11 +32,12 @@ require_once 'vistas/index/header-formdate.php';
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0 text-dark">Reporte Total Entregas</h1>
+          <h1 class="m-0 text-dark">Reporte Total Despachos</h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="?controller=index&&action=index">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="?controller=inventario&&action=salidasdetalletotal">Vista Detallada</a></li>
             <!--<li class="breadcrumb-item active"><a href="?controller=equipos&&action=todos">Equipos</a></li>-->
           </ol>
         </div><!-- /.col -->
@@ -64,7 +65,7 @@ require_once 'vistas/index/header-formdate.php';
           <!-- TABLE: LATEST ORDERS -->
           <div class="box box-success">
             <div class="box-header with-border">
-              <h3 class="box-title">Salidas de Centro de Distribución  </h3>
+              <h3 class="box-title">Despachos de Centro de Distribución  </h3>
               <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
                 </button>
@@ -147,13 +148,13 @@ require_once 'vistas/index/header-formdate.php';
         <?php
 if ($fechaform != "") {
     ?>
-           <h3 class="m-0 text-dark">Reporte Salidas del <?php echo (fechalarga($datofechain)); ?> al <?php echo (fechalarga($datofechafinal)); ?></h3>
+           <h3 class="m-0 text-dark">Reporte Despachos del <?php echo (fechalarga($datofechain)); ?> al <?php echo (fechalarga($datofechafinal)); ?></h3>
           <?php
 }
 ?>
         </div><!-- /.col -->
               <div class="clearfix">
-                      <div class="pull-left tableTools-container"></div>
+                      <div class="pull-right tableTools-container"></div>
                     </div>
               <div class="table-responsive mailbox-messages">
           <table id="cotizaciones" class="table  table-responsive table-striped table-bordered table-hover" style="width: 100%;font-size: 14px;">
@@ -174,7 +175,7 @@ if ($fechaform != "") {
                 <th>Hora y Fecha de Salida</th>
                 <th>Entregado por</th>
                 <th>Recibido por</th>
-                <th>Tipo de Salida</th>
+                <th>Estado</th>
                 <th>Proyecto</th>
                 <th>Observaciones</th>
                 <th>Acción</th>
@@ -184,7 +185,7 @@ if ($fechaform != "") {
                 <th>Hora y Fecha de Salida</th>
                 <th>Entregado por</th>
                 <th>Recibido por</th>
-                <th>Tipo de Salida</th>
+                <th>Estado</th>
                 <th>Proyecto</th>
                 <th>Observaciones</th>
                 <th>Acción</th>
@@ -208,20 +209,28 @@ foreach ($campos as $campo) {
     $proyecto_id_proyecto = $campo['proyecto_id_proyecto'];
     $observaciones        = $campo['observaciones'];
     $tipo_salida          = $campo['tipo_salida'];
+    $estado_salida          = $campo['estado_salida'];
     $nombreentrega        = Usuarios::obtenerNombreUsuario($creado_por);
     $nombrerecibe         = Usuarios::obtenerNombreUsuario($recibido_por);
     $nombreproyecto       = Proyectos::obtenerNombreProyecto($proyecto_id_proyecto);
 
+    if ($estado_salida=="Recibido") {
+        $estadoactual = "<span class='badge bg-green'> Recibido Ok</span>";
+    }
+    else{
+         $estadoactual = "<span class='badge bg-red'> Pendiente Recibir</span>";
+    }
+
     ?>
             <tr>
-             <td><?php echo ("ENT-00".$id_salida_ins) ?></td>
+             <td><?php echo ("DES-".$id_salida_ins) ?></td>
               <td><?php echo ($marca_temporal) ?></td>
               <td><?php echo ($nombreentrega) ?></td>
                <td><?php echo ($nombrerecibe) ?></td>
-              <td><?php echo utf8_encode($tipo_salida); ?></td>
+              <td><?php echo utf8_encode($estadoactual); ?></td>
               <td><?php echo utf8_encode($nombreproyecto); ?></td>
             <td><?php echo utf8_encode($observaciones); ?></td>
-            <td><a href="?controller=inventario&&action=salidasdetalle&&id=<?php echo ($id_salida_ins); ?>">Ver/Imprimir</a></td>
+            <td><a href="?controller=inventario&&action=salidasdetalle&&id=<?php echo ($id_salida_ins); ?>">Detalle/Imprimir</a></td>
 
             </tr>
             <?php
@@ -347,6 +356,7 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
     var table = $('#cotizaciones').DataTable({
       responsive:true,
       "ordering": true,
+       "lengthChange": false,
         "order": [[ 1, "desc" ]],
         orderCellsTop: true,
         "language": {

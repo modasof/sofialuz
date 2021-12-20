@@ -51,7 +51,7 @@ $nombre_usuario = Usuarios::ObtenerNombreUsuario($IdSesion);
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="?controller=index&&action=index">Inicio</a></li>
-            <li class="breadcrumb-item"><a href="?controller=index&&action=index">Insumos Recibidos</a></li>
+            <li class="breadcrumb-item"><a href="?controller=inventario&&action=entregasrecibidasusuario&&id=<?php echo ($IdSesion); ?>">Insumos Recibidos</a></li>
             <!--<li class="breadcrumb-item active"><a href="?controller=equipos&&action=todos">Equipos</a></li>-->
           </ol>
         </div><!-- /.col -->

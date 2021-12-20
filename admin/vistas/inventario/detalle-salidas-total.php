@@ -7,6 +7,9 @@ include_once 'modelos/usuarios.php';
 include_once 'controladores/insumosController.php';
 include_once 'modelos/insumos.php';
 
+include_once 'controladores/equiposController.php';
+include_once 'modelos/equipos.php';
+
 include_once 'controladores/unidadesmedController.php';
 include_once 'modelos/unidadesmed.php';
 
@@ -55,7 +58,8 @@ require_once 'vistas/index/header-formdate.php';
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="?controller=index&&action=index">Inicio</a></li>
-            <li class="breadcrumb-item"><a href="?controller=inventario&&action=totalsalidas">Ver por Salidas</a></li>
+            <li class="breadcrumb-item"><a href="?controller=inventario&&action=salidasdetalletotal">Vista detallada</a></li>
+             <li class="breadcrumb-item"><a href="?controller=inventario&&action=totalsalidas">Ver por Despachos</a></li>
             <!--<li class="breadcrumb-item active"><a href="?controller=equipos&&action=todos">Equipos</a></li>-->
           </ol>
         </div><!-- /.col -->
@@ -181,6 +185,7 @@ if ($fechaform != "") {
             <tfoot style="display: table-header-group;">
                                    <th style="background-color: #fcf8e3" class="success"></th>
                                     <th style="background-color: #fcf8e3" class="success"></th>
+                                     <th style="background-color: #fcf8e3" class="success"></th>
                                     <th style="background-color: #fcf8e3" class="success"></th>
                                     <th style="background-color: #fcf8e3" class="success"></th>
                                     <th style="background-color: #fcf8e3" class="success"></th>
@@ -190,33 +195,37 @@ if ($fechaform != "") {
                                     <th style="background-color: #fcf8e3" class="success"></th>
                                     <th style="background-color: #fcf8e3" class="success"></th>
                                     <th style="background-color: #fcf8e3" class="success"></th>
+
                             </tfoot>
           <thead>
              <tr style="background-color: #4f5962;color: white;">
               <th>Entrega</th>
               <th>Tipo Salida</th>
               <th>Proyecto</th>
-               <th>Despachado por</th>
+               <th>Equipo</th>
+              <th>Despachada</th>
               <th>Recibe</th>
-              <th>Fecha-Recibe</th>
+              <th>Fecha-Despacho</th>
+             <th>Fecha-Recepción</th>
               <th>Insumo</th>
               <th>Cantidades</th>
               <th>Unidad</th>
-              <th>Valor Un. <br> Promedio</th>
-              <th>Valor Total</th>
+              <th>Valor Entregado</th>
             </tr>
             <tr>
                <th>Entrega</th>
               <th>Tipo Salida</th>
               <th>Proyecto</th>
-             <th>Despachado por</th>
+                <th>Equipo</th>
+             <th>Despachada</th>
               <th>Recibe</th>
-              <th>Fecha-Recibe</th>
+              <th>Fecha-Despacho</th>
+               <th>Fecha-Recepción</th>
               <th>Insumo</th>
               <th>Cantidades</th>
               <th>Unidad</th>
-              <th>Valor Un. <br> Promedio</th>
-              <th>Valor Total</th>
+              <th>Valor Entregado</th>
+
             </tr>
           </thead>
        <tbody>
@@ -240,8 +249,16 @@ foreach ($campos as $campo) {
     $marca_temporal        = $campo['marca_temporal'];
     $creado_por            = $campo['creado_por'];
     $salida_por            = $campo['salida_por'];
+    $valor_entregado       = $campo['valor_entregado'];
+    $estado_recibido       = $campo['estado_recibido'];
 
-    $proyecto_id_proyecto = requisiciones::obtenerIdproyecto($requisicion_id);
+    if ($estado_recibido == "Recibido Ok") {
+        $fecha_recepcion = Inventario::fecharecepciondespacho($salida_id);
+    } else {
+        $fecha_recepcion = "<span class='badge bg-red'> Pendiente Recibir</span>";
+    }
+
+    $proyecto_id_proyecto = requisiciones::obtenerIdproyecto($salida_id);
     $recibido_por         = Inventario::obteneusuariorecibe($salida_id);
     $nominsumo            = Insumos::obtenerNombreInsumo($insumo_id);
     $unidadmedida         = Insumos::obtenerUnidadmed($insumo_id);
@@ -250,19 +267,30 @@ foreach ($campos as $campo) {
     $nombrerecibe         = Usuarios::obtenerNombreUsuario($recibido_por);
     $nombreproyecto       = Proyectos::obtenerNombreProyecto($proyecto_id_proyecto);
 
+    $aplica = Inventario::Aplicaequipo($salida_id);
+
+    if ($aplica == "Si") {
+        $equipo_id_equipo = Inventario::Idequipo($salida_id);
+        $nombreequipo     = Equipos::ObtenerNombreEquipo($equipo_id_equipo);
+    } else {
+        $nombreequipo = "";
+    }
+
     ?>
             <tr>
-           <td><?php echo ("RQ".$requisicion_id."-".$item_id); ?></td>
-            <td><?php echo ($salida_por."<br><a href='?controller=inventario&&action=salidasdetalle&&id=".$salida_id."'>ENT00".$salida_id."</a>"); ?></td>
+           <td><?php echo ("RQ" . $requisicion_id . "-" . $item_id); ?></td>
+            <td><?php echo ("<a href='?controller=inventario&&action=salidasdetalle&&id=" . $salida_id . "'>DES-" . $salida_id . "</a>"); ?></td>
             <td><?php echo ($nombreproyecto) ?></td>
+             <td><?php echo ($nombreequipo) ?></td>
               <td><?php echo utf8_encode($nombredespacha); ?></td>
                <td><?php echo utf8_encode($nombrerecibe); ?></td>
                <td><?php echo utf8_encode($marca_temporal); ?></td>
+                <td><?php echo utf8_encode($fecha_recepcion); ?></td>
                <td><?php echo utf8_encode($nominsumo); ?></td>
                 <td><?php echo utf8_encode($cantidad); ?></td>
                  <td><?php echo utf8_encode($nomunidadmedida); ?></td>
-                <td><?php echo utf8_encode("$" . number_format(0)); ?></td>
-               <td><?php echo utf8_encode("$" . number_format(0)); ?></td>
+                <td><?php echo utf8_encode("$" . number_format($valor_entregado, 0)); ?></td>
+
 
 
             </tr>
@@ -418,19 +446,19 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
             // Total over all pages
 
 
-            pageTotal10 = api
-                .column( 10, { page: 'current'} )
+            pageTotal11 = api
+                .column( 11, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
-           
 
 
-              $( api.column( 10 ).footer() ).html(
-                '$'+formatmoneda(pageTotal10,'' )
+
+              $( api.column( 11 ).footer() ).html(
+                '$'+formatmoneda(pageTotal11,'' )
                 );
-             
+
         },
 
     });

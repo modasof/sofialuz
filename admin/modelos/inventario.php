@@ -203,6 +203,28 @@ class Inventario
         }
     }
 
+/*******************************************************
+ ** FUNCION PARA MOSTRAR EL NOMBRE DEL EQUIPO **
+ ********************************************************/
+    public static function fecharecepciondespacho($id)
+    {
+        try {
+            $db     = Db::getConnect();
+            $sql    = "SELECT fecha_recepcion FROM salidas_ins WHERE id_salida_ins='" . $id . "'";
+            $select = $db->query($sql);
+            //echo($sql);
+            $camposs = $select->fetchAll();
+            $campos  = new Inventario('', $camposs);
+            $marcas  = $campos->getCampos();
+            foreach ($marcas as $marca) {
+                $mar = $marca['fecha_recepcion'];
+            }
+            return $mar;
+        } catch (PDOException $e) {
+            echo '{"error en obtener la pagina":{"text":' . $e->getMessage() . '}}';
+        }
+    }
+
     /*******************************************************
      ** FUNCION PARA MOSTRAR TODOS LOS CAMPOS DE FECHAS    **
      ********************************************************/
@@ -211,6 +233,23 @@ class Inventario
         try {
             $db            = Db::getConnect();
             $select        = $db->query("SELECT * FROM detalle_salida_ins WHERE salida_id='" . $id . "' and estado_recibido='Pendiente' order by fecha_registro DESC");
+            $campos        = $select->fetchAll();
+            $camposs       = new Inventario('', $campos);
+            $campostraidos = $camposs->getCampos();
+            return $campostraidos;
+        } catch (PDOException $e) {
+            echo '{"error en obtener la pagina":{"text":' . $e->getMessage() . '}}';
+        }
+    }
+
+    /*******************************************************
+     ** FUNCION PARA MOSTRAR TODOS LOS CAMPOS DE FECHAS    **
+     ********************************************************/
+    public static function totalrecibidoporentrega($id)
+    {
+        try {
+            $db            = Db::getConnect();
+            $select        = $db->query("SELECT * FROM detalle_salida_ins WHERE salida_id='" . $id . "' and estado_recibido='Recibido Ok' order by fecha_registro DESC");
             $campos        = $select->fetchAll();
             $camposs       = new Inventario('', $campos);
             $campostraidos = $camposs->getCampos();
@@ -344,7 +383,9 @@ LEFT JOIN detalle_salida_ins ON  detalle_salida_ins.fecha_registro=detalle_entra
         try {
 
             $db      = Db::getConnect();
-            $select  = $db->query("SELECT * FROM salidas_ins WHERE id_salida_ins='" . $id . "'");
+            $sql="SELECT * FROM salidas_ins WHERE id_salida_ins='" . $id . "'";
+            $select  = $db->query($sql);
+           // echo($sql);
             $camposs = $select->fetchAll();
             $campos  = new Inventario('', $camposs);
             return $campos;
@@ -641,7 +682,7 @@ LEFT JOIN detalle_salida_ins ON  detalle_salida_ins.fecha_registro=detalle_entra
             $db = DB::getConnect();
 
             date_default_timezone_set("America/Bogota");
-            $fecha_recepcion = date('Y-m-d');
+            $fecha_recepcion = date('Y-m-d H:m:s');
 
             $select = $db->query("UPDATE  salidas_ins SET recibido_por='" . $idusuario . "', estado_salida='Recibido', fecha_recepcion='" . $fecha_recepcion . "' WHERE id_salida_ins='" . $idsalida . "'");
             if ($select) {
