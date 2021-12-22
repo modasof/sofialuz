@@ -310,8 +310,8 @@ foreach ($campos as $campo) {
     # =========================================================
 
     $cantidadoriginal = $cantidad;
-    $estadocotizado1  = Cotizacionesporcantdeinsumos($item_id1, $requisicion_id, $insumo_id_insumo, "1");
-    $estadocotizado2  = Cotizacionesporcantdeinsumos($item_id1, $requisicion_id, $insumo_id_insumo, "2");
+    $estadocotizado1  = round(Cotizacionesporcantdeinsumos($item_id1, $requisicion_id, $insumo_id_insumo, "1"),1);
+    $estadocotizado2  = round(Cotizacionesporcantdeinsumos($item_id1, $requisicion_id, $insumo_id_insumo, "2"),1);
 
 
 
