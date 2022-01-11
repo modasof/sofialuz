@@ -83,6 +83,20 @@ where fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' and 
 	}
 
 
+function AcpmfechaVolquetavalor($FechaStart,$FechaEnd,$idequipo){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$select = $db->prepare("SELECT IFNULL(sum(cantidad*valor_m3),0) as Galones FROM reporte_combustibles
+where fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' and reporte_publicado='1' and equipo_id_equipo='".$idequipo."'");
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$total = $campo['Galones'];
+		}
+	return $total;
+	}
+
+
 function HorasEquipo($equipo,$FechaStart,$FechaEnd){
 	$db = Db::getConnect();
 	//$mesactual = date("n");

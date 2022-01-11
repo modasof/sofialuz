@@ -1380,6 +1380,16 @@ function mescombustibleseq() {
 		require_once 'vistas/reportes/reportecombustiblesmeseq.php';
 	}
 
+function mesfletes() {
+		//$campos=Reportes::ReporteCombustibles();;
+		require_once 'vistas/reportes/reportemesflete.php';
+	}
+
+
+function meshorasmq() {
+		//$campos=Reportes::ReporteCombustibles();;
+		require_once 'vistas/reportes/reportemeshorasmq.php';
+	}
 
 	function infovolqueta() {
 		$campos=Reportes::ReporteCombustibles();;

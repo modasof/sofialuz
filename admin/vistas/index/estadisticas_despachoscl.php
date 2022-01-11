@@ -197,6 +197,19 @@ where fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' and 
 	return $total;
 	}
 
+	function Viajesvolquetadetallemes($equipo,$FechaStart,$FechaEnd){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$select = $db->prepare("SELECT COUNT(remision) as totales FROM reporte_despachosclientes
+where fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' and reporte_publicado='1' and equipo_id_equipo='".$equipo."'");
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$total = $campo['totales'];
+		}
+	return $total;
+	}
+
 	function Volquetascldetallemes($cliente,$FechaStart,$FechaEnd){
 	$db = Db::getConnect();
 	//$mesactual = date("n");
@@ -222,6 +235,66 @@ where fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' and 
 		}
 	return $total;
 	}
+
+
+function Facturacionvolquetasporfecha($equipo,$FechaStart,$FechaEnd){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$select = $db->prepare("SELECT IFNULL(sum(valor_m3+valor_material),0) as totales FROM reporte_despachosclientes
+where fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' and reporte_publicado='1' and equipo_id_equipo='".$equipo."'");
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$total = $campo['totales'];
+		}
+	return $total;
+	}
+
+
+function Facturacionpromediovolquetasporfecha($equipo,$FechaStart,$FechaEnd){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$select = $db->prepare("SELECT IFNULL(sum(valor_m3+valor_material),0)/COUNT(DISTINCT fecha_reporte) as totales FROM reporte_despachosclientes
+where fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' and reporte_publicado='1' and equipo_id_equipo='".$equipo."'");
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$total = $campo['totales'];
+		}
+	return $total;
+	}
+
+
+function Pagocomisionvolquetaporfecha($equipo,$FechaStart,$FechaEnd){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$select = $db->prepare("SELECT IFNULL(sum(A.valor_m3*B.comision/100),0) as totales FROM reporte_despachosclientes as A, equipos as B
+where A.fecha_reporte >='".$FechaStart."' and A.fecha_reporte <='".$FechaEnd."' and reporte_publicado='1' and A.equipo_id_equipo=B.id_equipo and A.equipo_id_equipo='".$equipo."'");
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$total = $campo['totales'];
+		}
+	return $total;
+	}
+
+
+
+	function Diaslaboradosvolquetaporfecha($equipo,$FechaStart,$FechaEnd){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$select = $db->prepare("SELECT COUNT(DISTINCT fecha_reporte) as totales FROM reporte_despachosclientes
+where fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' and reporte_publicado='1' and equipo_id_equipo='".$equipo."'");
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$total = $campo['totales'];
+		}
+	return $total;
+	}
+
+	
+
 
 function NumeroVolquetas($FechaStart,$FechaEnd){
 	$db = Db::getConnect();

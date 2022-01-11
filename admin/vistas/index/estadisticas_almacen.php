@@ -24,6 +24,8 @@ function SalidasInsumo($insumo){
 	return $Salidas;
 	}
 
+
+
 function SumaCotSolicitados($proveedor,$estado){
 	$db = Db::getConnect();
 	$select = $db->prepare("SELECT IFNULL(sum(cantidadcot),0) as TotalSolicitado FROM cotizaciones_item WHERE proveedor_id_proveedor='".$proveedor."' and estado_cotizacion='".$estado."'");

@@ -496,7 +496,6 @@ class RequisicionesitemsController
         $res = Requisicionesitems::aprobarRqpor($id);
         # ======  Agregar Trazabilidad  =======
 
-       
         $res = Requisicionesitems::guardartrazabilidad($estadoaprobado, $items, $userautoriza, $observaciones);
 
         if ($res) {

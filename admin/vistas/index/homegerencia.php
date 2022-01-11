@@ -219,7 +219,7 @@ $despachosmes = Despachosclmes($FechaInicioDia, $FechaFinalDia);
 </div>
 <div class="col-md-12">
 
-        <div class="col-md-9">
+        <div style="display:none;" class="col-md-9">
             <div class="box box-primary">
                <div class="box-header with-border">
               <h3 class="box-title">Despacho Diario (Últimos 15 días)
@@ -290,7 +290,7 @@ $despachosmes = Despachosclmes($FechaInicioDia, $FechaFinalDia);
           </div>
      </div>
 
- <div class="col-md-3">
+ <div style="display:none;" class="col-md-3">
 
           <!-- Profile Image -->
           <div class="box box-primary">
@@ -336,7 +336,7 @@ foreach ($result as $camporq) {
           <!--<div class="box box-primary collapsed-box">-->
          <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">Histórico Despachos <small> Actualizado al <?php
+              <h3 class="box-title">Histórico Fletes <small> Actualizado al <?php
 date_default_timezone_set("America/Bogota");
 $TiempoActual = date('Y-m-d');
 echo (fechalarga($TiempoActual));
@@ -348,7 +348,7 @@ echo (fechalarga($TiempoActual));
             </div>
             <!-- /.box-header -->
           <div class="box-body" id="InformeVentas">
-            <div class="clearfix">
+            <div style="display:none;" class="clearfix">
                   <div id="stockChartContainer" style="height: 300px; width: 100%;"></div>
             </div>
         <table  class="table table-bordered table-hover dataTables_borderWrap" style="width: 100%;font-size: 12px;">
@@ -385,9 +385,7 @@ for ($i = 1; $i < $tope; $i++) {
 
     ?>
                 <tr>
-                  <td>
-                    <strong><?php echo (ucfirst($monthName)) ?></strong>
-                  </td>
+                  <td><strong><a href="?controller=reportes&&action=mesfletes&daterange=<?php echo ($fechaconsulta); ?>"><i class="fa fa-line-chart"> </i> <?php echo (ucfirst($monthName)); ?></a></strong></td>
                   <td>
                     <?php
 $ventames1 = Despachosmesgeneral($i, $anoactual);
@@ -437,6 +435,219 @@ $ventames15 = Despachosmesgeneralvalor($i, $anoactual);
         </div>
         <!-- /.col -->
 
+
+
+           <div class="col-md-4 col-xs-12">
+          <!--<div class="box box-primary collapsed-box">-->
+         <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Horas Máquina <small> Actualizado al <?php
+date_default_timezone_set("America/Bogota");
+$TiempoActual = date('Y-m-d');
+echo (fechalarga($TiempoActual));
+?></small></h3>
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                </button>
+              </div>
+            </div>
+            <!-- /.box-header -->
+          <div class="box-body" id="InformeVentas">
+            <div style="display:none;" class="clearfix">
+                  <div id="stockChartContainer" style="height: 300px; width: 100%;"></div>
+            </div>
+        <table  class="table table-bordered table-hover dataTables_borderWrap" style="width: 100%;font-size: 12px;">
+          <thead>
+
+          <thead>
+
+               <tr style="background-color: #4f5962;color: white;">
+                <th>Mes</th>
+               <th>Total Horas</th>
+               <th>Vr. Hora Promedio</th>
+               <th>Valor </th>
+
+              </tr>
+            </thead>
+            <tbody>
+
+
+            </tbody>
+
+              <tfoot>
+                 <?php
+
+for ($i = 1; $i < $tope; $i++) {
+    setlocale(LC_ALL, 'es_ES');
+    $monthNum  = $i;
+    $dateObj   = DateTime::createFromFormat('!m', $monthNum);
+    $monthName = strftime('%B', $dateObj->getTimestamp());
+
+    $Btotaldiasmes   = date('t', mktime(0, 0, 0, $i, 1, $anoactual));
+    $BInicioMesbucle = ($i . "/" . "01/" . $anoactual);
+    $BFinMesbucle    = ($i . "/" . $Btotaldiasmes . "/" . $anoactual);
+    $fechaconsulta   = ($BInicioMesbucle . " - " . $BFinMesbucle);
+
+    ?>
+                <tr>
+                  <td><strong><a href="?controller=reportes&&action=meshorasmq&daterange=<?php echo ($fechaconsulta); ?>"><i class="fa fa-line-chart"> </i> <?php echo (ucfirst($monthName)); ?></a></strong></td>
+                  <td>
+                    <?php
+$ventames1 = Horasmqmesgeneral($i, $anoactual);
+    $sumaventas1 += $ventames1;
+    echo ("<a style='color:black;' href='?controller=reportes&&action=despachosclientes&daterange=" . $fechaconsulta . "'><small style='color:#128a2e;'></small> " . number_format($ventames1, 0) . "</a>");
+
+    ?>
+                  </td>
+                   <td>
+                    <?php
+
+    $arreglof   = (EstadisticasHorasmq($i, $anoactual));
+    $CadenaAt   = explode(",", $arreglof);
+    $longitudAt = count($CadenaAt) - 1;
+    $sumaAt     = array_sum($CadenaAt);
+    $maxviajes  = max($CadenaAt);
+    $promedio33 = $sumaAt / $longitudAt;
+    echo ("<a style='color:black;' href='?controller=reportes&&action=despachosclientes&daterange=" . $fechaconsulta . "'><small style='color:#128a2e;'></small> $" . number_format($promedio33, 0) . "</a>");
+    ?>
+                  </td>
+                  <td>
+                    <?php
+$ventames15 = Horasmqmesgeneralvalor($i, $anoactual);
+    $sumaventas15 += $ventames15;
+    echo ("<a style='color:black;' href='?controller=reportes&&action=despachosclientes&daterange=" . $fechaconsulta . "'><small style='color:#128a2e;'></small>$ " . number_format($ventames15, 0) . "</a>");
+
+    ?>
+                  </td>
+
+                </tr>
+                <?php
+}
+
+?>
+              <tr class="success">
+                <td><strong>Total</strong></td>
+                <td><strong><?php echo (number_format($sumaventas1, 0)) ?></strong></td>
+                <td></td>
+                <td><strong><?php echo ("$ " . number_format($sumaventas15, 0)) ?></strong></td>
+              </tr>
+            </tfoot>
+            </table>
+            </div>
+            <!-- /.box-footer -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+
+
+<div class="col-md-4 col-xs-12">
+          <!--<div class="box box-primary collapsed-box">-->
+         <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Histórico Concreto <small> Actualizado al <?php
+date_default_timezone_set("America/Bogota");
+$TiempoActual = date('Y-m-d');
+echo (fechalarga($TiempoActual));
+?></small></h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                </button>
+
+              </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body" id="InformeVentas">
+              <div style="display:none;" class="clearfix">
+                      <div id="stockChartContainer5" style="height: 300px; width: 100%;"></div>
+
+                    </div>
+        <table  class="table  table-responsive table-striped table-bordered table-hover dataTables_borderWrap" style="width: 100%;font-size: 12px;">
+          <thead>
+
+          <thead>
+
+               <tr style="background-color: #4f5962;color: white;">
+                <th>Mes</th>
+               <th>Despachos</th>
+               <th>Promedio</th>
+               <th>Valor</th>
+              </tr>
+            </thead>
+            <tbody>
+
+
+            </tbody>
+
+              <tfoot>
+                 <?php
+
+for ($i = 1; $i < $tope; $i++) {
+    setlocale(LC_ALL, 'es_ES');
+    $monthNum  = $i;
+    $dateObj   = DateTime::createFromFormat('!m', $monthNum);
+    $monthName = strftime('%B', $dateObj->getTimestamp());
+
+    $Btotaldiasmes   = date('t', mktime(0, 0, 0, $i, 1, $anoactual));
+    $BInicioMesbucle = ($i . "/" . "01/" . $anoactual);
+    $BFinMesbucle    = ($i . "/" . $Btotaldiasmes . "/" . $anoactual);
+    $fechaconsulta   = ($BInicioMesbucle . " - " . $BFinMesbucle);
+
+    ?>
+                <tr>
+                  <td>
+                    <strong><?php echo (ucfirst($monthName)) ?></strong>
+                  </td>
+                  <td>
+                    <?php
+$ventames18 = Despachosconcretomesgeneral($i, $anoactual);
+    $sumaventas18 += $ventames18;
+    echo ("<a style='color:black;' href='?controller=concreto&&action=todos&daterange=" . $fechaconsulta . "'><small style='color:#128a2e;'></small> " . round($ventames18, 0) . "</a>");
+    ?>
+                  </td>
+                   <td>
+                    <?php
+
+    $arreglof   = (EstadisticasDespachosconcreto($i, $anoactual));
+    $CadenaAt   = explode(",", $arreglof);
+    $longitudAt = count($CadenaAt) - 1;
+    $sumaAt     = array_sum($CadenaAt);
+    $maxviajes  = max($CadenaAt);
+    $promedio33 = $sumaAt / $longitudAt;
+    echo ("<a style='color:black;' href='?controller=concreto&&action=todos&daterange=" . $fechaconsulta . "'><small style='color:#128a2e;'></small> " . round($promedio33, 0) . "</a>");
+    ?>
+                  </td>
+                   <td>
+                    <?php
+$ventames19 = Despachosconcretomesgeneralvalor($i, $anoactual);
+    $sumaventas19 += $ventames19;
+
+    echo ("<a style='color:black;' href='?controller=concreto&&action=todos&daterange=" . $fechaconsulta . "'><small style='color:#128a2e;'></small>$ " . number_format($ventames19, 0) . "</a>");
+
+    ?>
+                  </td>
+
+                </tr>
+                <?php
+}
+
+?>
+              <tr class="success">
+                <td><strong>Total</strong></td>
+                <td><strong><?php echo (number_format($sumaventas18, 0)) ?></strong></td>
+                <td></td>
+                <td><strong><?php echo ("$ " . number_format($sumaventas19, 0)) ?></strong></td>
+              </tr>
+            </tfoot>
+            </table>
+            </div>
+            <!-- /.box-footer -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+
                 <div class="col-md-4 col-xs-12">
           <!--<div class="box box-primary collapsed-box">-->
          <div class="box box-primary">
@@ -455,7 +666,7 @@ echo (fechalarga($TiempoActual));
             </div>
             <!-- /.box-header -->
             <div class="box-body" id="InformeVentas">
-              <div class="clearfix">
+              <div style="display:none;" class="clearfix">
                       <div id="stockChartContainer4" style="height: 300px; width: 100%;"></div>
 
                     </div>
@@ -549,405 +760,9 @@ $ventames16 = Acpmmesgeneralvalor($i, $anoactual);
         </div>
         <!-- /.col -->
 
-<div class="col-md-4 col-xs-12">
-          <!--<div class="box box-primary collapsed-box">-->
-         <div class="box box-primary">
-            <div class="box-header with-border">
-              <h3 class="box-title">Histórico Concreto <small> Actualizado al <?php
-date_default_timezone_set("America/Bogota");
-$TiempoActual = date('Y-m-d');
-echo (fechalarga($TiempoActual));
-?></small></h3>
-
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
-                </button>
-
-              </div>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body" id="InformeVentas">
-              <div class="clearfix">
-                      <div id="stockChartContainer5" style="height: 300px; width: 100%;"></div>
-
-                    </div>
-        <table  class="table  table-responsive table-striped table-bordered table-hover dataTables_borderWrap" style="width: 100%;font-size: 12px;">
-          <thead>
-
-          <thead>
-
-               <tr style="background-color: #4f5962;color: white;">
-                <th>Mes</th>
-               <th>Despachos</th>
-               <th>Promedio</th>
-               <th>Valor</th>
-              </tr>
-            </thead>
-            <tbody>
-
-
-            </tbody>
-
-              <tfoot>
-                 <?php
-
-for ($i = 1; $i < $tope; $i++) {
-    setlocale(LC_ALL, 'es_ES');
-    $monthNum  = $i;
-    $dateObj   = DateTime::createFromFormat('!m', $monthNum);
-    $monthName = strftime('%B', $dateObj->getTimestamp());
-
-    $Btotaldiasmes   = date('t', mktime(0, 0, 0, $i, 1, $anoactual));
-    $BInicioMesbucle = ($i . "/" . "01/" . $anoactual);
-    $BFinMesbucle    = ($i . "/" . $Btotaldiasmes . "/" . $anoactual);
-    $fechaconsulta   = ($BInicioMesbucle . " - " . $BFinMesbucle);
-
-    ?>
-                <tr>
-                  <td>
-                    <strong><?php echo (ucfirst($monthName)) ?></strong>
-                  </td>
-                  <td>
-                    <?php
-$ventames18 = Despachosconcretomesgeneral($i, $anoactual);
-    $sumaventas18 += $ventames18;
-    echo ("<a style='color:black;' href='?controller=concreto&&action=todos&daterange=" . $fechaconsulta . "'><small style='color:#128a2e;'></small> " . round($ventames18, 0) . "</a>");
-    ?>
-                  </td>
-                   <td>
-                    <?php
-
-    $arreglof   = (EstadisticasDespachosconcreto($i, $anoactual));
-    $CadenaAt   = explode(",", $arreglof);
-    $longitudAt = count($CadenaAt) - 1;
-    $sumaAt     = array_sum($CadenaAt);
-    $maxviajes  = max($CadenaAt);
-    $promedio33 = $sumaAt / $longitudAt;
-    echo ("<a style='color:black;' href='?controller=concreto&&action=todos&daterange=" . $fechaconsulta . "'><small style='color:#128a2e;'></small> " . round($promedio33, 0) . "</a>");
-    ?>
-                  </td>
-                   <td>
-                    <?php
-$ventames19 = Despachosconcretomesgeneralvalor($i, $anoactual);
-    $sumaventas19 += $ventames19;
-
-    echo ("<a style='color:black;' href='?controller=concreto&&action=todos&daterange=" . $fechaconsulta . "'><small style='color:#128a2e;'></small>$ " . number_format($ventames19, 0) . "</a>");
-
-    ?>
-                  </td>
-
-                </tr>
-                <?php
-}
-
-?>
-              <tr class="success">
-                <td><strong>Total</strong></td>
-                <td><strong><?php echo (number_format($sumaventas18, 0)) ?></strong></td>
-                <td></td>
-                <td><strong><?php echo ("$ " . number_format($sumaventas19, 0)) ?></strong></td>
-              </tr>
-            </tfoot>
-            </table>
-            </div>
-            <!-- /.box-footer -->
-          </div>
-          <!-- /.box -->
-        </div>
-        <!-- /.col -->
 </div>
-<div class="col-md-12">
-   <div class="box box-primary">
-
-        <form action="?controller=reportes&&action=despachosporfechaclientes" method="post" id="FormFechas" autocomplete="off">
-         <div class="col-md-8">
-                        <div class="form-group">
-                          <label>Seleccione el Rango de Fecha<span>*</span></label>
-                          <input type="text"  name="daterange" class="form-control" required value="">
-                        </div>
-    <small>
-
-                          <?php
-if ($fechaform != "") {
-    ?>
-           <h4 class="m-0 text-dark">Reporte Despachos del <?php echo (fechalarga($datofechain)) ?> al <?php echo (fechalarga($datofechafinal)) ?></h4>
-          <?php
-} else {
-    ?>
-           <h4 class="m-0 text-dark">Reporte Total Despachos últimos 60 días</h4>
-          <?php
-}
-?>
-    </small>
-        </div>
-          <div class="form-group">
-            <div class="col-xs-12 col-sm-4">
-              <button class="btn btn-primary btn-sm" type="Submit">Realizar Consulta</button>
-          </div>
-          </div>
-        </form>
-     <table id="example2" class="display nowrap" style="width:100%">
-            <tfoot style="display: table-header-group;">
-                                    <th style="background-color: #fcf8e3" class="success"></th>
-                                    <th style="background-color: #fcf8e3" class="success"></th>
-                                    <th style="background-color: #fcf8e3" class="success"></th>
-                                    <th style="background-color: #fcf8e3" class="success"></th>
-                                    <th style="background-color: #fcf8e3" class="success"></th>
-                                     <th style="background-color: #fcf8e3" class="success"></th>
-                                      <th style="background-color: #fcf8e3" class="success"></th>
 
 
-
-                            </tfoot>
-          <thead>
-
-            <tr>
-             <th>Placa</th>
-             <th>Km/Gl</th>
-              <th>Vr. Fact</th>
-              <th>Viajes</th>
-              <th>M3</th>
-
-              <th>Tanqueo <br></th>
-              <th>Km <br></th>
-
-            </tr>
-          </thead>
-       <tbody>
-            <?php
-
-$res = Equipos::obtenerListaVolquetasAsf();
-foreach ($res as $campo) {
-    $id_equipo = $campo['id_equipo'];
-    $placa     = $campo['placa'];
-
-    $FletesDiariosVol           = FletesDiariosVolqueta($FechaInicio60dias, $FechaFinal60dias, $id_equipo);
-    $MetrajeDiariosVol          = MetrajeDiariosVolqueta($FechaInicio60dias, $FechaFinal60dias, $id_equipo);
-    $KilometrajeDiariosVol      = KilometrajeDiariosVolqueta($FechaInicio60dias, $FechaFinal60dias, $id_equipo);
-    $FacturaDiaVol              = FacturacionDiaTotalVolquetas($FechaInicio60dias, $FechaFinal60dias, $id_equipo);
-    $SumacombustiblediaVolqueta = AcpmfechaVolqueta($FechaInicio60dias, $FechaFinal60dias, $id_equipo);
-
-    $SumacombustiblediaVolquetaGral = AcpmfechaVolqueta($inicio2021, $FechaFinal60dias, $id_equipo);
-    $KilometrajeDiariosVolGeneral   = KilometrajeDiariosVolqueta($inicio2021, $FechaFinal60dias, $id_equipo);
-
-    if ($KilometrajeDiariosVolGeneral == 0) {
-        $RendimientoGral = 0;
-    } else {
-        $RendimientoGral = $KilometrajeDiariosVolGeneral / $SumacombustiblediaVolquetaGral;
-    }
-
-    if ($KilometrajeDiariosVol == 0) {
-        $Rendimiento = 0;
-    } else {
-        $Rendimiento = $KilometrajeDiariosVol / $SumacombustiblediaVolqueta;
-    }
-    ?>
-            <tr>
-
-              <td>  <strong><?php echo ($placa); ?></strong></td>
-              <td><?php echo (round($Rendimiento, 1)); ?></td>
-                       <td><?php echo ("$" . number_format($FacturaDiaVol)); ?></td>
-               <td><?php echo ($FletesDiariosVol); ?></td>
-               <td><?php echo (round($MetrajeDiariosVol, 2)); ?></td>
-
-                   <td><?php echo round($SumacombustiblediaVolqueta, 1); ?></td>
-                   <td><?php echo (round($KilometrajeDiariosVol, 1)); ?></td>
-
-            </tr>
-            <?php
-}
-?>
-          </tbody>
-          </table>
-      </div>
-   </div>
-<div class="col-md-12">
-<!-- Inicio Estados de volquetas -->
-    <div class="col-md-4">
-       <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Estado Volquetas</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body no-padding">
-              <table style="font-size: 12px;" class="table table-condensed">
-                <tbody><tr>
-
-                  <th>Equipo</th>
-                  <th style="width: 40px">Estado</th>
-                </tr>
-                 <?php
-
-$res = Equipos::obtenerListaVolquetasAsf();
-foreach ($res as $campo) {
-    $id_equipo         = $campo['id_equipo'];
-    $placa             = $campo['placa'];
-    $estadoequipo      = UltimoEstadoEquipo($id_equipo);
-    $fechaestadoequipo = UltimoFechaEstadoEquipo($id_equipo);
-    $actualizadohace   = tiempoTranscurridoFechas($fechaestadoequipo, $fechaactual);
-    ?>
-                <tr>
-                   <td>  <a href="?controller=equipos&&action=timelineestados&&id=<?php echo $id_equipo; ?>">  <i class="fa fa-calendar"> </i> <?php echo utf8_decode($placa); ?>   </a>
-            <?php
-if ($fechaestadoequipo < $fechaactual) {
-        echo ("<br><small  class='text-danger fa fa-warning'> Actualizado hace " . $actualizadohace . "</small>");
-    } elseif ($fechaestadoequipo == $fechaactual) {
-        echo ("<br><small  class='text-success fa fa-check'> Actualizado hace" . $actualizadohace . "</small>");
-    }
-    ?>
-
-
-                  </td>
-
-                  <td>
-                     <?php
-if ($estadoequipo == '') {
-        echo ("<a href='?controller=equipos&&action=estado'><span class='label label-default'>Sin Actualizar</span></a>");
-    } elseif ($estadoequipo == 'Operativo') {
-        echo ("<a href='?controller=equipos&&action=estado'><span class='label label-success'>Operativo</span></a>");
-    } elseif ($estadoequipo == 'En Mantenimiento') {
-        echo ("<a href='?controller=equipos&&action=estado'><span class='label label-warning'>En Mantenimiento</span></a>");
-    } elseif ($estadoequipo == 'Fuera de Servicio') {
-        echo ("<a href='?controller=equipos&&action=estado'><span class='label label-danger'>Fuera de Servicio</span></a>");
-    }
-
-    ?>
-                  </td>
-
-
-
-                </tr>
-               <?php
-}
-?>
-              </tbody></table>
-            </div>
-            <!-- /.box-body -->
-          </div>
-     </div>
-
-         <div class="col-md-4">
-       <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Equipos Menores</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body no-padding">
-              <table style="font-size: 12px;" class="table table-condensed">
-                <tbody><tr>
-
-                  <th>Equipo</th>
-                  <th style="width: 40px">Estado</th>
-                </tr>
-                 <?php
-
-$res = Equipos::ListaEquiposMenores();
-foreach ($res as $campo) {
-    $id_equipo         = $campo['id_equipo'];
-    $placa             = $campo['placa'];
-    $nombre_equipo     = $campo['nombre_equipo'];
-    $estadoequipo      = UltimoEstadoEquipo($id_equipo);
-    $fechaestadoequipo = UltimoFechaEstadoEquipo($id_equipo);
-    $actualizadohace   = tiempoTranscurridoFechas($fechaestadoequipo, $fechaactual);
-    ?>
-                <tr>
-
-                  <td><a href="?controller=equipos&&action=timelineestados&&id=<?php echo $id_equipo; ?>">  <i class="fa fa-calendar"> </i> <?php echo utf8_decode($nombre_equipo); ?></a>
-                    <?php
-if ($fechaestadoequipo < $fechaactual) {
-        echo ("<br><small  class='text-danger fa fa-warning'> Actualizado hace " . $actualizadohace . "</small>");
-    } elseif ($fechaestadoequipo == $fechaactual) {
-        echo ("<br><small  class='text-success fa fa-check'> Actualizado hace" . $actualizadohace . "</small>");
-    }
-    ?>
-                  </td>
-
-                  <td>
-                    <?php
-if ($estadoequipo == '') {
-        echo ("<a href='?controller=equipos&&action=estado'><span class='label label-default'>Sin Actualizar</span></a>");
-    } elseif ($estadoequipo == 'Operativo') {
-        echo ("<a href='?controller=equipos&&action=estado'><span class='label label-success'>Operativo</span></a>");
-    } elseif ($estadoequipo == 'En Mantenimiento') {
-        echo ("<a href='?controller=equipos&&action=estado'><span class='label label-warning'>En Mantenimiento</span></a>");
-    } elseif ($estadoequipo == 'Fuera de Servicio') {
-        echo ("<a href='?controller=equipos&&action=estado'><span class='label label-danger'>Fuera de Servicio</span></a>");
-    }
-
-    ?>
-                  </td>
-
-                </tr>
-               <?php
-}
-?>
-              </tbody></table>
-            </div>
-            <!-- /.box-body -->
-          </div>
-     </div>
-
-     <div class="col-md-4">
-       <div class="box">
-            <div class="box-header">
-              <h3 class="box-title">Otros Equipos</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body no-padding">
-              <table style="font-size: 12px;" class="table table-condensed">
-                <tbody><tr>
-
-                  <th>Equipo</th>
-                  <th style="width: 40px">Estado</th>
-                </tr>
-                 <?php
-
-$res = Equipos::ListaEquiposdiferentes();
-foreach ($res as $campo) {
-    $id_equipo         = $campo['id_equipo'];
-    $placa             = $campo['placa'];
-    $nombre_equipo     = $campo['nombre_equipo'];
-    $estadoequipo      = UltimoEstadoEquipo($id_equipo);
-    $fechaestadoequipo = UltimoFechaEstadoEquipo($id_equipo);
-    $actualizadohace   = tiempoTranscurridoFechas($fechaestadoequipo, $fechaactual);
-    ?>
-                <tr>
-
-                  <td><a href="?controller=equipos&&action=timelineestados&&id=<?php echo $id_equipo; ?>">  <i class="fa fa-calendar"> </i> <?php echo utf8_decode($nombre_equipo); ?></a>
-          <?php
-if ($fechaestadoequipo < $fechaactual) {
-        echo ("<br><small  class='text-danger fa fa-warning'> Actualizado hace " . $actualizadohace . "</small>");
-    } elseif ($fechaestadoequipo == $fechaactual) {
-        echo ("<br><small  class='text-success fa fa-check'> Actualizado hace" . $actualizadohace . "</small>");
-    }
-    ?>
-                  </td>
-
-                  <td>
-                    <?php
-if ($estadoequipo == '') {
-        echo ("<a href='?controller=equipos&&action=estado'><span class='label label-default'>Sin Actualizar</span></a>");
-    } elseif ($estadoequipo == 'Operativo') {
-        echo ("<a href='?controller=equipos&&action=estado'><span class='label label-success'>Operativo</span></a>");
-    } elseif ($estadoequipo == 'En Mantenimiento') {
-        echo ("<a href='?controller=equipos&&action=estado'><span class='label label-warning'>En Mantenimiento</span></a>");
-    } elseif ($estadoequipo == 'Fuera de Servicio') {
-        echo ("<a href='?controller=equipos&&action=estado'><span class='label label-danger'>Fuera de Servicio</span></a>");
-    }
-
-    ?>
-                  </td>
-
-                </tr>
-               <?php
-}
-?>
-              </tbody></table>
-            </div>
-            <!-- /.box-body -->
-          </div>
-     </div>
-</div>
 
 </div>
 

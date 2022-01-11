@@ -1862,6 +1862,42 @@ public static function ReporteCombustiblesporfechameseq($FechaStart,$FechaEnd){
 /*******************************************************
 ** FUNCION PARA MOSTRAR TODOS LOS CAMPOS POR RANGO DE FECHA	  **
 ********************************************************/
+public static function ReporteVolquetasporfechameseq($FechaStart,$FechaEnd){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT DISTINCT(equipo_id_equipo) FROM reporte_despachosclientes WHERE reporte_publicado='1' and fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Reportes('',$camposs);
+		return $campos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
+/*******************************************************
+** FUNCION PARA MOSTRAR TODOS LOS CAMPOS POR RANGO DE FECHA	  **
+********************************************************/
+public static function ReporteHorasmqporfechameseq($FechaStart,$FechaEnd){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT DISTINCT(equipo_id_equipo) FROM reporte_horasmq WHERE reporte_publicado='1' and fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Reportes('',$camposs);
+		return $campos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
+/*******************************************************
+** FUNCION PARA MOSTRAR TODOS LOS CAMPOS POR RANGO DE FECHA	  **
+********************************************************/
 public static function ReporteEstacionesporfechameseq($FechaStart,$FechaEnd){
 	try {
 		$db=Db::getConnect();

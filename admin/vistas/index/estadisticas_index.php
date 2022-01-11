@@ -50,6 +50,18 @@ function Despachosmesgeneral($mes,$ano){
 	return $total;
 	}
 
+function Horasmqmesgeneral($mes,$ano){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$select = $db->prepare("SELECT IFNULL(sum(hora_inactiva),0) as totales FROM reporte_horasmq WHERE YEAR(fecha_reporte)='".$ano."' and MONTH(fecha_reporte)='".$mes."' and reporte_publicado='1' ");
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$total = $campo['totales'];
+		}
+	return $total;
+	}
+
 function Despachosmesgeneralvalor($mes,$ano){
 	$db = Db::getConnect();
 	//$mesactual = date("n");
@@ -61,6 +73,20 @@ function Despachosmesgeneralvalor($mes,$ano){
 		}
 	return $total;
 	}
+
+
+function Horasmqmesgeneralvalor($mes,$ano){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$select = $db->prepare("SELECT IFNULL(sum(hora_inactiva*valor_m3),0) as totales FROM reporte_horasmq WHERE YEAR(fecha_reporte)='".$ano."' and MONTH(fecha_reporte)='".$mes."' and reporte_publicado='1'");
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$total = $campo['totales'];
+		}
+	return $total;
+	}
+
 
 function Despachosconcretomesgeneral($mes,$ano){
 	$db = Db::getConnect();
@@ -99,6 +125,21 @@ WHERE  MONTH(fecha_reporte)='".$mes."' and YEAR(fecha_reporte)='".$ano."' and re
 		}
 	return $total;
 	}
+
+
+	function EstadisticasHorasmq($mes,$ano){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$select = $db->prepare("SELECT fecha_reporte,IFNULL(avg(ROUND(valor_m3,2)),0) as totales FROM reporte_horasmq
+WHERE  MONTH(fecha_reporte)='".$mes."' and YEAR(fecha_reporte)='".$ano."' and reporte_publicado='1'  GROUP BY fecha_reporte");
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$total=$total.$campo['totales'].",";
+		}
+	return $total;
+	}
+
 
 	function EstadisticasDespachosconcreto($mes,$ano){
 	$db = Db::getConnect();
