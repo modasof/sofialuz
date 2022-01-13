@@ -112,7 +112,7 @@ require_once 'vistas/index/header-formdate.php';
            <!-- Start /row -->
            <div class="row">
 
-            <div class="col-md-4">
+            <div style="display:none;" class="col-md-4">
           <div class="box">
             <div class="box-header with-border">
               <h3 class="box-title">Insumos Parámetrizados</h3>
@@ -176,7 +176,7 @@ foreach ($campos1 as $campo1) {
           <!-- /.box -->
         </div>
 
-         <div class="col-md-4">
+         <div class="col-md-12">
                <form  action="?controller=inventario&&action=despachosporfecha" method="post" id="FormFechas" autocomplete="off">
          <div class="col-md-8">
                         <div class="form-group">
@@ -247,7 +247,7 @@ foreach ($campos1 as $campo1) {
 </script>
              </div>
 
-                    <div class="col-md-8">
+                    <div class="col-md-12">
         <?php
 if ($fechaform != "") {
     ?>
@@ -270,6 +270,7 @@ if ($fechaform != "") {
             <tfoot style="display: table-header-group;">
                                     <th style="background-color: #fcf8e3" class="success"></th>
                                     <th style="background-color: #fcf8e3" class="success"></th>
+                                     <th style="background-color: #fcf8e3" class="success"></th>
                                     <th style="background-color: #fcf8e3" class="success"></th>
                                     <th style="background-color: #fcf8e3" class="success"></th>
                                     <th style="background-color: #fcf8e3" class="success"></th>
@@ -281,6 +282,7 @@ if ($fechaform != "") {
           <thead>
             <tr style="background-color: #4f5962;color: white;">
               <th>RQ-IT</th>
+              <th>Fecha</th>
               <th>Insumo</th>
               <th>Cant.</th>
               <th>Unidad</th>
@@ -291,6 +293,7 @@ if ($fechaform != "") {
             </tr>
             <tr>
               <th>RQ-IT</th>
+               <th>Fecha</th>
               <th>Insumo</th>
               <th>Cant.</th>
               <th>Unidad</th>
@@ -319,6 +322,7 @@ foreach ($campos as $campo) {
     $fecha_reporte        = $campo['fecha_reporte'];
     $cantidad             = $campo['cantidad'];
     $requisicion_id       = $campo['requisicion_id'];
+    $item_publicado       = $campo['item_publicado'];
     $usuario_creador      = $campo['usuario_creador'];
     $estado_item          = $campo['estado_item'];
     $tipo_req             = $campo['tipo_req'];
@@ -345,14 +349,18 @@ foreach ($campos as $campo) {
     }
     $nomsolicitante = Usuarios::obtenerNombreUsuario($usuario_creador);
     $nomproyecto    = "proyecto";
+
+    if ($item_publicado==1) {
     ?>
+
             <tr>
               <td>RQ<?php echo ($requisicion_id . "-" . $id); ?></td>
+              <td><?php echo ($fecha_reporte) ?></td>
               <td><?php echo ($detallesolicitado) ?></td>
               <td><?php echo ($cantidad) ?></td>
               <td><?php echo ($nomunidadmedida) ?></td>
               <td><?php echo utf8_encode($nomproyecto); ?></td>
-               <td><?php echo utf8_encode($observaciones); ?></td>
+              <td><?php echo utf8_encode($observaciones); ?></td>
               <td><?php echo utf8_encode($nomsolicitante); ?></td>
               <td>
                  <span  class="pull-left-container">
@@ -361,6 +369,26 @@ foreach ($campos as $campo) {
               </td>
             </tr>
             <?php
+          }
+          else{
+            ?>
+            <tr class="danger">
+               <td class="text-danger">RQ<?php echo ($requisicion_id . "-" . $id); ?> <strong>Eliminada</strong></td>
+              <td><?php echo ($fecha_reporte) ?></td>
+              <td><?php echo ($detallesolicitado) ?></td>
+              <td><?php echo ($cantidad) ?></td>
+              <td><?php echo ($nomunidadmedida) ?></td>
+              <td><?php echo utf8_encode($nomproyecto); ?></td>
+              <td><?php echo utf8_encode($observaciones); ?></td>
+              <td><?php echo utf8_encode($nomsolicitante); ?></td>
+              <td>
+                 <span  class="pull-left-container">
+              <small style="background-color:<?php echo ($coloractual); ?>;" class="label pull-left"><?php echo ($nomestado); ?></small><br>
+    </span>
+              </td>
+            </tr>
+            <?php
+          }
 }
 ?>
           </tbody>
@@ -493,13 +521,13 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
 
 
              pageTotal2 = api
-                .column( 2, { page: 'current'} )
+                .column( 3, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
 
-               $( api.column( 2 ).footer() ).html(
+               $( api.column( 3 ).footer() ).html(
                 ''+formatmoneda(pageTotal2,'' )
                 );
 

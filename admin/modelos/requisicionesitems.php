@@ -167,7 +167,7 @@ class Requisicionesitems
     {
         try {
             $db      = Db::getConnect();
-            $sql="SELECT * FROM requisiciones_items WHERE fecha_entrega >='" . $FechaStart . "' and fecha_entrega <='" . $FechaEnd . "' and estado_item<>'11' and item_publicado='1' order by fecha_entrega DESC";
+            $sql="SELECT * FROM requisiciones_items WHERE fecha_entrega >='" . $FechaStart . "' and fecha_entrega <='" . $FechaEnd . "' and estado_item<>'11' order by fecha_entrega DESC";
             //echo ($sql);
             $select  = $db->query($sql);
             $camposs = $select->fetchAll();

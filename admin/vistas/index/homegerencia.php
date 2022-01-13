@@ -3,7 +3,10 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <?php
-$anoactual   = date('Y');
+
+
+
+
 $fechaactual = date('Y-m-d');
 function tiempoTranscurridoFechas($fechaInicio, $fechaFin)
 {
@@ -65,7 +68,19 @@ function tiempoTranscurridoFechas($fechaInicio, $fechaFin)
       <h1>
         Luz.net
         <small><?php echo ($anoactual); ?></small>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-warning">Año</button>
+                  <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <span class="caret"></span>
+                    <span class="sr-only"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="?controller=index&&consultaAnual=2021">2021</a></li>
+                    <li><a href="?controller=index">2022</a></li>
+                  </ul>
+                </div>
       </h1>
+     
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
         <li class="active">Dashboard</li>

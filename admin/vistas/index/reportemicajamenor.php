@@ -48,7 +48,7 @@ $hoy= date('d');
 $ayer=$hoy-1;
 $antier=$hoy-6;
 
-$ultimos3meses=$mesactual-3;
+$ultimos3meses=$mesactual;
 
 $mesanterior=$mesactual-1;
 
@@ -143,7 +143,7 @@ $FechaFinal30dias=$anoactual."-".$mesactual."-".$hoy." 23:59:0000";
           <thead>
            
                <tr style="background-color: #4f5962;color: white;">
-                <th>Movimientos caja 2021</th>
+                <th>Movimientos caja <?php echo($anoactual); ?></th>
                 <?php 
                 
                  for ($i=$ultimos3meses; $i <$tope ; $i++) { 

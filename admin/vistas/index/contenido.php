@@ -45,12 +45,28 @@ $elcliente = $_SESSION['CodigoCliente'];
 
 date_default_timezone_set("America/Bogota");
 $totaldiasmes= date('t');
-$anoactual= date('Y');
+
+
 $mesactual= date('n');
 $hoy= date('d');
 $ayer=$hoy-1;
 $antier=$hoy-6;
-$tope= $mesactual+1;
+
+
+# ================================================
+# =           Parametrización del año            =
+# ================================================
+
+if (isset($_GET['consultaAnual'])) {
+    $anoactual = $_GET['consultaAnual'];
+    $tope= 13;
+}else{
+    $anoactual   = date('Y');
+    $tope= $mesactual+1;
+}
+
+# ======  End of Parametrización del año   =======
+
 
 $mesanterior=$mesactual-1;
 
