@@ -14,13 +14,31 @@ include_once 'controladores/insumosController.php';
 include_once 'modelos/usuarios.php';
 include_once 'controladores/usuariosController.php';
 
+
+
 $RolSesion = $_SESSION['IdRol'];
 $IdSesion = $_SESSION['IdUser'];
+
 date_default_timezone_set("America/Bogota");
+
+# ================================================
+# =           Parametrización del año            =
+# ================================================
+
+if (isset($_GET['consultaAnual'])) {
+    $anoactual = $_GET['consultaAnual'];
+    $tope= 13;
+}else{
+    $anoactual   = date('Y');
+    $tope= $mesactual+1;
+}
+
+# ======  End of Parametrización del año   =======
+
 $totaldiasmes= date('t');
-$anoactual= date('Y');
+//$anoactual= date('Y');
 $mesactual= date('n');
-$tope= $mesactual+1;
+//$tope= $mesactual+1;
 $ordertable= $mesactual+2;
 
 
@@ -37,6 +55,17 @@ $ordertable= $mesactual+2;
       <h1>
         Informe
         <small>Version 1.0</small>
+         <div class="btn-group">
+                  <button type="button" class="btn btn-warning">Año</button>
+                  <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <span class="caret"></span>
+                    <span class="sr-only"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="?controller=index&&action=informe1&&consultaAnual=2021">2021</a></li>
+                    <li><a href="?controller=index&&action=informe1">2022</a></li>
+                  </ul>
+                </div>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -47,9 +76,7 @@ $ordertable= $mesactual+2;
     <!-- Main content -->
     <section class="content">
    <h1 class="text-center">Informe General // <?php 
-              date_default_timezone_set("America/Bogota");
-              $TiempoActual = date('Y-m-d');
-              echo(fechalarga($TiempoActual)); 
+             echo($anoactual);
               ?></h1>
     
       <!-- /.row -->

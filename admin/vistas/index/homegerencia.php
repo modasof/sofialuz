@@ -508,9 +508,9 @@ for ($i = 1; $i < $tope; $i++) {
                   <td><strong><a href="?controller=reportes&&action=meshorasmq&daterange=<?php echo ($fechaconsulta); ?>"><i class="fa fa-line-chart"> </i> <?php echo (ucfirst($monthName)); ?></a></strong></td>
                   <td>
                     <?php
-$ventames1 = Horasmqmesgeneral($i, $anoactual);
-    $sumaventas1 += $ventames1;
-    echo ("<a style='color:black;' href='?controller=reportes&&action=despachosclientes&daterange=" . $fechaconsulta . "'><small style='color:#128a2e;'></small> " . number_format($ventames1, 0) . "</a>");
+$ventames156 = Horasmqmesgeneral($i, $anoactual);
+    $sumaventas156 += $ventames156;
+    echo ("<a style='color:black;' href='?controller=reportes&&action=despachosclientes&daterange=" . $fechaconsulta . "'><small style='color:#128a2e;'></small> " . number_format($ventames156, 0) . "</a>");
 
     ?>
                   </td>
@@ -522,15 +522,15 @@ $ventames1 = Horasmqmesgeneral($i, $anoactual);
     $longitudAt = count($CadenaAt) - 1;
     $sumaAt     = array_sum($CadenaAt);
     $maxviajes  = max($CadenaAt);
-    $promedio33 = $sumaAt / $longitudAt;
-    echo ("<a style='color:black;' href='?controller=reportes&&action=despachosclientes&daterange=" . $fechaconsulta . "'><small style='color:#128a2e;'></small> $" . number_format($promedio33, 0) . "</a>");
+    $promedio34 = $sumaAt / $longitudAt;
+    echo ("<a style='color:black;' href='?controller=reportes&&action=despachosclientes&daterange=" . $fechaconsulta . "'><small style='color:#128a2e;'></small> $" . number_format($promedio34, 0) . "</a>");
     ?>
                   </td>
                   <td>
                     <?php
-$ventames15 = Horasmqmesgeneralvalor($i, $anoactual);
-    $sumaventas15 += $ventames15;
-    echo ("<a style='color:black;' href='?controller=reportes&&action=despachosclientes&daterange=" . $fechaconsulta . "'><small style='color:#128a2e;'></small>$ " . number_format($ventames15, 0) . "</a>");
+$ventames155 = Horasmqmesgeneralvalor($i, $anoactual);
+    $sumaventas155 += $ventames155;
+    echo ("<a style='color:black;' href='?controller=reportes&&action=despachosclientes&daterange=" . $fechaconsulta . "'><small style='color:#128a2e;'></small>$ " . number_format($ventames155, 0) . "</a>");
 
     ?>
                   </td>
@@ -542,9 +542,9 @@ $ventames15 = Horasmqmesgeneralvalor($i, $anoactual);
 ?>
               <tr class="success">
                 <td><strong>Total</strong></td>
-                <td><strong><?php echo (number_format($sumaventas1, 0)) ?></strong></td>
+                <td><strong><?php echo (number_format($sumaventas156, 0)) ?></strong></td>
                 <td></td>
-                <td><strong><?php echo ("$ " . number_format($sumaventas15, 0)) ?></strong></td>
+                <td><strong><?php echo ("$ " . number_format($sumaventas155, 0)) ?></strong></td>
               </tr>
             </tfoot>
             </table>

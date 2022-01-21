@@ -59,7 +59,31 @@ $gastoporconductor=GastoCombustiblediaUsuario($FechaInicio30dias,$FechaFinal30di
 
 
     <div class="col-md-12 col-xs-12">
-      <a href="?controller=index&&action=micajamenor&&id_caja=<?php echo($idcajaporuser); ?>">
+      <?php 
+      if ($idcajaporuser=="")
+      {
+        ?>
+         <a href="">
+        <div  class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-default"><i class="fa fa-dollar"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Usuario</span>
+              <span class="info-box-number">Sin Caja</span><br>
+              <span class="info-box-number">Asignada </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+      </a>
+
+        <?php
+      }else{
+        ?>
+         <a href="?controller=index&&action=micajamenor&&id_caja=<?php echo($idcajaporuser); ?>">
         <div  class="col-md-4 col-sm-6 col-xs-12">
           <div class="info-box">
             <span class="info-box-icon bg-default"><i class="fa fa-dollar"></i></span>
@@ -75,6 +99,11 @@ $gastoporconductor=GastoCombustiblediaUsuario($FechaInicio30dias,$FechaFinal30di
         </div>
         <!-- /.col -->
       </a>
+        <?php
+      }
+
+       ?>
+     
       <a href="?controller=reportes&&action=combustibles">
         <div class="col-md-4 col-sm-6 col-xs-12">
           <div class="info-box">
