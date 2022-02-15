@@ -184,7 +184,7 @@ public static function obtenerNombreFuncionario($id){
 public static function obtenerPaginaPor($id){
 	try {
 		$db=Db::getConnect();
-		$select=$db->query("SELECT * FROM funcionarios WHERE id_funcionario='".$id."' and funcionario_publicado='1'");
+		$select=$db->query("SELECT * FROM funcionarios WHERE id_funcionario='".$id."'");
 		$camposs=$select->fetchAll();
 		$campos = new Funcionarios('',$camposs);
 		return $campos;
@@ -234,6 +234,27 @@ public static function eliminarPor($id){
 	try {
 		$db=Db::getConnect();
 		$select=$db->query("UPDATE funcionarios SET funcionario_publicado='0' WHERE id_funcionario='".$id."'");
+		if ($select){
+			return true;
+			}else{return false;}
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
+/***************************************************************
+** FUNCION PARA ELIINAR POR ID  **
+***************************************************************/
+public static function actualizarfechasalidaPor($id,$fecha_salida){
+	try {
+		$db=Db::getConnect();
+
+		$t = strtotime($fecha_salida);
+		$nuevafecha=date('y-m-d',$t);
+
+		$select=$db->query("UPDATE funcionarios SET fecha_salida='".$nuevafecha."' WHERE id_funcionario='".$id."'");
 		if ($select){
 			return true;
 			}else{return false;}
@@ -402,7 +423,6 @@ public static function reportarnovedad($campos,$imagen){
 		$t = strtotime($fecha_novedad);
 		$nuevafecha=date('y-m-d',$t);
 		
-
 		$insert->bindValue('funcionario_id',utf8_decode($funcionario_id));
 		$insert->bindValue('reportado_por',utf8_decode($reportado_por));
 		$insert->bindValue('tipo_novedad',utf8_decode($tipo_novedad));

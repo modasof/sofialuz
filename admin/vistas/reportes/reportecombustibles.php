@@ -14,6 +14,10 @@ include_once 'modelos/usuarios.php';
 include_once 'controladores/usuariosController.php';
 include_once 'modelos/estaciones.php';
 include_once 'controladores/estacionesController.php';
+
+include_once 'modelos/proyectos.php';
+include_once 'controladores/proyectosController.php';
+
 $RolSesion = $_SESSION['IdRol'];
 $IdSesion = $_SESSION['IdUser'];
 
@@ -321,12 +325,14 @@ else
             $marca_temporal = $campo['marca_temporal'];
             $observaciones = $campo['observaciones'];
             $equipo_id_equipo = $campo['equipo_id_equipo'];
+             $proyecto_id_proyecto = $campo['proyecto_id_proyecto'];
             $despachado_por = $campo['despachado_por'];
             $recibido_por = $campo['recibido_por'];
             $nomestacion=Estaciones::ObtenerNombreEstacion($punto_despacho);
             $nomequipo=Equipos::obtenerNombreEquipo($equipo_id_equipo);
             $nombrerecibe=Usuarios::obtenerNombreUsuario($recibido_por);
             $nombredespachador=Funcionarios::obtenerNombreFuncionario($despachado_por);
+             $nomproyecto=Proyectos::obtenerNombreProyecto($proyecto_id_proyecto);
             $ventatotal=$cantidad*$valor_m3;
 
            
@@ -362,7 +368,7 @@ else
               <td><?php echo ($nomestacion) ?></td>
               <td><?php echo ($nombrerecibe) ?></td>
               <td><?php echo ($indicador) ?></td>
-               <td><?php echo utf8_encode($observaciones); ?></td>
+               <td><?php echo utf8_encode($observaciones); ?> <br><?php echo utf8_encode($nomproyecto); ?></td>
               
               
             </tr>

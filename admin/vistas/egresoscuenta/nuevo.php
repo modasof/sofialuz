@@ -160,7 +160,12 @@ $cajas = Egresoscuenta::obtenerCuentapor($CuentaSel);
 															<option value="Movimiento a cuenta">Préstamo a cuenta</option>
 															<option value="Cuenta">Ingreso a caja</option>
 															<option value="Otro tipo de egreso">Otro tipo de egreso</option>
-															<option value="Pago a proveedor">Pago a proveedor</option>
+
+			<!--	
+			La opciónd de pago a proveedor se omite para canalizar las salidas por Abonos a RQ
+
+			<option value="Pago a proveedor">Pago a proveedor</option> 
+			-->
 														  </select>
 												</div>
 											</div>

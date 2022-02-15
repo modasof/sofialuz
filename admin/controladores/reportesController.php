@@ -1536,8 +1536,8 @@ function actualizarcombustible(){
 		echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
 	}
 
-	if ($validacisterna!='') {
-		$this->showcombustiblescisterna();
+	if ($validacisterna='') {
+		$this->showcombustibles();
 	}
 	else
 	{

@@ -609,7 +609,7 @@ public static function obtenerValorDespacho($idCliente,$idProducto){
 
 /***************************************************************
 *** FUNCION PARA GUARDAR **
-(`id`, `fecha_reporte`, `cliente_id_cliente`, `producto_id_producto`, `equipo_id_equipo`, `despachado_por`, `transportado_por`, `despachador_tm`, `tipo_despacho`, `valor_m3`, `cantidad`, `viajes`, `creado_por`, `estado_reporte`, `reporte_publicado`, `marca_temporal`, `observaciones`, `facturado`)
+(id, fecha_reporte, cliente_id_cliente, producto_id_producto, equipo_id_equipo, despachado_por, transportado_por, despachador_tm, tipo_despacho, valor_m3, cantidad, viajes, creado_por, estado_reporte, reporte_publicado, marca_temporal, observaciones, facturado)
 ***************************************************************/
 public static function guardardespacho($campos){
 	try {
@@ -1095,7 +1095,9 @@ public static function ReporteCuentasxpagarporfecha($FechaStart,$FechaEnd){
 
 /***************************************************************
 *** FUNCION PARA GUARDAR **
-id, fecha_reporte, cliente_id_cliente, producto_id_producto, valor_m3, cantidad, creado_por, estado_reporte, reporte_publicado, marca_temporal, observaciones
+* 
+* (id, imagen, imagen_cot, fecha_reporte, valor_total, valor_retenciones, valor_iva, estado_orden, proveedor_id_proveedor, medio_pago, observaciones, marca_temporal, usuario_creador, rubro_id, subrubro_id, vencimiento, factura, estado_recibido, compra_de)
+
 ***************************************************************/
 public static function guardarcuentaxpagar($campos,$imagen){
 	try {
@@ -1103,9 +1105,9 @@ public static function guardarcuentaxpagar($campos,$imagen){
 		$campostraidos = $campos->getCampos();
 		extract($campostraidos);
 
-		$insert=$db->prepare('INSERT INTO reporte_compras VALUES (NULL,:imagen,:fecha_reporte, :insumo_id_insumo,:subrubro_id_subrubro,:proveedor_id_proveedor, :valor_m3, :cantidad,:vence, :creado_por, :estado_reporte, :reporte_publicado,:marca_temporal,:pago_con,:beneficiario,:observaciones)');
+		$insert=$db->prepare('INSERT INTO ordenescompra VALUES (NULL,:imagen, :imagen_cot, :fecha_reporte, :valor_total, :valor_retenciones, :valor_iva, :estado_orden, :proveedor_id_proveedor, :medio_pago, :observaciones, :marca_temporal, :usuario_creador, :rubro_id, :subrubro_id, :vencimiento, :factura, :estado_recibido, :compra_de)');
 
-		$V1=str_replace(".","",$valor_m3);
+		$V1=str_replace(".","",$valor_total);
 		$V2=str_replace(" ", "", $V1);
 		$valor_final=str_replace("$", "", $V2);
 		$valornumero=(int) $valor_final;
@@ -1114,20 +1116,23 @@ public static function guardarcuentaxpagar($campos,$imagen){
 		$nuevafecha=date('y-m-d',$t);
 
 		$insert->bindValue('imagen',utf8_decode($imagen));
+		$insert->bindValue('imagen_cot',utf8_decode($imagen));
 		$insert->bindValue('fecha_reporte',utf8_decode($nuevafecha));
-		$insert->bindValue('insumo_id_insumo',utf8_decode($insumo_id_insumo));
-		$insert->bindValue('subrubro_id_subrubro',utf8_decode($subrubro_id_subrubro));
+		$insert->bindValue('valor_total',utf8_decode($valornumero));
+		$insert->bindValue('valor_retenciones',utf8_decode($valor_retenciones));
+		$insert->bindValue('valor_iva',utf8_decode($valor_iva));
+		$insert->bindValue('estado_orden',utf8_decode($estado_orden));
 		$insert->bindValue('proveedor_id_proveedor',utf8_decode($proveedor_id_proveedor));
-		$insert->bindValue('valor_m3',utf8_decode($valornumero));
-		$insert->bindValue('cantidad',utf8_decode($cantidad));
-		$insert->bindValue('vence',utf8_decode($vence));
-		$insert->bindValue('creado_por',utf8_decode($creado_por));
-		$insert->bindValue('estado_reporte',utf8_decode($estado_reporte));
-		$insert->bindValue('reporte_publicado',utf8_decode($reporte_publicado));
-		$insert->bindValue('pago_con',utf8_decode($pago_con));
-		$insert->bindValue('beneficiario',utf8_decode($beneficiario));
-		$insert->bindValue('marca_temporal',utf8_decode($marca_temporal));
+		$insert->bindValue('medio_pago',utf8_decode($medio_pago));
 		$insert->bindValue('observaciones',utf8_decode($observaciones));
+		$insert->bindValue('marca_temporal',utf8_decode($marca_temporal));
+		$insert->bindValue('usuario_creador',utf8_decode($usuario_creador));
+		$insert->bindValue('rubro_id',utf8_decode($rubro_id));
+		$insert->bindValue('subrubro_id',utf8_decode($subrubro_id));
+		$insert->bindValue('vencimiento',utf8_decode($vencimiento));
+		$insert->bindValue('factura',utf8_decode($factura));
+		$insert->bindValue('estado_recibido',utf8_decode($estado_recibido));
+		$insert->bindValue('compra_de',utf8_decode($compra_de));
 		$insert->execute();
 
 		return true;
@@ -1960,7 +1965,7 @@ public static function guardarcombustible($campos,$imagen){
 		$campostraidos = $campos->getCampos();
 		extract($campostraidos);
 
-		$insert=$db->prepare('INSERT INTO reporte_combustibles VALUES (NULL,:imagen,:fecha_reporte,:equipo_id_equipo,:despachado_por,:punto_despacho,:recibido_por,:valor_m3, :cantidad,:indicador, :creado_por, :estado_reporte, :reporte_publicado,:marca_temporal, :observaciones,:autorizado)');
+		$insert=$db->prepare('INSERT INTO reporte_combustibles VALUES (NULL,:imagen,:fecha_reporte,:equipo_id_equipo,:proyecto_id_proyecto,:despachado_por,:punto_despacho,:recibido_por,:valor_m3, :cantidad,:indicador, :creado_por, :estado_reporte, :reporte_publicado,:marca_temporal, :observaciones,:autorizado)');
 
 		$V1=str_replace(".","",$valor_m3);
 		$V2=str_replace(" ", "", $V1);
@@ -1974,6 +1979,7 @@ public static function guardarcombustible($campos,$imagen){
 		$insert->bindValue('fecha_reporte',utf8_decode($nuevafecha));
 		$insert->bindValue('imagen',utf8_decode($imagen));
 		$insert->bindValue('equipo_id_equipo',utf8_decode($equipo_id_equipo));
+		$insert->bindValue('proyecto_id_proyecto',utf8_decode($proyecto_id_proyecto));
 		$insert->bindValue('despachado_por',utf8_decode($despachado_por));
 		$insert->bindValue('punto_despacho',utf8_decode($punto_despacho));
 		$insert->bindValue('recibido_por',utf8_decode($recibido_por));
@@ -2040,6 +2046,7 @@ public static function actualizarcombustible($id,$campos,$imagen){
 								imagen=:imagen,
 								fecha_reporte=:fecha_reporte,
 								equipo_id_equipo=:equipo_id_equipo,
+								proyecto_id_proyecto=:proyecto_id_proyecto,
 								despachado_por=:despachado_por,
 								punto_despacho=:punto_despacho,
 								recibido_por=:recibido_por,
@@ -2064,6 +2071,7 @@ public static function actualizarcombustible($id,$campos,$imagen){
 		$update->bindValue('imagen',utf8_decode($imagen));
 		$update->bindValue('fecha_reporte',utf8_decode($nuevafecha));
 		$update->bindValue('equipo_id_equipo',utf8_decode($equipo_id_equipo));
+		$update->bindValue('proyecto_id_proyecto',utf8_decode($proyecto_id_proyecto));
 		$update->bindValue('despachado_por',utf8_decode($despachado_por));
 		$update->bindValue('punto_despacho',utf8_decode($punto_despacho));
 		$update->bindValue('recibido_por',utf8_decode($recibido_por));
@@ -2229,7 +2237,7 @@ public static function ReporteDespachosporfechaproveedorunico($FechaStart,$Fecha
 
 /***************************************************************
 *** FUNCION PARA GUARDAR **
-`reporte_despachosclientes`(`id`, `imagen`, `fecha_reporte`, `remision`, `cliente_id_cliente`, `producto_id_producto`, `equipo_id_equipo`, `despachado_por`, `transporte`, `kilometraje`, `valor_m3`, `cantidad`, `viajes`, `radicada`, `fecha_radicada`, `factura`, `pagado`, `creado_por`, `estado_reporte`, `reporte_publicado`, `marca_temporal`, `observaciones`
+reporte_despachosclientes(id, imagen, fecha_reporte, remision, cliente_id_cliente, producto_id_producto, equipo_id_equipo, despachado_por, transporte, kilometraje, valor_m3, cantidad, viajes, radicada, fecha_radicada, factura, pagado, creado_por, estado_reporte, reporte_publicado, marca_temporal, observaciones
 ***************************************************************/
 public static function guardardespachoclientes($campos,$imagen){
 	try {
@@ -2379,7 +2387,7 @@ public static function editardespachoPorclientes($id){
 
 /********************************************************************
 *** FUNCION PARA MODIFICAR REPORTE DE EQUIPO ****
-`id`, `imagen`, `fecha_reporte`, `remision`, `cliente_id_cliente`, `producto_id_producto`, `equipo_id_equipo`, `despachado_por`, `transporte`, `kilometraje`, `valor_m3`, `valor_material`, `cantidad`, `viajes`, `radicada`, `fecha_radicada`, `factura`, `pagado`, `creado_por`, `estado_reporte`, `reporte_publicado`, `marca_temporal`, `observaciones`, `campamento_id_campamento`, `id_destino_origen`, `id_destino_destino` FROM `reporte_despachosclientes`
+id, imagen, fecha_reporte, remision, cliente_id_cliente, producto_id_producto, equipo_id_equipo, despachado_por, transporte, kilometraje, valor_m3, valor_material, cantidad, viajes, radicada, fecha_radicada, factura, pagado, creado_por, estado_reporte, reporte_publicado, marca_temporal, observaciones, campamento_id_campamento, id_destino_origen, id_destino_destino FROM reporte_despachosclientes
 ********************************************************************/
 public static function actualizardespachoclientes($id,$campos,$imagen){
 	try {
@@ -2799,7 +2807,7 @@ public static function ReporteDespachosporfechatrituradora($FechaStart,$FechaEnd
 
 /***************************************************************
 *** FUNCION PARA GUARDAR **
-(`id`, `fecha_reporte`, `cliente_id_cliente`, `producto_id_producto`, `equipo_id_equipo`, `despachado_por`, `transportado_por`, `despachador_tm`, `tipo_despacho`, `valor_m3`, `cantidad`, `viajes`, `creado_por`, `estado_reporte`, `reporte_publicado`, `marca_temporal`, `observaciones`, `facturado`)
+(id, fecha_reporte, cliente_id_cliente, producto_id_producto, equipo_id_equipo, despachado_por, transportado_por, despachador_tm, tipo_despacho, valor_m3, cantidad, viajes, creado_por, estado_reporte, reporte_publicado, marca_temporal, observaciones, facturado)
 ***************************************************************/
 public static function guardardespachotrituradora($campos){
 	try {

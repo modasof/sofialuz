@@ -74,7 +74,7 @@ $IdSesion = $_SESSION['IdUser'];
           </thead>
 				  <tbody>
 					  <?php
-            if ($RolSesion==1) {
+            if ($RolSesion==1 || $IdSesion=='31' ) {
              //$campos = $campos->getCampos(); 
              $campos=Cajas::obtenerPagina();
             }

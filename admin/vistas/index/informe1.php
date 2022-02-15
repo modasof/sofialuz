@@ -21,6 +21,12 @@ $IdSesion = $_SESSION['IdUser'];
 
 date_default_timezone_set("America/Bogota");
 
+$totaldiasmes= date('t');
+//$anoactual= date('Y');
+$mesactual= date('n');
+//$tope= $mesactual+1;
+$ordertable= $mesactual+2;
+
 # ================================================
 # =           Parametrización del año            =
 # ================================================
@@ -35,11 +41,7 @@ if (isset($_GET['consultaAnual'])) {
 
 # ======  End of Parametrización del año   =======
 
-$totaldiasmes= date('t');
-//$anoactual= date('Y');
-$mesactual= date('n');
-//$tope= $mesactual+1;
-$ordertable= $mesactual+2;
+
 
 
  ?>
@@ -53,8 +55,8 @@ $ordertable= $mesactual+2;
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Informe
-        <small>Version 1.0</small>
+        Informes
+        <small>Version 1.0 <?php echo($tope); ?></small>
          <div class="btn-group">
                   <button type="button" class="btn btn-warning">Año</button>
                   <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -304,12 +306,12 @@ foreach($res as $campo){
                 <td><strong>Total Operadores Máquina <?php echo($anoactual); ?></strong></td>
                 <?php 
                 for ($i=1; $i <$tope ; $i++) { 
-                  $ventames2=ProduccionMesOperador($i,$anoactual);
-                  $sumaventas2+=$ventames2;
-                  echo("<td><strong> $ ".number_format($ventames2,0)."</strong></td>");
+                  $ventames211=ProduccionMesOperador($i,$anoactual);
+                  $sumaventas211+=$ventames211;
+                  echo("<td><strong> $ ".number_format($ventames211,0)."</strong></td>");
                 }
                  ?>
-                 <td><strong>$ <?php echo(number_format($sumaventas2,0)); ?></strong></td>
+                 <td><strong>$ <?php echo(number_format($sumaventas211,0)); ?></strong></td>
               </tr>
             </tfoot>
               

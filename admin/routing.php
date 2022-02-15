@@ -54,7 +54,7 @@ $controllers = array(
     'concreto' => ['todos','formularioconcreto','guardar','eliminar','editar','actualizar','despachosporfecha','detallepuntos'],
 
 	// Reporte compras
-	'compras' => ['todos','formulario','guardar','eliminar','editar','actualizar','porfecha','verdetalle','cambiarestado','actualizarpago','cambiarestadocreditos','pagotemporal','deletepagotemporal','actualizarpagocredito','recibiroc'],
+	'compras' => ['todos','formulario','guardar','eliminar','editar','actualizar','porfecha','verdetalle','cambiarestado','actualizarpago','cambiarestadocreditos','pagotemporal','deletepagotemporal','actualizarpagocredito','recibiroc','todospormes','cxpusuario'],
 
 	// Reporte Producción
 	'reportesproduccion' => ['reportesproduccion','guardarreporteproduccion','eliminarreporteproduccion','editarreporteproduccion','actualizarreporteproduccion','reportesporfechaproduccion'],
@@ -73,7 +73,7 @@ $controllers = array(
 	'misdocumentos' => ['editar','guardar','actualizar','todos','nuevo','eliminar'],
 	'ingresoscuenta' => ['editar','guardar','actualizarex','todos','nuevo','eliminar','ingresos','ingresosporfecha'],
 	'egresoscuenta' => ['editar','guardar','actualizarcm','actualizarcu','actualizarot','todos','nuevo','eliminar','egresos','editarcm','editarcu','editarot','eliminarcm','eliminarmvs','eliminarot','egresosporfecha'],
-	'ingresos' => ['editar','guardar','actualizarex','todos','nuevo','eliminar','ingresos'],
+	'ingresos' => ['editar','guardar','actualizarex','todos','nuevo','eliminar','ingresos','cambiarestado','actualizarestadoingreso'],
 	'rubros' => ['editar','guardar','actualizar','todos','nuevo','eliminar'],
 	'estaciones' => ['editar','guardar','actualizar','todos','nuevo','eliminar'],
 	'clientes' => ['editar','guardar','actualizar','todos','nuevo','eliminar'],
@@ -86,7 +86,7 @@ $controllers = array(
 	'modulos' => ['editar','guardar','actualizar','todos','nuevo','eliminar'],
 	'documentos' => ['editar','guardar','actualizar','todos','nuevo','eliminar'],
 	'consolidados' => ['editar','guardar','actualizar','todos','nuevo','eliminar','documentoscuentas','documentosequipos','totalreporteseq'],
-	'subrubros' => ['editar','guardar','actualizar','todos','nuevo','eliminar'],
+	'subrubros' => ['editar','guardar','actualizar','todos','nuevo','eliminar','desactivarcxp','activarcxp'],
 	'plantilla' => ['index'],
 	//Estadisticas
 	'estadisticavolqueta' => ['todos','buscarReporteVolquetas'],

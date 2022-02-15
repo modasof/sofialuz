@@ -171,4 +171,31 @@ WHERE  MONTH(fecha_reporte)='".$mes."' and YEAR(fecha_reporte)='".$ano."' and re
 
 
 
+function Comprasmesgeneral($mes,$ano){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$select = $db->prepare("SELECT IFNULL(sum(valor_total),0) as totales FROM ordenescompra WHERE YEAR(fecha_reporte)='".$ano."' and MONTH(fecha_reporte)='".$mes."' and estado_orden<>'0' ");
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$total = $campo['totales'];
+		}
+	return $total;
+	}
+
+
+function Abonoscomprasmes($mes,$ano){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$select = $db->prepare("SELECT fecha_reporte,IFNULL(sum(ROUND(valor_total,2)),0) as totales FROM facturas_compras
+WHERE  MONTH(fecha_reporte)='".$mes."' and YEAR(fecha_reporte)='".$ano."' and factura_publicada='1'  GROUP BY fecha_reporte");
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$total=$total.$campo['totales'].",";
+		}
+	return $total;
+	}
+
+
  ?>

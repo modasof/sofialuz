@@ -212,7 +212,6 @@ if ($fechaform != "") {
     }elseif($RolSesion==13){
          $res    = Requisiciones::todos();
     }
-
     
     $campos = $res->getCampos();
 }
@@ -226,7 +225,7 @@ foreach ($campos as $campo) {
     $requisicion_publicada = $campo['requisicion_publicada'];
 
     $items=ObteneritemsRQ($id);
-    $des = substr($items, 0, -1);
+    $arregloitems = substr($items, 0, -1);
    
     if ($requisicion_publicada==0) {
       $nomestado="<span class='bg bg-danger float-left'>Registrando....</span>";
@@ -261,7 +260,7 @@ foreach ($campos as $campo) {
                 <?php 
                 if ($requisicion_publicada==1) {
                     ?>
-                     <a class="dropdown-item btn btn-default" href="#" onclick="aprobarrq(<?php echo $id; ?>);">Aprobar RQ</a>
+                     <a class="dropdown-item btn btn-default" href="#" onclick="aprobarrq(<?php echo $id; ?>)">Aprobar RQ</a>
                     <?php
                 }
                  ?>
@@ -278,7 +277,9 @@ foreach ($campos as $campo) {
 function aprobarrq(idrq){
    autorizar=confirm("¿Deseas Autorizar este registro?");
    if (autorizar)
-     window.location.href="?controller=requisicionesitems&&action=aprobarrq&&userautoriza="+<?php echo $IdSesion; ?>+"&&idrq="+idrq+"&&itemsrq="+<?php echo $des; ?>;
+     window.location.href="?controller=requisicionesitems&&action=aprobarrq&&userautoriza="+<?php echo $IdSesion; ?>+"&&idrq="+idrq+"&&itemsrq="+<?php echo $arregloitems; ?>;
+   // alert("Val:"+<?php echo($arregloitems); ?>)
+   
 else
   //Y aquí pon cualquier cosa que quieras que salga si le diste al boton de cancelar
     alert('No se ha podido Autorizar el registro...')

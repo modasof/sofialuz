@@ -384,6 +384,7 @@ echo (fechalarga($TiempoActual));
 
             </tbody>
 
+
               <tfoot>
                  <?php
 
@@ -774,6 +775,12 @@ $ventames16 = Acpmmesgeneralvalor($i, $anoactual);
 
         </div>
         <!-- /.col -->
+
+        <?php 
+
+// 2. Reporte mes a mes de las compras (se debe llamar el script de la gráfica).
+    include 'vistas/graficas/compras-index.php';
+ ?>
 
 </div>
 

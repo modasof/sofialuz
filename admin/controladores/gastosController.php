@@ -45,7 +45,7 @@ class GastosController {
     public function actualizarestado()
     {
 
-     		$id_caja         = $_GET['id'];
+     	$id_caja         = $_GET['id'];
         $estado_item     = $_POST['estado_item'];
         $items           = $_POST['items'];
        

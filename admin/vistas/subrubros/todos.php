@@ -46,12 +46,14 @@
               <th>Rubro</th>
               <th>Sub-rubro</th>
               <th>Acción</th>
+              <th>Activar cxp</th>
             </tr>
             <tr>
                  
               <th>Rubro</th>
               <th>Sub-rubro</th>
               <th>Acción</th>
+              <th>Activar cxp</th>
             </tr>
           </thead>
        <tbody>
@@ -61,6 +63,7 @@
             $id = $campo['id_subrubro'];
             $rubro_id_rubro = $campo['rubro_id_rubro'];
             $nombre_subrubro = $campo['nombre_subrubro'];
+            $activado_cxp = $campo['activado_cxp'];
             $rubro = Subrubros::obtenerRubro($rubro_id_rubro);
 
             ?>
@@ -76,6 +79,24 @@
                 <i class="fa fa-trash bigger-110 "></i>
               </a>
               </td>
+               <td><?php 
+              if ($activado_cxp=="1") {
+               ?>
+                <a href="#" onclick="desactivarpermiso(<?php echo $id; ?>);" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar">
+                <i class="fa fa-check bigger-110 "> Activado cxp</i>
+               </a>
+               <?php
+              }
+              else
+              {
+                ?>
+                <a href="#" onclick="activarpermiso(<?php echo $id; ?>);" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar">
+                <i class="fa fa-close bigger-110 "> Inactivo cxp</i>
+                </a>
+                <?php
+              }
+
+               ?></td>
             </tr>
             <?php
               }
@@ -93,6 +114,30 @@
     </div> <!-- Fin Container -->
   </div> <!-- Fin Content-->
 </div> <!-- Fin Content-Wrapper -->
+
+<script>
+function desactivarpermiso(id){
+   desactivarpermiso=confirm("¿Deseas desactivar este Subrubro?");
+   if (desactivarpermiso)
+     window.location.href="?controller=subrubros&&action=desactivarcxp&&id="+id;
+else
+  //Y aquí pon cualquier cosa que quieras que salga si le diste al boton de cancelar
+    alert('No se ha podido desactivar este Subrubro...')
+}
+</script>
+
+<script>
+function activarpermiso(id,menu){
+   activarpermiso=confirm("¿Deseas activar este Subrubro?");
+   if (activarpermiso)
+     window.location.href="?controller=subrubros&&action=activarcxp&&id="+id;
+else
+  //Y aquí pon cualquier cosa que quieras que salga si le diste al boton de cancelar
+    alert('No se ha podido activar este Subrubro...')
+}
+</script>
+
+
 
 <script>
 function eliminar(id){

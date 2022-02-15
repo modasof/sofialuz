@@ -69,7 +69,7 @@ public static function obtenerPagina($id_caja){
 	try {		
 		$db=Db::getConnect();
 
-		$select=$db->query("SELECT * FROM ingresos_caja WHERE caja_ppal='".$id_caja."' and ingreso_publicado='1' order by fecha_ingreso DESC");
+		$select=$db->query("SELECT * FROM ingresos_caja WHERE caja_ppal='".$id_caja."' and ingreso_publicado='1' and estado_ingreso='0' order by fecha_ingreso DESC");
     	$camposs=$select->fetchAll();
     	$campos = new Ingresos('',$camposs);
 		return $campos;
@@ -544,6 +544,30 @@ public static function guardaringreso($campos,$imagen){
 }
 
 
+/***************************************************************
+ *** FUNCION PARA GUARDAR **
+ ***************************************************************/
+    public static function actualizarestadoingreso($estado_ingreso, $items)
+    {
+        try {
+
+            $db       = Db::getConnect();
+            $dbselect = Db::getConnect();
+            //$campostraidos = $campos->getCampos();
+            $items = explode(",", $items);
+            foreach ($items as $key => $despachounico) {
+                $update = $db->prepare('UPDATE ingresos_caja SET
+								estado_ingreso=:estado_ingreso
+								WHERE id_ingreso_caja=:despachounico');
+                $update->bindValue('estado_ingreso', utf8_decode($estado_ingreso));
+                $update->bindValue('despachounico', utf8_decode($despachounico));
+                $update->execute();
+            }
+            return $estado_ingreso;
+        } catch (PDOException $e) {
+            echo '{"error al guardar la configuraciónes ":{"text":' . $e->getMessage() . '}}';
+        }
+    }
 
 
 }

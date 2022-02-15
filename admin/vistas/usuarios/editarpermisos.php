@@ -26,36 +26,41 @@
   <div class="content">
     <div class="container-fluid">
       <div class="row">
-		<div class="col-lg-12">
-		<div class="card card-primary">
-			<div class="card-body">
-				
-			<div class="card-header">
-			  <h3 class="card-title">Permisos </h3>
-			</div>
+    <div class="col-lg-12">
+    <div class="card card-primary">
+      <div class="card-body">
+        
+      <div class="card-header">
+        <h3 class="card-title">Permisos </h3>
+      </div>
       <a href="?controller=usuarios&&action=activartodo&&id=<?php echo($id) ?>" class="btn btn-success" style="float: right;"><i class="fa fa-check bigger-110 "></i> Conceder Todo</a>
 
        <a href="?controller=usuarios&&action=desactivartodo&&id=<?php echo($id) ?>" class="btn btn-danger" style="float: right;"><i class="fa fa-check bigger-110 "></i> Bloquear Todo</a>
 
-				  <table id="cotizaciones" class="table table-hover table-striped table-bordered">
-					<thead>
-						<tr>
+          <table id="cotizaciones" class="table table-hover table-striped table-bordered">
+          <thead>
+            <tr>
                <th>Nº</th>
-						  <th>Menú</th>
-						  <th>Permiso Concedido</th>
-						</tr>
-					</thead>
-				  <tbody>
-					  <?php
-	$campos = $campos->getCampos();
-					  foreach ($campos as $campo){
+              <th>Menú</th>
+              <th>Permiso Concedido</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+  $campos = $campos->getCampos();
+            foreach ($campos as $campo){
   $id_usuario = $campo['id_usuario'];
-	$m_clientes = $campo['m_clientes'];
+  $m_clientes = $campo['m_clientes'];
   $m_productos = $campo['m_productos'];
   $m_insumos = $campo['m_insumos'];
+   $m_cotizaciones = $campo['m_cotizaciones'];
+  $m_rq = $campo['m_rq'];
+  $m_rqentrada = $campo['m_rqentrada'];
+  $m_rqsalida = $campo['m_rqsalida'];
   $m_proveedores = $campo['m_proveedores'];
   $m_carpetas = $campo['m_carpetas'];
   $m_usuarios = $campo['m_usuarios'];
+  $m_cargos = $campo['m_cargos'];
   $m_funcionarios = $campo['m_funcionarios'];
   $m_documentos = $campo['m_documentos'];
   $m_rubros = $campo['m_rubros'];
@@ -67,9 +72,12 @@
   $m_gdocempleados = $campo['m_gdocempleados'];
   $m_novedades = $campo['m_novedades'];
   $m_cuentas = $campo['m_cuentas'];
+  $m_crucecuentas = $campo['m_crucecuentas'];
   $m_gdoccuentas = $campo['m_gdoccuentas'];
   $m_cajas = $campo['m_cajas'];
   $m_consolidadocajas = $campo['m_consolidadocajas'];
+  $m_egresoscajacontador= $campo ['m_egresoscajacontador'];
+  $m_ingresoscajacontador= $campo ['m_ingresoscajacontador'];
   $m_equipos = $campo['m_equipos'];
   $m_gdocequipos = $campo['m_gdocequipos'];
   $m_campamentos = $campo['m_campamentos'];
@@ -86,17 +94,23 @@
   $m_informe1 = $campo['m_informe1'];
   $m_concreto = $campo['m_concreto'];
   $m_categoriains = $campo['m_categoriains'];
+  $m_entradasinv=$campo['m_entradasinv'];
+  $m_entradasdetalleinv=$campo['m_entradasdetalleinv'];
+  $m_salidasinv=$campo['m_salidasinv'];
+  $m_salidasdetalleinv=$campo['m_salidasdetalleinv'];
+  $m_inventario=$campo['m_inventario'];
+  $m_cuentasxpagarusuario= $campo['m_cuentasxpagarusuario'];
             }
-						?>
+            ?>
               <tr class="info" style="border-style: solid; border-color: #777">
               <td></td>
               <td> <strong>Párametrización General</strong></td>
               <td></td>
             </tr>
-						<tr>
-              <td>01.</td>
-							<td class=""><strong>Usuarios:</strong> Crear,editar,conceder permisos,eliminar </td>
-							<td><?php 
+            <tr>
+              <td><i class="fa fa-th-list"></i></td>
+              <td class=""><strong>Usuarios:</strong> Crear,editar,conceder permisos,eliminar </td>
+              <td><?php 
               if ($m_usuarios=="Si") {
                ?>
                 <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_usuarios');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
@@ -114,9 +128,31 @@
               }
 
                ?></td>
-						</tr>
+            </tr>
             <tr>
-              <td>02.</td>
+              <td><i class="fa fa-th-list"></i></td>
+              <td class=""><strong>Cargos:</strong> Crear,editar,conceder permisos,eliminar </td>
+              <td><?php 
+              if ($m_cargos=="Si") {
+               ?>
+                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_cargos');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
+                <i class="fa fa-check bigger-110 "></i>
+               </a>
+               <?php
+              }
+              else
+              {
+                ?>
+                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_cargos');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
+                <i class="fa fa-close bigger-110 "></i>
+                </a>
+                <?php
+              }
+
+               ?></td>
+            </tr>
+            <tr>
+              <td><i class="fa fa-th-list"></i></td>
               <td class=""><strong>Tipo Documentos:</strong> Parámetriza los documentos estándar para la gestión documental</td>
               <td><?php 
               if ($m_documentos=="Si") {
@@ -138,7 +174,72 @@
                ?></td>
             </tr>
             <tr>
-              <td>03.</td>
+               <tr>
+             <td><i class="fa fa-th-list"></i></td>
+              <td class=""><strong>Proyectos:</strong> Crea,edita,elimina proyectos</td>
+              <td><?php 
+              if ($m_proyectos=="Si") {
+               ?>
+                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_proyectos');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
+                <i class="fa fa-check bigger-110 "></i>
+               </a>
+               <?php
+              }
+              else
+              {
+                ?>
+                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_proyectos');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
+                <i class="fa fa-close bigger-110 "></i>
+                </a>
+                <?php
+              }
+
+               ?></td>
+            </tr>
+              <tr>
+              <td><i class="fa fa-th-list"></i></td>
+              <td class=""><strong>Estaciones:</strong> Crea,edita,elimina estaciones</td>
+              <td><?php 
+              if ($m_estaciones=="Si") {
+               ?>
+                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_estaciones');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
+                <i class="fa fa-check bigger-110 "></i>
+               </a>
+               <?php
+              }
+              else
+              {
+                ?>
+                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_estaciones');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
+                <i class="fa fa-close bigger-110 "></i>
+                </a>
+                <?php
+              }
+               ?></td>
+            </tr>
+              <tr>
+             <td><i class="fa fa-th-list"></i></td>
+              <td class=""><strong>Destinos:</strong> Crea,edita,elimina los destinos de los despachos de productos</td>
+              <td><?php 
+              if ($m_destinos=="Si") {
+               ?>
+                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_destinos');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
+                <i class="fa fa-check bigger-110 "></i>
+               </a>
+               <?php
+              }
+              else
+              {
+                ?>
+                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_destinos');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
+                <i class="fa fa-close bigger-110 "></i>
+                </a>
+                <?php
+              }
+
+               ?></td>
+            </tr>
+               <td><i class="fa fa-th-list"></i></td>
               <td class=""><strong>Rubros:</strong> Parámetriza y organiza por rubros principales los gastos que se registren en el sistema</td>
               <td><?php 
               if ($m_rubros=="Si") {
@@ -161,7 +262,7 @@
             </tr>
 
              <tr>
-              <td>04.</td>
+              <td><i class="fa fa-th-list"></i></td>
               <td class=""><strong>Sub-Rubros:</strong> Parámetriza y organiza con sub categorias más detallada los gastos que se registren en el sistema (Sub-Rubros) <small>Los subrubros están asociados directamente a la categoria principal (Rubros)</small></td>
               <td><?php 
               if ($m_subrubro=="Si") {
@@ -183,98 +284,8 @@
                ?></td>
             </tr>
 
-            <tr>
-              <td>05.</td>
-              <td class=""><strong>Clientes:</strong> Crea,edita,elimina los clientes</td>
-              <td><?php 
-              if ($m_clientes=="Si") {
-               ?>
-                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_clientes');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
-                <i class="fa fa-check bigger-110 "></i>
-               </a>
-               <?php
-              }
-              else
-              {
-                ?>
-                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_clientes');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
-                <i class="fa fa-close bigger-110 "></i>
-                </a>
-                <?php
-              }
-
-               ?></td>
-            </tr>
-
-            <tr>
-              <td>06.</td>
-              <td class=""><strong>Productos:</strong> Crea,edita,elimina los productos</td>
-              <td><?php 
-              if ($m_productos=="Si") {
-               ?>
-                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_productos');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
-                <i class="fa fa-check bigger-110 "></i>
-               </a>
-               <?php
-              }
-              else
-              {
-                ?>
-                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_productos');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
-                <i class="fa fa-close bigger-110 "></i>
-                </a>
-                <?php
-              }
-
-               ?></td>
-            </tr>
-           
-           <tr>
-              <td>07.</td>
-              <td class=""><strong>Insumos:</strong> Crea,edita,elimina los insumos</td>
-              <td><?php 
-              if ($m_insumos=="Si") {
-               ?>
-                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_insumos');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
-                <i class="fa fa-check bigger-110 "></i>
-               </a>
-               <?php
-              }
-              else
-              {
-                ?>
-                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_insumos');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
-                <i class="fa fa-close bigger-110 "></i>
-                </a>
-                <?php
-              }
-
-               ?></td>
-            </tr>
              <tr>
-              <td>08.</td>
-              <td class=""><strong>Proveedores:</strong> Crea,edita,elimina los proveedores</td>
-              <td><?php 
-              if ($m_proveedores=="Si") {
-               ?>
-                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_proveedores');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
-                <i class="fa fa-check bigger-110 "></i>
-               </a>
-               <?php
-              }
-              else
-              {
-                ?>
-                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_proveedores');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
-                <i class="fa fa-close bigger-110 "></i>
-                </a>
-                <?php
-              }
-
-               ?></td>
-            </tr>
-             <tr>
-              <td>09.</td>
+               <td><i class="fa fa-th-list"></i></td>
               <td class=""><strong>Carpetas:</strong> Crea,edita,elimina las carpetas para las diferentes áreas</td>
               <td><?php 
               if ($m_carpetas=="Si") {
@@ -296,13 +307,14 @@
                ?></td>
             </tr>
 
+           
             <tr>
-              <td>10.</td>
-              <td class=""><strong>Destinos:</strong> Crea,edita,elimina los destinos de los despachos de productos</td>
+              <td><i class="fa fa-th-list"></i></td>
+              <td class=""><strong>Productos:</strong> Crea,edita,elimina los productos</td>
               <td><?php 
-              if ($m_destinos=="Si") {
+              if ($m_productos=="Si") {
                ?>
-                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_destinos');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
+                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_productos');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
                 <i class="fa fa-check bigger-110 "></i>
                </a>
                <?php
@@ -310,7 +322,7 @@
               else
               {
                 ?>
-                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_destinos');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
+                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_productos');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
                 <i class="fa fa-close bigger-110 "></i>
                 </a>
                 <?php
@@ -318,59 +330,17 @@
 
                ?></td>
             </tr>
-
-             <tr>
-              <td>11.</td>
-              <td class=""><strong>Proyectos:</strong> Crea,edita,elimina proyectos</td>
-              <td><?php 
-              if ($m_proyectos=="Si") {
-               ?>
-                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_proyectos');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
-                <i class="fa fa-check bigger-110 "></i>
-               </a>
-               <?php
-              }
-              else
-              {
-                ?>
-                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_proyectos');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
-                <i class="fa fa-close bigger-110 "></i>
-                </a>
-                <?php
-              }
-
-               ?></td>
-            </tr>
-
-            <tr>
-              <td>12.</td>
-              <td class=""><strong>Estaciones:</strong> Crea,edita,elimina estaciones</td>
-              <td><?php 
-              if ($m_estaciones=="Si") {
-               ?>
-                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_estaciones');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
-                <i class="fa fa-check bigger-110 "></i>
-               </a>
-               <?php
-              }
-              else
-              {
-                ?>
-                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_estaciones');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
-                <i class="fa fa-close bigger-110 "></i>
-                </a>
-                <?php
-              }
-               ?></td>
-            </tr>
+           
+          
             <tr class="info" style="border-style: solid; border-color: #777">
               <td></td>
-              <td> <strong>Módulo Empleados</strong></td>
+              <td> <strong>Talento Humano</strong></td>
               <td></td>
             </tr>
+
             <tr>
-              <td>13.</td>
-              <td class=""><strong>Empleados:</strong> Crea,edita,elimina, control del tiempo laborado de cada empleado, registro de novedades (incapacidades, permisos, llamados de atención), del recurso humano de la empresa</td>
+               <td><i class="fa fa-th-list"></i></td>
+              <td class=""><strong>Funcionarios:</strong> Crea,edita,elimina, control del tiempo laborado de cada empleado, registro de novedades (incapacidades, permisos, llamados de atención), del recurso humano de la empresa</td>
               <td><?php 
               if ($m_empleados=="Si") {
                ?>
@@ -391,7 +361,7 @@
             </tr>
 
               <tr>
-              <td>14.</td>
+               <td><i class="fa fa-th-list"></i></td>
               <td class=""><strong>Gestion Documental Empleados:</strong> Crea,edita,elimina los documentos de todo el recurso humano de la empresa.</td>
               <td><?php 
               if ($m_gdocempleados=="Si") {
@@ -412,7 +382,7 @@
                ?></td>
             </tr>
              <tr>
-              <td>15.</td>
+              <td><i class="fa fa-th-list"></i></td>
               <td class=""><strong>Informe de Novedades:</strong> Exporte a pdf, Excel o filtre por empleado las novedades reportadas durante un rango de fecha.</td>
               <td><?php 
               if ($m_novedades=="Si") {
@@ -438,7 +408,7 @@
               <td></td>
             </tr>
              <tr>
-              <td>16.</td>
+             <td><i class="fa fa-th-list"></i></td>
               <td class=""><strong>Cuentas:</strong> Crea,edita,elimina todos los movimientos financieros de la empresa. <small>(Ingresos, Egresos, préstamo entre socios, préstamos externos)</small></td>
               <td><?php 
               if ($m_cuentas=="Si") {
@@ -459,8 +429,31 @@
                ?></td>
             </tr>
 
+
+ <tr>
+              <td><i class="fa fa-th-list"></i></td>
+              <td class=""><strong>Cruce Cuentas:</strong> Valida los estados de cuenta<small>(Ingresos, Egresos, préstamo entre socios, préstamos externos)</small></td>
+              <td><?php 
+              if ($m_crucecuentas=="Si") {
+               ?>
+                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_crucecuentas');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
+                <i class="fa fa-check bigger-110 "></i>
+               </a>
+               <?php
+              }
+              else
+              {
+                ?>
+                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_crucecuentas');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
+                <i class="fa fa-close bigger-110 "></i>
+                </a>
+                <?php
+              }
+               ?></td>
+            </tr>
+
             <tr>
-              <td>17.</td>
+              <td><i class="fa fa-th-list"></i></td>
               <td class=""><strong>Gestion Documental Cuentas:</strong> Crea,edita,elimina los documentos financieros principales de la empresa.</td>
               <td><?php 
               if ($m_gdoccuentas=="Si") {
@@ -486,7 +479,7 @@
               <td></td>
             </tr>
              <tr>
-              <td>18.</td>
+             <td><i class="fa fa-th-list"></i></td>
               <td class=""><strong>Cajas:</strong> Crea,edita,elimina todos los movimientos de las cajas menores. <small>(Ingresos, Egresos, préstamo entre cajas)</small></td>
               <td><?php 
               if ($m_cajas=="Si") {
@@ -507,7 +500,7 @@
                ?></td>
             </tr>
             <tr>
-              <td>19.</td>
+            <td><i class="fa fa-th-list"></i></td>
               <td class=""><strong>Informe Cajas Menores:</strong> Exporte a pdf, Excel o filtre por cada caja menor los movimimientos reportados durante un rango de fecha.</td>
               <td><?php 
               if ($m_consolidadocajas=="Si") {
@@ -527,13 +520,34 @@
               }
                ?></td>
             </tr>
+              <tr>
+            <td><i class="fa fa-th-list"></i></td>
+              <td class=""><strong>Egresos Contabilizados:</strong> Exporte a pdf, Excel o filtre por cada caja menor los movimimientos reportados durante un rango de fecha.</td>
+              <td><?php 
+              if ($m_egresoscajacontador=="Si") {
+               ?>
+                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_egresoscajacontador');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
+                <i class="fa fa-check bigger-110 "></i>
+               </a>
+               <?php
+              }
+              else
+              {
+                ?>
+                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_egresoscajacontador');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
+                <i class="fa fa-close bigger-110 "></i>
+                </a>
+                <?php
+              }
+               ?></td>
+            </tr>
             <tr class="info" style="border-style: solid; border-color: #777">
               <td></td>
               <td> <strong>Módulo Equipos </strong></td>
               <td></td>
             </tr>
              <tr>
-              <td>20.</td>
+              <td><i class="fa fa-th-list"></i></td>
               <td class=""><strong>Equipos:</strong> Crea,edita,elimina todos los equipos de la empresa. </small></td>
               <td><?php 
               if ($m_equipos=="Si") {
@@ -554,7 +568,7 @@
                ?></td>
             </tr>
             <tr>
-              <td>21.</td>
+              <td><i class="fa fa-th-list"></i></td>
                <td class=""><strong>Gestion Documental Equipos:</strong> Crea,edita,elimina los documentos de todos los equipos de la empresa.</td>
               <td><?php 
               if ($m_gdocequipos=="Si") {
@@ -575,7 +589,7 @@
                ?></td>
             </tr>
             <tr>
-              <td>22.</td>
+               <td><i class="fa fa-th-list"></i></td>
                <td class=""><strong>Tipo de Mantenimiento Equipos:</strong> Párametriza, Crea,edita,elimina los diferentes tipo de mantenimientos de los equipos de la empresa.</td>
               <td><?php 
               if ($m_mantenimientos=="Si") {
@@ -595,13 +609,13 @@
               }
                ?></td>
             </tr>
-              <tr class="info" style="border-style: solid; border-color: #777">
+              <tr  class="info" style="border-style: solid; border-color: #777">
               <td></td>
               <td> <strong>Módulo Concreto </strong></td>
               <td></td>
             </tr>
              <tr>
-              <td>23.</td>
+              <td><i class="fa fa-th-list"></i></td>
                <td class=""><strong>Campamentos:</strong> Crea,edita,elimina los campamentos de despacho de concreto</td>
               <td><?php 
               if ($m_campamentos=="Si") {
@@ -622,7 +636,7 @@
                ?></td>
             </tr>
             
-            <tr>
+            <tr style="display: none;">
               <td>24.</td>
               <td class=""><strong>Reporte Despacho Concreto:</strong> Crea,edita,elimina, </td>
               <td><?php 
@@ -646,11 +660,374 @@
             </tr>
             <tr class="info" style="border-style: solid; border-color: #777">
               <td></td>
-              <td> <strong>Módulo Registros </strong></td>
+              <td> <strong>Almacén</strong></td>
               <td></td>
             </tr>
+
+             <tr>
+            <td><i class="fa fa-th-list"></i></td>
+              <td class=""><strong>Categorias - Unidades Medida Insumos:</strong> Crea,edita,elimina.</td>
+              <td><?php 
+              if ($m_categoriains=="Si") {
+               ?>
+                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_categoriains');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
+                <i class="fa fa-check bigger-110 "></i>
+               </a>
+               <?php
+              }
+              else
+              {
+                ?>
+                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_categoriains');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
+                <i class="fa fa-close bigger-110 "></i>
+                </a>
+                <?php
+              }
+
+               ?></td>
+            </tr>
+             <tr>
+             <td><i class="fa fa-th-list"></i></td>
+              <td class=""><strong>Insumos:</strong> Crea,edita,elimina insumos, servicios, equipos temporales.</td>
+              <td><?php 
+              if ($m_insumos=="Si") {
+               ?>
+                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_insumos');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
+                <i class="fa fa-check bigger-110 "></i>
+               </a>
+               <?php
+              }
+              else
+              {
+                ?>
+                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_insumos');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
+                <i class="fa fa-close bigger-110 "></i>
+                </a>
+                <?php
+              }
+
+               ?></td>
+            </tr>
+
+              <tr>
+             <td><i class="fa fa-th-list"></i></td>
+              <td class=""><strong>Recibir OC:</strong> Recepción y registro de las entradas a inventario por orden de compra</td>
+              <td><?php 
+              if ($m_rqentrada=="Si") {
+               ?>
+                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_rqentrada');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
+                <i class="fa fa-check bigger-110 "></i>
+               </a>
+               <?php
+              }
+              else
+              {
+                ?>
+                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_rqentrada');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
+                <i class="fa fa-close bigger-110 "></i>
+                </a>
+                <?php
+              }
+
+               ?></td>
+            </tr>
+
+
+              <tr>
+             <td><i class="fa fa-th-list"></i></td>
+              <td class=""><strong>Requisiciones:</strong> Gestión de estados de todas las requisiciones solicitadas por los usuarios (Aplica para el Rol de Almacén)</td>
+              <td><?php 
+              if ($m_rq=="Si") {
+               ?>
+                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_rq');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
+                <i class="fa fa-check bigger-110 "></i>
+               </a>
+               <?php
+              }
+              else
+              {
+                ?>
+                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_rq');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
+                <i class="fa fa-close bigger-110 "></i>
+                </a>
+                <?php
+              }
+
+               ?></td>
+            </tr>
+
+              <tr>
+             <td><i class="fa fa-th-list"></i></td>
+              <td class=""><strong>Salida de Requisiciones:</strong> Registro de las salidas a inventario por orden de compra a usuarios y equipos</td>
+              <td><?php 
+              if ($m_rqsalida=="Si") {
+               ?>
+                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_rqsalida');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
+                <i class="fa fa-check bigger-110 "></i>
+               </a>
+               <?php
+              }
+              else
+              {
+                ?>
+                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_rqsalida');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
+                <i class="fa fa-close bigger-110 "></i>
+                </a>
+                <?php
+              }
+
+               ?></td>
+            </tr>
+
+             <tr class="info" style="border-style: solid; border-color: #777">
+              <td></td>
+              <td> <strong>Compras </strong></td>
+              <td></td>
+            </tr>
+
+              <tr>
+             <td><i class="fa fa-th-list"></i></td>
+              <td class=""><strong>Vista compras (Contabilidad):</strong> Crea,edita,elimina, agrega o quita compras</td>
+              <td><?php 
+              if ($m_compras=="Si") {
+               ?>
+                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_compras');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
+                <i class="fa fa-check bigger-110 "></i>
+               </a>
+               <?php
+              }
+              else
+              {
+                ?>
+                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_compras');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
+                <i class="fa fa-close bigger-110 "></i>
+                </a>
+                <?php
+              }
+
+               ?></td>
+            </tr>
+
+             <tr>
+             <td><i class="fa fa-th-list"></i></td>
+              <td class=""><strong>Subir cuenta por pagar:</strong> Acceso al usuario para poder subir cuentas por pagar, que se ven reflejadas en el módulo compras.</td>
+              <td><?php 
+              if ($m_cuentasxpagar=="Si") {
+               ?>
+                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_cuentasxpagar');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
+                <i class="fa fa-check bigger-110 "></i>
+               </a>
+               <?php
+              }
+              else
+              {
+                ?>
+                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_cuentasxpagar');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
+                <i class="fa fa-close bigger-110 "></i>
+                </a>
+                <?php
+              }
+
+               ?></td>
+            </tr>
+             <tr>
+             <td><i class="fa fa-th-list"></i></td>
+              <td class=""><strong>Cuentas por pagar Usuario:</strong> Permite al usuario ver solo las cuentas por pagar que ha subido al sistema.</td>
+              <td><?php 
+              if ($m_cuentasxpagarusuario=="Si") {
+               ?>
+                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_cuentasxpagarusuario');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
+                <i class="fa fa-check bigger-110 "></i>
+               </a>
+               <?php
+              }
+              else
+              {
+                ?>
+                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_cuentasxpagarusuario');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
+                <i class="fa fa-close bigger-110 "></i>
+                </a>
+                <?php
+              }
+
+               ?></td>
+            </tr>
+
+             <tr>
+             <td><i class="fa fa-th-list"></i></td>
+              <td class=""><strong>Cotizaciones:</strong> Autorización de compras </td>
+              <td><?php 
+              if ($m_cotizaciones=="Si") {
+               ?>
+                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_cotizaciones');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
+                <i class="fa fa-check bigger-110 "></i>
+               </a>
+               <?php
+              }
+              else
+              {
+                ?>
+                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_cotizaciones');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
+                <i class="fa fa-close bigger-110 "></i>
+                </a>
+                <?php
+              }
+
+               ?></td>
+            </tr>
+
+             <tr>
+              <td><i class="fa fa-th-list"></i></td>
+              <td class=""><strong>Proveedores:</strong> Crea,edita,elimina los proveedores</td>
+              <td><?php 
+              if ($m_proveedores=="Si") {
+               ?>
+                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_proveedores');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
+                <i class="fa fa-check bigger-110 "></i>
+               </a>
+               <?php
+              }
+              else
+              {
+                ?>
+                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_proveedores');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
+                <i class="fa fa-close bigger-110 "></i>
+                </a>
+                <?php
+              }
+
+               ?></td>
+            </tr>
+
+              <tr class="info" style="border-style: solid; border-color: #777">
+              <td></td>
+              <td> <strong>Centro de Distribución </strong></td>
+              <td></td>
+            </tr>
+              <tr>
+              <td><i class="fa fa-th-list"></i></td>
+              <td class=""><strong>Inventarios:</strong> Crea,edita,elimina y gestiona el inventario</td>
+              <td><?php 
+              if ($m_inventario=="Si") {
+               ?>
+                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_inventario');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
+                <i class="fa fa-check bigger-110 "></i>
+               </a>
+               <?php
+              }
+              else
+              {
+                ?>
+                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_inventario');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
+                <i class="fa fa-close bigger-110 "></i>
+                </a>
+                <?php
+              }
+
+               ?></td>
+            </tr>
+
+             <tr>
+              <td><i class="fa fa-th-list"></i></td>
+              <td class=""><strong>Entradas Inventario:</strong> Crea,edita,elimina y gestiona las entradas de inventario</td>
+              <td><?php 
+              if ($m_entradasinv=="Si") {
+               ?>
+                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_entradasinv');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
+                <i class="fa fa-check bigger-110 "></i>
+               </a>
+               <?php
+              }
+              else
+              {
+                ?>
+                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_entradasinv');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
+                <i class="fa fa-close bigger-110 "></i>
+                </a>
+                <?php
+              }
+
+               ?></td>
+            </tr>
+
+             <tr>
+              <td><i class="fa fa-th-list"></i></td>
+              <td class=""><strong>Detalle Entradas Inventario:</strong> Visualizaciónde todas las entradas de inventario por Oc</td>
+              <td><?php 
+              if ($m_entradasdetalleinv=="Si") {
+               ?>
+                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_entradasdetalleinv');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
+                <i class="fa fa-check bigger-110 "></i>
+               </a>
+               <?php
+              }
+              else
+              {
+                ?>
+                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_entradasdetalleinv');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
+                <i class="fa fa-close bigger-110 "></i>
+                </a>
+                <?php
+              }
+
+               ?></td>
+            </tr>
+
+             <tr>
+              <td><i class="fa fa-th-list"></i></td>
+              <td class=""><strong>Salidas Inventario:</strong> Crea,edita,elimina y gestiona las salidas de inventario</td>
+              <td><?php 
+              if ($m_salidasinv=="Si") {
+               ?>
+                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_salidasinv');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
+                <i class="fa fa-check bigger-110 "></i>
+               </a>
+               <?php
+              }
+              else
+              {
+                ?>
+                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_salidasinv');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
+                <i class="fa fa-close bigger-110 "></i>
+                </a>
+                <?php
+              }
+
+               ?></td>
+            </tr>
+
+             <tr>
+              <td><i class="fa fa-th-list"></i></td>
+              <td class=""><strong>Detalle Salidas Inventario:</strong> Visualizaciónde todas las salidas de inventario por Oc</td>
+              <td><?php 
+              if ($m_salidasdetalleinv=="Si") {
+               ?>
+                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_salidasdetalleinv');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
+                <i class="fa fa-check bigger-110 "></i>
+               </a>
+               <?php
+              }
+              else
+              {
+                ?>
+                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_salidasdetalleinv');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
+                <i class="fa fa-close bigger-110 "></i>
+                </a>
+                <?php
+              }
+
+               ?></td>
+            </tr>
+
+              <tr class="info" style="border-style: solid; border-color: #777">
+              <td></td>
+              <td> <strong>Ventas </strong></td>
+              <td></td>
+            </tr>
+
+            
             <tr>
-              <td>25.</td>
+              <td><i class="fa fa-th-list"></i></td>
               <td class=""><strong>Factura Despachos:</strong> Crea,edita,elimina, agrega o quita lo facturado</td>
               <td><?php 
               if ($m_ventas=="Si") {
@@ -672,7 +1049,7 @@
                ?></td>
             </tr>
              <tr>
-              <td>26.</td>
+              <td><i class="fa fa-th-list"></i></td>
               <td class=""><strong>Factura Alquiler:</strong> Crea,edita,elimina, agrega o quita lo facturado del alquiler de equipos</td>
               <td><?php 
               if ($m_ventasalquiler=="Si") {
@@ -693,11 +1070,39 @@
 
                ?></td>
             </tr>
+             <tr>
+              <td><i class="fa fa-th-list"></i></td>
+              <td class=""><strong>Clientes:</strong> Crea,edita,elimina los clientes</td>
+              <td><?php 
+              if ($m_clientes=="Si") {
+               ?>
+                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_clientes');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
+                <i class="fa fa-check bigger-110 "></i>
+               </a>
+               <?php
+              }
+              else
+              {
+                ?>
+                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_clientes');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
+                <i class="fa fa-close bigger-110 "></i>
+                </a>
+                <?php
+              }
+
+               ?></td>
+            </tr>
+
+             <tr class="info" style="border-style: solid; border-color: #777">
+              <td></td>
+              <td> <strong>Reportes Diarios </strong></td>
+              <td></td>
+            </tr>
 
            
 
              <tr>
-              <td>29.</td>
+             <td><i class="fa fa-th-list"></i></td>
               <td class=""><strong>Registro Despacho clientes:</strong> Crea,edita,elimina el despacho de productos</td>
               <td><?php 
               if ($m_despachos=="Si") {
@@ -720,7 +1125,7 @@
             </tr>
 
              <tr>
-              <td>30.</td>
+             <td><i class="fa fa-th-list"></i></td>
               <td class=""><strong>Registro Despacho combustible:</strong> Crea,edita,elimina el consumo de combustible</td>
               <td><?php 
               if ($m_combustible=="Si") {
@@ -743,7 +1148,7 @@
             </tr>
 
              <tr>
-              <td>30.</td>
+             <td><i class="fa fa-th-list"></i></td>
               <td class=""><strong>Registro Kilómetros de las volquetas:</strong> Crea,edita,elimina las horas/kilómetros de las volquetas</td>
               <td><?php 
               if ($m_horas=="Si") {
@@ -766,7 +1171,7 @@
             </tr>
 
             <tr>
-              <td>31.</td>
+              <td><i class="fa fa-th-list"></i></td>
               <td class=""><strong>Registro Horas máquina:</strong> Crea,edita,elimina las horas de las máquinas</td>
               <td><?php 
               if ($m_horasmq=="Si") {
@@ -787,103 +1192,6 @@
                ?></td>
             </tr>
 
-   <tr class="info" style="border-style: solid; border-color: #777">
-              <td></td>
-              <td> <strong>Módulo Almacén </strong></td>
-              <td></td>
-            </tr>
-
-             <tr>
-              <td>32.</td>
-              <td class=""><strong>Insumos:</strong> Crea,edita,elimina, agrega o quita stock de los insumos por campamento</td>
-              <td><?php 
-              if ($m_insumos=="Si") {
-               ?>
-                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_insumos');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
-                <i class="fa fa-check bigger-110 "></i>
-               </a>
-               <?php
-              }
-              else
-              {
-                ?>
-                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_insumos');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
-                <i class="fa fa-close bigger-110 "></i>
-                </a>
-                <?php
-              }
-
-               ?></td>
-            </tr>
-
-            <tr>
-              <td>33.</td>
-              <td class=""><strong>Categorias - Unidades Medida Insumos:</strong> Crea,edita,elimina.</td>
-              <td><?php 
-              if ($m_categoriains=="Si") {
-               ?>
-                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_categoriains');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
-                <i class="fa fa-check bigger-110 "></i>
-               </a>
-               <?php
-              }
-              else
-              {
-                ?>
-                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_categoriains');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
-                <i class="fa fa-close bigger-110 "></i>
-                </a>
-                <?php
-              }
-
-               ?></td>
-            </tr>
-             <tr>
-              <td>34.</td>
-              <td class=""><strong>Vista Compras (Almacenista):</strong> Recibe y crea devoluciones</td>
-              <td><?php 
-              if ($m_comprainsumos=="Si") {
-               ?>
-                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_comprainsumos');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
-                <i class="fa fa-check bigger-110 "></i>
-               </a>
-               <?php
-              }
-              else
-              {
-                ?>
-                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_comprainsumos');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
-                <i class="fa fa-close bigger-110 "></i>
-                </a>
-                <?php
-              }
-
-               ?></td>
-            </tr>
-              <tr>
-              <td>35.</td>
-              <td class=""><strong>Vista compras (Contabilidad):</strong> Crea,edita,elimina, agrega o quita compras</td>
-              <td><?php 
-              if ($m_compras=="Si") {
-               ?>
-                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_compras');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
-                <i class="fa fa-check bigger-110 "></i>
-               </a>
-               <?php
-              }
-              else
-              {
-                ?>
-                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_compras');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
-                <i class="fa fa-close bigger-110 "></i>
-                </a>
-                <?php
-              }
-
-               ?></td>
-            </tr>
-
-
               <tr class="info" style="border-style: solid; border-color: #777">
               <td></td>
               <td> <strong>Módulo Informes </strong></td>
@@ -891,7 +1199,7 @@
             </tr>
 
              <tr>
-              <td>35.</td>
+             <td><i class="fa fa-th-list"></i></td>
               <td class=""><strong>Informe comisiones Operadores:</strong> Visualización mes a mes de las comisiones de operadores</td>
               <td><?php 
               if ($m_informe1=="Si") {
@@ -912,13 +1220,13 @@
                ?></td>
             </tr>
            
-						
-					</tbody>
-					</table>
-			  </div> <!-- Fin Row -->
-		  </div> <!-- Fin card -->
-		</div>
-		</div>
+            
+          </tbody>
+          </table>
+        </div> <!-- Fin Row -->
+      </div> <!-- Fin card -->
+    </div>
+    </div>
 
 
 

@@ -11,6 +11,10 @@ include_once 'controladores/proveedoresController.php';
 include 'vistas/index/estadisticas.php';
 include_once 'modelos/subrubros.php';
 include_once 'controladores/subrubrosController.php';
+
+include_once 'modelos/rubros.php';
+include_once 'controladores/rubrosController.php';
+
 $RolSesion = $_SESSION['IdRol'];
 $IdSesion = $_SESSION['IdUser'];
 
@@ -83,7 +87,7 @@ else
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0 text-dark">Reporte Cuentas x Pagar</h1>
+          <h1 class="m-0 text-dark">Agregar Cuenta x Pagar</h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
@@ -115,7 +119,7 @@ else
 					 
 					
 
-					 <div class="col-md-12">
+					 <div style="display: none;" class="col-md-12">
 
 					 	<div style="display: none;" class="row">
 					 		<div id="chartContainer" style="height: 400px; width: 100%;"></div>

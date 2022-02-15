@@ -28,6 +28,41 @@ class IngresosController {
 	}
 
 /*************************************************************/
+/* FUNCION PARA MOSTRAR EL LISTADO DE ID A CAMBIAR DE ESTADO*/
+/*************************************************************/
+
+    public function cambiarestado()
+    {
+
+        (isset($_GET['id'])) ? $getid = $_GET['id'] : $getid = '';
+
+        (isset($_GET['des'])) ? $getdespacho = $_GET['des'] : $getdespacho = '';
+
+        require_once 'vistas/ingresos/gestionestados.php';
+    }
+
+/*************************************************************/
+/* FUNCION PARA GUARDAR ESTADOS */
+/*************************************************************/
+    public function actualizarestadoingreso()
+    {
+
+     	$id_caja         = $_GET['id'];
+        $estado_item     = $_POST['estado_item'];
+        $items           = $_POST['items'];
+       
+        $res = Ingresos::actualizarestadoingreso($estado_item, $items);
+        if ($res) {
+            echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+        } else {
+            echo "<script>jQuery(function(){swal(\"¡Error al guardar !\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+        }
+        $this->showcajas();
+    }
+	
+
+
+/*************************************************************/
 /* FUNCION PARA ELIMINAR  LLAMADO DESDE ROUTING.PHP*/
 /*************************************************************/
 	function eliminar() {

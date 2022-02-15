@@ -1,7 +1,42 @@
 <!-- CCS Y JS PARA LA CARGA DE IMAGEN -->
 <script src="plugins/dropify/dropify.min.js"></script>
 <link rel="stylesheet" href="plugins/dropify/dropify.min.css">
-<div class="box box-primary collapsed-box">
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
+<script type="text/javascript">
+  jQuery(document).ready(function($){
+    $(document).ready(function() {
+        $('.mi-selector2').select2();
+    });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+    $('#rubro_id').on('change',function(){
+        var rubroID = $(this).val();
+        //alert (rubroID);
+        if(rubroID){
+            $.ajax({
+                type:'POST',
+                url:'vistas/reportes/ajaxrubros.php',
+                data:'rubro_id='+rubroID,
+                success:function(html){
+                    $('#subrubro_id').html(html);  
+                }
+            });
+        }else{
+            $('#subrubro_id').html('<option value="">Seleccione primero el rubro</option>');
+            
+        }
+    });
+});
+</script>
+
+<div class="box box-primary">
             <div class="box-header with-border">
               <h3 class="box-title"> Registrar Cuenta x Pagar
               <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
@@ -9,9 +44,14 @@
               </h3>
 
               <div class="box-tools pull-right">
-              <!--   <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
-                </button> -->
+              <!--   
+			// Campos tabla de ordenesdecompra 
+
+						(imagen, imagen_cot, fecha_reporte, valor_total, valor_retenciones, valor_iva, estado_orden, proveedor_id_proveedor, medio_pago, observaciones, marca_temporal, usuario_creador, rubro_id, subrubro_id, vencimiento, factura, estado_recibido, compra_de)
+
+             -->
               </div>
+
               <!-- /.box-tools -->
             </div>
             <!-- /.box-header -->
@@ -22,12 +62,18 @@
 								$TiempoActual = date('Y-m-d H:i:s');
 							?>
 							
-					<input type="hidden" name="creado_por" value="<?php echo($IdSesion);?>">
-					<input type="hidden" name="estado_reporte" value="2">
-					<input type="hidden" name="reporte_publicado" value="1">
+					<input type="hidden" name="valor_retenciones" value="0">
+					<input type="hidden" name="valor_iva" value="0">
+					<input type="hidden" name="estado_orden" value="1">
+					<input type="hidden" name="medio_pago" value="Credito">
 					<input type="hidden" name="marca_temporal" value="<?php echo($TiempoActual);?>">
-					<input type="hidden" name="beneficiario" value="0">
-					<input type="hidden" name="pago_con" value="credito">
+					<input type="hidden" name="usuario_creador" value="<?php echo($IdSesion);?>">
+					<input type="hidden" name="factura" value="0">
+					<input type="hidden" name="estado_recibido" value="Pendiente Llegada">
+					<input type="hidden" name="compra_de" value="cxp">
+				
+				
+				
 
 					<div class="card-body">
 						 
@@ -39,21 +85,21 @@
 												</div>
 										</div>
 									   </div>
-							
+						
 							<div class="row">
-											<div class="col-md-12">
+									<div class="col-md-12">
 												<div class="form-group">
-													<label>Fecha de la Compra: <span>*</span></label>
+													<label>Ingrese la Fecha: <span>*</span></label>
 													<input type="date" name="fecha_reporte" placeholder="Fecha" class="form-control required" required id="fecha_reporte">
 												</div>
-											</div>
-										<div id="divproveedor" class="col-md-12">
+									</div>
+									<div id="divproveedor" class="col-md-12">
 												<div class="form-group">
-													<label><a data-toggle="modal" data-target="#modal-form7" href="#"  class="btn btn-success btn-sm"><i class="fa fa-plus-square"></i></a> Seleccione el Proveedor: <span>*</span></label>
-								<select class="form-control" id="proveedor_id_proveedor" name="proveedor_id_proveedor" required>
+													<label> Seleccione el Proveedor: <span>*</span></label>
+								<select style="width:300px;" class="form-control mi-selector2 " id="proveedor_id_proveedor" name="proveedor_id_proveedor" required>
 										<option value="" selected>Seleccionar...</option>
 										<?php
-										$rubros = Proveedores::obtenerListaInsumos();
+										$rubros = Proveedores::obtenerListaProveedores();
 										foreach ($rubros as $campo){
 											$id_proveedor = $campo['id_proveedor'];
 											$nombre_proveedor = $campo['nombre_proveedor'];
@@ -62,67 +108,52 @@
 										<?php } ?>
 								</select>
 												</div>
-											</div>
-											
-											<div id="divplaca" class="col-md-12">
-												<div class="form-group">
-													<label><a data-toggle="modal" data-target="#modal-form6" href="#"  class="btn btn-success btn-sm"><i class="fa fa-plus-square"></i></a> Seleccione el Insumo: <span>*</span></label>
-								<select class="form-control" id="insumo_id_insumo" name="insumo_id_insumo" required>
-										<option value="" selected>Seleccionar...</option>
-										<?php
-										$rubros = Insumos::obtenerListaInsumos();
-										foreach ($rubros as $campo){
-											$id_insumo = $campo['id_insumo'];
-											$nombre_insumo = $campo['nombre_insumo'];
-										?>
-										<option value="<?php echo $id_insumo; ?>"><?php echo utf8_encode($nombre_insumo); ?></option>
-										<?php } ?>
-								</select>
-												</div>
-											</div>
-											<div  class="col-md-12">
-												<div class="form-group">
-													<label>Seleccione el Rubro: <span>*</span></label>
-								<select class="form-control" id="subrubro_id_subrubro" name="subrubro_id_subrubro" required>
-										<option value="" selected>Seleccionar...</option>
-										<?php
-										$rubros = Subrubros::obtenerSubRubros();
-										foreach ($rubros as $campo){
-											$id_subrubro = $campo['id_subrubro'];
-											$nombre_subrubro = $campo['nombre_subrubro'];
-										?>
-										<option value="<?php echo $id_subrubro; ?>"><?php echo utf8_encode($nombre_subrubro); ?></option>
-										<?php } ?>
-								</select>
-												</div>
-											</div>
+										</div>
 
-											
-
-											<div class="col-md-4">
-												<div class="form-group">
-													<label>Valor:<span>*</span></label>
-													<input type="text" name="valor_m3" placeholder="Valor M3" class="form-control" id="demo1">
+											<div id="divrubro" class="col-md-12">
+													<div class="form-group">
+														  <label for="sel1">Rubro:<span>*</span></label>
+														  <select style="width:300px;" class="form-control mi-selector2" id="rubro_id" name="rubro_id" >
+																  <option value="" selected>Seleccione...</option>
+																<?php
+																	$rubros = Rubros::obtenerListaRubros();
+																	foreach($rubros as $rubro){
+																		$id_rubro = $rubro['id_rubro'];
+																		$nombre_rubro = $rubro['nombre_rubro'];
+																?>
+																<option value="<?php echo $id_rubro; ?>"><?php echo utf8_encode($nombre_rubro); ?></option>
+																<?php }?>
+														  </select>
+													</div>
 												</div>
-											</div>
-											
-											<div class="col-md-4">
+
+												<div  class="col-md-12">
 												<div class="form-group">
-													<label>Cantidad<span>*</span></label>
-													<input type="number" step="any" name="cantidad" placeholder="Indique la cantidad" class="form-control" required value="">
-													<small>Decimales separados con punto</small>
+													  <label for="sel1">Sub-Rubro:<span>*</span></label>
+													  <select style="width:300px;" class="form-control mi-selector2" id="subrubro_id" name="subrubro_id" >
+													  	<option value="0">Seleccionar Subrubro</option>
+													  </select>
 												</div>
 											</div>
 											<div class="col-md-4">
 												<div class="form-group">
 													<label>Vencimiento a<span>*</span></label>
-													<select class="form-control" name="vence" required="">
+													<select style="width:300px;" class="form-control mi-selector2" name="vencimiento" required="">
 														<option value="">Seleccionar...</option>
-														<option value="15">15 días</option>
-														<option value="30">30 días</option>
-														<option value="45">45 días</option>
-														<option value="60">60 días</option>
+														<?php
+
+														for ($i=0; $i <=361 ; $i++) { 
+															echo("<option value='".$i."'>".$i." días</option>");
+														}
+														 ?>
+													
 													</select>
+												</div>
+											</div>
+											<div class="col-md-4">
+												<div class="form-group">
+													<label>Valor:<span>*</span></label>
+													<input type="text" name="valor_total" placeholder="Valor Total" class="form-control" id="demo1">
 												</div>
 											</div>
 											<div class="col-md-12">

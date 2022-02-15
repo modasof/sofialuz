@@ -108,6 +108,7 @@
 										<option value="" selected>Seleccionar...</option>
 										<option value="Indefinido">Indefinido</option>
 										<option value="Prestacion de Servicios">Prestación de Servicios</option>
+											<option value="Termino Fijo">Término Fijo</option>
 										<option value="Contratista">Contratista</option>
 									  </select>
 									</div>

@@ -163,6 +163,9 @@ function reportarnovedad() {
 	//$nuevo['imagen']=$ruta_imagen;
 	$id = $_GET['id'];
 	$variable = $_POST;
+	$tipo_novedad=$_POST['tipo_novedad'];
+	$fecha_novedad=$_POST['fecha_novedad'];
+
 	$nuevoarreglo = array();
 	extract($variable);
 	foreach ($variable as $campo => $valor){
@@ -178,8 +181,16 @@ function reportarnovedad() {
 			$nuevoarreglo[$campo]=$valor;
 		}
 	}
+
 	$campo = new Funcionarios('',$nuevoarreglo);
 	$res = Funcionarios::reportarnovedad($campo,$ruta_imagen);
+
+	if ($tipo_novedad=='Retiro') {
+		$res = Funcionarios::eliminarPor($id);
+		$res = Funcionarios::actualizarfechasalidaPor($id,$fecha_novedad);
+	}
+
+
 	if ($res){
 		echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
 	}else{

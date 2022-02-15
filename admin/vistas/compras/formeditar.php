@@ -161,7 +161,7 @@ $TiempoActual = date('Y-m-d H:i:s');
 										<div class="form-group">
 										  <label for="fila2_columna1">Cotización <small>Tamaño máximo 10MB</small></label>
 												<div class="custom-file">
-													 <input required name="imagen_cot" type="file" id="input-file-now" class="dropify" data-default-file="<?php echo $imagen_cot; ?>" multiple="multiple" data-allowed-file-extensions="png jpg jpeg mp4 pdf xls xlsx webm" data-show-errors="true" data-max-file-size="10M" data-errors-position="outside" accept="image/png, .jpeg, .jpg, image/gif,.pdf,.xlsx"/ >
+													 <input  name="imagen_cot" type="file" id="input-file-now" class="dropify" data-default-file="<?php echo $imagen_cot; ?>" multiple="multiple" data-allowed-file-extensions="png jpg jpeg mp4 pdf xls xlsx webm" data-show-errors="true" data-max-file-size="10M" data-errors-position="outside" accept="image/png, .jpeg, .jpg, image/gif,.pdf,.xlsx"/ >
 													 <input type="hidden" name="ruta1" value="<?php echo $imagen_cot; ?>" >
 												</div>
 										</div>

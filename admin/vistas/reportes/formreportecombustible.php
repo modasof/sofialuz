@@ -96,6 +96,26 @@
 								</select>
 												</div>
 											</div>
+
+
+											<div class="col-md-12">
+												<div class="form-group">
+													<label> Seleccione el Proyecto: <span>*</span></label>
+								<select style="width: 250px;" class="form-control mi-selector2" id="proyecto_id_proyecto" name="proyecto_id_proyecto" required>
+										<option value="" selected>Seleccionar Proyecto...</option>
+										<?php
+										$rubros = Proyectos::obtenerListaProyectos();
+										foreach ($rubros as $campo){
+											$id_proyecto = $campo['id_proyecto'];
+											$nombre_proyecto = $campo['nombre_proyecto'];
+										?>
+										<option value="<?php echo $id_proyecto; ?>"><?php echo utf8_encode($nombre_proyecto); ?></option>
+										<?php } ?>
+								</select>
+
+												</div>
+											</div>
+
 											<div  id="" class="col-md-12">
 												<div class="form-group">
 													<label> Punto Despacho: <span>*</span></label>

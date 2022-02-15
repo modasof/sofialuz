@@ -10,6 +10,8 @@ include_once 'modelos/funcionarios.php';
 include_once 'controladores/funcionariosController.php';
 include_once 'modelos/equipos.php';
 include_once 'controladores/equiposController.php';
+include_once 'modelos/proyectos.php';
+include_once 'controladores/proyectosController.php';
 $RolSesion = $_SESSION['IdRol'];
 $IdSesion = $_SESSION['IdUser'];
 $idventa=$_GET['id'];
@@ -21,6 +23,7 @@ foreach($campos as $campo){
             $fecha_reporte = $campo['fecha_reporte'];
            	$imagen=$campo['imagen'];
             $equipo_id_equipo = $campo['equipo_id_equipo'];
+            $proyecto_id_proyecto = $campo['proyecto_id_proyecto'];
             $despachado_por = $campo['despachado_por'];
             $recibido_por = $campo['recibido_por'];
            	$punto_despacho= $campo['punto_despacho'];
@@ -36,6 +39,7 @@ foreach($campos as $campo){
             $nomestacion=Estaciones::ObtenerNombreEstacion($punto_despacho);
             $nomdespachadopor=Funcionarios::obtenerNombreFuncionario($despachado_por);
             $nomrecibidopor=Usuarios::obtenerNombreUsuario($recibido_por);
+            $nomproyecto=Proyectos::obtenerNombreProyecto($proyecto_id_proyecto);
 
 if ($punto_despacho==3) {
 	$validacisterna='cis';
@@ -156,6 +160,23 @@ if ($punto_despacho==3) {
 										<option value="<?php echo $id_equipo; ?>"><?php echo utf8_encode($nombre_equipo); ?></option>
 										<?php } ?>
 								</select>
+												</div>
+											</div>
+												<div class="col-md-12">
+												<div class="form-group">
+													<label> Seleccione el Proyecto: <span>*</span></label>
+								<select style="width: 250px;" class="form-control mi-selector2" id="proyecto_id_proyecto" name="proyecto_id_proyecto" required>
+										<option value="<?php echo($proyecto_id_proyecto);?>" selected><?php echo utf8_encode($nomproyecto);?></option>
+										<?php
+										$rubros = Proyectos::obtenerListaProyectos();
+										foreach ($rubros as $campo){
+											$id_proyecto = $campo['id_proyecto'];
+											$nombre_proyecto = $campo['nombre_proyecto'];
+										?>
+										<option value="<?php echo $id_proyecto; ?>"><?php echo utf8_encode($nombre_proyecto); ?></option>
+										<?php } ?>
+								</select>
+
 												</div>
 											</div>
 											<div  id="" class="col-md-12">

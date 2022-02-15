@@ -12,6 +12,9 @@ include_once 'controladores/equipostemporalesController.php';
 include_once 'modelos/insumos.php';
 include_once 'controladores/insumosController.php';
 
+include_once 'modelos/proyectos.php';
+include_once 'controladores/proyectosController.php';
+
 include_once 'modelos/unidadesmed.php';
 include_once 'controladores/unidadesmedController.php';
 
@@ -263,6 +266,12 @@ foreach ($campos as $campo) {
     $cantidad               = $campo['cantidad'];
     $cantidadoriginal += $cantidad;
     $canticotizada1  = $campo['cantidadcot'];
+
+
+    $idproyecto= requisiciones::obtenerIdproyectoporRQ($requisicion_id);
+    $idcreador= requisiciones::obtenerIdCreadoporRQ($requisicion_id);
+    $nomcreador = Usuarios::ObtenerNombreUsuario($idcreador);
+    $nomproyecto = Proyectos::obtenerNombreProyecto($idproyecto);
     $primerproveedor = Proveedores::obtenerNombreProveedor($proveedor_id_proveedor);
     $nominsumo       = Insumos::obtenerNombreInsumo($insumo_id_insumo);
     $unidadmedidaid  = Insumos::obtenerUnidadmed($insumo_id_insumo);
@@ -301,7 +310,13 @@ foreach ($campos as $campo) {
                 <i class="fa fa-caret-square-o-right"></i> <small id="primerrefresh<?php echo ($id1); ?>"></small>
               </td>
               <td class="success">
-               <strong><?php echo ($detallesolicitado); ?></strong>
+               <strong><?php echo ($detallesolicitado); ?>
+                 <br>
+                 <span class="bg-blue">
+                 Proyecto : <?php echo($nomproyecto); ?> 
+                  <i data-toggle="tooltip" data-placement="top" title="Solicitado por: <?php echo($nomcreador); ?>" class="fa fa-question-circle"></i>
+                  </span>
+               </strong>
               </td>
               <td class="success">
                 <?php
@@ -310,8 +325,8 @@ foreach ($campos as $campo) {
     # =========================================================
 
     $cantidadoriginal = $cantidad;
-    $estadocotizado1  = round(Cotizacionesporcantdeinsumos($item_id1, $requisicion_id, $insumo_id_insumo, "1"),1);
-    $estadocotizado2  = round(Cotizacionesporcantdeinsumos($item_id1, $requisicion_id, $insumo_id_insumo, "2"),1);
+    $estadocotizado1  = round(Cotizacionesporcantdeinsumos($item_id1, $requisicion_id, $insumo_id_insumo, "1"),2);
+    $estadocotizado2  = round(Cotizacionesporcantdeinsumos($item_id1, $requisicion_id, $insumo_id_insumo, "2"),2);
 
 
 
@@ -321,13 +336,13 @@ foreach ($campos as $campo) {
     $sumatotalcotizado1 +=$estadocotizado1;
 
     if ($estadocotizado1 > $cantidadfinal) {
-        echo ("<strong class='text-danger'>" . round($estadocotizado1, 1) . " <i class='fa fa-warning'> </i></strong>");
+        echo ("<strong class='text-danger'>" . round($estadocotizado1, 2) . " <i class='fa fa-warning'> </i></strong>");
         $variablesum += 1;
     } elseif ($estadocotizado1 < $cantidadfinal) {
-        echo ("<strong class='text-danger'>" . round($estadocotizado1, 1) . " <i class='fa fa-warning'> </i></strong>");
+        echo ("<strong class='text-danger'>" . round($estadocotizado1, 2) . " <i class='fa fa-warning'> </i></strong>");
         $variablesum += 1;
     } elseif ($estadocotizado1 == $cantidadfinal) {
-        echo ("<strong class='text-success'>" . round($estadocotizado1, 1) . " <i class='fa fa-check'> </i></strong>");
+        echo ("<strong class='text-success'>" . round($estadocotizado1, 2) . " <i class='fa fa-check'> </i></strong>");
         $variablesum += 0;
     }
 
@@ -356,7 +371,11 @@ foreach ($campos as $campo) {
             <tr>
               <td>
 
-               RQ <?php echo ($requisicion_id . "-" . $item_id1); ?>
+               RQ <?php echo ($requisicion_id . "-" . $item_id1); 
+
+
+
+               ?>
                 <input type="hidden" value="<?php echo ($item_id1); ?>" name="items[]">
                 <input type="hidden" value="<?php echo ($label) ?>" name="compra_de">
 </form>
@@ -364,7 +383,7 @@ foreach ($campos as $campo) {
 
 
                ?>
-               <i data-toggle="tooltip" data-placement="top" title="Proyecto" class="fa fa-question-circle"></i>
+              
               </td>
               <td>
                <small>Proveedor: </small><?php echo ($primerproveedor); ?>

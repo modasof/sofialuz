@@ -14,6 +14,23 @@ class ComprasController
         require_once 'vistas/compras/todos.php';
     }
 
+     public function todospormes()
+    {
+        $campos = Compras::todos();
+        require_once 'vistas/compras/todospormes.php';
+    }
+
+
+     public function cxpusuario()
+    {
+        $id=$_GET['id'];
+        $campos = Compras::cxpusuario($id);
+        require_once 'vistas/compras/miscxp.php';
+    }
+
+    
+
+
     public function recibiroc()
     {
         $campos= Compras::recibiroc();

@@ -48,7 +48,7 @@ $hoy= date('d');
 $ayer=$hoy-1;
 $antier=$hoy-6;
 
-$ultimos3meses=$mesactual;
+$ultimos3meses=$mesactual-1;
 
 $mesanterior=$mesactual-1;
 
@@ -262,11 +262,15 @@ echo ("<th>".ucfirst($monthName."")."</th>");
       <div style="display: none;" class="clearfix">
                       <div class="pull-left tableTools-container"></div>
                     </div>
+           <a id="btnrelacionar2" href="" class="btn btn-success" style="float: right; display: none; cursor: pointer;"><i class="fa fa-exchange bigger-110 "></i> Gestionar Ingresos</a>
               <div class="table-responsive mailbox-messages">
           <table id="cotizaciones" class="table  table-responsive table-striped table-bordered table-hover" style="width: 100%; font-size: 13px;">
           <tfoot style="display: table-header-group;">
+                                     <th style="background-color: #dff0d8" class="danger">
+                                       <input type="checkbox" id="seleccionar-ingresos"> todos
+                                     </th>
                                     <th style="background-color: #dff0d8" class="success"></th>
-                                    <th style="background-color: #dff0d8" class="success"></th>
+                                     <th style="background-color: #dff0d8" class="success"></th>
                                     <th style="background-color: #dff0d8" class="success"></th>
                                     
                                     <th style="background-color: #dff0d8" class="success"></th>
@@ -274,7 +278,7 @@ echo ("<th>".ucfirst($monthName."")."</th>");
                             </tfoot>
           <thead>
             <tr style="background-color: #4f5962;color: white;">
-             
+               <th>Caja Código</th>
               <th>Fecha</th>
               <th>Valor</th>
              
@@ -282,7 +286,7 @@ echo ("<th>".ucfirst($monthName."")."</th>");
               <th>Acciones</th>
             </tr>
             <tr>
-               
+                 <th></th>
                <th>Fecha</th>
                <th>Valor</th>
              
@@ -331,6 +335,15 @@ $res=Ingresos::obtenerPagina($IdSesionCaja);
             
             ?>
             <tr>
+               <td id="listadoingresos"> 
+                  <?php if ($RolSesion != 4) {
+        ?>
+           <input type="checkbox" id="<?php echo $id_ingreso_caja; ?>" name="inputdespachos2" onclick="marcardespacho2(<?php echo ($IdSesionCaja) ?>)" style="cursor: pointer;">
+
+        <?php
+        echo($id_ingreso_caja);
+}?>
+                </td>
              
                 <td><?php echo utf8_encode($fecha_ingreso) ?></td>
                  <td><?php Echo utf8_encode("$ ".number_format($valor_ingreso));  ?></td>
@@ -386,7 +399,7 @@ $res=Ingresos::obtenerPagina($IdSesionCaja);
           <table id="cotizaciones2" class="table  table-responsive table-striped table-bordered table-hover" style="width: 100%; font-size: 13px;">
            <tfoot style="display: table-header-group;">
                                      <th style="background-color: #f2dede" class="danger">
-                                       <input type="checkbox" id="seleccionar-todos"> todos
+                                       <input type="checkbox" id="seleccionar-egresos"> todos
                                      </th>
                                     <th style="background-color: #f2dede" class="danger"></th>
                                     <th style="background-color: #f2dede" class="danger"></th>
@@ -481,7 +494,7 @@ $res=Ingresos::obtenerPagina($IdSesionCaja);
             
             ?>
             <tr>
-                 <td id="listado"> 
+                 <td id="listadoegresos"> 
                   <?php if ($RolSesion != 4) {
         ?>
            <input type="checkbox" id="<?php echo $id_egreso_caja; ?>" name="inputdespachos" onclick="marcardespacho(<?php echo ($IdSesionCaja) ?>)" style="cursor: pointer;">
@@ -574,8 +587,16 @@ $res=Ingresos::obtenerPagina($IdSesionCaja);
 
 <script>
       $(function(){
-        $('#seleccionar-todos').change(function() {
-          $('#listado > input[type=checkbox]').prop('checked', $(this).is(':checked'));
+        $('#seleccionar-ingresos').change(function() {
+          $('#listadoingresos > input[type=checkbox]').prop('checked', $(this).is(':checked'));
+        });
+      });
+</script>
+
+<script>
+      $(function(){
+        $('#seleccionar-egresos').change(function() {
+          $('#listadoegresos > input[type=checkbox]').prop('checked', $(this).is(':checked'));
         });
       });
 </script>
@@ -608,6 +629,43 @@ $res=Ingresos::obtenerPagina($IdSesionCaja);
     }else{
       btn.style.display = "";
       btn.href = "?controller=gastos&action=cambiarestado&des="+valoresconcant+"&id="+id;
+    }
+
+  }
+        $(document).ready(function() {
+} );
+    </script>
+
+
+
+    <script>
+
+  function marcardespacho2(id){
+    var valores = document.getElementsByName("inputdespachos2");
+    var valoresconcant = "";
+    for (i = 0; i < valores.length; i++) {
+        var idelemento = valores[i].id;
+        var valor = valores[i].value;
+        var checked = valores[i].checked;
+
+        if (checked==true){
+          if (valoresconcant == "") {
+              valoresconcant = idelemento;
+          } else {
+              valoresconcant = valoresconcant + "," + idelemento;
+          }
+        }
+
+    }
+
+        var btn = document.getElementById("btnrelacionar2");
+       
+
+    if (valoresconcant==""){
+      btn.style.display = "none";
+    }else{
+      btn.style.display = "";
+      btn.href = "?controller=ingresos&action=cambiarestado&des="+valoresconcant+"&id="+id;
     }
 
   }
@@ -657,45 +715,7 @@ else
     } );
 } );
     </script>
-<script>
-  $(function () {
-    $('#cotizaciones33').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "lengthMenu": [[25, 50, 150, -1], [25, 50, 150, "All"]],
-      "searching": true,
-      "order": [[ 0, "asc" ]],
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-    language: {
-    "sProcessing":     "Procesando...",
-    "sLengthMenu":     "Mostrar _MENU_ registros",
-    "sZeroRecords":    "No se encontraron resultados",
-    "sEmptyTable":     "Ningún dato disponible en esta tabla",
-    "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-    "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
-    "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
-    "sInfoPostFix":    "",
-    "sSearch":         "Buscar:",
-    "sUrl":            "",
-    "sInfoThousands":  ",",
-    "sLoadingRecords": "Cargando...",
-    "oPaginate": {
-        "sFirst":    "Primero",
-        "sLast":     "Último",
-        "sNext":     "Siguiente",
-        "sPrevious": "Anterior"
-    },
-    "oAria": {
-        "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-    }
-}
 
-    });
-  });
-</script>
 <script type="text/javascript">
       jQuery(function($) {
       
@@ -737,7 +757,7 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
            
            
             pageTotal7 = api
-                .column( 1, { page: 'current'} )
+                .column( 2, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
@@ -746,7 +766,7 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
              // Update footer
            
              // Update footer
-            $( api.column( 1 ).footer() ).html(
+            $( api.column( 2 ).footer() ).html(
                 '$'+format2(pageTotal7,'' )
             );  
             
@@ -835,148 +855,11 @@ retrieve: true,
         } );
         myTable.buttons().container().appendTo( $('.tableTools-container') );
         
-        // style the message box
-        // var defaultCopyAction = myTable.button(1).action();
-        // myTable.button(1).action(function (e, dt, button, config) {
-        //   defaultCopyAction(e, dt, button, config);
-        //   $('.dt-button-info').addClass('gritter-item-wrapper gritter-info gritter-center white');
-        // });
-        
-
-
-        
-        // var defaultColvisAction = myTable.button(0).action();
-        // myTable.button(0).action(function (e, dt, button, config) {
-          
-        //   defaultColvisAction(e, dt, button, config);
-          
-          
-        //   if($('.dt-button-collection > .dropdown-menu').length == 0) {
-        //     $('.dt-button-collection')
-        //     .wrapInner('<ul class="dropdown-menu dropdown-light " />')
-        //     .find('a').attr('href', '#').wrap("<li />")
-        //   }
-        //   $('.dt-button-collection').appendTo('.tableTools-container .dt-buttons')
-        // });
       
-        //
-      
-        setTimeout(function() {
-          $($('.tableTools-container')).find('a.dt-button').each(function() {
-            var div = $(this).find(' > div').first();
-            if(div.length == 1) div.tooltip({container: 'body', title: div.parent().text()});
-            else $(this).tooltip({container: 'body', title: $(this).text()});
-          });
-        }, 500);
-        
-        
-        
-        
-        
-        myTable.on( 'select', function ( e, dt, type, index ) {
-          if ( type === 'row' ) {
-            $( myTable.row( index ).node() ).find('input:checkbox').prop('checked', true);
-          }
-        } );
-        myTable.on( 'deselect', function ( e, dt, type, index ) {
-          if ( type === 'row' ) {
-            $( myTable.row( index ).node() ).find('input:checkbox').prop('checked', false);
-          }
-        } );
-      
-      
-      
-      
-      
-      
-        /////////////////////////////////
-        //table checkboxes
-        $('th input[type=checkbox], td input[type=checkbox]').prop('checked', false);
-        
-        //select/deselect all rows according to table header checkbox
-        $('#cotizaciones > thead > tr > th input[type=checkbox], #cotizaciones_wrapper input[type=checkbox]').eq(0).on('click', function(){
-          var th_checked = this.checked;//checkbox inside "TH" table header
-          
-          $('#cotizaciones').find('tbody > tr').each(function(){
-            var row = this;
-            if(th_checked) myTable.row(row).select();
-            else  myTable.row(row).deselect();
-          });
-        });
-        
-        //select/deselect a row when the checkbox is checked/unchecked
-        $('#cotizaciones').on('click', 'td input[type=checkbox]' , function(){
-          var row = $(this).closest('tr').get(0);
-          if(this.checked) myTable.row(row).deselect();
-          else myTable.row(row).select();
-        });
-      
-      
-      
-        $(document).on('click', '#cotizaciones .dropdown-toggle', function(e) {
-          e.stopImmediatePropagation();
-          e.stopPropagation();
-          e.preventDefault();
-        });
-        
-        
-        
-        //And for the first simple table, which doesn't have TableTools or dataTables
-        //select/deselect all rows according to table header checkbox
-        var active_class = 'active';
-        $('#simple-table > thead > tr > th input[type=checkbox]').eq(0).on('click', function(){
-          var th_checked = this.checked;//checkbox inside "TH" table header
-          
-          $(this).closest('table').find('tbody > tr').each(function(){
-            var row = this;
-            if(th_checked) $(row).addClass(active_class).find('input[type=checkbox]').eq(0).prop('checked', true);
-            else $(row).removeClass(active_class).find('input[type=checkbox]').eq(0).prop('checked', false);
-          });
-        });
-        
-        //select/deselect a row when the checkbox is checked/unchecked
-        $('#simple-table').on('click', 'td input[type=checkbox]' , function(){
-          var $row = $(this).closest('tr');
-          if($row.is('.detail-row ')) return;
-          if(this.checked) $row.addClass(active_class);
-          else $row.removeClass(active_class);
-        });
-      
-        
-      
-        /********************************/
-        //add tooltip for small view action buttons in dropdown menu
-        $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
-        
-        //tooltip placement on right or left
-        function tooltip_placement(context, source) {
-          var $source = $(source);
-          var $parent = $source.closest('table')
-          var off1 = $parent.offset();
-          var w1 = $parent.width();
-      
-          var off2 = $source.offset();
-          //var w2 = $source.width();
-      
-          if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
-          return 'left';
-        }
-        
-        
-        
-        
-        /***************/
-        $('.show-details-btn').on('click', function(e) {
-          e.preventDefault();
-          $(this).closest('tr').next().toggleClass('open');
-          $(this).find(ace.vars['.icon']).toggleClass('fa-angle-double-down').toggleClass('fa-angle-double-up');
-        });
-        /***************/
-    
       
       })
     </script>
-    <script type="text/javascript">
+   <script type="text/javascript">
       jQuery(function($) {
       
 $('#cotizaciones2 thead tr:eq(1) th').each( function () {
@@ -987,6 +870,7 @@ $('#cotizaciones2 thead tr:eq(1) th').each( function () {
     var table = $('#cotizaciones2').DataTable({
       responsive:true,
       "order": true,
+      "lengthChange": false,
         orderCellsTop: true,
         "language": {
             "lengthMenu": "Mostrar _MENU_ registros por página",
@@ -1056,7 +940,20 @@ retrieve: true,
           ],
           "aaSorting": [],
           "scrollX": true,
-     
+          
+          //"bProcessing": true,
+              //"bServerSide": true,
+              //"sAjaxSource": "http://127.0.0.1/table.php" ,
+      
+          //,
+          
+          //"sScrollXInner": "120%",
+          //"bScrollCollapse": true,
+          //Note: if you are applying horizontal scrolling (sScrollX) on a ".table-bordered"
+          //you may want to wrap the table inside a "div.dataTables_borderWrap" element
+      
+          //"iDisplayLength": 50
+
       
           } );
       
@@ -1104,23 +1001,51 @@ retrieve: true,
      
       
         setTimeout(function() {
-          $($('.tableTools-container')).find('a.dt-button').each(function() {
+          $($('.tableTools-container2')).find('a.dt-button').each(function() {
             var div = $(this).find(' > div').first();
             if(div.length == 1) div.tooltip({container: 'body', title: div.parent().text()});
             else $(this).tooltip({container: 'body', title: $(this).text()});
           });
         }, 500);
         
-          
+        
+        
+        
+        
+        
       
-   
+      
+        
+      
+        /********************************/
+        //add tooltip for small view action buttons in dropdown menu
+        $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+        
+        //tooltip placement on right or left
+        function tooltip_placement(context, source) {
+          var $source = $(source);
+          var $parent = $source.closest('table')
+          var off1 = $parent.offset();
+          var w1 = $parent.width();
+      
+          var off2 = $source.offset();
+          //var w2 = $source.width();
+      
+          if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
+          return 'left';
+        }
         
         
         
         
         /***************/
+        $('.show-details-btn').on('click', function(e) {
+          e.preventDefault();
+          $(this).closest('tr').next().toggleClass('open');
+          $(this).find(ace.vars['.icon']).toggleClass('fa-angle-double-down').toggleClass('fa-angle-double-up');
+        });
+        /***************/
     
       
       })
     </script>
-  

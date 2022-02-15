@@ -81,11 +81,20 @@ function tiempoTranscurridoFechas($fechaInicio,$fechaFin)
     }
          
    
-         
     return $tiempo;
 }
 ?>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
+<script type="text/javascript">
+  jQuery(document).ready(function($){
+    $(document).ready(function() {
+        $('.mi-selector2').select2();
+    });
+});
+</script>
 <!-- CCS Y JS PARA LA CARGA DE IMAGEN -->
 <script src="plugins/dropify/dropify.min.js"></script>
 <link rel="stylesheet" href="plugins/dropify/dropify.min.css">
@@ -362,6 +371,7 @@ function tiempoTranscurridoFechas($fechaInicio,$fechaFin)
 										<option value="<?php echo utf8_encode($tipo_contrato) ?>" selected><?php echo utf8_encode($tipo_contrato) ?></option>
 										<option value="Indefinido">Indefinido</option>
 										<option value="Prestacion de Servicios">Prestación de Servicios</option>
+                                        <option value="Termino Fijo">Término Fijo</option>
                     <option value="Contratista">Contratista</option>
 									  </select>
 									</div>
@@ -457,7 +467,6 @@ function tiempoTranscurridoFechas($fechaInicio,$fechaFin)
 												  <label for="nombres">Funciones del Cargo (Máx 1000 Carácteres)</label>
 													  <textarea class="form-control" rows="4" name="observaciones" id="descripcion" placeholder="Ingrese alguna observación" maxlength="1000" required><?php echo utf8_encode($observacionescargo) ?>
 													  </textarea>
-												 
 												</div>
 											  </div>
 											  <div class="card-footer">
@@ -510,7 +519,7 @@ function tiempoTranscurridoFechas($fechaInicio,$fechaFin)
                         <div class="form-group">
                           <label>Reportado por: <span>*</span></label>
 
-              <select class="form-control" id="reportado_por" name="reportado_por" required>
+              <select  class="form-control" id="reportado_por" name="reportado_por" required>
                     <option value="" selected>Seleccionar...</option>
                     <?php
                     $rubros = Usuarios::ListaUsuariosAdmin();
@@ -526,7 +535,7 @@ function tiempoTranscurridoFechas($fechaInicio,$fechaFin)
                <div class="col-md-6">
                         <div class="form-group">
 									  <label for="sel1">Tipo de Novedad:</label>
-									  <select class="form-control" id="tipo_novedad" name="tipo_novedad" required>
+									  <select  class="form-control " id="tipo_novedad" name="tipo_novedad" required>
 										<option value="" selected>Seleccionar...</option>
 										<option value="Dia no laborado">Día no laborado</option>
                     <option value="Horas Extras">Horas Extras</option>

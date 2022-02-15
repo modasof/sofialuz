@@ -183,6 +183,7 @@ class Inventario
 
 /*******************************************************
  ** FUNCION PARA MOSTRAR EL NOMBRE DEL EQUIPO **
+ * 
  ********************************************************/
     public static function Idequipo($id)
     {

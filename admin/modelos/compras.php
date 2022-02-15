@@ -64,6 +64,25 @@ public static function todos(){
 	}
 }
 
+
+/*******************************************************
+** FUNCION PARA MOSTRAR TODOS LOS CAMPOS DE FECHAS	  **
+********************************************************/
+public static function cxpusuario($id){
+	try {
+		$db=Db::getConnect();
+		$sql="SELECT * FROM ordenescompra WHERE estado_orden<>'0' and compra_de='Cxp' and usuario_creador='".$id."' order by fecha_reporte DESC";
+		//echo($sql);
+		$select=$db->query($sql);
+    	$camposs=$select->fetchAll();
+    	$campos = new Compras('',$camposs);
+		return $campos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
 /*******************************************************
 ** FUNCION PARA MOSTRAR TODOS LOS CAMPOS DE FECHAS	  **
 ********************************************************/
@@ -89,6 +108,23 @@ public static function todosocservicios(){
 		$db=Db::getConnect();
 
 		$select=$db->query("SELECT * FROM ordenescompra WHERE estado_orden<>'0' and compra_de='Servicios'order by fecha_reporte DESC");
+    	$camposs=$select->fetchAll();
+    	$campos = new Compras('',$camposs);
+		return $campos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/*******************************************************
+** FUNCION PARA MOSTRAR TODOS LOS CAMPOS DE FECHAS	  **
+********************************************************/
+public static function todosoccuentasxpagar(){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT * FROM ordenescompra WHERE estado_orden<>'0' and compra_de='cxp'order by fecha_reporte DESC");
     	$camposs=$select->fetchAll();
     	$campos = new Compras('',$camposs);
 		return $campos;
@@ -140,7 +176,7 @@ public static function porfecha($FechaStart,$FechaEnd){
 	try {
 		$db=Db::getConnect();
 
-		$select=$db->query("SELECT * FROM ordenescompra WHERE estado_orden='1' and fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' order by fecha_reporte DESC");
+		$select=$db->query("SELECT * FROM ordenescompra WHERE estado_orden<>'0' and fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' order by fecha_reporte DESC");
     	$camposs=$select->fetchAll();
     	$campos = new Compras('',$camposs);
 		return $campos;

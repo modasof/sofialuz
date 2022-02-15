@@ -78,11 +78,13 @@ function ObtenerTipoReq($id){
 function ObteneritemsRQ($id){
 	$db = Db::getConnect();
 	//$mesactual = date("n");
-	$select = $db->prepare("SELECT id FROM requisiciones_items WHERE requisicion_id='".$id."'");
+	$sql="SELECT id FROM requisiciones_items WHERE requisicion_id='".$id."'";
+	$select = $db->prepare($sql);
+	//echo($sql);
 	$select->execute();
 	$valor = $select->fetchAll(); 
 	foreach($valor as $campo){
-		$itemsrq=$itemsrq.$campo['id']."i";
+		$itemsrq=$itemsrq.$campo['id'].",";
 		}
 	return $itemsrq;
 	}

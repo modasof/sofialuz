@@ -159,7 +159,7 @@ public static function ListaUsuariosOperadores(){
 public static function ListaUsuariosAdmin(){
 	try {
 		$db=Db::getConnect();
-		$select=$db->query("SELECT * FROM usuarios WHERE estado_usuario='1' and rol_id_rol='1' order by nombre_usuario");
+		$select=$db->query("SELECT * FROM usuarios WHERE estado_usuario='1' order by nombre_usuario");
     	$campos=$select->fetchAll();
 		$camposs = new Usuarios('',$campos);
 		$campostraidos = $camposs->getCampos();
@@ -226,7 +226,7 @@ public static function activarmenuPor($id,$menu){
 public static function activartodo($id){
 	try {
 		$db=Db::getConnect();
-		$select=$db->query("UPDATE menu SET m_clientes='Si', m_productos='Si', m_insumos='Si', m_proveedores='Si', m_carpetas='Si',m_funcionarios='Si', m_documentos='Si', m_rubros='Si', m_subrubro='Si', m_destinos='Si', m_proyectos='Si', m_estaciones='Si', m_empleados='Si', m_gdocempleados='Si', m_novedades='Si', m_cuentas='Si', m_gdoccuentas='Si', m_cajas='Si', m_consolidadocajas='Si', m_equipos='Si', m_gdocequipos='Si', m_campamentos='Si', m_mantenimientos='Si', m_ventas='Si', m_ventasalquiler='Si', m_cuentasxpagar='Si', m_compras='Si', m_comprainsumos='Si', m_despachos='Si', m_combustible='Si', m_horas='Si', m_horasmq='Si', m_informe1='Si',m_concreto='Si',m_categoriains='Si' WHERE id_usuario='".$id."'");
+		$select=$db->query("UPDATE menu SET m_clientes='Si',m_productos='Si',m_insumos='Si',m_proveedores='Si',m_carpetas='Si',m_usuarios='Si',m_funcionarios='Si',m_documentos='Si',m_rubros='Si',m_subrubro='Si',m_destinos='Si',m_proyectos='Si',m_estaciones='Si',m_empleados='Si',m_gdocempleados='Si',m_novedades='Si',m_cuentas='Si',m_gdoccuentas='Si',m_cajas='Si',m_consolidadocajas='Si',m_equipos='Si',m_gdocequipos='Si',m_campamentos='Si',m_mantenimientos='Si',m_ventas='Si',m_ventasalquiler='Si',m_cuentasxpagar='Si',m_compras='Si',m_comprainsumos='Si',m_despachos='Si',m_combustible='Si',m_horas='Si',m_horasmq='Si',m_informe1='Si',m_concreto='Si',m_categoriains='Si',m_cargos='Si',m_crucecuentas='Si',m_egresoscajacontador='Si',m_ingresoscajacontador='Si',m_cotizaciones='Si',m_rq='Si',m_rqentrada='Si',m_rqsalida='Si',m_entradasinv='Si',m_entradasdetalleinv='Si',m_salidasinv='Si',m_salidasdetalleinv='Si',m_inventario='Si' WHERE id_usuario='".$id."'");
 		if ($select){
 			return true;
 			}else{return false;}
@@ -243,7 +243,7 @@ public static function activartodo($id){
 public static function desactivartodo($id){
 	try {
 		$db=Db::getConnect();
-		$select=$db->query("UPDATE menu SET m_clientes='No', m_productos='No', m_insumos='No', m_proveedores='No', m_carpetas='No',m_funcionarios='No', m_documentos='No', m_rubros='No', m_subrubro='No', m_destinos='No', m_proyectos='No', m_estaciones='No', m_empleados='No', m_gdocempleados='No', m_novedades='No', m_cuentas='No', m_gdoccuentas='No', m_cajas='No', m_consolidadocajas='No', m_equipos='No', m_gdocequipos='No', m_campamentos='No', m_mantenimientos='No', m_ventas='No', m_ventasalquiler='No', m_cuentasxpagar='No', m_compras='No', m_comprainsumos='No', m_despachos='No', m_combustible='No', m_horas='No', m_horasmq='No', m_informe1='No',m_concreto='No',m_categoriains='No' WHERE id_usuario='".$id."'");
+		$select=$db->query("UPDATE menu SET m_clientes='No',m_productos='No',m_insumos='No',m_proveedores='No',m_carpetas='No',m_funcionarios='No',m_documentos='No',m_rubros='No',m_subrubro='No',m_destinos='No',m_proyectos='No',m_estaciones='No',m_empleados='No',m_gdocempleados='No',m_novedades='No',m_cuentas='No',m_gdoccuentas='No',m_cajas='No',m_consolidadocajas='No',m_equipos='No',m_gdocequipos='No',m_campamentos='No',m_mantenimientos='No',m_ventas='No',m_ventasalquiler='No',m_cuentasxpagar='No',m_compras='No',m_comprainsumos='No',m_despachos='No',m_combustible='No',m_horas='No',m_horasmq='No',m_informe1='No',m_concreto='No',m_categoriains='No',m_cargos='No',m_crucecuentas='No',m_egresoscajacontador='No',m_ingresoscajacontador='No',m_cotizaciones='No',m_rq='No',m_rqentrada='No',m_rqsalida='No',m_entradasinv='No',m_entradasdetalleinv='No',m_salidasinv='No',m_salidasdetalleinv='No',m_inventario='No' WHERE id_usuario='".$id."'");
 		if ($select){
 			return true;
 			}else{return false;}
@@ -452,8 +452,21 @@ public static function perfilsuper($rol_id_rol,$ultimoid,$Si){
 	try {
 		$db=Db::getConnect();
 	
-	$select=$db->query("INSERT INTO menu (id_rol,id_usuario, m_clientes, m_productos, m_insumos, m_proveedores, m_carpetas, m_usuarios, m_funcionarios, m_documentos, m_rubros, m_subrubro, m_destinos, m_proyectos, m_estaciones, m_empleados, m_gdocempleados, m_novedades, m_cuentas, m_gdoccuentas, m_cajas, m_consolidadocajas, m_equipos, m_gdocequipos, m_campamentos, m_mantenimientos, m_ventas, m_ventasalquiler, m_cuentasxpagar, m_compras, m_comprainsumos, m_despachos, m_combustible, m_horas, m_horasmq, m_informe1,m_concreto,m_categoriains) VALUES ('".utf8_decode($rol_id_rol)."',
+	$select=$db->query("INSERT INTO menu (id_rol,id_usuario, m_clientes, m_productos, m_insumos, m_proveedores, m_carpetas, m_usuarios, m_funcionarios, m_documentos, m_rubros, m_subrubro, m_destinos, m_proyectos, m_estaciones, m_empleados, m_gdocempleados, m_novedades, m_cuentas, m_gdoccuentas, m_cajas, m_consolidadocajas, m_equipos, m_gdocequipos, m_campamentos, m_mantenimientos, m_ventas, m_ventasalquiler, m_cuentasxpagar, m_compras, m_comprainsumos, m_despachos, m_combustible, m_horas, m_horasmq, m_informe1, m_concreto, m_categoriains, m_cargos, m_crucecuentas, m_egresoscajacontador, m_ingresoscajacontador, m_cotizaciones, m_rq, m_rqentrada, m_rqsalida, m_entradasinv, m_entradasdetalleinv, m_salidasinv, m_salidasdetalleinv, m_inventario) VALUES ('".utf8_decode($rol_id_rol)."',
 		'".utf8_decode($ultimoid)."',
+		'".utf8_decode($Si)."',
+		'".utf8_decode($Si)."',
+		'".utf8_decode($Si)."',
+		'".utf8_decode($Si)."',
+		'".utf8_decode($Si)."',
+		'".utf8_decode($Si)."',
+		'".utf8_decode($Si)."',
+		'".utf8_decode($Si)."',
+		'".utf8_decode($Si)."',
+		'".utf8_decode($Si)."',
+		'".utf8_decode($Si)."',
+		'".utf8_decode($Si)."',
+		'".utf8_decode($Si)."',
 		'".utf8_decode($Si)."',
 		'".utf8_decode($Si)."',
 		'".utf8_decode($Si)."',
@@ -605,8 +618,6 @@ public static function perfilequipos($rol_id_rol,$ultimoid,$No){
 		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
 	}
 }
-
-
 
 }
 
