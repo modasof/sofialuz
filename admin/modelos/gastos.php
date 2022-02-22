@@ -359,21 +359,34 @@ public static function eliminarPor($id){
 
 /********************************************************************
 *** FUNCION PARA MODIFICAR ****
+* `id_egreso_caja`, `imagen`, `tipo_beneficiario`, `fecha_egreso`, `caja_ppal`, `caja_id_caja`, `cuenta_id_cuenta`, `beneficiario`, `identificacion`, `id_rubro`, `id_subrubro`, `valor_egreso`, `observaciones`, `marca_temporal`, `egreso_publicado`, `estado_egreso`, `creado_por`, `aplica_equipo`, `equipo_id_equipo`
 ********************************************************************/
 public static function actualizarex($id,$campos,$imagen){
 	try {
 		$db=Db::getConnect();
 		$campostraidos = $campos->getCampos();
 		extract($campostraidos);
+		//
+
 		$update=$db->prepare('UPDATE egresos_caja SET 
 								imagen=:imagen,
+								tipo_beneficiario=:tipo_beneficiario,
 								fecha_egreso=:fecha_egreso,
+								caja_ppal=:caja_ppal,
+								caja_id_caja=:caja_id_caja,
+								cuenta_id_cuenta=:cuenta_id_cuenta,
 								beneficiario=:beneficiario,
 								identificacion=:identificacion,
 								id_rubro=:id_rubro,
 								id_subrubro=:id_subrubro,
 								valor_egreso=:valor_egreso,
-								observaciones=:observaciones
+								observaciones=:observaciones,
+								marca_temporal=:marca_temporal,
+								egreso_publicado=:egreso_publicado,
+								estado_egreso=:estado_egreso,
+								creado_por=:creado_por,
+								aplica_equipo=:aplica_equipo,
+								equipo_id_equipo=:equipo_id_equipo
 								WHERE id_egreso_caja=:id_egreso_caja');
 		
 		$V1=str_replace(".","",$valor_egreso);
@@ -384,13 +397,23 @@ public static function actualizarex($id,$campos,$imagen){
 		$nuevafecha=date('y-m-d',$t);
 
 		$update->bindValue('imagen',$imagen);
+		$update->bindValue('tipo_beneficiario',$tipo_beneficiario);
 		$update->bindValue('fecha_egreso',$nuevafecha);
+		$update->bindValue('caja_ppal',$caja_ppal);
+		$update->bindValue('caja_id_caja',$caja_id_caja);
+		$update->bindValue('cuenta_id_cuenta',$cuenta_id_cuenta);
 		$update->bindValue('beneficiario',$beneficiario);
 		$update->bindValue('identificacion',$identificacion);
 		$update->bindValue('id_rubro',$id_rubro);
 		$update->bindValue('id_subrubro',$id_subrubro);
 		$update->bindValue('valor_egreso',$valornumero);
 		$update->bindValue('observaciones',$observaciones);
+		$update->bindValue('marca_temporal',$marca_temporal);
+		$update->bindValue('egreso_publicado',$egreso_publicado);
+		$update->bindValue('estado_egreso',$estado_egreso);
+		$update->bindValue('creado_por',$creado_por);
+		$update->bindValue('aplica_equipo',$aplica_equipo);
+		$update->bindValue('equipo_id_equipo',$equipo_id_equipo);
 		$update->bindValue('id_egreso_caja',$id);
 		$update->execute();
 		return true;

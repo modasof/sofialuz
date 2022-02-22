@@ -56,7 +56,7 @@ if (isset($_GET['consultaAnual'])) {
     <section class="content-header">
       <h1>
         Informes
-        <small>Version 1.0 <?php echo($tope); ?></small>
+        <small>Version 2.0</small>
          <div class="btn-group">
                   <button type="button" class="btn btn-warning">Año</button>
                   <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-expanded="false">

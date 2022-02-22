@@ -1,16 +1,77 @@
 <?php 
-$campos = $campos->getCampos();
-foreach ($campos as $campo){
-	$id = $campo['id'];
-	$titulo = $campo['titulo'];
-	$texto = $campo['texto'];
-	$imagen=$campo['imagen'];
-}
-?>
+include_once 'modelos/equipos.php';
+include_once 'controladores/equiposController.php';
 
+ ?>
 <!-- CCS Y JS PARA LA CARGA DE IMAGEN -->
 <script src="plugins/dropify/dropify.min.js"></script>
 <link rel="stylesheet" href="plugins/dropify/dropify.min.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
+<script type="text/javascript">
+  jQuery(document).ready(function($){
+    $(document).ready(function() {
+        $('.mi-selector2').select2();
+    });
+});
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('#id_rubro').on('change',function(){
+        var rubroID = $(this).val();
+        //alert (rubroID);
+        if(rubroID){
+            $.ajax({
+                type:'POST',
+                url:'vistas/gastos/ajax.php',
+                data:'id_rubro='+rubroID,
+                success:function(html){
+                    $('#id_subrubro').html(html);
+                }
+            });
+        }else{
+            $('#id_subrubro').html('<option value="">Seleccione primero el rubro</option>');
+
+        }
+    });
+});
+</script>
+<?php
+
+$CajaSel=$_GET['id_caja'];
+$cajas = Gastos::obtenerCajapor($CajaSel);
+	foreach($cajas as $caja){
+	$id_caja = $caja['id_caja'];
+	$nombre_caja = $caja['nombre_caja'];
+}
+
+$idgasto = $_GET['id'];
+$cajas   = Gastos::obtenerPaginaPor($idgasto);
+foreach ($cajas as $caja) {
+
+    $id_egreso_caja    = $caja['id_egreso_caja'];
+    $imagen            = $caja['imagen'];
+    $tipo_beneficiario = $caja['tipo_beneficiario'];
+    $fecha_egreso      = $caja['fecha_egreso'];
+    $caja_ppal         = $caja['caja_ppal'];
+    $caja_id_caja      = $caja['caja_id_caja'];
+    $cuenta_id_cuenta  = $caja['cuenta_id_cuenta'];
+    $beneficiario      = $caja['beneficiario'];
+    $identificacion    = $caja['identificacion'];
+    $id_rubro          = $caja['id_rubro'];
+    $id_subrubro       = $caja['id_subrubro'];
+    $valor_egreso      = $caja['valor_egreso'];
+    $observaciones     = $caja['observaciones'];
+    $marca_temporal    = $caja['marca_temporal'];
+    $egreso_publicado  = $caja['egreso_publicado'];
+    $estado_egreso     = $caja['estado_egreso'];
+    $creado_por        = $caja['creado_por'];
+    $aplica_equipo     = $caja['aplica_equipo'];
+    $equipo_id_equipo  = $caja['equipo_id_equipo'];
+
+}?>
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -19,12 +80,12 @@ foreach ($campos as $campo){
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0 text-dark">Editar Servicio</h1>
+          <h1 class="m-0 text-dark">Egreso en: <?php echo utf8_encode($nombre_caja); ?></h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="?controller=index&&action=index">Inicio</a></li>
-            <li class="breadcrumb-item active"><a href="?controller=servicios&&action=todos">Servicios</a></li>
+            <li class="breadcrumb-item active"><a href="?controller=cajas&&action=todos">Cajas</a></li>
           </ol>
         </div><!-- /.col -->
       </div><!-- /.row -->
@@ -45,54 +106,181 @@ foreach ($campos as $campo){
 						  <div class="card card-primary">
 							<!-- /.card-header -->
 							<!-- form start -->
-							<form role="form" action="?controller=servicios&&action=actualizar&&id=<?php echo $id;?>" method="POST" enctype="multipart/form-data">
+							<form role="form" action="?controller=gastos&&action=actualizarex&&id_caja=<?php echo ($CajaSel); ?>" method="POST" enctype="multipart/form-data">
+								<?php
+date_default_timezone_set("America/Bogota");
+$TiempoActual = date('Y-m-d H:i:s');
+?>
+
+							<input type="hidden" name="estado_egreso" value="<?php echo ($CajaSel); ?>">
+							<input type="hidden" name="caja_ppal" value="<?php echo ($CajaSel); ?>">
+							<input type="hidden" name="creado_por" value="<?php echo ($creado_por); ?>">
+							<input type="hidden" name="egreso_publicado" value="<?php echo ($egreso_publicado); ?>">
+							<input type="hidden" name="marca_temporal" value="<?php echo ($marca_temporal); ?>">
+							<input type="hidden" name="cuenta_id_cuenta" value="<?php echo ($cuenta_id_cuenta); ?>">
 							  <div class="card-body">
 								<div class="card-header">
-								  <h3 class="card-title">Editar Servicio</h3>
+								  <h3 class="card-title">Actualizar Gasto en Caja</h3>
 								</div>
 							 <div class="row">
-									  <div class="col-4">
+									  <div class="col-md-6 col-xs-12">
 										<div class="form-group">
-										  <label for="fila2_columna1">Imagen del Servicio (.PNG con transparencia, preferiblemente)</label>
+										  <label for="fila2_columna1">Adjuntar el Soporte <br><small>Peso máximo 5MB, </small></label>
 												<div class="custom-file">
-													 <input name="imagen" type="file" id="input-file-now" class="dropify" data-default-file="<?php echo $imagen;?>" data-allowed-file-extensions="png jpg jpeg mp4 webm pdf" data-show-errors="true" data-max-file-size="5M" data-errors-position="outside" accept="image/png, .jpeg,.pdf,.xls, .jpg, image/gif"/ required>
-													 <input type="hidden" name="ruta1" value="<?php echo $imagen;?>" >
+													 <input name="imagen" type="file" id="input-file-now" class="dropify" data-default-file="" data-allowed-file-extensions="png jpg jpeg mp4 pdf xls xlsx webm" data-show-errors="true" data-max-file-size="10M" data-errors-position="overlay"  accept="image/png, .jpeg, .jpg, image/gif,.pdf,.xlsx"/ required>
+													  <input type="hidden" name="ruta1" value="<?php echo $imagen;?>" >
 												</div>
 										</div>
 									   </div>
 
-									
-									<div class="col-8">
-										 <div class="col-12">
-											<div class="form-group">
-											  <label for="nombres">Titulo (Max 44 letras)</label>
-											  <div class="input-group">
-												<div class="input-group-prepend">
-												  <span class="input-group-text"><i class="fa fa-align-justify"></i></span>
+
+									<div class="col-md-6 col-xs-12">
+										<div  class="col-md-12">
+												<div class="form-group">
+													<label>Fecha Gasto: <span>*</span></label>
+													<input type="date" name="fecha_egreso" id="fecha_egreso" placeholder="Fecha" class="form-control required" required id="beneficiario" value="<?php echo $fecha_egreso;?>">
 												</div>
-												<input type="text" name="titulo" value="<?php echo $titulo;?>" class="form-control" id="titulo" placeholder="Título del servicio" maxlength="48" required>
-											  </div>
 											</div>
-										  </div>
-										  <div class="row">
+				<div id="" class="col-md-12">
+                        <div class="form-group">
+                          <label> El gasto aplica a un Equipo: <span>*</span></label>
+                <select class="form-control" id="foo" name="aplica_equipo" required>
+                    <option value="<?php echo $aplica_equipo;?>" selected=""><?php echo $aplica_equipo;?></option>
+                    <option value="Si">Si</option>
+                    <option value="No" >No</option>
+
+                </select>
+                        </div>
+                      </div>
+                      <hr>
+
+                       <div id="campocampamento" style="display:none;"  class="col-md-12">
+                        <div class="form-group">
+                          <label> Seleccione el Equipo: <span>*</span></label>
+                         <select style="width:300px;" class="form-control mi-selector2" id="equipo_id_equipo" name="equipo_id_equipo" >
+                            <option value="<?php echo $equipo_id_equipo;?>" selected><?php echo $equipo_id_equipo;?></option>
+                             <option value="10000" >Otros</option>
+                            <?php
+$campamentos = Equipos::obtenerListaEquiposAsf();
+foreach ($campamentos as $campamento) {
+    $id_equipo     = $campamento['id_equipo'];
+    $nombre_equipo = $campamento['nombre_equipo'];
+    ?>
+                            <option value="<?php echo $id_equipo; ?>"><?php echo utf8_encode($nombre_equipo); ?></option>
+                            <?php }?>
+                          </select>
+
+                        </div>
+                      </div>
+                      <script type="text/javascript">
+ $('#foo').change(function() {
+    var el = $(this);
+    if(el.val() === "Si") {
+      alert("Selecione el Equipo");
+
+          $('#campocampamento').show();
+
+    } else {
+          $('#campocampamento').hide();
+
+    }
+});
+</script>
+
+										 <div class="col-md-12">
+												<div class="form-group">
+													<label>Dinero entregado a ?: <span>*</span></label>
+													 <select class="form-control"  name="tipo_beneficiario" required="" id="tipo_beneficiario">
+															<option value="" selected="">Seleccione....</option>
+															<option value="Caja Sistema">Préstamo a caja compañero</option>
+															<option value="Beneficiario Externo">Beneficiario Externo</option>
+
+														  </select>
+												</div>
+											</div>
+											<div style="display: none;" id="divcajas" class="col-md-12">
+													<div class="form-group">
+														  <label for="sel1">Caja de compañero:<span>*</span></label>
+														  <select class="form-control"  name="caja_id_caja" >
+																  <option value="" selected>Seleccione nombre del compañero</option>
+																<?php
+$cajas = Gastos::obtenerCajas($CajaSel);
+foreach ($cajas as $caja) {
+    $id_caja     = $caja['id_caja'];
+    $nombre_caja = $caja['nombre_caja'];
+    ?>
+																<option value="<?php echo $id_caja; ?>"><?php echo $nombre_caja; ?></option>
+																<?php }?>
+														  </select>
+													</div>
+												</div>
+											<div style="display: none;" id="divbeneficiario" class="col-md-12">
+												<div class="form-group">
+													<label>Beneficiario: <span>*</span></label>
+													<input type="text" name="beneficiario" placeholder="Nombre del beneficiario" class="form-control" id="beneficiario"/>
+												</div>
+											</div>
+											<div style="display: none;" id="dividentificacion" class="col-md-12">
+												<div class="form-group">
+													<label>Identificación: <span>*</span></label>
+													<input type="text" name="identificacion" placeholder="Nit/CC" class="form-control" id="identificacion"/>
+												</div>
+											</div>
+												<div style="display: none;" id="divrubro" class="col-md-12">
+													<div class="form-group">
+														  <label for="sel1">Rubro:<span>*</span></label>
+														  <select class="form-control" id="id_rubro" name="id_rubro" >
+																  <option value="" selected>Seleccione...</option>
+																<?php
+$rubros = Gastos::obtenerRubros();
+foreach ($rubros as $rubro) {
+    $id_rubro     = $rubro['id_rubro'];
+    $nombre_rubro = $rubro['nombre_rubro'];
+    ?>
+																<option value="<?php echo $id_rubro; ?>"><?php echo utf8_encode($nombre_rubro); ?></option>
+																<?php }?>
+														  </select>
+													</div>
+												</div>
+
+												<div style="display: none;" id="divsubrubro" class="col-md-12">
+												<div class="form-group">
+													  <label for="sel1">Sub-Rubro:<span>*</span></label>
+													  <select class="form-control" id="id_subrubro" name="id_subrubro" >
+													  	<option value="0">Seleccionar Subrubro</option>
+													  </select>
+												</div>
+
+											</div>
+											<div class="col-md-12">
+												<div class="form-group">
+													<label>Valor del gasto: <span>*</span></label>
+													<input type="text" name="valor_egreso" placeholder="Valor del gasto" class="form-control" id="demo1">
+												</div>
+											</div>
+
+											<div>
+
+											</div>
+
 											 <div class="col-12">
 												<div class="form-group">
-												  <label for="nombres">Descripción del Servicio (Max 125 Letras)</label>
-												  <div class="input-group">
-													<div class="input-group-prepend">
-													  <span class="input-group-text"><i class="fa fa-address-card-o"></i></span>
-													</div>
-													  <textarea class="form-control" rows="4" name="texto" id="texto" placeholder="Ingrese la descripción del servicio" maxlength="125" required><?php echo $texto;?></textarea>
-												  </div>
+												  <label for="nombres">Descripción del Gasto (Máx 500 Carácteres)</label>
+
+
+													  <textarea class="form-control" rows="4" name="observaciones" id="descripcion" placeholder="Ingrese la descripción del gasto" maxlength="500" required></textarea>
+
 												</div>
 											  </div>
-										  </div>
-									  </div>					   
 
-							<div class="card-footer">
+										  <div class="card-footer">
 							  <button name="Submit" type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Haz clic aqui para guardar la información">Guardar</button>
 							</div>
-								
+									  </div>
+
+
+
+
 							</form>
 						  </div>
 						  <!-- /.card -->
@@ -100,7 +288,7 @@ foreach ($campos as $campo){
 					  </div>
 					</div>
 
-											
+
 					</div> <!-- FIN DE ROW-->
 				</div><!-- FIN DE CONTAINER FORMULARIO-->
 			</div> <!-- Fin Row -->
@@ -110,7 +298,6 @@ foreach ($campos as $campo){
 
 
 </div> <!-- Fin Content-Wrapper -->
-
 <script type="text/javascript">
   	var datefield = document.createElement("input")
 
@@ -118,15 +305,60 @@ datefield.setAttribute("type", "date")
 
 if (datefield.type!="date"){ //if browser doesn't support input type="date", load files for jQuery UI Date Picker
     document.write('<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />\n')
-    document.write('<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"><\/script>\n') 
-}        
+    document.write('<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"><\/script>\n')
+}
 if (datefield.type != "date"){ //if browser doesn't support input type="date", initialize date picker widget:
     $(document).ready(function() {
-        $('#fecha').datepicker();
+        $('#fecha_egreso').datepicker();
         dateFormat: 'dd-mm-yy'
-    }); 
-} 
+    });
+}
   </script>
+<!-- Inicio Libreria formato moneda -->
+<script src="dist/js/jquery.maskMoney.js" type="text/javascript"></script>
+<script type="text/javascript">
+$("#demo1").maskMoney({
+prefix:'$ ', // The symbol to be displayed before the value entered by the user
+allowZero:true, // Prevent users from inputing zero
+allowNegative:true, // Prevent users from inputing negative values
+defaultZero:false, // when the user enters the field, it sets a default mask using zero
+thousands: '.', // The thousands separator
+decimal: '.' , // The decimal separator
+precision: 0, // How many decimal places are allowed
+affixesStay : true, // set if the symbol will stay in the field after the user exits the field.
+symbolPosition : 'left' // use this setting to position the symbol at the left or right side of the value. default 'left'
+}); //
+		</script>
+
+  <script type="text/javascript">
+                        $("#tipo_beneficiario").change(function() {
+                            var selectMedio = $("#tipo_beneficiario option:selected").html();
+                        $(document).ready
+                            if (selectMedio == "Beneficiario Externo") {
+                                $("#divbeneficiario").slideToggle(100);
+                                $("#dividentificacion").slideToggle(100);
+
+                                $("#divcajas").hide("slow");
+                                $("#divrubro").slideToggle(100);
+                                $("#divsubrubro").slideToggle(100);
+
+                            }
+                        });
+                        </script>
+                    <script type="text/javascript">
+                        $("#tipo_beneficiario").change(function() {
+                            var selectMedio = $("#tipo_beneficiario option:selected").html();
+                        $(document).ready
+                            if (selectMedio == "Préstamo a caja compañero") {
+                                $("#divcajas").slideToggle(100);
+                                $("#divbeneficiario").hide("slow");
+                                 $("#dividentificacion").hide("slow");
+                                $("#divrubro").hide("slow");
+                                $("#divsubrubro").hide("slow");
+
+                            }
+                        });
+                        </script>
 <script type="text/javascript">
   $(function () {
    $('[data-toggle="tooltip"]').tooltip();
@@ -152,14 +384,14 @@ if (datefield.type != "date"){ //if browser doesn't support input type="date", i
 						'fileSize': 'El tamaño del archivo es demasiado grande ({{ value }} maximo).',
 						'imageFormat': 'El formato de imagen no está permitido ({{ value }} solamente).',
 						'fileExtension': 'El archivo no está permitido ({{ value }} solamente).'
-				}				
+				}
 	});
 
 	var drEvent = $('.dropify').dropify();
 
 	drEvent.on('dropify.beforeClear', function(event, element){
 		return confirm("Realmente desea eliminar la imagen \"" + element.filename + "\" ?");
-	});      
+	});
 
 	drEvent.on('dropify.error.fileSize', function(event, element){
 		alert('Imagen demasiado grande!');
@@ -178,11 +410,11 @@ if (datefield.type != "date"){ //if browser doesn't support input type="date", i
 	});
 	drEvent.on('dropify.error.imageFormat', function(event, element){
 		alert('Error en el formato de la imagen!');
-	});   
+	});
 
 	drEvent.on('dropify.errors', function(event, element){
 		alert('Ha ocurrido un error!');
-	});	 
+	});
 	  var drEvent = $('.dropify').dropify();
 
 	drEvent.on('dropify.afterClear', function(event, element){
