@@ -2969,10 +2969,10 @@ where creado_por='".$idusuario."' and reporte_publicado='1'");
 /*******************************************************
 ** FUNCION PARA OBTENER LA LISTA DE EQUIPOS EN LA ASF	  **
 ********************************************************/
-public static function obtenerListaviajesCond($usuarioconductor){
+public static function obtenerListaviajesCond($usuarioconductor,$mesactual,$anoactual){
 	try {
 		$db=Db::getConnect();
-		$select=$db->query("SELECT * FROM reporte_despachosclientes WHERE despachado_por='".$usuarioconductor."' order by fecha_reporte DESC");
+		$select=$db->query("SELECT * FROM reporte_despachosclientes WHERE despachado_por='".$usuarioconductor."' and YEAR(fecha_reporte)='".$anoactual."' and MONTH(fecha_reporte)='".$mesactual."' order by fecha_reporte DESC");
     	$campos=$select->fetchAll();
 		$camposs = new Reportes('',$campos);
 		$campostraidos = $camposs->getCampos();

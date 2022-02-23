@@ -173,7 +173,7 @@ else
     elseif ($RolSesion==2) {  // Rol Equipos
       require_once "homeequipos.php";
     }
-    elseif ($RolSesion==4) { //Rol Conductor 
+    elseif ($RolSesion==4) { //Rol Conductor Dobletroque
       require_once "homeconductor.php";
     }
      elseif ($RolSesion==5) {  // Rol Siso 
@@ -205,6 +205,9 @@ else
     }
      elseif ($RolSesion==15) {  // Director
       require_once "vistas/almacen/homedirector.php";
+    }
+     elseif ($RolSesion==16) {  // Conductor Tractomula
+        require_once "homeconductor.php";
     }
   
  ?>

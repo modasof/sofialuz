@@ -240,7 +240,7 @@ $gastoporconductor=GastoCombustiblediaUsuario($FechaInicio30dias,$FechaFinal30di
             <?php
          
 
-          $res=Reportes::obtenerListaviajesCond($IdSesion);
+          $res=Reportes::obtenerListaviajesCond($IdSesion,$mesactual,$anoactual);
             foreach ($res as $campo){
              $id = $campo['id'];
             $imagen = $campo['imagen'];

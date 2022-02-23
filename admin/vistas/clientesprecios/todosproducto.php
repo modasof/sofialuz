@@ -1,0 +1,676 @@
+<?php
+ini_set('display_errors', '0');
+include_once 'modelos/clientes.php';
+include_once 'controladores/clientesController.php';
+
+include_once 'modelos/productos.php';
+include_once 'controladores/productosController.php';
+
+include_once 'modelos/proyectos.php';
+include_once 'controladores/proyectosController.php';
+
+include_once 'modelos/usuarios.php';
+include_once 'controladores/usuariosController.php';
+
+$RolSesion = $_SESSION['IdRol'];
+$IdSesion = $_SESSION['IdUser'];
+
+  $ClienteSel=$_GET['id_cliente'];
+  $nombre_cliente = Clientes::obtenerNombreCliente($ClienteSel);
+      
+ ?>
+
+<!-- DataTables -->
+  <!-- <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap4.css"> -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+   <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css">
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
+<script type="text/javascript">
+  jQuery(document).ready(function($){
+    $(document).ready(function() {
+        $('.mi-selector0').select2();
+    });
+});
+</script>
+<script type="text/javascript">
+  jQuery(document).ready(function($){
+    $(document).ready(function() {
+        $('.mi-selector').select2();
+    });
+});
+</script>
+
+
+   
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1 class="m-0 text-dark">Cliente <?php echo utf8_encode($nombre_cliente) ?></h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="?controller=clientes&&action=todos">Clientes</a></li>
+            <li class="breadcrumb-item active"><a href="?controller=clientesprecios&&action=todos&&id_cliente=<?php echo $ClienteSel; ?>">Rutas</a></li>
+             <li class="breadcrumb-item active"><a href="?controller=clientesprecios&&action=todoshora&&id_cliente=<?php echo $ClienteSel; ?>">Alquiler</a></li>
+              <li class="breadcrumb-item active"><a href="?controller=clientesprecios&&action=todosproducto&&id_cliente=<?php echo $ClienteSel; ?>">Productos</a></li>
+          </ol>
+        </div><!-- /.col -->
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </div>
+    <!-- /.content-header -->
+
+  <!-- Main content -->
+  <div class="content">
+
+    <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title"> Crear Nuevo Valor de Producto 
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                </button>
+              </h3>
+
+              <div class="box-tools pull-right">
+              <!--   <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                </button> -->
+              </div>
+              <!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body">
+    <form role="form" autocomplete="off" action="?controller=clientesprecios&&action=guardarvalorproducto&id_cliente=<?php echo($ClienteSel); ?>" method="POST" enctype="multipart/form-data" >
+                            <?php  
+                                date_default_timezone_set("America/Bogota");
+                                $TiempoActual = date('Y-m-d H:i:s');
+                                $DiaActualfor = date('Y-m-d');
+                            ?>
+                <input type="hidden" name="cliente_id" value="<?php echo($ClienteSel);?>">
+                <input type="hidden" name="destino_id" value="0">
+                 <input type="hidden" name="origen_id" value="0">
+                <input type="hidden" name="equipo_id" value="0">
+                <input type="hidden" name="canal_venta" value="Productos">
+                <input type="hidden" name="estado_precio" value="1">
+                <input type="hidden" name="marca_temporal" value="<?php echo($TiempoActual);?>">
+                <input type="hidden" name="fecha_precio" value="<?php echo($DiaActualfor); ?>">
+                <input type="hidden" name="precio_publicado" value="1">
+                <input type="hidden" name="creado_por" value="<?php echo($IdSesion);?>">
+                   
+                    <div class="card-body">
+                            <div class="row">
+            
+              
+                                    
+                                
+
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label> Seleccione el Producto: <span>*</span></label>
+                                <select  class="form-control mi-selector0" id="producto_id" name="producto_id" required>
+                                        <option value="" selected>Seleccionar Producto...</option>
+                                        <?php
+                                        $rubros = Productos::obtenerListaProductos();
+                                        foreach ($rubros as $campo){
+                                            $id_producto = $campo['id_producto'];
+                                            $nombre_producto = $campo['nombre_producto'];
+                                        ?>
+                                        <option value="<?php echo $id_producto; ?>"><?php echo utf8_encode($nombre_producto); ?></option>
+                                        <?php } ?>
+                                </select>
+
+                                                </div>
+                                            </div>
+
+                                             <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label> A qué proyecto aplica?: <span>*</span></label>
+                                <select  class="form-control mi-selector" id="proyecto_id" name="proyecto_id" required>
+                                        <option value="" selected>Seleccionar Proyecto...</option>
+                                        <?php
+                                        $rubros = Proyectos::obtenerListaProyectos();
+                                        foreach ($rubros as $campo){
+                                            $id_proyecto = $campo['id_proyecto'];
+                                            $nombre_proyecto = $campo['nombre_proyecto'];
+                                        ?>
+                                        <option value="<?php echo $id_proyecto; ?>"><?php echo utf8_encode($nombre_proyecto); ?></option>
+                                        <?php } ?>
+                                </select>
+
+                                                </div>
+                                            </div>
+
+                                     
+                                    <div style="display: none;" class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Valor del m3/km: <span>*</span></label>
+                                                    <input  type="text" name="valor_m3km" placeholder="Valor del m3/km" class="form-control" id="demo1">
+                                                </div>
+                                    </div>
+                                      <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Valor del Producto: <span>*</span></label>
+                                                    <input required type="text" name="valor_producto" placeholder="Valor Producto" class="form-control" id="demo2">
+                                                </div>
+                                    </div>
+
+                                     <div style="display: none;" class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Valor Hora Máquina: <span>*</span></label>
+                                                    <input   type="text" name="valor_horamq" placeholder="Valor Hora" class="form-control" id="demo3">
+                                                </div>
+                                    </div>
+
+                                    <div style="display: none;" class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Kilometros<span>*</span></label>
+                                                    <input type="number" step="any" name="km_ruta" placeholder="Kilometros" class="form-control" required value="0">
+                                                    <small>Decimales separados con punto</small>
+                                                </div>
+                                            </div>
+                                          
+                      
+                                        </div>
+                                        <div class="row">
+                                <div class="card-footer ">
+                                  <button name="Submit" type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Haz clic aqui para guardar la información">Agregar</button>
+                                </div>
+                          </div>
+                        
+                          </form>
+</div>
+</div>
+   
+    <div class="container-fluid">
+      <div class="row">
+    <div class="col-lg-12">
+    <div class="card card-default">
+      <div class="card-body">
+                                   
+       <div class="col-sm-12">
+      
+        </div><!-- /.col -->
+      <div class="clearfix">
+                      <div class="pull-left tableTools-container"></div>
+                      
+                    </div>
+              <div class="table-responsive mailbox-messages">
+          <table id="cotizaciones" class="table display-compact table-responsive table-striped table-bordered table-hover" style="width: 100%;font-size: 13px;">
+           <tfoot style="display: table-header-group;">
+                                    <th style="background-color: #dff0d8" class="success"></th>
+                                    <th style="background-color: #dff0d8" class="success"></th>
+                                    <th style="background-color: #dff0d8" class="success"></th>
+                                    <th style="background-color: #dff0d8" class="success"></th>
+                                    <th style="background-color: #dff0d8" class="success"></th>
+                                     <th style="background-color: #dff0d8" class="success"></th>
+                                    <th style="background-color: #dff0d8" class="success"></th>
+                                       
+                            </tfoot>
+          <thead>
+            <tr style="background-color: #4f5962;color: white;">
+             
+              <th>Id</th>
+              <th>Producto</th>
+              <th>Proyecto</th>
+              <th>Valor</th>
+               <th>Actualizado el</th>
+                <th>Creado por</th>
+              <th>Acciones</th>
+              
+            </tr>
+            <tr>
+               <th>Id</th>
+              <th>Producto</th>
+              <th>Proyecto</th>
+              <th>Valor</th>
+               <th>Actualizado el</th>
+                <th>Creado por</th>
+             
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+
+         
+            $campos = $campos->getCampos();
+            foreach ($campos as $campo){
+            $id = $campo['id'];
+            $cliente_id = $campo['cliente_id'];
+            $producto_id = $campo['producto_id'];
+            $proyecto_id= $campo['proyecto_id'];
+            $valor_producto = $campo['valor_producto'];
+            $km_ruta = $campo['km_ruta'];
+            $marca_temporal = $campo['marca_temporal'];
+            $creado_por = $campo['creado_por'];
+
+            $nomproducto=Productos::obtenerNombreProducto($producto_id);
+            $nomproyecto=Proyectos::obtenerNombreProyecto($proyecto_id);
+            $nomusuario=Usuarios::obtenerNombreUsuario($creado_por);
+           
+            ?>
+            <tr>
+              
+              <td><?php echo utf8_encode($id) ?></td>
+               <td><?php echo utf8_encode($nomproducto) ?></td>
+                <td><?php echo utf8_encode($nomproyecto) ?></td>
+              <td><?php Echo utf8_encode("$".number_format($valor_producto));  ?></td>
+               <td><?php echo utf8_encode($marca_temporal) ?></td>
+                <td><?php echo utf8_encode($nomusuario) ?></td>
+             
+            
+           
+            
+            
+              
+             
+              <td>
+                 <div class="btn-group">
+
+              <button  type="button" class="btn btn-default btn-flat"> <a href="#" onclick="eliminarproducto(<?php echo $id; ?>,<?php echo($ClienteSel) ?>);" class="tooltip-primary text-danger" title="Eliminar Ruta">
+                <i class="fa fa-trash bigger-110 "></i>
+              </a>
+            </button>
+                    </div>
+             
+              </td>
+              
+            </tr>
+            <?php
+              }
+            ?>
+          </tbody>
+          </table>
+        </div> <!-- Fin Row -->
+      </div> <!-- Fin card -->
+    </div>
+    </div>
+
+
+      </div> <!-- Fin Row -->
+    </div> <!-- Fin Container -->
+  </div> <!-- Fin Content -->
+</div> <!-- Fin Content-Wrapper -->
+
+
+<script>
+function eliminarproducto(idegreso,$ClienteSel){
+   eliminar=confirm("¿Deseas eliminar este registro?");
+   if (eliminar)
+window.location.href="?controller=clientesprecios&&action=eliminarproducto&&id="+idegreso+"&&id_cliente="+$ClienteSel+"";
+else
+  //Y aquí pon cualquier cosa que quieras que salga si le diste al boton de cancelar
+    alert('No se ha podido eliminar el registro...')
+}
+</script>
+
+<!-- Inicio Libreria formato moneda -->
+<script src="dist/js/jquery.maskMoney.js" type="text/javascript"></script>
+<script type="text/javascript">         
+$("#demo1").maskMoney({
+prefix:'$ ', // The symbol to be displayed before the value entered by the user
+allowZero:false, // Prevent users from inputing zero
+allowNegative:true, // Prevent users from inputing negative values
+defaultZero:false, // when the user enters the field, it sets a default mask using zero
+thousands: '.', // The thousands separator
+decimal: '.' , // The decimal separator
+precision: 0, // How many decimal places are allowed
+affixesStay : true, // set if the symbol will stay in the field after the user exits the field. 
+symbolPosition : 'left' // use this setting to position the symbol at the left or right side of the value. default 'left'
+}); //
+        </script>
+
+<script type="text/javascript">         
+$("#demo2").maskMoney({
+prefix:'$ ', // The symbol to be displayed before the value entered by the user
+allowZero:false, // Prevent users from inputing zero
+allowNegative:true, // Prevent users from inputing negative values
+defaultZero:false, // when the user enters the field, it sets a default mask using zero
+thousands: '.', // The thousands separator
+decimal: '.' , // The decimal separator
+precision: 0, // How many decimal places are allowed
+affixesStay : true, // set if the symbol will stay in the field after the user exits the field. 
+symbolPosition : 'left' // use this setting to position the symbol at the left or right side of the value. default 'left'
+}); //
+        </script>
+
+<script type="text/javascript">         
+$("#demo3").maskMoney({
+prefix:'$ ', // The symbol to be displayed before the value entered by the user
+allowZero:false, // Prevent users from inputing zero
+allowNegative:true, // Prevent users from inputing negative values
+defaultZero:false, // when the user enters the field, it sets a default mask using zero
+thousands: '.', // The thousands separator
+decimal: '.' , // The decimal separator
+precision: 0, // How many decimal places are allowed
+affixesStay : true, // set if the symbol will stay in the field after the user exits the field. 
+symbolPosition : 'left' // use this setting to position the symbol at the left or right side of the value. default 'left'
+}); //
+        </script>
+
+
+<!-- DataTables -->
+<script src="plugins/datatables/jquery.dataTables.js"></script>
+<script src="plugins/datatables/dataTables.bootstrap4.js"></script>
+<!-- SlimScroll -->
+<script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="plugins/fastclick/fastclick.js"></script>
+
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+      <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+          <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
+         <script src="dist/js/buttons.colVis.min.js"></script>
+          <script src="dist/js/buttons.print.min.js"></script>
+           <script src="dist/js/dataTables.select.min.js"></script>
+           <script src="dist/js/buttons.flash.min.js"></script>
+<script>
+   function format2(n, currency) {
+    return currency + " " + n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
+}
+        $(document).ready(function() {
+    $('#example').DataTable( {
+         "searching": true,
+        "ordering": true,
+        "paging":   true,
+        "info":     true,
+        "aLengthMenu": [[100, 200, 300, -1], [100, 200, 300, "Todas"]],
+    "pageLength": 100,
+       
+       
+    } );
+} );
+    </script>
+
+<!-- page script -->
+
+<script type="text/javascript">
+      jQuery(function($) {
+      
+$('#cotizaciones thead tr:eq(1) th').each( function () {
+        var title = $('#cotizaciones thead tr:eq(0) th').eq( $(this).index() ).text();
+        $(this).html( '<input style="width:100%;border:black solid 1px;" type="text" placeholder="Buscar '+title+'" />' );
+    } ); 
+  
+    var table = $('#cotizaciones').DataTable({
+       responsive:true,
+      //"order": true,
+       "ordering": true,
+        "order": [[ 0, "desc" ]],
+        orderCellsTop: true,
+        "language": {
+            "lengthMenu": "Mostrar _MENU_ registros por página",
+            "zeroRecords": "No se ha encontrado nada - Lo sentimos",
+            "info": "Mostrar página _PAGE_ de _PAGES_",
+            "infoEmpty": "No hay registros disponibles",
+           },
+      
+    "lengthMenu": [[5000, 7000, 10000, -1], [5000, 7000, 10000, "All"]],
+
+          select: {
+            style: 'multi'
+          },
+           "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+ 
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+
+ 
+            // Total over all pages
+           
+           
+            pageTotal7 = api
+                .column( 3, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+           
+             // Update footer
+           
+             // Update footer
+            $( api.column( 3 ).footer() ).html(
+                '$'+format2(pageTotal7,'' )
+            );  
+            
+        },
+
+    });
+  
+    // Apply the search
+    table.columns().every(function (index) {
+        $('#cotizaciones thead tr:eq(1) th:eq(' + index + ') input').on('keyup change', function () {
+            table.column($(this).parent().index() + ':visible')
+                .search(this.value)
+                .draw();    
+        });
+    });
+
+        var myTable = 
+        $('#cotizaciones')
+        //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
+        .DataTable( {
+retrieve: true,
+
+          
+          "aoColumns": [
+            { "bSortable": false },
+            null, null,null, null,null,null,null,null, null,null, null,null,null,null,null, null,null, null,null,null,null,
+            { "bSortable": false }
+          ],
+          "aaSorting": [],
+          "scrollX": true,
+          
+          //"bProcessing": true,
+              //"bServerSide": true,
+              //"sAjaxSource": "http://127.0.0.1/table.php" ,
+      
+          //,
+          
+          //"sScrollXInner": "120%",
+          //"bScrollCollapse": true,
+          //Note: if you are applying horizontal scrolling (sScrollX) on a ".table-bordered"
+          //you may want to wrap the table inside a "div.dataTables_borderWrap" element
+      
+          //"iDisplayLength": 50
+
+      
+          } );
+      
+        
+    
+
+        
+        $.fn.dataTable.Buttons.defaults.dom.container.className = 'dt-buttons btn-overlap btn-group btn-overlap';
+        
+        new $.fn.dataTable.Buttons( myTable, {
+         buttons: [
+           
+           
+            {
+            "extend": "csv",
+            "text": "<i class='fa fa-database bigger-110 orange'></i> <span class='hidden'></span>",
+            "className": "btn btn-white btn-primary btn-bold"
+            },
+            {
+
+            "extend": "excelHtml5",
+            "text": "<i class='fa fa-file-excel-o bigger-110 green'></i> <span class='hidden'></span>",
+            "className": "btn btn-white btn-primary btn-bold"
+
+            },
+            {
+
+            "extend": "pdf",
+            "text": "<i class='fa fa-file-pdf-o bigger-110 red'></i> <span class='hidden'></span>",
+            "className": "btn btn-white btn-primary btn-bold",
+            orientation: 'landscape',
+                     pageSize: 'LEGAL',
+            },
+            {
+            "extend": "print",
+            "text": "<i class='fa fa-print bigger-110 grey'></i> <span class='hidden'></span>",
+            "className": "btn btn-white btn-primary btn-bold",
+            autoPrint: true,
+            message: 'Está impresión se produjo desde la App'
+            }     
+          ]
+        } );
+        myTable.buttons().container().appendTo( $('.tableTools-container') );
+        
+        // style the message box
+        // var defaultCopyAction = myTable.button(1).action();
+        // myTable.button(1).action(function (e, dt, button, config) {
+        //   defaultCopyAction(e, dt, button, config);
+        //   $('.dt-button-info').addClass('gritter-item-wrapper gritter-info gritter-center white');
+        // });
+        
+
+
+        
+        // var defaultColvisAction = myTable.button(0).action();
+        // myTable.button(0).action(function (e, dt, button, config) {
+          
+        //   defaultColvisAction(e, dt, button, config);
+          
+          
+        //   if($('.dt-button-collection > .dropdown-menu').length == 0) {
+        //     $('.dt-button-collection')
+        //     .wrapInner('<ul class="dropdown-menu dropdown-light " />')
+        //     .find('a').attr('href', '#').wrap("<li />")
+        //   }
+        //   $('.dt-button-collection').appendTo('.tableTools-container .dt-buttons')
+        // });
+      
+        //
+      
+        setTimeout(function() {
+          $($('.tableTools-container')).find('a.dt-button').each(function() {
+            var div = $(this).find(' > div').first();
+            if(div.length == 1) div.tooltip({container: 'body', title: div.parent().text()});
+            else $(this).tooltip({container: 'body', title: $(this).text()});
+          });
+        }, 500);
+        
+        
+        
+        
+        
+        myTable.on( 'select', function ( e, dt, type, index ) {
+          if ( type === 'row' ) {
+            $( myTable.row( index ).node() ).find('input:checkbox').prop('checked', true);
+          }
+        } );
+        myTable.on( 'deselect', function ( e, dt, type, index ) {
+          if ( type === 'row' ) {
+            $( myTable.row( index ).node() ).find('input:checkbox').prop('checked', false);
+          }
+        } );
+      
+      
+      
+      
+      
+      
+        /////////////////////////////////
+        //table checkboxes
+        $('th input[type=checkbox], td input[type=checkbox]').prop('checked', false);
+        
+        //select/deselect all rows according to table header checkbox
+        $('#cotizaciones > thead > tr > th input[type=checkbox], #cotizaciones_wrapper input[type=checkbox]').eq(0).on('click', function(){
+          var th_checked = this.checked;//checkbox inside "TH" table header
+          
+          $('#cotizaciones').find('tbody > tr').each(function(){
+            var row = this;
+            if(th_checked) myTable.row(row).select();
+            else  myTable.row(row).deselect();
+          });
+        });
+        
+        //select/deselect a row when the checkbox is checked/unchecked
+        $('#cotizaciones').on('click', 'td input[type=checkbox]' , function(){
+          var row = $(this).closest('tr').get(0);
+          if(this.checked) myTable.row(row).deselect();
+          else myTable.row(row).select();
+        });
+      
+      
+      
+        $(document).on('click', '#cotizaciones .dropdown-toggle', function(e) {
+          e.stopImmediatePropagation();
+          e.stopPropagation();
+          e.preventDefault();
+        });
+        
+        
+        
+        //And for the first simple table, which doesn't have TableTools or dataTables
+        //select/deselect all rows according to table header checkbox
+        var active_class = 'active';
+        $('#simple-table > thead > tr > th input[type=checkbox]').eq(0).on('click', function(){
+          var th_checked = this.checked;//checkbox inside "TH" table header
+          
+          $(this).closest('table').find('tbody > tr').each(function(){
+            var row = this;
+            if(th_checked) $(row).addClass(active_class).find('input[type=checkbox]').eq(0).prop('checked', true);
+            else $(row).removeClass(active_class).find('input[type=checkbox]').eq(0).prop('checked', false);
+          });
+        });
+        
+        //select/deselect a row when the checkbox is checked/unchecked
+        $('#simple-table').on('click', 'td input[type=checkbox]' , function(){
+          var $row = $(this).closest('tr');
+          if($row.is('.detail-row ')) return;
+          if(this.checked) $row.addClass(active_class);
+          else $row.removeClass(active_class);
+        });
+      
+        
+      
+        /********************************/
+        //add tooltip for small view action buttons in dropdown menu
+        $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
+        
+        //tooltip placement on right or left
+        function tooltip_placement(context, source) {
+          var $source = $(source);
+          var $parent = $source.closest('table')
+          var off1 = $parent.offset();
+          var w1 = $parent.width();
+      
+          var off2 = $source.offset();
+          //var w2 = $source.width();
+      
+          if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
+          return 'left';
+        }
+        
+        
+        
+        
+        /***************/
+        $('.show-details-btn').on('click', function(e) {
+          e.preventDefault();
+          $(this).closest('tr').next().toggleClass('open');
+          $(this).find(ace.vars['.icon']).toggleClass('fa-angle-double-down').toggleClass('fa-angle-double-up');
+        });
+        /***************/
+    
+      
+      })
+    </script>

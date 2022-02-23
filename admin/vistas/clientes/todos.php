@@ -1,4 +1,9 @@
 <?php 
+
+ini_set('display_errors', '1');
+include_once 'modelos/clientesprecios.php';
+include_once 'controladores/clientespreciosController.php';
+
 include 'vistas/index/estadisticas.php';
  ?>
 <!-- DataTables -->
@@ -46,14 +51,18 @@ include 'vistas/index/estadisticas.php';
           <thead>
             <tr style="background-color: #4f5962;color: white;">
               <th>Cliente</th>
-              <th>Total Vendido</th>
+              <th>Precios Rutas</th>
+               <th>Precios Horas</th>
+                <th>Precios Productos</th>
               <th>Acción</th>
             </tr>
             <tr>
                  
              
               <th>Cliente</th>
-               <th>Total Vendido</th>
+               <th>Precios Rutas</th>
+               <th>Precios Horas</th>
+                <th>Precios Productos</th>
               <th>Acción</th>
             </tr>
           </thead>
@@ -67,7 +76,33 @@ include 'vistas/index/estadisticas.php';
             ?>
             <tr>
               <td><?php echo utf8_encode($nombre_cliente); ?></td>
-              <td><?php echo utf8_encode("$".number_format($totalventas,0)); ?></td>
+              <td>
+                 <a href="?controller=clientesprecios&&action=todos&&id_cliente=<?php echo $id; ?>" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Agregar Rutas">
+                <i class="fa  fa-map-signs bigger-110 "> </i>
+                <?php 
+                  $totalrutas=Clientesprecios::cantidadporcanal('Fletes',$id);
+                 ?>
+                 Rutas Cliente (<?php echo($totalrutas); ?>)
+              </a>
+              </td>
+               <td>
+                 <a href="?controller=clientesprecios&&action=todoshora&&id_cliente=<?php echo $id; ?>" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Lista Precios Horas">
+                <i class="fa  fa-clock-o bigger-110 "> </i> 
+                 <?php 
+                  $totalalquiler=Clientesprecios::cantidadporcanal('Alquiler Equipos',$id);
+                 ?>
+                 Alquiler Equipos (<?php echo($totalalquiler); ?>)
+              </a>
+              </td>
+               <td>
+                <a href="?controller=clientesprecios&&action=todosproducto&&id_cliente=<?php echo $id; ?>" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Lista Precios Productos">
+                <i class="fa  fa-list bigger-110 "> </i> 
+                 <?php 
+                  $totalproductos=Clientesprecios::cantidadporcanal('Productos',$id);
+                 ?>
+                 Precios Productos (<?php echo($totalproductos); ?>)
+              </a>
+              </td>
               <td>
               <a href="?controller=clientes&&action=editar&&id=<?php echo $id; ?>" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Editar Cliente">
                 <i class="fa fa-edit bigger-110 "></i>

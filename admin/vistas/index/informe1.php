@@ -124,7 +124,7 @@ echo ("<th>".$monthName."</th>");
 
                  ?>
             
-                <th>Totales</th>
+                <th style="display: none;">Totales</th>
               </tr>
             </thead>
             <tbody>
@@ -134,7 +134,18 @@ echo ("<th>".$monthName."</th>");
 foreach($res as $campo){
   $id_usuario = $campo['id_usuario'];
   $nombre_usuario = $campo['nombre_usuario'];
-  $ventasanopro=ProduccionAnualConductor($anoactual,$id_usuario);
+  /*=========================================================
+  =            Ajuste de Tarifas perfil conducor            =
+  =========================================================*/
+  
+  // 2021- $ventasanopro=ProduccionAnualConductor($anoactual,$id_usuario);
+
+    $ventasanopro=ProduccionAnualConductor2022($anoactual,$id_usuario);
+  
+  /*=====  End of Ajuste de Tarifas perfil conducor  ======*/
+  
+  
+  
   if ($ventasanopro!=0) {
    
      ?> 
@@ -143,31 +154,60 @@ foreach($res as $campo){
                 <td><strong><?php echo($nombre_usuario); ?></strong></td>
                  <?php 
                 for ($i=1; $i <$tope ; $i++) { 
-                  $ventamespro=ProduccionConductorpormes($i,$anoactual,$id_usuario);
-                  $totalpro=ProduccionMesConductor($i,$anoactual);
 
-                  if ($ventamespro==0) {
-                    $porcentajeventapro=0;
-                  }
-                  else
-                  {
-                    $porcentajeventapro=($ventamespro/$totalpro)*100;
-                  }
+  # =======================================================================
+  # =           Ajuste de Tarifas perfil conductor 2022 por mes           =
+  # =======================================================================
+  
+  // 2021 $ventamespro=ProduccionConductorpormes($i,$anoactual,$id_usuario);
+
+     $ventamespro=ProduccionConductorpormes2022($i,$anoactual,$id_usuario);
+
+  // 2021  $totalpro=ProduccionMesConductor($i,$anoactual);
+
+      $totalpro=ProduccionMesConductor2022($i,$anoactual,$id_usuario);
+  
+  
+  # ======  End of Ajuste de Tarifas perfil conductor 2022 por mes  =======
+  
+                 
+
                   if ($ventamespro>0) {
-                    echo("<td style='font-weight:-50;font-size:14px;background-color:#dff0d8;'><a style='color:black;' href='#'><small style='color:#128a2e;'><strong> ".round($porcentajeventapro,1)."% </strong></small>  $".number_format($ventamespro,0)."</a></td>");
+
+                    if ($ventamespro>=1 && $ventamespro<=15000000) {
+                        
+                        $comision=$ventamespro*2/100;
+
+                       echo("<td style='font-weight:-50;font-size:14px;background-color:#dff0d8;'>$".number_format($ventamespro,0)." <span class='badge bg-red'>  2 %   </span><strong> $".number_format($comision,0)."</strong></a></td>");
+
+                    }elseif ($ventamespro>=15000001 && $ventamespro<=20000000) {
+                      
+                         $comision=$ventamespro*2.5/100;
+                       echo("<td style='font-weight:-50;font-size:14px;background-color:#dff0d8;'>$".number_format($ventamespro,0)." <span class='badge bg-yellow'>  2.5 %   </span><strong> $".number_format($comision,0)."</strong></a></td>");
+
+                    }elseif ($ventamespro>=20000001 && $ventamespro<=100000000) {
+                            
+                           $comision=$ventamespro*3/100;
+                       echo("<td style='font-weight:-50;font-size:14px;background-color:#dff0d8;'>$".number_format($ventamespro,0)." <span class='badge bg-green'>  3 %   </span><strong> $".number_format($comision,0)."</strong></a></td>"); 
+                    }
+
+                    
                   }
                   else
                   {
                     echo("<td style='font-weight:-50;font-size:14px;background-color:#f2dede;'><a href='#' style='color:black;'><small style='color:#F08080;'><strong>0%</strong></small>$".number_format(0,0)."</a></td>");
                   }
+
                   
                 }
+
                  ?>
-                 <td style="background-color: #d9edf7;"><strong>$ 
+                 <td  style="background-color: #d9edf7;display:none;"><strong>$ 
                   <?php 
 
-                 echo(number_format($ventasanopro,0)); 
-                 ?></strong></td>
+                 echo(number_format($totalpro,0)); 
+                 ?></strong>
+               </td>
               </tr>
             <?php 
             }
@@ -175,13 +215,179 @@ foreach($res as $campo){
              ?>
            
             </tbody>
-            <tfoot>
+            <tfoot style="display: none;">
                <tr  class="info">
                 <td><strong>Total Producción <?php echo($anoactual); ?></strong></td>
                 <?php 
                 for ($i=1; $i <$tope ; $i++) { 
-                  $ventames1=ProduccionMesConductor($i,$anoactual);
-                  $sumaventas1+=$ventames1;
+                  $ventames1=ProduccionMesConductor2022($i,$anoactual);
+                  $sumaventas1+=$comision;
+                  echo("<td><strong> $ ".number_format($ventames1,0)."</strong></td>");
+                }
+                 ?>
+                 <td><strong>$ <?php echo(number_format($sumaventas1,0)); ?></strong></td>
+              </tr>
+            </tfoot>
+              
+            </table>
+            </div>
+            <!-- ./box-body -->
+            <div class="box-footer">
+             
+            </div>
+            <!-- /.box-footer -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+
+
+
+
+
+            <!-- /.row -->
+      <div class="row">
+        <div class="col-md-12">
+          <!--<div class="box box-primary collapsed-box">-->
+         <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Informe Producción Conductores Tráctomula <small> Actualizado al <?php 
+              date_default_timezone_set("America/Bogota");
+              $TiempoActual = date('Y-m-d');
+              echo(fechalarga($TiempoActual)); 
+              ?></small></h3>
+               
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
+                </button>
+                 
+              </div>
+            </div>
+            <!-- /.box-header -->
+            <div class="box-body" id="InformeVentas">
+              <div class="clearfix">
+                      <div class="pull-right tableTools-container"></div>
+                    </div>
+              <h3>Informe Conductores Tráctomula</h3>
+              <table id="cotizaciones" class="table  table-responsive table-striped table-bordered table-hover dataTables_borderWrap" style="width: 100%;font-size: 13px;">
+             
+          <thead>
+           
+               <tr style="background-color: #4f5962;color: white;">
+                <th>Tarifa X Flete</th>
+                <?php 
+
+                 for ($i=1; $i <$tope ; $i++) { 
+                  setlocale(LC_ALL, 'es_ES');
+          $monthNum  = $i;
+$dateObj   = DateTime::createFromFormat('!m', $monthNum);
+$monthName = strftime('%B', $dateObj->getTimestamp());
+
+echo ("<th>".$monthName."</th>");
+                }
+
+                 ?>
+            
+                <th style="display: none;">Totales</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php 
+
+    $res=Usuarios::ListaUsuariosCondmula();
+foreach($res as $campo){
+  $id_usuario = $campo['id_usuario'];
+  $nombre_usuario = $campo['nombre_usuario'];
+  /*=========================================================
+  =            Ajuste de Tarifas perfil conducor            =
+  =========================================================*/
+  
+  // 2021- $ventasanopro=ProduccionAnualConductor($anoactual,$id_usuario);
+
+    $ventasanopromula=ProduccionAnualConductor2022($anoactual,$id_usuario);
+  
+  /*=====  End of Ajuste de Tarifas perfil conducor  ======*/
+  
+  
+  
+  if ($ventasanopromula!=0) {
+   
+     ?> 
+     
+              <tr>
+                <td><strong><?php echo($nombre_usuario); ?></strong></td>
+                 <?php 
+                for ($i=1; $i <$tope ; $i++) { 
+
+  # =======================================================================
+  # =           Ajuste de Tarifas perfil conductor 2022 por mes           =
+  # =======================================================================
+  
+  // 2021 $ventamespro=ProduccionConductorpormes($i,$anoactual,$id_usuario);
+
+     $ventamespromula=ProduccionConductorpormes2022($i,$anoactual,$id_usuario);
+
+  // 2021  $totalpro=ProduccionMesConductor($i,$anoactual);
+
+      $totalpro=ProduccionMesConductor2022($i,$anoactual,$id_usuario);
+  
+  
+  # ======  End of Ajuste de Tarifas perfil conductor 2022 por mes  =======
+  
+                 
+
+                  if ($ventamespromula>0) {
+
+                    if ($ventamespromula>=1 && $ventamespromula<=25000000) {
+                        
+                        $comision=$ventamespromula*3/100;
+
+                       echo("<td style='font-weight:-50;font-size:14px;background-color:#dff0d8;'>$".number_format($ventamespromula,0)." <span class='badge bg-red'>  3 %   </span><strong> $".number_format($comision,0)."</strong></a></td>");
+
+                    }elseif ($ventamespromula>=25000001 && $ventamespromula<=35000000) {
+                      
+                         $comision=$ventamespromula*4/100;
+                       echo("<td style='font-weight:-50;font-size:14px;background-color:#dff0d8;'>$".number_format($ventamespromula,0)." <span class='badge bg-yellow'>  4 %   </span><strong> $".number_format($comision,0)."</strong></a></td>");
+
+                    }elseif ($ventamespromula>=35000001 && $ventamespromula<=100000000) {
+                            
+                           $comision=$ventamespromula*5/100;
+                       echo("<td style='font-weight:-50;font-size:14px;background-color:#dff0d8;'>$".number_format($ventamespromula,0)." <span class='badge bg-green'>  5 %   </span><strong> $".number_format($comision,0)."</strong></a></td>"); 
+                    }
+
+                    
+                  }
+                  else
+                  {
+                    echo("<td style='font-weight:-50;font-size:14px;background-color:#f2dede;'><a href='#' style='color:black;'><small style='color:#F08080;'><strong>0%</strong></small>$".number_format(0,0)."</a></td>");
+                  }
+
+                  
+                }
+
+                 ?>
+                 <td  style="background-color: #d9edf7;display:none;"><strong>$ 
+                  <?php 
+
+                 echo(number_format($totalpro,0)); 
+                 ?></strong>
+               </td>
+              </tr>
+            <?php 
+            }
+          }
+             ?>
+           
+            </tbody>
+            <tfoot style="display: none;">
+               <tr  class="info">
+                <td><strong>Total Producción <?php echo($anoactual); ?></strong></td>
+                <?php 
+                for ($i=1; $i <$tope ; $i++) { 
+                  $ventames1=ProduccionMesConductor2022($i,$anoactual);
+                  $sumaventas1+=$comision;
                   echo("<td><strong> $ ".number_format($ventames1,0)."</strong></td>");
                 }
                  ?>

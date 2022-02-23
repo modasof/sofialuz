@@ -12,34 +12,10 @@ $IdSesion = $_SESSION['IdUser'];
 <!-- CCS Y JS PARA LA CARGA DE IMAGEN -->
 <script src="plugins/dropify/dropify.min.js"></script>
 <link rel="stylesheet" href="plugins/dropify/dropify.min.css">
-<script type="text/javascript">
-$(document).ready(function(){
-    $('#id_rubro').on('change',function(){
-        var rubroID = $(this).val();
-        //alert (rubroID);
-        if(rubroID){
-            $.ajax({
-                type:'POST',
-                url:'vistas/egresoscuenta/ajax.php',
-                data:'id_rubro='+rubroID,
-                success:function(html){
-                    $('#id_subrubro').html(html);  
-                }
-            });
-        }else{
-            $('#id_subrubro').html('<option value="">Seleccione primero el rubro</option>');
-            
-        }
-    });
-});
-</script>
+
 <?php
-$CuentaSel=$_GET['id_cuenta'];
-$cajas = Egresoscuenta::obtenerCuentapor($CuentaSel);
-	foreach($cajas as $caja){
-	$id_cuenta = $caja['id_cuenta'];
-	$nombre_cuenta = $caja['nombre_cuenta'];
-}
+$ClienteSel=$_GET['id'];
+$nombre_cliente = Clientes::obtenerNombreCliente($ClienteSel);
 
 ?>
 
@@ -62,12 +38,12 @@ $cajas = Egresoscuenta::obtenerCuentapor($CuentaSel);
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0 text-dark">Egreso en cuenta: <?php echo utf8_encode($nombre_cuenta); ?></h1>
+          <h1 class="m-0 text-dark">Nueva Ruta cliente: <?php echo utf8_encode($nombre_cliente); ?></h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="?controller=index&&action=index">Inicio</a></li>
-            <li class="breadcrumb-item active"><a href="?controller=cuentas&&action=todos">Cuentas</a></li>
+            <li class="breadcrumb-item active"><a href="?controller=clientesprecios&&action=todos">Rutas <?php echo utf8_encode($nombre_cliente); ?></a></li>
           </ol>
         </div><!-- /.col -->
       </div><!-- /.row -->
@@ -178,9 +154,9 @@ $cajas = Egresoscuenta::obtenerCuentapor($CuentaSel);
 																	$cajas = Egresoscuenta::obtenerCuentas($CuentaSel);
 																	foreach($cajas as $caja){
 																		$id_cuenta = $caja['id_cuenta'];
-																		$nombre_cuenta = $caja['nombre_cuenta'];
+																		$nombre_cliente = $caja['nombre_cliente'];
 																?>
-																<option value="<?php echo $id_cuenta; ?>"><?php echo $nombre_cuenta; ?></option>
+																<option value="<?php echo $id_cuenta; ?>"><?php echo $nombre_cliente; ?></option>
 																<?php }?>
 														  </select>
 													</div>

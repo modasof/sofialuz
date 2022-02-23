@@ -1,5 +1,5 @@
 <?php
-class EgresoscuentaController
+class ClientespreciosController
 {
     public function __construct()
     {}
@@ -8,426 +8,289 @@ class EgresoscuentaController
 /* FUNCION PARA MOSTRAR TODOS LOS EGRESOS DESDE ROUTING.PHP*/
 /*************************************************************/
 
-    public function egresos()
+    public function todos()
     {
-        $id_cuenta = $_GET['id_cuenta'];
-        $campos    = Egresoscuenta::obtenerPagina($id_cuenta);
-        require_once 'vistas/egresoscuenta/todos.php';
+        $id = $_GET['id_cliente'];
+        $campos    = Clientesprecios::obtenerPaginarutas($id);
+        require_once 'vistas/clientesprecios/todosruta.php';
     }
 
-/*************************************************************/
-/* FUNCION PARA MOSTRAR TODOS LOS EGRESOS DESDE ROUTING.PHP*/
-/*************************************************************/
-    public function egresosporfecha()
+     public function todoshora()
     {
-
-        $id_cuenta = $_GET['id_cuenta'];
-
-        if (isset($_POST['daterange'])) {
-            $fechaform = $_POST['daterange'];
-        } elseif (isset($_GET['daterange'])) {
-            $fechaform = $_GET['daterange'];
-        }
-        $campos = Egresoscuenta::obtenerPagina($id_cuenta);
-        require_once 'vistas/egresoscuenta/todos.php';
-
-    }
-/*************************************************************/
-/* FUNCION PARA MOSTRAR TODOS LOS EGRESOS DESDE ROUTING.PHP*/
-/*************************************************************/
-
-    public function ingresos()
-    {
-        $id_caja = $_GET['id_caja'];
-        $campos  = Egresoscuenta::obtenerPaginain($id_caja);
-        require_once 'vistas/egresoscuenta/todosing.php';
+        $id = $_GET['id_cliente'];
+        $campos    = Clientesprecios::obtenerPaginahoras($id);
+        require_once 'vistas/clientesprecios/todoshora.php';
     }
 
-/*************************************************************/
-/* FUNCION PARA AGREGAR NUEVO LLAMADO DESDE ROUTING.PHP */
-/*************************************************************/
-    public function nuevo()
+      public function todosproducto()
     {
-        require_once 'vistas/egresoscuenta/nuevo.php';
+        $id = $_GET['id_cliente'];
+        $campos    = Clientesprecios::obtenerPaginaproductos($id);
+        require_once 'vistas/clientesprecios/todosproducto.php';
     }
 
-/*************************************************************/
-/* FUNCION PARA MODIFICAR  LLAMADO DESDE ROUTING.PHP*/
-/*************************************************************/
-    public function editar()
+
+
+    # =================================================
+    # =           Formularios de Crear nuevo           =
+    # =================================================
+
+       public function nuevoValoresRuta()
     {
-        $id     = $_GET['id'];
-        $campos = Egresoscuenta::obtenerPaginaPor($id);
-        require_once 'vistas/egresoscuenta/editar1.php';
+        require_once 'vistas/clientesprecios/nuevoruta.php';
     }
 
-    public function editarcm()
+     public function nuevoValoresHora()
+    {
+        require_once 'vistas/clientesprecios/nuevo.php';
+    }
+
+     public function nuevoValoresProducto()
+    {
+        require_once 'vistas/clientesprecios/nuevo.php';
+    }
+    
+    # ======  End of Formulario de Crear nuevo  =======
+    
+
+
+    /*=============================================
+    =            Editar por canal_venta           =
+    =============================================*/
+    
+    public function editarValoresRuta()
     {
         $id     = $_GET['id'];
-        $campos = Egresoscuenta::obtenerPaginaPor($id);
-        require_once 'vistas/egresoscuenta/editar1.php';
+        $campos = Clientesprecios::obtenerPaginaPor($id);
+        require_once 'vistas/clientesprecios/editar1.php';
     }
 
-    public function editarcu()
+    public function editarValoresHora()
     {
         $id     = $_GET['id'];
-        $campos = Egresoscuenta::obtenerPaginaPor($id);
-        require_once 'vistas/egresoscuenta/editar2.php';
-    }
-    public function editarot()
-    {
-        $id     = $_GET['id'];
-        $campos = Egresoscuenta::obtenerPaginaPor($id);
-        require_once 'vistas/egresoscuenta/editar3.php';
+        $campos = Clientesprecios::obtenerPaginaPor($id);
+        require_once 'vistas/clientesprecios/editar1.php';
     }
 
-/*************************************************************/
-/* FUNCION PARA ELIMINAR  LLAMADO DESDE ROUTING.PHP*/
-/*************************************************************/
+    public function editarValoresProducto()
+    {
+        $id     = $_GET['id'];
+        $campos = Clientesprecios::obtenerPaginaPor($id);
+        require_once 'vistas/clientesprecios/editar2.php';
+    }
+    
+    /*=====  End of Section comment block  ======*/
+    
+    
     public function eliminar()
     {
         $id      = $_GET['id'];
-        $id_caja = $_GET['id_caja'];
-        $res     = Egresoscuenta::eliminarPor($id);
+        $id_cliente = $_GET['id_cliente'];
+        $res     = Clientesprecios::eliminarPor($id);
         if ($res) {
             echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
         } else {
             echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
         }
-        $campos = Egresoscuenta::obtenerPagina($id_caja);
-        require_once 'vistas/egresoscuenta/todos.php';
+        $campos = Clientesprecios::obtenerPaginarutas($id_cliente);
+        require_once 'vistas/clientesprecios/todosruta.php';
     }
 
-/*************************************************************/
-/* FUNCION PARA ELIMINAR  LLAMADO DESDE ROUTING.PHP*/
-/*************************************************************/
-    public function eliminarcm()
+     public function eliminarhora()
     {
-        $id_cuenta = $_GET['id_cuenta'];
-        $idegreso  = $_GET['idegreso'];
-        $idingreso = $_GET['idingreso'];
-
-        $res = Egresoscuenta::eliminaregresocuenta($idegreso);
-        $res = Egresoscuenta::eliminaringresocaja($idingreso);
+        $id      = $_GET['id'];
+        $id_cliente = $_GET['id_cliente'];
+        $res     = Clientesprecios::eliminarPor($id);
         if ($res) {
             echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
         } else {
             echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
         }
-        $campos = Egresoscuenta::obtenerPagina($id_cuenta);
-        require_once 'vistas/egresoscuenta/todos.php';
+        $campos = Clientesprecios::obtenerPaginahoras($id_cliente);
+        require_once 'vistas/clientesprecios/todoshora.php';
     }
 
-/*************************************************************/
-/* FUNCION PARA ELIMINAR  LLAMADO DESDE ROUTING.PHP*/
-/*************************************************************/
-    public function eliminarmvs()
+     public function eliminarproducto()
     {
-        $id_cuenta = $_GET['id_cuenta'];
-        $idegreso  = $_GET['idegreso'];
-        $idingreso = $_GET['idingreso'];
-
-        $res = Egresoscuenta::eliminaregresocuenta($idegreso);
-        $res = Egresoscuenta::eliminaringresocuenta($idingreso);
+        $id      = $_GET['id'];
+        $id_cliente = $_GET['id_cliente'];
+        $res     = Clientesprecios::eliminarPor($id);
         if ($res) {
             echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
         } else {
             echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
         }
-        $campos = Egresoscuenta::obtenerPagina($id_cuenta);
-        require_once 'vistas/egresoscuenta/todos.php';
+        $campos = Clientesprecios::obtenerPaginaproductos($id_cliente);
+        require_once 'vistas/clientesprecios/todosproducto.php';
     }
 
-/*************************************************************/
-/* FUNCION PARA ELIMINAR  LLAMADO DESDE ROUTING.PHP*/
-/*************************************************************/
-    public function eliminarot()
-    {
-        $id_cuenta = $_GET['id_cuenta'];
-        $idegreso  = $_GET['idegreso'];
-        $res       = Egresoscuenta::eliminarot($idegreso);
-        $res       = Egresoscuenta::eliminarabono($idegreso);
-        if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
-        } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
-        }
-        $campos = Egresoscuenta::obtenerPagina($id_cuenta);
-        require_once 'vistas/egresoscuenta/todos.php';
-    }
 
 /*************************************************************/
 /* FUNCION PARA GUARDAR NUEVO REGISTRO */
 /*************************************************************/
-    public function guardar()
-    {
+function guardar() {
 
-        $ruta_imagen = $this->subir_fichero('images/egresoscuenta', 'imagen');
-        //$nuevo['imagen']=$ruta_imagen;
-        $variable     = $_POST;
-        $nuevoarreglo = array();
-        extract($variable);
-        foreach ($variable as $campo => $valor) {
-            //ELIMINAR CUALQUIER ETIQUETA <> PARA INYECCION SCRIPT
-            $campo = strip_tags(trim($campo));
-            $campo = htmlspecialchars($campo, ENT_QUOTES, 'UTF-8');
+    $id_cliente = $_GET['id_cliente'];
 
-            $valor = strip_tags(trim($valor));
-            $valor = htmlspecialchars($valor, ENT_QUOTES, 'UTF-8');
-            if ($campo == "imagen2") {
-                $nuevoarreglo[$campo] = $ruta_imagen;
-            } else {
-                $nuevoarreglo[$campo] = $valor;
-            }
+    $origen_id=$_POST['origen_id'];
+    $destino_id=$_POST['destino_id'];
+
+    if ($origen_id==$destino_id) {
+        echo "<script>jQuery(function(){swal(\"¡Error al guardar!\", \" Se seleccionaron origen y destino iguales \", \"warning\");});</script>";
+         $this->show();
+    }
+    else{
+
+    $variable = $_POST;
+    $nuevoarreglo = array();
+    extract($variable);
+    foreach ($variable as $campo => $valor){
+        //ELIMINAR CUALQUIER ETIQUETA <> PARA INYECCION SCRIPT
+        $campo = strip_tags(trim($campo));
+        $campo  = htmlspecialchars($campo, ENT_QUOTES, 'UTF-8');
+
+        $valor = strip_tags(trim($valor));
+        $valor  = htmlspecialchars($valor, ENT_QUOTES, 'UTF-8');
+        if ($campo=="imagen2"){
+            $nuevoarreglo[$campo]=$ruta_imagen;
+        }else{
+            $nuevoarreglo[$campo]=$valor;
         }
+    }
+    $campo = new Clientesprecios('',$nuevoarreglo);
+    $res = Clientesprecios::guardar($campo);
+    if ($res){
+        echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+    }else{
+        echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+    }
+     $this->show();
+ }
+}
 
-        //array_push($nuevoarreglo,$nuevo);
-        $campo = new Egresoscuenta('', $nuevoarreglo);
-        $res   = Egresoscuenta::guardar($campo, $ruta_imagen);
 
-        if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
-        } else {
-            echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+/*************************************************************/
+/* FUNCION PARA GUARDAR NUEVO REGISTRO */
+/*************************************************************/
+function guardarvalorhora() {
+
+    $id_cliente = $_GET['id_cliente'];
+    $variable = $_POST;
+    $nuevoarreglo = array();
+    extract($variable);
+    foreach ($variable as $campo => $valor){
+        //ELIMINAR CUALQUIER ETIQUETA <> PARA INYECCION SCRIPT
+        $campo = strip_tags(trim($campo));
+        $campo  = htmlspecialchars($campo, ENT_QUOTES, 'UTF-8');
+
+        $valor = strip_tags(trim($valor));
+        $valor  = htmlspecialchars($valor, ENT_QUOTES, 'UTF-8');
+        if ($campo=="imagen2"){
+            $nuevoarreglo[$campo]=$ruta_imagen;
+        }else{
+            $nuevoarreglo[$campo]=$valor;
         }
+    }
+    $campo = new Clientesprecios('',$nuevoarreglo);
+    $res = Clientesprecios::guardar($campo);
+    if ($res){
+        echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+    }else{
+        echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+    }
+     $this->showvalorhora();
+ 
+}
 
-        if ($tipo_egreso == "Cuenta") {
+/*************************************************************/
+/* FUNCION PARA GUARDAR NUEVO REGISTRO */
+/*************************************************************/
+function guardarvalorproducto() {
 
-            // Ingreso a caja desde cuenta
+    $id_cliente = $_GET['id_cliente'];
+    $variable = $_POST;
+    $nuevoarreglo = array();
+    extract($variable);
+    foreach ($variable as $campo => $valor){
+        //ELIMINAR CUALQUIER ETIQUETA <> PARA INYECCION SCRIPT
+        $campo = strip_tags(trim($campo));
+        $campo  = htmlspecialchars($campo, ENT_QUOTES, 'UTF-8');
 
-            $ultimoIdEgreso = Egresoscuenta::ultimoIdEgreso();
-
-            $res = Egresoscuenta::guardaringreso($tipo_egreso, $fecha_egreso, $caja_beneficiada, $cuenta_id_cuenta, $valor_egreso, $observaciones, $marca_temporal, $egreso_publicado, $creado_por, $ultimoIdEgreso);
-
-            if ($res) {
-                echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
-            } else {
-                echo "<script>jQuery(function(){swal(\"¡Errores al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
-            }
-
+        $valor = strip_tags(trim($valor));
+        $valor  = htmlspecialchars($valor, ENT_QUOTES, 'UTF-8');
+        if ($campo=="imagen2"){
+            $nuevoarreglo[$campo]=$ruta_imagen;
+        }else{
+            $nuevoarreglo[$campo]=$valor;
         }
+    }
+    $campo = new Clientesprecios('',$nuevoarreglo);
+    $res = Clientesprecios::guardar($campo);
+    if ($res){
+        echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+    }else{
+        echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+    }
+     $this->showvalorproducto();
+ 
+}
 
-        if ($tipo_egreso == "Movimiento a cuenta") {
 
-            // Actualizamos la ruta de la imagen en el ingreso y el Id del Egreso para posterior Edición
+/*************************************************************/
+/* FUNCION PARA ACTUALIZAR*/
+/*************************************************************/
+function actualizar(){
+    $id = $_GET['id'];
+    $id_cliente = $_GET['id_cliente'];
+    $variable = $_POST;
+    $nuevoarreglo = array();
+    extract($variable);
+    foreach ($variable as $campo => $valor){
+        //ELIMINAR CUALQUIER ETIQUETA <> PARA INYECCION SCRIPT
+        $campo = strip_tags(trim($campo));
+        $campo  = htmlspecialchars($campo, ENT_QUOTES, 'UTF-8');
 
-            $ultimaruta     = Egresoscuenta::obtenerUltimaRuta();
-            $ultimoIdEgreso = Egresoscuenta::ultimoIdEgreso();
-
-            $res = Egresoscuenta::guardaringresocuenta($cuenta_beneficiada, $cuenta_id_cuenta, $ultimaruta, $tipo_egreso, $valor_egreso, $egreso_en, $cheque_id_cheque, $fecha_egreso, $observaciones, $marca_temporal, $creado_por, $egreso_publicado, $ultimoIdEgreso);
-
-            // Actualizamos el
-
-            if ($res) {
-                echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
-            } else {
-                echo "<script>jQuery(function(){swal(\"¡Errores al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
-            }
-
+        $valor = strip_tags(trim($valor));
+        $valor  = htmlspecialchars($valor, ENT_QUOTES, 'UTF-8');
+        if ($campo=="imagen"){
+            $nuevoarreglo[$campo]=$ruta_imagen;
+        }else{
+            $nuevoarreglo[$campo]=$valor;
         }
-
-        $this->showcuentas();
 
     }
-
-/*************************************************************/
-/* FUNCION PARA ACTUALIZAR EGRESO A CAJA MENOR*/
-/*************************************************************/
-    public function actualizarcm()
-    {
-        if (empty($_FILES['imagen']['name'])) {
-            $ruta_imagen = $_POST['ruta1'];
-        } else {
-            $ruta_imagen = $this->subir_fichero('images/egresoscuenta', 'imagen');
+    $datosguardar = new Clientesprecios($id,$nuevoarreglo);
+    $res = Clientesprecios::actualizar($id,$datosguardar);
+    if ($res){
+        echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina de miembros\", \"success\");});</script>";
+    }else{
+                echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
-
-        $id           = $_GET['id'];
-        $id_cuenta    = $_GET['id_cuenta'];
-
-
-        $fecha_egreso=$_POST['fecha_egreso'];
-        $valor_egreso=$_POST['valor_egreso'];
-        $observaciones=$_POST['observaciones'];
-        $estado_egreso=$_POST['estado_egreso'];
-        $caja_beneficiada=$_POST['caja_beneficiada'];
-        $egreso_en=$_POST['egreso_en'];
-
-
-        $variable     = $_POST;
-        $nuevoarreglo = array();
-        extract($variable);
-        foreach ($variable as $campo => $valor) {
-            //ELIMINAR CUALQUIER ETIQUETA <> PARA INYECCION SCRIPT
-            $campo = strip_tags(trim($campo));
-            $campo = htmlspecialchars($campo, ENT_QUOTES, 'UTF-8');
-
-            $valor = strip_tags(trim($valor));
-            $valor = htmlspecialchars($valor, ENT_QUOTES, 'UTF-8');
-            if ($campo == "imagen") {
-                $nuevoarreglo[$campo] = $ruta_imagen;
-            } else {
-                $nuevoarreglo[$campo] = $valor;
-            }
-
-
-
-        }
-        $datosguardar = new Egresoscuenta($id, $nuevoarreglo);
-        $res          = Egresoscuenta::actualizarcm($id,$ruta_imagen,$datosguardar);
-
-        $res= Egresoscuenta::actualizarmvcjmenor($id,$valor_egreso,$observaciones,$ruta_imagen,$estado_egreso,$fecha_egreso);
-        
-        if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente el egreso en caja\", \"success\");});</script>";
-        } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
-        }
-        $this->show($id_cuenta);
-    }
-
-/*************************************************************/
-/* FUNCION PARA ACTUALIZAR EGRESO A CUENTA*/
-/*************************************************************/
-    public function actualizarcu()
-    {
-
-
-        $valor_egreso        = $_POST['valor_egreso'];
-        $observaciones       = $_POST['observaciones'];
-        $estado_egreso       = $_POST['estado_egreso'];
-        $fecha_egreso        = $_POST['fecha_egreso'];
-        $cuenta_beneficiada  = $_POST['cuenta_beneficiada'];
-        $egreso_en           = $_POST['egreso_en'];
-       
-
-
-        if (empty($_FILES['imagen']['name'])) {
-            $ruta_imagen = $_POST['ruta1'];
-        } else {
-            $ruta_imagen = $this->subir_fichero('images/egresoscuenta', 'imagen');
-        }
-
-        $id           = $_GET['id'];
-        $id_cuenta    = $_GET['id_cuenta'];
-        $variable     = $_POST;
-        $nuevoarreglo = array();
-        extract($variable);
-        foreach ($variable as $campo => $valor) {
-            //ELIMINAR CUALQUIER ETIQUETA <> PARA INYECCION SCRIPT
-            $campo = strip_tags(trim($campo));
-            $campo = htmlspecialchars($campo, ENT_QUOTES, 'UTF-8');
-
-            $valor = strip_tags(trim($valor));
-            $valor = htmlspecialchars($valor, ENT_QUOTES, 'UTF-8');
-            if ($campo == "imagen") {
-                $nuevoarreglo[$campo] = $ruta_imagen;
-            } else {
-                $nuevoarreglo[$campo] = $valor;
-            }
-
-        }
-
-        $datosguardar = new Egresoscuenta($id, $nuevoarreglo);
-        $res          = Egresoscuenta::actualizarcu($id, $datosguardar, $ruta_imagen);
-
-        $res = Egresoscuenta::actualizarmvc($id, $valor_egreso, $observaciones, $ruta_imagen, $estado_egreso, $fecha_egreso, $egreso_en);
-
-        if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente el egreso en caja\", \"success\");});</script>";
-        } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
-        }
-        $this->show($id_cuenta);
-    }
-
-/*************************************************************/
-/* FUNCION PARA ACTUALIZAR EGRESO A CUENTA*/
-/*************************************************************/
-    public function actualizarot()
-    {
-        if (empty($_FILES['imagen']['name'])) {
-            $ruta_imagen = $_POST['ruta1'];
-        } else {
-            $ruta_imagen = $this->subir_fichero('images/egresoscuenta', 'imagen');
-        }
-        $id           = $_GET['id'];
-        $id_cuenta    = $_GET['id_cuenta'];
-        $variable     = $_POST;
-        $nuevoarreglo = array();
-        extract($variable);
-        foreach ($variable as $campo => $valor) {
-            //ELIMINAR CUALQUIER ETIQUETA <> PARA INYECCION SCRIPT
-            $campo = strip_tags(trim($campo));
-            $campo = htmlspecialchars($campo, ENT_QUOTES, 'UTF-8');
-
-            $valor = strip_tags(trim($valor));
-            $valor = htmlspecialchars($valor, ENT_QUOTES, 'UTF-8');
-            if ($campo == "imagen") {
-                $nuevoarreglo[$campo] = $ruta_imagen;
-            } else {
-                $nuevoarreglo[$campo] = $valor;
-            }
-
-        }
-        $datosguardar = new Egresoscuenta($id, $nuevoarreglo);
-        $res          = Egresoscuenta::actualizarot($id, $datosguardar, $ruta_imagen);
-        if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente el egreso en caja\", \"success\");});</script>";
-        } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
-        }
-        $this->show($id_cuenta);
-    }
+    $this->show($id_cliente);
+}
 
 /*************************************************************/
 /* FUNCION PARA MOSTRAR LA PAGINA*/
 /*************************************************************/
     public function show()
     {
-        $id_cuenta = $_GET['id_cuenta'];
-        $campos    = Egresoscuenta::obtenerPagina($id_cuenta);
-        require_once 'vistas/egresoscuenta/todos.php';
+        $id_cliente = $_GET['id_cliente'];
+        $campos    = Clientesprecios::obtenerPaginarutas($id_cliente);
+        require_once 'vistas/clientesprecios/todosruta.php';
     }
 
-/*************************************************************/
-/* FUNCION PARA MOSTRAR LA PAGINA*/
-/*************************************************************/
-    public function showcuentas()
+     public function showvalorhora()
     {
-        $campos = Egresoscuenta::obtenerPagina2();
-        require_once 'vistas/cuentas/todos.php';
+        $id_cliente = $_GET['id_cliente'];
+        $campos    = Clientesprecios::obtenerPaginahoras($id_cliente);
+        require_once 'vistas/clientesprecios/todoshora.php';
     }
 
-/*************************************************************/
-/* FUNCION PARA SUBIR UN ARCHIVO  */
-/*************************************************************/
-
-    public function subir_fichero($directorio_destino, $nombre_fichero)
+     public function showvalorproducto()
     {
-        $tmp_name = $_FILES[$nombre_fichero]['tmp_name'];
-        //si hemos enviado un directorio que existe realmente y hemos subido el archivo
-        if (is_dir($directorio_destino) && is_uploaded_file($tmp_name)) {
-            $img_file   = $_FILES[$nombre_fichero]['name'];
-            $Aleaotorio = rand(0, 99999);
-            $img_file   = $Aleaotorio . $img_file;
-            $img_type   = $_FILES[$nombre_fichero]['type'];
-            // Si se trata de una imagen
-            if (((strpos($img_type, "gif") || strpos($img_type, "jpeg") || strpos($img_type, "jpg")) || strpos($img_type, "png"))) {
-                //¿Tenemos permisos para subir la imágen?
-                if (move_uploaded_file($tmp_name, $directorio_destino . '/' . $img_file)) {
-                    $retornar = $directorio_destino . '/' . $img_file; //RETORNAMOS EL NOMBRE Y RUTA DEL FICHERO
-                    return $retornar;
-                }
-            } else {
-                if (move_uploaded_file($tmp_name, $directorio_destino . '/' . $img_file)) {
-                    $retornar = $directorio_destino . '/' . $img_file; //RETORNAMOS EL NOMBRE Y RUTA DEL FICHERO
-                    return $retornar;
-                }
-            }
-        }
-        //Si llegamos hasta aquí es que algo ha fallado
-        $vacio = '';
-        return $vacio;
+        $id_cliente = $_GET['id_cliente'];
+        $campos    = Clientesprecios::obtenerPaginaproductos($id_cliente);
+        require_once 'vistas/clientesprecios/todosproducto.php';
     }
 
 }
