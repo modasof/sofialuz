@@ -30,7 +30,7 @@ $controllers = array(
     'consolidados' => ['editar','guardar','actualizar','todos','nuevo','eliminar','documentoscuentas','documentosequipos','totalreporteseq'],
 
     // Funcionalidad compras
-	'compras' => ['todos','formulario','guardar','eliminar','editar','actualizar','porfecha','verdetalle','cambiarestado','actualizarpago','cambiarestadocreditos','pagotemporal','deletepagotemporal','actualizarpagocredito','recibiroc','todospormes','cxpusuario'],
+	'compras' => ['todos','formulario','guardar','eliminar','editar','actualizar','porfecha','verdetalle','cambiarestado','actualizarpago','cambiarestadocreditos','pagotemporal','deletepagotemporal','actualizarpagocredito','recibiroc','todospormes','cxpusuario','actualizardetallecot','editardetallecot'],
 
 	// Funcionalidad Cotizaciones
 	'cotizaciones' => ['todos','editar','actualizar','porfecha','todosporinsumo'],

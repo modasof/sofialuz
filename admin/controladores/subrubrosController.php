@@ -30,6 +30,38 @@ class SubrubrosController {
 /*************************************************************/
 /* FUNCION PARA ELIMINAR  LLAMADO DESDE ROUTING.PHP*/
 /*************************************************************/
+	function desactivarcxp() {
+		$id = $_GET['id'];
+		$res = Subrubros::desactivarmenuPor($id);
+		if ($res){
+			echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+		}else{
+				echo "<script>jQuery(function(){swal(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+		}
+		$campos=Subrubros::obtenerPagina();;
+		require_once 'vistas/subrubros/todos.php';
+	}
+
+
+/*************************************************************/
+/* FUNCION PARA ELIMINAR  LLAMADO DESDE ROUTING.PHP*/
+/*************************************************************/
+	function activarcxp() {
+		$id = $_GET['id'];
+		$res = Subrubros::activarmenuPor($id);
+		if ($res){
+			echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+		}else{
+				echo "<script>jQuery(function(){swal(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+		}
+		$campos=Subrubros::obtenerPagina();;
+		require_once 'vistas/subrubros/todos.php';
+	}
+
+
+/*************************************************************/
+/* FUNCION PARA ELIMINAR  LLAMADO DESDE ROUTING.PHP*/
+/*************************************************************/
 	function eliminar() {
 		$id = $_GET['id'];
 		$res = Subrubros::eliminarPor($id);

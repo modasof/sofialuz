@@ -68,6 +68,23 @@ public static function obtenerSubRubros(){
 	}
 }
 
+/*******************************************************
+** FUNCION PARA OBTENER TODAS LAS MARCAS DEL VEHICULO	  **
+********************************************************/
+public static function obtenerSubRubroscuentasporpagar(){
+	try {
+		$db=Db::getConnect();
+		$select=$db->query("SELECT id_subrubro,nombre_subrubro FROM subrubros WHERE activado_cxp='1' and estado_subrubro='1' order by nombre_subrubro");
+    	$campos=$select->fetchAll();
+		$camposs = new Subrubros('',$campos);
+		$campostraidos = $camposs->getCampos();
+		return $campostraidos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
 
 
 
@@ -153,12 +170,14 @@ public static function actualizar($id,$campos){
 		$update=$db->prepare('UPDATE subrubros SET
 								rubro_id_rubro=:rubro_id_rubro,
 								nombre_subrubro=:nombre_subrubro,
-								estado_subrubro=:estado_subrubro
+								estado_subrubro=:estado_subrubro,
+								activado_cxp=:activado_cxp
 								WHERE id=:id');
 
 		$update->bindValue('rubro_id_rubro',$rubro_id_rubro);
 		$update->bindValue('nombre_subrubro',$nombre_subrubro);
 		$update->bindValue('estado_subrubro',$estado_subrubro);
+		$update->bindValue('activado_cxp',$activado_cxp);
 		$update->bindValue('id_subrubro',$id_subrubro);
 		$update->execute();
 		return true;
@@ -193,11 +212,12 @@ public static function guardar($campos){
 		$campostraidos = $campos->getCampos();
 		extract($campostraidos);
 
-		$insert=$db->prepare('INSERT INTO subrubros VALUES (NULL,:rubro_id_rubro,:nombre_subrubro,:estado_subrubro)');
+		$insert=$db->prepare('INSERT INTO subrubros VALUES (NULL,:rubro_id_rubro,:nombre_subrubro,:estado_subrubro,:activado_cxp)');
 
 		$insert->bindValue('rubro_id_rubro',utf8_decode($rubro_id_rubro));
 		$insert->bindValue('nombre_subrubro',utf8_decode($nombre_subrubro));
 		$insert->bindValue('estado_subrubro',utf8_decode($estado_subrubro));
+		$insert->bindValue('activado_cxp',utf8_decode($activado_cxp));
 		$insert->execute();
 
 		return true;
@@ -222,6 +242,39 @@ public static function obtenerNombreSubrubro($id){
 			$mar = $marca['nombre_subrubro'];
 		}
 		return $mar;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
+/***************************************************************
+** FUNCION PARA ELIINAR POR ID  **
+***************************************************************/
+public static function desactivarmenuPor($id){
+	try {
+		$db=Db::getConnect();
+		$select=$db->query("UPDATE subrubros SET activado_cxp='0' WHERE id_subrubro='".$id."'");
+		if ($select){
+			return true;
+			}else{return false;}
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/***************************************************************
+** FUNCION PARA  DESACTIVAR PERMISO POR ID  **
+***************************************************************/
+public static function activarmenuPor($id){
+	try {
+		$db=Db::getConnect();
+		$select=$db->query("UPDATE subrubros SET activado_cxp='1' WHERE id_subrubro='".$id."'");
+		if ($select){
+			return true;
+			}else{return false;}
 	}
 	catch(PDOException $e) {
 		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';

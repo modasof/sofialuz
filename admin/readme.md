@@ -24,3 +24,6 @@
  - Se actualizan formularios para listado de precios de rutas, alquiler, productos (MVC) clientesprecios 
  - Se actualiza funcionalidad por módulo clientes (V) Clientes
 
+# Actualización 23 de Febrero 
+- Se agrega funcionalidad de editar el valor unitario y cantidades en orden de compra, (MVC) compras
+

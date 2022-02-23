@@ -287,6 +287,22 @@ public static function editarpor($id){
 	}
 }
 
+/***************************************************************
+** FUNCION PARA MOSTRAR TODOS LOS CAMPOS DE FILTRADOS POR ID  **
+***************************************************************/
+public static function editardetallecotizacion($id){
+	try {
+		$db=Db::getConnect();
+		$select=$db->query("SELECT * FROM cotizaciones_item WHERE id='".$id."'");
+		$camposs=$select->fetchAll();
+		$campos = new Compras('',$camposs);
+		return $campos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
 /********************************************************************
 *** FUNCION PARA MODIFICAR REPORTE DE EQUIPO ****
 * id, imagen, fecha_reporte, valor_total, valor_retenciones, estado_orden, proveedor_id_proveedor, medio_pago, observaciones, marca_temporal, usuario_creador
@@ -357,6 +373,47 @@ public static function actualizar($id,$campos,$imagen){
 		echo '{"error al guardar la configuración ":{"text":'. $e->getMessage() .'}}';
 	}
 }
+
+
+/********************************************************************
+*** FUNCION PARA MODIFICAR REPORTE DE EQUIPO ****
+* id, imagen, fecha_reporte, valor_total, valor_retenciones, estado_orden, proveedor_id_proveedor, medio_pago, observaciones, marca_temporal, usuario_creador
+********************************************************************/
+public static function actualizardetallecot($id,$campos){
+	try {
+		$db=Db::getConnect();
+		$campostraidos = $campos->getCampos();
+		extract($campostraidos);
+
+		$update=$db->prepare('UPDATE cotizaciones_item SET
+								valor_cot=:valor_cot,
+								cantidadcot=:cantidadcot,
+								vr_unitario=:vr_unitario
+								WHERE id=:id');
+	
+
+		$V11=str_replace(".","",$vr_unitario);
+		$V21=str_replace(" ", "", $V11);
+		$valor_final1=str_replace("$", "", $V21);
+		$valornumero1=(int) $valor_final1;
+
+		$valornumero=$valornumero1*$cantidadcot;
+
+		$update->bindValue('valor_cot',utf8_decode($valornumero));
+		$update->bindValue('cantidadcot',utf8_decode($cantidadcot));
+		$update->bindValue('vr_unitario',utf8_decode($valornumero1));
+		$update->bindValue('id',utf8_decode($id));
+
+		$update->execute();
+		return true;
+	}
+	catch(PDOException $e) {
+		echo '{"error al guardar la configuración ":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
+
 
 /***************************************************************
 *** FUNCION PARA GUARDAR INGRESO DE PAGO DE ORDEN DE COMPRA **** 
@@ -516,6 +573,10 @@ public static function pagotemporal($id,$valor,$fecha_registro,$estado_pago,$cre
 		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
 	}
 }
+
+
+
+
 
 /*******************************************************
 ** FUNCION PARA MOSTRAR  **
@@ -748,7 +809,61 @@ public static function obtenervalorcotizado($insumo_id,$cotizacion_item_id,$idpr
 	}
 }
 
+/*******************************************************
+** FUNCION PARA MOSTRAR  **
+********************************************************/
+public static function sqlvalortotalordencompra($id){
+	try {
+		$db=Db::getConnect();
 
+		$select=$db->query("SELECT IFNULL(sum(valor_cot),0) as total FROM cotizaciones_item WHERE ordencompra_num='".$id."'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Compras('',$camposs);
+    	$marcas = $campos->getCampos();
+		foreach($marcas as $marca){
+			$mar = $marca['total'];
+		}
+		return $mar;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/***************************************************************
+*** FUNCION PARA GUARDAR INGRESO DE PAGO DE ORDEN DE COMPRA **** 
+***************************************************************/
+public static function actualizarvalorfinal($id,$valornuevo){
+	try {
+		$db=Db::getConnect();
+
+	$select=$db->query("UPDATE ordenescompra SET valor_total='".$valornuevo."' WHERE id='".$id."'");
+		if ($select){
+			return true;
+			}else{return false;}
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/***************************************************************
+*** FUNCION PARA GUARDAR INGRESO DE PAGO DE ORDEN DE COMPRA **** 
+***************************************************************/
+public static function log($usuario_creador,$marca_temporal, $logdetalle,$modulo){
+
+	try {
+		$db=Db::getConnect();
+
+	$select=$db->query("INSERT INTO log_usuarios (usuario_creador,marca_temporal,log_detalle,log_modulo) VALUES ('".utf8_decode($usuario_creador)."','".utf8_decode($marca_temporal)."','".utf8_decode($logdetalle)."','".utf8_decode($modulo)."')");
+		if ($select){
+			return true;
+			}else{return false;}
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
 
 
 }

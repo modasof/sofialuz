@@ -91,6 +91,7 @@ else
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="?controller=index&&action=index">Inicio</a></li>
+             <li class="breadcrumb-item active"><a href="?controller=compras&&action=todos">Compras</a></li>
            
             <!--<li class="breadcrumb-item active"><a href="?controller=equipos&&action=todos">Equipos</a></li>-->
           </ol>
@@ -214,6 +215,7 @@ else
                                        <th style="background-color: #fcf8e3" class="success"></th>
                                        <th style="background-color: #fcf8e3" class="success"></th>
                                        <th style="background-color: #fcf8e3" class="success"></th>
+                                       <th style="background-color: #fcf8e3" class="success"></th>
                                        
                             </tfoot>
           <thead>
@@ -224,6 +226,7 @@ else
               <th>Unidad</th>
               <th>Vr. Unitario</th>
               <th>Subtotal</th>
+              <th>Acción</th>
              
             </tr>
             <tr>
@@ -233,6 +236,7 @@ else
               <th>Unidad</th>
               <th>Vr. Unitario</th>
               <th>Subtotal</th>
+               <th>Acción</th>
                
             </tr>
           </thead>
@@ -278,6 +282,12 @@ else
               <td><?php echo($nomunidadmedida); ?></td>
                <td><?php echo ("$ ".number_format($vr_unitario,0)); ?></td>
               <td><?php echo ("$ ".number_format($valor_cot,0)); ?></td>
+              <td>
+                
+            <a href="?controller=compras&&action=editardetallecot&&id=<?php echo ($id1); ?>&&id_ordencompra=<?php echo($idordencompra); ?>" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Detalle">
+                <i class="fa fa-edit bigger-110 "> Editar</i>
+              </a>
+              </td>
             </tr>
             <?php
               }

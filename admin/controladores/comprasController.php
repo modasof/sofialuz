@@ -45,6 +45,17 @@ class ComprasController
         require_once 'vistas/compras/verdetalle.php';
     }
 
+     public function editardetallecot()
+    {
+        $id     = $_GET['id'];
+        $id_ordencompra     = $_GET['id_ordencompra'];
+        $campos = Compras::editardetallecotizacion($id);
+        require_once 'vistas/compras/editardetallecotizacion.php';
+    }
+
+
+    
+
 /*************************************************************/
 /* FUNCION PARA MOSTRAR EL LISTADO DE ID A CAMBIAR DE ESTADO*/
 /*************************************************************/
@@ -215,6 +226,76 @@ class ComprasController
         $this->showtodos();
     }
 
+
+
+/*************************************************************/
+/* FUNCION PARA ACTUALIZAR*/
+/*************************************************************/
+function actualizardetallecot(){
+    $id = $_GET['id'];
+    $id_cotizacion_item = $_GET['id_cotizacion_item'];
+    $variable = $_POST;
+
+    $usuario_creador=$_POST['usuario_creador'];
+    $marca_temporal=$_POST['marca_temporal'];
+
+
+    $nuevoarreglo = array();
+    extract($variable);
+    foreach ($variable as $campo => $valor){
+        //ELIMINAR CUALQUIER ETIQUETA <> PARA INYECCION SCRIPT
+        $campo = strip_tags(trim($campo));
+        $campo  = htmlspecialchars($campo, ENT_QUOTES, 'UTF-8');
+
+        $valor = strip_tags(trim($valor));
+        $valor  = htmlspecialchars($valor, ENT_QUOTES, 'UTF-8');
+        if ($campo=="imagen"){
+            $nuevoarreglo[$campo]=$ruta_imagen;
+        }else{
+            $nuevoarreglo[$campo]=$valor;
+        }
+
+    }
+    $datosguardar = new Compras($id_cotizacion_item,$nuevoarreglo);
+    $res = Compras::actualizardetallecot($id_cotizacion_item,$datosguardar);
+
+    // Se actualizan los valores 
+
+    // 1. Verificamos el valor inicial de la orden de compra
+
+        $valorinicial =Compras::sqlvalor($id);
+
+    // 2. Retomamos el nuevo valor 
+
+        $valorfinal =Compras::sqlvalortotalordencompra($id);
+
+    // 3. Verificación si el valor incremento o bajo 
+
+        if ($valorinicial>$valorfinal) {    
+            $logdetalle = "El valor de la orden de compra OC00".$id." bajo";
+        }elseif ($valorinicial<$valorfinal) {
+             $logdetalle = "El valor de la orden de compra OC00".$id." incremento";
+        }else{
+            $logdetalle = "El valor de la orden de compra OC00".$id." se actualiza pero no cambia ";
+        }
+
+    // 4. Actualizamos el nuevo valor de la orden de compra
+
+         $res = Compras::actualizarvalorfinal($id,$valorfinal);
+
+    // 5. Actualizamos registro del log 
+         $modulo = "Ordenes de compra";
+          $res = Compras::log($usuario_creador,$marca_temporal, $logdetalle,$modulo);
+
+    if ($res){
+        echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina de miembros\", \"success\");});</script>";
+    }else{
+                echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+        }
+
+        $campos = Compras::verdetalle($id);
+        require_once 'vistas/compras/verdetalle.php';
+}
     /*************************************************************/
 /* FUNCION PARA GUARDADO PAGO TEMPORAL */
 /*************************************************************/
