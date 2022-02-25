@@ -50,6 +50,34 @@ function Cotizacionesporcantdeinsumos($item,$requisicion,$insumo,$estado){
 	return $TotalSolicitado;
 	}
 
+function Cotizacionesporcantdeservicios($item,$requisicion,$servicio,$estado){
+	$db = Db::getConnect();
+	$sql="SELECT IFNULL(sum(cantidadcot),0) as TotalSolicitado FROM cotizaciones_item WHERE item_id='".$item."' and requisicion_id='".$requisicion."' and servicio_id_servicio='".$servicio."' and estado_cotizacion='".$estado."'";
+	//echo ($sql);
+	$select = $db->prepare($sql);
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$TotalSolicitado = $campo['TotalSolicitado'];
+		}
+	return $TotalSolicitado;
+	}
+
+
+
+function Cotizacionesporcantdeequipos($item,$requisicion,$equipo,$estado){
+	$db = Db::getConnect();
+	$sql="SELECT IFNULL(sum(cantidadcot),0) as TotalSolicitado FROM cotizaciones_item WHERE item_id='".$item."' and requisicion_id='".$requisicion."' and equipo_id_equipo='".$equipo."' and estado_cotizacion='".$estado."'";
+	//echo ($sql);
+	$select = $db->prepare($sql);
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$TotalSolicitado = $campo['TotalSolicitado'];
+		}
+	return $TotalSolicitado;
+	}
+
 
 function Valorpromedioinsumo($insumo){
 	$db = Db::getConnect();

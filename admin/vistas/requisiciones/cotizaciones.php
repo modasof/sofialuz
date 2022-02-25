@@ -325,9 +325,25 @@ foreach ($campos as $campo) {
     # =========================================================
 
     $cantidadoriginal = $cantidad;
-    $estadocotizado1  = round(Cotizacionesporcantdeinsumos($item_id1, $requisicion_id, $insumo_id_insumo, "1"),2);
-    $estadocotizado2  = round(Cotizacionesporcantdeinsumos($item_id1, $requisicion_id, $insumo_id_insumo, "2"),2);
 
+    if ($insumo_id_insumo != '0') {
+
+  $estadocotizado1  = round(Cotizacionesporcantdeinsumos($item_id1, $requisicion_id, $insumo_id_insumo, "1"),1);
+  $estadocotizado2  = round(Cotizacionesporcantdeinsumos($item_id1, $requisicion_id, $insumo_id_insumo, "2"),1);
+
+       
+    } elseif ($servicio_id_servicio != '0') {
+
+  $estadocotizado1  = round(Cotizacionesporcantdeservicios($item_id1, $requisicion_id, $servicio_id_servicio, "1"),1);
+  $estadocotizado2  = round(Cotizacionesporcantdeservicios($item_id1, $requisicion_id, $servicio_id_servicio, "2"),1);
+
+       
+    } elseif ($equipo_id_equipo != '0') {
+
+  $estadocotizado1  = round(Cotizacionesporcantdeequipos($item_id1, $requisicion_id, $equipo_id_equipo, "1"),1);
+  $estadocotizado2  = round(Cotizacionesporcantdeequipos($item_id1, $requisicion_id, $equipo_id_equipo, "2"),1);
+       
+    }
 
 
     $cantidadfinal = $cantidadoriginal - $estadocotizado2;

@@ -130,7 +130,7 @@ echo ("<th>".$monthName."</th>");
             <tbody>
               <?php 
 
-    $res=Usuarios::ListaUsuariosCond();
+    $res=Usuarios::ListaUsuariosCondVolqueta();
 foreach($res as $campo){
   $id_usuario = $campo['id_usuario'];
   $nombre_usuario = $campo['nombre_usuario'];

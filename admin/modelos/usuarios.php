@@ -108,6 +108,23 @@ public static function ListaEquipos(){
 public static function ListaUsuariosCond(){
 	try {
 		$db=Db::getConnect();
+		$select=$db->query("SELECT * FROM usuarios WHERE estado_usuario='1' and rol_id_rol='4' or rol_id_rol='16' order by nombre_usuario");
+    	$campos=$select->fetchAll();
+		$camposs = new Usuarios('',$campos);
+		$campostraidos = $camposs->getCampos();
+		return $campostraidos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/*******************************************************
+** FUNCION PARA OBTENER LA LISTA DE CLIENTES	  **
+********************************************************/
+public static function ListaUsuariosCondVolqueta(){
+	try {
+		$db=Db::getConnect();
 		$select=$db->query("SELECT * FROM usuarios WHERE estado_usuario='1' and rol_id_rol='4' order by nombre_usuario");
     	$campos=$select->fetchAll();
 		$camposs = new Usuarios('',$campos);
