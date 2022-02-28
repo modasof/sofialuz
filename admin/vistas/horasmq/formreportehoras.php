@@ -94,12 +94,12 @@
 													<small>Decimales separados con punto</small>
 												</div>
 										</div>
-										<div class="col-md-3">
+										<div style="display: none;" class="col-md-3">
 												<div class="form-group">
 													<label>Valor Hora: <span>*</span></label>
-													<input type="text" name="valor_m3" placeholder="Valor Hora" class="form-control" id="demo1">
+													<input type="text" name="valor_m3" placeholder="Valor Hora" class="form-control" id="demo1" value="0">
 												</div>
-											</div>
+										</div>
 							<div id="divplaca" class="col-md-6">
 												<div class="form-group">
 													<label> Seleccione el Equipo: <span>*</span></label>
@@ -217,7 +217,7 @@
 											$id_proyecto = $campo['id_proyecto'];
 											$nombre_proyecto = $campo['nombre_proyecto'];
 										?>
-										<option value="<?php echo $id_cliente; ?>"><?php echo utf8_encode($nombre_proyecto); ?></option>
+										<option value="<?php echo $id_proyecto; ?>"><?php echo utf8_encode($nombre_proyecto); ?></option>
 										<?php } ?>
 								</select>
 

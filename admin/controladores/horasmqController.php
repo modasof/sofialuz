@@ -32,7 +32,35 @@ elseif (isset($_GET['daterange'])) {
 /*************************************************************/
 function guardarhoras() {
 
+	
+
+
+	//(id, imagen, fecha_reporte, equipo_id_equipo, despachado_por, punto_despacho, recibido_por, valor_m3, valor_hora_operador, cantidad, indicador, hora_inactiva, creado_por, estado_reporte, reporte_publicado, marca_temporal, observaciones, proyecto_id_proyecto, cliente_id_cliente, equipo_adicional, nombre_equipo_adicional)
+
+	//$imagen=$_POST['imagen'];
+	$fecha_reporte=$_POST['fecha_reporte'];
+	$equipo_id_equipo=$_POST['equipo_id_equipo'];
+	$despachado_por=$_POST['despachado_por'];
+	$punto_despacho=$_POST['punto_despacho'];
+	$recibido_por=$_POST['recibido_por'];
+	$valor_m3=$_POST['valor_m3'];
+	$valor_hora_operador=$_POST['valor_hora_operador'];
+	$cantidad=$_POST['cantidad'];
+	$indicador=$_POST['indicador'];
+	$hora_inactiva=$_POST['hora_inactiva'];
+	$creado_por=$_POST['creado_por'];
+	$estado_reporte=$_POST['estado_reporte'];
+	$reporte_publicado=$_POST['reporte_publicado'];
+	$marca_temporal=$_POST['marca_temporal'];
+	$observaciones=$_POST['observaciones'];
+	$proyecto_id_proyecto=$_POST['proyecto_id_proyecto'];
+	$cliente_id_cliente=$_POST['cliente_id_cliente'];
+	$equipo_adicional=$_POST['equipo_adicional'];
+	$nombre_equipo_adicional=$_POST['nombre_equipo_adicional'];
+
 	$ruta_imagen=$this->subir_fichero('images/horasmq','imagen');
+
+
 	$variable = $_POST;
 	$nuevoarreglo = array();
 	extract($variable);
@@ -54,8 +82,19 @@ function guardarhoras() {
 		}
 	}
 	//array_push($nuevoarreglo,$nuevo);
-	$campo = new Horasmq('',$nuevoarreglo);
-	$res = Horasmq::guardarhoras($campo,$ruta_imagen);
+	//$campo = new Horasmq('',$nuevoarreglo);
+	$valor_hora=Horasmq::Consultalistaprecios($cliente_id_cliente,$proyecto_id_proyecto,$equipo_id_equipo);
+	if ($valor_hora=='') {
+		$valor_finalhora=0;
+	}else
+	{
+		$valor_finalhora=$valor_hora;
+	}
+
+	$res = Horasmq::guardarhoras($ruta_imagen,$fecha_reporte, $equipo_id_equipo, $despachado_por, $punto_despacho, $recibido_por, $valor_finalhora, $valor_hora_operador, $cantidad, $indicador, $hora_inactiva, $creado_por, $estado_reporte, $reporte_publicado, $marca_temporal, $observaciones, $proyecto_id_proyecto, $cliente_id_cliente, $equipo_adicional, $nombre_equipo_adicional);
+
+
+
 	if ($res){
 		echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
 	}else{

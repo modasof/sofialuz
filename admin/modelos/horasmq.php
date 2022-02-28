@@ -85,18 +85,16 @@ public static function ReporteHorasporfecha($FechaStart,$FechaEnd){
 *** FUNCION PARA GUARDAR **
 id, fecha_reporte, cliente_id_cliente, producto_id_producto, valor_m3, cantidad, creado_por, estado_reporte, reporte_publicado, marca_temporal, observaciones
 ***************************************************************/
-public static function guardarhoras($campos,$imagen){
+public static function guardarhoras($imagen,$fecha_reporte, $equipo_id_equipo, $despachado_por, $punto_despacho, $recibido_por, $valor_finalhora, $valor_hora_operador, $cantidad, $indicador, $hora_inactiva, $creado_por, $estado_reporte, $reporte_publicado, $marca_temporal, $observaciones, $proyecto_id_proyecto, $cliente_id_cliente, $equipo_adicional, $nombre_equipo_adicional){
 	try {
 		$db=Db::getConnect();
-		$campostraidos = $campos->getCampos();
-		extract($campostraidos);
-
+		
 		$insert=$db->prepare('INSERT INTO reporte_horasmq VALUES (NULL,:imagen,:fecha_reporte,:equipo_id_equipo,:despachado_por,:punto_despacho,:recibido_por,:valor_m3,:valor_hora_operador,:cantidad,:indicador,:hora_inactiva,:creado_por, :estado_reporte, :reporte_publicado,:marca_temporal, :observaciones,:proyecto_id_proyecto,:cliente_id_cliente,:equipo_adicional,:nombre_equipo_adicional )');
 
-		$V1=str_replace(".","",$valor_m3);
-		$V2=str_replace(" ", "", $V1);
-		$valor_final=str_replace("$", "", $V2);
-		$valornumero=(int) $valor_final;
+		//$V1=str_replace(".","",$valor_m3);
+		//$V2=str_replace(" ", "", $V1);
+		//$valor_final=str_replace("$", "", $V2);
+		//$valornumero=(int) $valor_final;
 
 		$V11=str_replace(".","",$valor_hora_operador);
 		$V21=str_replace(" ", "", $V11);
@@ -120,7 +118,7 @@ public static function guardarhoras($campos,$imagen){
 		$insert->bindValue('despachado_por',utf8_decode($despachado_por));
 		$insert->bindValue('punto_despacho',utf8_decode($punto_despacho));
 		$insert->bindValue('recibido_por',utf8_decode($recibido_por));
-		$insert->bindValue('valor_m3',utf8_decode($valornumero));
+		$insert->bindValue('valor_m3',utf8_decode($valor_finalhora));
 		$insert->bindValue('valor_hora_operador',utf8_decode($valornumero1));
 		$insert->bindValue('cantidad',utf8_decode($cantidad));
 		$insert->bindValue('indicador',utf8_decode($indicador));
@@ -247,6 +245,25 @@ public static function actualizarhoras($id,$campos,$imagen){
 	}
 	catch(PDOException $e) {
 		echo '{"error al guardar la configuración ":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
+public static function Consultalistaprecios($cliente_id_cliente,$proyecto_id_proyecto,$equipo_id_equipo){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT  IFNULL(sum(valor_horamq),0) as valor FROM clientes_precios WHERE cliente_id='".$cliente_id_cliente."' and equipo_id='".$equipo_id_equipo."' and proyecto_id='".$proyecto_id_proyecto."' and canal_venta='Alquiler Equipos'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Horasmq('',$camposs);
+    	$marcas = $campos->getCampos();
+		foreach($marcas as $marca){
+			$mar = $marca['valor'];
+		}
+		return $mar;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
 	}
 }
 

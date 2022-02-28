@@ -2239,18 +2239,19 @@ public static function ReporteDespachosporfechaproveedorunico($FechaStart,$Fecha
 *** FUNCION PARA GUARDAR **
 reporte_despachosclientes(id, imagen, fecha_reporte, remision, cliente_id_cliente, producto_id_producto, equipo_id_equipo, despachado_por, transporte, kilometraje, valor_m3, cantidad, viajes, radicada, fecha_radicada, factura, pagado, creado_por, estado_reporte, reporte_publicado, marca_temporal, observaciones
 ***************************************************************/
-public static function guardardespachoclientes($campos,$imagen){
+public static function guardardespachoclientes($campos,$imagen,$valorcalculado){
 	try {
 		$db=Db::getConnect();
 		$campostraidos = $campos->getCampos();
 		extract($campostraidos);
 
+
 		$insert=$db->prepare('INSERT INTO reporte_despachosclientes VALUES (NULL,:imagen,:fecha_reporte,:remision,:cliente_id_cliente,:producto_id_producto,:equipo_id_equipo,:despachado_por,:transporte,:kilometraje,:valor_m3,:valor_material,:cantidad,:viajes,:radicada,:fecha_radicada,:factura,:pagado, :creado_por, :estado_reporte, :reporte_publicado,:marca_temporal,:observaciones,:campamento_id_campamento,:id_destino_origen,:id_destino_destino)');
 
-		$V1=str_replace(".","",$valor_m3);
-		$V2=str_replace(" ", "", $V1);
-		$valor_final=str_replace("$", "", $V2);
-		$valornumero=(int) $valor_final;
+		//$V1=str_replace(".","",$valor_m3);
+		//$V2=str_replace(" ", "", $V1);
+		//$valor_final=str_replace("$", "", $V2);
+		//$valornumero=(int) $valor_final;
 
 		$V11=str_replace(".","",$valor_material);
 		$V21=str_replace(" ", "", $V11);
@@ -2271,7 +2272,7 @@ public static function guardardespachoclientes($campos,$imagen){
 		$insert->bindValue('despachado_por',utf8_decode($despachado_por));
 		$insert->bindValue('transporte',utf8_decode($transporte));
 		$insert->bindValue('kilometraje',utf8_decode($kilometraje));
-		$insert->bindValue('valor_m3',utf8_decode($valornumero));
+		$insert->bindValue('valor_m3',utf8_decode($valorcalculado));
 		$insert->bindValue('valor_material',utf8_decode($valornumero2));
 		$insert->bindValue('cantidad',utf8_decode($cantidad));
 		$insert->bindValue('viajes',utf8_decode($viajes));
@@ -2352,6 +2353,54 @@ public static function guardardespachoclientes($campos,$imagen){
 	echo '{"error":{"text":'. $e->getMessage() .'}}';
 	}
 }
+
+# =======================================================
+# =           Consulta del Valor m3 recorrido           =
+# =======================================================
+
+
+public static function Consultavalorm3recorrido($id_destino_origen,$id_destino_destino,$cliente_id_cliente){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT  IFNULL(sum(valor_m3km),0) as valor FROM clientes_precios WHERE origen_id='".$id_destino_origen."' and destino_id='".$id_destino_destino."' and cliente_id='".$cliente_id_cliente."' and canal_venta='fletes'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Reportes('',$camposs);
+    	$marcas = $campos->getCampos();
+		foreach($marcas as $marca){
+			$mar = $marca['valor'];
+		}
+		return $mar;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
+# =======================================================
+# =           Consulta de los km recorridos           =
+# =======================================================
+
+
+public static function Consultakmrecorrido($id_destino_origen,$id_destino_destino,$cliente_id_cliente){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT  IFNULL(sum(km_ruta),0) as valor FROM clientes_precios WHERE origen_id='".$id_destino_origen."' and destino_id='".$id_destino_destino."' and cliente_id='".$cliente_id_cliente."' and canal_venta='fletes'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Reportes('',$camposs);
+    	$marcas = $campos->getCampos();
+		foreach($marcas as $marca){
+			$mar = $marca['valor'];
+		}
+		return $mar;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
 
 /***************************************************************
 ** FUNCION PARA ELIINAR POR ID  **

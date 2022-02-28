@@ -367,7 +367,7 @@ $IdSesion = $_SESSION['IdUser'];
                         </div>
                       </div>
                      
-                      <div  class="col-md-4">
+                      <div style="display: none;" class="col-md-4">
                         <div class="form-group">
                           <label>Valor Flete<span>*</span></label>
                           <input type="text" name="valor_m3" placeholder="Valor Flete" class="form-control" id="demo1" value="0">

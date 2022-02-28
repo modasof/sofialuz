@@ -1,3 +1,11 @@
+<?php
+ini_set('display_errors', '0');
+include_once 'modelos/usuarios.php';
+include_once 'controladores/usuariosController.php';
+$RolSesion = $_SESSION['IdRol'];
+$IdSesion = $_SESSION['IdUser'];
+?>
+
 <!-- CCS Y JS PARA LA CARGA DE IMAGEN -->
 <script src="plugins/dropify/dropify.min.js"></script>
 <link rel="stylesheet" href="plugins/dropify/dropify.min.css">
@@ -108,24 +116,25 @@ $cajas = Gastos::obtenerCajapor($CajaSel);
 													<input type="date" name="fecha_egreso" id="fecha_egreso" placeholder="Fecha" class="form-control required" required id="beneficiario">
 												</div>
 											</div>
-				<div id="" class="col-md-12">
-                        <div class="form-group">
-                          <label> El gasto aplica a un Equipo: <span>*</span></label>
-                <select class="form-control" id="foo" name="aplica_equipo" required>
-                    <option value="" selected="">Seleccionar...</option>
-                    <option value="Si">Si</option>
-                    <option value="No" >No</option>
-                    
-                </select>
-                        </div>
-                      </div>
-                      <hr>
+		<?php 
+		if ($RolSesion==14 || $RolSesion==15 ) {
+			?>
+				<input type="hidden" name="aplica_equipo"  value="No">
+				<input type="hidden" name="equipo_id_equipo" value="0">
 
-                       <div id="campocampamento" style="display:none;"  class="col-md-12">
+			<?php
+		}
+		else
+		{
+		 ?>
+
+				<input type="hidden" name="aplica_equipo"  value="Si">
+
+                       <div id="campocampamento"   class="col-md-12">
                         <div class="form-group">
                           <label> Seleccione el Equipo: <span>*</span></label>
-                         <select style="width:300px;" class="form-control mi-selector2" id="equipo_id_equipo" name="equipo_id_equipo" >
-                            <option value="0" selected>Seleccionar...</option>
+                         <select style="width:300px;" class="form-control mi-selector2" id="equipo_id_equipo" name="equipo_id_equipo" required>
+                            <option value="" selected>Seleccionar...</option>
                              <option value="10000" >Otros</option>
                             <?php                     
                         $campamentos = Equipos::obtenerListaEquiposAsf(); 
@@ -139,20 +148,11 @@ $cajas = Gastos::obtenerCajapor($CajaSel);
 
                         </div>
                       </div>
-                      <script type="text/javascript">
- $('#foo').change(function() {
-    var el = $(this);
-    if(el.val() === "Si") {
-      alert("Selecione el Equipo");
-       
-          $('#campocampamento').show();   
-           
-    } else {   
-          $('#campocampamento').hide();
-           
-    }      
-});
-</script>
+                     
+                    <?php 
+
+}
+                     ?>
 
 										 <div class="col-md-12">
 												<div class="form-group">

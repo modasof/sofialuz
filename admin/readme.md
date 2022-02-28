@@ -35,4 +35,9 @@
 - Solución al bug de verificar cantidades en cotizaciones
 - Se agrega restricción en gastos de caja menor por rol 
 
+# Actualización 25 de Febrero
+
+- Se realiza ajuste de cálculo de valores tanto en rutas como en horas máquina de manera automatizada. 
+
+
 
