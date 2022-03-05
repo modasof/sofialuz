@@ -39,5 +39,10 @@
 
 - Se realiza ajuste de cálculo de valores tanto en rutas como en horas máquina de manera automatizada. 
 
+# Actualización 4 de Marzo
+
+- Actualización de abonos y pagos a compras con fechas anteriores y vista de saldos en lista de ordenes de compra.
+- Se agrega columna con rendimientos por equipo en volquetas
+- Se agrega opción de anticipo a proveedor en los egresos de cuentas.
 
 

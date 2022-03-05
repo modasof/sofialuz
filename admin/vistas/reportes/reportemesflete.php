@@ -19,6 +19,7 @@ include_once 'controladores/estacionesController.php';
 include 'vistas/index/estadisticas_acpm.php';
 include 'vistas/index/estadisticas_despachoscl.php';
 include 'vistas/index/estadisticas_cajas.php';
+include 'vistas/index/estadisticas_indexequipos.php';
 
 $RolSesion = $_SESSION['IdRol'];
 $IdSesion = $_SESSION['IdUser'];
@@ -218,7 +219,7 @@ else
                       <div class="pull-right tableTools-container"></div>
                     </div>
       <div class="table-responsive mailbox-messages">
-          <table id="cotizaciones" class="table  table-responsive table-striped table-bordered table-hover" style="width: 100%;font-size: 13px;">
+          <table id="cotizaciones" class="table  table-responsive table-striped table-bordered table-hover" style="width: 100%;font-size: 12px;">
            
            <tfoot style="display: table-header-group;">
                                 <th style="background-color: #fcf8e3" class="success"></th>
@@ -233,7 +234,10 @@ else
                                 <th style="background-color: #fcf8e3" class="success"></th>
                                 <th style="background-color: #fcf8e3" class="success"></th>
                                 <th style="background-color: #fcf8e3" class="success"></th>
+                                 <th style="background-color: #fcf8e3" class="success"></th>
+                                  <th style="background-color: #fcf8e3" class="success"></th>
                                
+
                                 
                             </tfoot>
           <thead>
@@ -244,6 +248,8 @@ else
            <th>Días Laborados</th>
            <th>Número Fletes</th>
            <th>ACPM (Gl)</th>
+          <th>Km</th>
+           <th>Rend.</th>
            <th>Costo Acpm</th>
            <th>Comisión</th>
            <th>Gastos Caja</th>
@@ -270,6 +276,7 @@ else
             $totalfacturado= Facturacionvolquetasporfecha($equipo_id_equipo,$FechaStart,$FechaEnd);
             $totalfletes=Viajesvolquetadetallemes($equipo_id_equipo,$FechaStart,$FechaEnd);
             $totalconsumogalones=AcpmfechaVolqueta($FechaStart,$FechaEnd,$equipo_id_equipo);
+            $totalkmvolqueta=KilometrajeDiariosVolqueta($FechaStart,$FechaEnd,$equipo_id_equipo);
             $valorconsumogalones=AcpmfechaVolquetavalor($FechaStart,$FechaEnd,$equipo_id_equipo);
             $comision=Pagocomisionvolquetaporfecha($equipo_id_equipo,$FechaStart,$FechaEnd);
             $gastoscajamenor=GastosVolquetaporfecha($equipo_id_equipo,$FechaStart,$FechaEnd);
@@ -278,6 +285,7 @@ else
             $totalgastos=$gastoscajamenor+$salidasporrq+$comision+$valorconsumogalones;
             $utilidadbruta=$totalfacturado-$totalgastos;
 
+          
 
             ?>
             <tr>
@@ -287,6 +295,23 @@ else
             <td><?php echo($diaslaborados); ?></td>
             <td><?php echo($totalfletes); ?></td>
             <td><?php echo(round($totalconsumogalones,2)); ?></td>
+            <td><?php echo(round($totalkmvolqueta,2)); ?></td>
+             
+              <?php 
+                if ($totalkmvolqueta==0) {
+              echo("<td class='danger'>0</td>");
+            }else
+            {
+
+                $rendimiento=$totalkmvolqueta/$totalconsumogalones;
+              echo("<td>".round($rendimiento,1)."</td>");
+            }
+
+
+
+               ?>
+                
+              
             <td>$<?php echo(number_format($valorconsumogalones,0)) ?></td>
             <td>$<?php echo(number_format($comision,0)) ?></td>
             <td>$<?php echo(number_format($gastoscajamenor,0)); ?></td> 
@@ -458,12 +483,7 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
                 }, 0 );
 
 
-                 pageTotal7 = api
-                .column( 7, { page: 'current'} )
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );
+               
 
                  pageTotal8 = api
                 .column( 8, { page: 'current'} )
@@ -485,7 +505,21 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
+                  pageTotal12 = api
+                .column( 12, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
             
+                 pageTotal13 = api
+                .column( 13, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+            
+
           // Update footer
               $( api.column( 1 ).footer() ).html(
                 '$'+formatmoneda(pageTotal1,'' )
@@ -510,13 +544,10 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
 
                // Update footer
               $( api.column( 6 ).footer() ).html(
-                '$'+formatmoneda(pageTotal6,'' )
+                ''+formatmoneda(pageTotal6,'Km' )
             );
 
-                // Update footer
-              $( api.column( 7 ).footer() ).html(
-                '$'+formatmoneda(pageTotal7,'' )
-            );
+             
 
                 // Update footer
               $( api.column( 8 ).footer() ).html(
@@ -531,6 +562,16 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
                // Update footer
               $( api.column( 11 ).footer() ).html(
                 '$'+formatmoneda(pageTotal11,'' )
+            );
+
+                // Update footer
+              $( api.column( 12 ).footer() ).html(
+                '$'+formatmoneda(pageTotal12,'' )
+            );
+
+                // Update footer
+              $( api.column( 13 ).footer() ).html(
+                '$'+formatmoneda(pageTotal13,'' )
             );
 
         },

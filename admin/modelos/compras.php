@@ -450,6 +450,7 @@ public static function actualizarpago($id,$imagen,$valor_total,$valor_retencione
 	}
 }
 
+
 /***************************************************************
 *** FUNCION PARA GUARDAR INGRESO DE PAGO DE ORDEN DE COMPRA CREDITO**** 
 ***************************************************************/
@@ -474,7 +475,7 @@ public static function actualizarpagoabonos($ordenunica,$fecha_reporte,$estado_e
 	try {
 		$db=Db::getConnect();
 
-			$select=$db->query("UPDATE detalle_pagos_ordenescompra SET egreso_id='".$ultimoegreso."',estado_pago='".$estado_egreso."' WHERE compra_id='".$ordenunica."' and fecha_registro='".$fecha_reporte."'");
+		$select=$db->query("UPDATE detalle_pagos_ordenescompra SET egreso_id='".$ultimoegreso."',estado_pago='".$estado_egreso."', fecha_registro='".$fecha_reporte."' WHERE compra_id='".$ordenunica."' and estado_pago='0'");
 		if ($select){
 			return true;
 			}else{return false;}

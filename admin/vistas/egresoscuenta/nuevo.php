@@ -160,12 +160,14 @@ $cajas = Egresoscuenta::obtenerCuentapor($CuentaSel);
 															<option value="Movimiento a cuenta">Préstamo a cuenta</option>
 															<option value="Cuenta">Ingreso a caja</option>
 															<option value="Otro tipo de egreso">Otro tipo de egreso</option>
+															<option value="Anticipo a proveedor">Anticipo a proveedor</option>
 
 			<!--	
 			La opciónd de pago a proveedor se omite para canalizar las salidas por Abonos a RQ
 
 			<option value="Pago a proveedor">Pago a proveedor</option> 
 			-->
+
 														  </select>
 												</div>
 											</div>
@@ -389,6 +391,21 @@ symbolPosition : 'left' // use this setting to position the symbol at the left o
                             var selectMedio = $("#tipo_egreso option:selected").html();
                         $(document).ready
                             if (selectMedio == "Pago a proveedor") { 
+                                $("#divcuentas").hide("slow");
+                                $("#divcajas").hide("slow");
+                                 $("#divbeneficiario").hide("slow");
+                                  $("#divproveedor").slideToggle(100); 
+                                $("#divrubro").slideToggle(100);
+                                 $("#divsubrubro").slideToggle(100);
+                            }
+                        });
+                        </script>
+
+                             <script type="text/javascript">
+                        $("#tipo_egreso").change(function() {
+                            var selectMedio = $("#tipo_egreso option:selected").html();
+                        $(document).ready
+                            if (selectMedio == "Anticipo a proveedor") { 
                                 $("#divcuentas").hide("slow");
                                 $("#divcajas").hide("slow");
                                  $("#divbeneficiario").hide("slow");

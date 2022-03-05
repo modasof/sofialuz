@@ -166,7 +166,6 @@ else
 <!--Inicio Contenido Según perfil-->
 <?php 
     
-
     if ($RolSesion==1) { // Rol Súper Admin 
       require_once "homegerencia.php";
     }

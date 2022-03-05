@@ -11,6 +11,7 @@ where fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' and 
 		}
 	return $total;
 	}
+	
 
 function FletesDiariosVolqueta($FechaStart,$FechaEnd,$idequipo){
 	$db = Db::getConnect();

@@ -400,7 +400,7 @@ if ($imagen != "0") {
                                         <th style="background-color: #fcf8e3" class="success"></th>
                                         <th style="background-color: #fcf8e3" class="success"></th>
                                         <th style="background-color: #fcf8e3" class="success"></th>
-                                         <th style="background-color: #fcf8e3" class="success"></th>
+                                        
 
                             </tfoot>
           <thead>
@@ -408,34 +408,30 @@ if ($imagen != "0") {
 
               <th>OC-N.</th>
               <th>Fecha</th>
-               <th>Estado</th>
+             <th>Estado</th>
               <th>Proveedor</th>
               <th>Pago a</th>
-              <th>Vencimiento a</th>
-              <th>Rubro</th>
-              <th>Sub Rubro</th>
-             <th >Vr. Subtotal</th>
-              <th >Vr. Retenciones</th>
-              <th >Vr. Iva</th>
-
-              <th >Vr. A Pagar</th>
-               <th>Acción</th>
-            </tr>
-            <tr>
-
-              <th>OC-N.</th>
-              <th>Fecha</th>
-               <th>Estado</th>
-              <th>Proveedor</th>
-              <th>Pago a</th>
-              <th>Vencimiento a</th>
-              <th>Rubro</th>
-              <th>Sub Rubro</th>
               <th >Vr. Subtotal</th>
               <th >Vr. Retenciones</th>
               <th >Vr. Iva</th>
               <th >Vr. A Pagar</th>
-              <th>Acción</th>
+               <th >Abonos</th>
+               <th >Saldo Pendiente</th>
+               <th>Acción</th>
+            </tr>
+            <tr>
+            <th>OC-N.</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Proveedor</th>
+            <th>Pago a</th>
+            <th >Vr. Subtotal</th>
+            <th >Vr. Retenciones</th>
+            <th >Vr. Iva</th>
+            <th >Vr. A Pagar</th>
+            <th >Abonos</th>
+            <th >Saldo Pendiente</th>
+            <th>Acción</th>
             </tr>
           </thead>
        <tbody>
@@ -463,6 +459,8 @@ foreach ($camposb as $campo2) {
     $nomproveedor  = Proveedores::obtenerNombreProveedor($proveedor_id_proveedor);
     $nomreportador = usuarios::obtenerNombreUsuario($usuario_creador);
     $totalpago     = $valor_total - $valor_retenciones - $abonos;
+    $detalleabonos        = Compras::sqlabonos($id);
+    $cuentaporpagar= $totalpago-$detalleabonos;
 
     # ==================================================
     # =           Validación de los estados            =
@@ -526,13 +524,14 @@ echo ("OC00" . $id);
                       <br>
                   <i data-toggle="tooltip" data-placement="left" title="Creada por  por <?php echo($nomreportador." Fecha : ".$marca_temporal); ?>" class="fa fa-question-circle"></i>
                 </td>
-                <td><?php echo ("Factura N. ".$facturanum."<br>paga a ".$vencimiento); ?> Días</td>
-                <td><?php echo ($nombrerubro); ?></td>
-                <td><?php echo ($nombresubrubro); ?></td>
+               
                 <td><?php echo ("$" . number_format($valor_total)); ?></td>
                 <td><?php echo ("$" . number_format($valor_retenciones)); ?></td>
                  <td><?php echo ("$" . number_format($valor_iva)); ?></td>
                 <td><?php echo ("$" . number_format($totalpago)); ?></td>
+                <td><?php echo ("$" . number_format($detalleabonos)); ?></td>
+                <td><?php echo ("$" . number_format($cuentaporpagar)); ?></td>
+
                  <td>
                   <a href="vistas/compras/cotizaciones_print.php?id=<?php echo ($proveedor_id_proveedor); ?>&&idcompra=<?php echo ($id); ?>" target="_blank" class="btn btn-default"><i class="fa fa-print"></i></a>
                  <div class="btn-group">
@@ -630,7 +629,7 @@ if ($imagen != "0") {
                                         <th style="background-color: #fcf8e3" class="success"></th>
                                         <th style="background-color: #fcf8e3" class="success"></th>
                                         <th style="background-color: #fcf8e3" class="success"></th>
-                                         <th style="background-color: #fcf8e3" class="success"></th>
+                                        
 
                             </tfoot>
           <thead>
@@ -641,13 +640,13 @@ if ($imagen != "0") {
                <th>Estado</th>
               <th>Proveedor</th>
               <th>Pago a</th>
-              <th>Vencimiento a</th>
-              <th>Rubro</th>
-              <th>Sub Rubro</th>
+            
              <th >Vr. Subtotal</th>
               <th >Vr. Retenciones</th>
               <th >Vr. Iva</th>
               <th >Vr. A Pagar</th>
+              <th>Abonos</th>
+              <th>Saldo Pendiente</th>
                <th>Acción</th>
             </tr>
             <tr>
@@ -657,13 +656,12 @@ if ($imagen != "0") {
                <th>Estado</th>
               <th>Proveedor</th>
               <th>Pago a</th>
-              <th>Vencimiento a</th>
-              <th>Rubro</th>
-              <th>Sub Rubro</th>
               <th >Vr. Subtotal</th>
               <th >Vr. Retenciones</th>
               <th >Vr. Iva</th>
               <th >Vr. A Pagar</th>
+              <th>Abonos</th>
+              <th>Saldo Pendiente</th>
               <th>Acción</th>
             </tr>
           </thead>
@@ -692,6 +690,8 @@ foreach ($camposc as $campo3) {
     $nomproveedor  = Proveedores::obtenerNombreProveedor($proveedor_id_proveedor);
     $nomreportador = usuarios::obtenerNombreUsuario($usuario_creador);
     $totalpago     = $valor_total - $valor_retenciones - $abonos;
+    $detalleabonos        = Compras::sqlabonos($id);
+    $cuentaporpagar= $totalpago-$detalleabonos;
 
     # ==================================================
     # =           Validación de los estados            =
@@ -755,13 +755,14 @@ echo ("OC00" . $id);
                       <br>
                   <i data-toggle="tooltip" data-placement="left" title="Creada por  por <?php echo($nomreportador." Fecha : ".$marca_temporal); ?>" class="fa fa-question-circle"></i>
                 </td>
-                <td><?php echo ("Factura N. ".$facturanum."<br>paga a ".$vencimiento); ?> Días</td>
-                <td><?php echo ($nombrerubro); ?></td>
-                <td><?php echo ($nombresubrubro); ?></td>
+              
                 <td><?php echo ("$" . number_format($valor_total)); ?></td>
                 <td><?php echo ("$" . number_format($valor_retenciones)); ?></td>
                  <td><?php echo ("$" . number_format($valor_iva)); ?></td>
                 <td><?php echo ("$" . number_format($totalpago)); ?></td>
+                 <td><?php echo ("$" . number_format($detalleabonos)); ?></td>
+                  <td><?php echo ("$" . number_format($cuentaporpagar)); ?></td>
+
                  <td>
                   <a href="vistas/compras/cotizaciones_print.php?id=<?php echo ($proveedor_id_proveedor); ?>&&idcompra=<?php echo ($id); ?>" target="_blank" class="btn btn-default"><i class="fa fa-print"></i></a>
                  <div class="btn-group">
@@ -859,7 +860,7 @@ if ($imagen != "0") {
                                         <th style="background-color: #fcf8e3" class="success"></th>
                                         <th style="background-color: #fcf8e3" class="success"></th>
                                         <th style="background-color: #fcf8e3" class="success"></th>
-                                         <th style="background-color: #fcf8e3" class="success"></th>
+                                       
 
                             </tfoot>
           <thead>
@@ -870,14 +871,12 @@ if ($imagen != "0") {
                <th>Estado</th>
               <th>Proveedor</th>
               <th>Pago a</th>
-              <th>Vencimiento a</th>
-              <th>Rubro</th>
-              <th>Sub Rubro</th>
-             <th >Vr. Subtotal</th>
+              <th >Vr. Subtotal</th>
               <th >Vr. Retenciones</th>
               <th >Vr. Iva</th>
-
               <th >Vr. A Pagar</th>
+              <th>Abonos</th>
+              <th>Saldo Pendiente</th>
                <th>Acción</th>
             </tr>
             <tr>
@@ -887,13 +886,12 @@ if ($imagen != "0") {
                <th>Estado</th>
               <th>Proveedor</th>
               <th>Pago a</th>
-              <th>Vencimiento a</th>
-              <th>Rubro</th>
-              <th>Sub Rubro</th>
               <th >Vr. Subtotal</th>
               <th >Vr. Retenciones</th>
               <th >Vr. Iva</th>
               <th >Vr. A Pagar</th>
+              <th>Abonos</th>
+              <th>Saldo Pendiente</th>
               <th>Acción</th>
             </tr>
           </thead>
@@ -922,6 +920,9 @@ foreach ($camposb as $campo2) {
     $nomproveedor  = Proveedores::obtenerNombreProveedor($proveedor_id_proveedor);
     $nomreportador = usuarios::obtenerNombreUsuario($usuario_creador);
     $totalpago     = $valor_total - $valor_retenciones - $abonos;
+    $detalleabonos        = Compras::sqlabonos($id);
+    $cuentaporpagar= $totalpago-$detalleabonos;
+
 
     # ==================================================
     # =           Validación de los estados            =
@@ -985,13 +986,13 @@ echo ("OC00" . $id);
                       <br>
                   <i data-toggle="tooltip" data-placement="left" title="Creada por  por <?php echo($nomreportador." Fecha : ".$marca_temporal); ?>" class="fa fa-question-circle"></i>
                 </td>
-                <td><?php echo ("Factura N. ".$facturanum."<br>paga a ".$vencimiento); ?> Días</td>
-                <td><?php echo ($nombrerubro); ?></td>
-                <td><?php echo ($nombresubrubro); ?></td>
+               
                 <td><?php echo ("$" . number_format($valor_total)); ?></td>
                 <td><?php echo ("$" . number_format($valor_retenciones)); ?></td>
                  <td><?php echo ("$" . number_format($valor_iva)); ?></td>
                 <td><?php echo ("$" . number_format($totalpago)); ?></td>
+                 <td><?php echo ("$" . number_format($detalleabonos)); ?></td>
+                  <td><?php echo ("$" . number_format($cuentaporpagar)); ?></td>
                  <td>
                   <a href="vistas/compras/cotizaciones_print.php?id=<?php echo ($proveedor_id_proveedor); ?>&&idcompra=<?php echo ($id); ?>" target="_blank" class="btn btn-default"><i class="fa fa-print"></i></a>
                  <div class="btn-group">
@@ -1398,6 +1399,28 @@ $('#cotizaciones2 thead tr:eq(1) th').each( function () {
 
 
 
+           pageTotal5 = api
+                .column( 5, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Total over all pages
+              pageTotal6 = api
+                .column( 6, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+            pageTotal7 = api
+                .column( 7, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+
            pageTotal8 = api
                 .column( 8, { page: 'current'} )
                 .data()
@@ -1405,38 +1428,43 @@ $('#cotizaciones2 thead tr:eq(1) th').each( function () {
                     return intVal(a) + intVal(b);
                 }, 0 );
 
-            pageTotal9 = api
+             pageTotal9 = api
                 .column( 9, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
+
              pageTotal10 = api
                 .column( 10, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
-            pageTotal11 = api
-                .column( 11, { page: 'current'} )
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );
 
+         
+           
+                  $( api.column( 5 ).footer() ).html(
+                '$'+formatmoneda(pageTotal5,'' )
+                );
+
+                 $( api.column( 6 ).footer() ).html(
+                '$'+formatmoneda(pageTotal6,'' )
+                 );
+               $( api.column( 7 ).footer() ).html(
+                '$'+formatmoneda(pageTotal7,'' )
+                 );
 
               $( api.column( 8 ).footer() ).html(
                 '$'+formatmoneda(pageTotal8,'' )
                  );
 
-              $( api.column( 9 ).footer() ).html(
+               $( api.column( 9 ).footer() ).html(
                 '$'+formatmoneda(pageTotal9,'' )
-                );
-              $( api.column( 10 ).footer() ).html(
-                '$'+formatmoneda(pageTotal10,'' )
                  );
-               $( api.column( 11 ).footer() ).html(
-                '$'+formatmoneda(pageTotal11,'' )
+
+                $( api.column( 10 ).footer() ).html(
+                '$'+formatmoneda(pageTotal10,'' )
                  );
 
 
@@ -1567,6 +1595,28 @@ $('#cotizaciones3 thead tr:eq(1) th').each( function () {
 
 
 
+            pageTotal5 = api
+                .column( 5, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Total over all pages
+              pageTotal6 = api
+                .column( 6, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+            pageTotal7 = api
+                .column( 7, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+
            pageTotal8 = api
                 .column( 8, { page: 'current'} )
                 .data()
@@ -1574,39 +1624,45 @@ $('#cotizaciones3 thead tr:eq(1) th').each( function () {
                     return intVal(a) + intVal(b);
                 }, 0 );
 
-            pageTotal9 = api
+             pageTotal9 = api
                 .column( 9, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
+
              pageTotal10 = api
                 .column( 10, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
-            pageTotal11 = api
-                .column( 11, { page: 'current'} )
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );
 
+         
+           
+                  $( api.column( 5 ).footer() ).html(
+                '$'+formatmoneda(pageTotal5,'' )
+                );
+
+                 $( api.column( 6 ).footer() ).html(
+                '$'+formatmoneda(pageTotal6,'' )
+                 );
+               $( api.column( 7 ).footer() ).html(
+                '$'+formatmoneda(pageTotal7,'' )
+                 );
 
               $( api.column( 8 ).footer() ).html(
                 '$'+formatmoneda(pageTotal8,'' )
                  );
 
-              $( api.column( 9 ).footer() ).html(
+               $( api.column( 9 ).footer() ).html(
                 '$'+formatmoneda(pageTotal9,'' )
-                );
-              $( api.column( 10 ).footer() ).html(
+                 );
+
+                $( api.column( 10 ).footer() ).html(
                 '$'+formatmoneda(pageTotal10,'' )
                  );
-               $( api.column( 11 ).footer() ).html(
-                '$'+formatmoneda(pageTotal11,'' )
-                 );
+
 
 
         },
@@ -1736,6 +1792,28 @@ $('#cotizaciones4 thead tr:eq(1) th').each( function () {
 
 
 
+             pageTotal5 = api
+                .column( 5, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            // Total over all pages
+              pageTotal6 = api
+                .column( 6, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+            pageTotal7 = api
+                .column( 7, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+
            pageTotal8 = api
                 .column( 8, { page: 'current'} )
                 .data()
@@ -1743,39 +1821,45 @@ $('#cotizaciones4 thead tr:eq(1) th').each( function () {
                     return intVal(a) + intVal(b);
                 }, 0 );
 
-            pageTotal9 = api
+             pageTotal9 = api
                 .column( 9, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
+
              pageTotal10 = api
                 .column( 10, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
-            pageTotal11 = api
-                .column( 11, { page: 'current'} )
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );
 
+         
+           
+                  $( api.column( 5 ).footer() ).html(
+                '$'+formatmoneda(pageTotal5,'' )
+                );
+
+                 $( api.column( 6 ).footer() ).html(
+                '$'+formatmoneda(pageTotal6,'' )
+                 );
+               $( api.column( 7 ).footer() ).html(
+                '$'+formatmoneda(pageTotal7,'' )
+                 );
 
               $( api.column( 8 ).footer() ).html(
                 '$'+formatmoneda(pageTotal8,'' )
                  );
 
-              $( api.column( 9 ).footer() ).html(
+               $( api.column( 9 ).footer() ).html(
                 '$'+formatmoneda(pageTotal9,'' )
-                );
-              $( api.column( 10 ).footer() ).html(
+                 );
+
+                $( api.column( 10 ).footer() ).html(
                 '$'+formatmoneda(pageTotal10,'' )
                  );
-               $( api.column( 11 ).footer() ).html(
-                '$'+formatmoneda(pageTotal11,'' )
-                 );
+
 
 
         },
