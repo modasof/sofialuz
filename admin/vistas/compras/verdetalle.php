@@ -8,11 +8,19 @@ include_once 'controladores/unidadesmedController.php';
 include_once 'modelos/usuarios.php';
 include_once 'controladores/usuariosController.php';
 
+include_once 'modelos/compras.php';
+include_once 'controladores/comprasController.php';
+
+
+
 
 $RolSesion = $_SESSION['IdRol'];
 $IdSesion = $_SESSION['IdUser'];
 
 $idordencompra=$_GET['id'];
+
+$contador=Compras::contadoritemscotizacion($idordencompra);
+
 
 //id, fecha_reporte, cliente_id_cliente, producto_id_producto, valor_m3, cantidad, creado_por, estado_reporte, reporte_publicado, marca_temporal, observaciones.
 
@@ -101,22 +109,22 @@ else
   </div>
     <!-- /.content-header -->
 
-	<!-- Main content -->
-	<div class="content">
-		<div class="container-fluid">
-			<div class="row">
-				
-					
-						<!-- ESTE DIV LO USO PARA CENTRAR EL FORMULARIO -->
-						<!-- left column -->
-					
-					 <div class="col-md-12">
+  <!-- Main content -->
+  <div class="content">
+    <div class="container-fluid">
+      <div class="row">
+        
+          
+            <!-- ESTE DIV LO USO PARA CENTRAR EL FORMULARIO -->
+            <!-- left column -->
+          
+           <div class="col-md-12">
 
-					 	<div style="display: none;" class="row">
-					 		<div id="chartContainer" style="height: 400px; width: 100%;"></div>
-					 	</div>
-					 	<br>
-					  	 <div class="row">
+            <div style="display: none;" class="row">
+              <div id="chartContainer" style="height: 400px; width: 100%;"></div>
+            </div>
+            <br>
+               <div class="row">
           <!-- MAP & BOX PANE -->
           <!-- TABLE: LATEST ORDERS -->
           <div class="box box-success">
@@ -133,7 +141,7 @@ else
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-            	            <div class="row">
+                          <div class="row">
         <form style="display:none;" action="?controller=compras&&action=porfecha" method="post" id="FormFechas" autocomplete="off">
          <div class="col-md-8">
                         <div class="form-group">
@@ -207,7 +215,7 @@ else
                     </div>
               <div class="table-responsive mailbox-messages">
           <table id="cotizaciones" class="table  table-responsive table-striped table-bordered table-hover" style="width: 100%;font-size: 13px;">
-          	<tfoot style="display: table-header-group;">
+            <tfoot style="display: table-header-group;">
                                    
                                       <th style="background-color: #fcf8e3" class="success"></th>
                                        <th style="background-color: #fcf8e3" class="success"></th>
@@ -287,6 +295,21 @@ else
             <a href="?controller=compras&&action=editardetallecot&&id=<?php echo ($id1); ?>&&id_ordencompra=<?php echo($idordencompra); ?>" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Detalle">
                 <i class="fa fa-edit bigger-110 "> Editar</i>
               </a>
+              <br>
+              <?php 
+
+
+              if ($contador>1) {
+                ?>
+ <a href="#" onclick="retornar(<?php echo $idordencompra; ?>,<?php echo $id1; ?>,<?php echo $IdSesion; ?>);"  class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Cambiar de Estado">
+                <i class="fa fa-exchange bigger-110 "> Retornar a Espera aprobación</i>
+              </a>
+
+                <?php
+              }
+
+               ?>
+
               </td>
             </tr>
             <?php
@@ -305,14 +328,14 @@ else
           <!-- /.box -->
         </div>
         <!-- /.col -->
-					 </div>
+           </div>
 
 
-					</div> <!-- FIN DE ROW-->
-				</div><!-- FIN DE CONTAINER FORMULARIO-->
-			</div> <!-- Fin Row -->
-		</div> <!-- Fin Container -->
-	</div> <!-- Fin Content -->
+          </div> <!-- FIN DE ROW-->
+        </div><!-- FIN DE CONTAINER FORMULARIO-->
+      </div> <!-- Fin Row -->
+    </div> <!-- Fin Container -->
+  </div> <!-- Fin Content -->
 
 
  
@@ -320,13 +343,13 @@ else
 
 </div> <!-- Fin Content-Wrapper -->
 <script>
-function eliminar(id){
-   eliminar=confirm("¿Deseas eliminar este registro?");
-   if (eliminar)
-     window.location.href="?controller=compras&&action=eliminar&&id="+id;
+function retornar(id,itemcotiza,reporta){
+   retornar=confirm("¿Deseas cambiar el estado a este registro?");
+   if (retornar)
+     window.location.href="?controller=compras&&action=retornar&&id="+id+"&&idcotiza="+itemcotiza+"&&reporta="+reporta;
 else
   //Y aquí pon cualquier cosa que quieras que salga si le diste al boton de cancelar
-    alert('No se ha podido eliminar el registro...')
+    alert('No se ha podido cambiar el estado al registro...')
 }
 </script>
 <!-- Inicio Libreria formato moneda -->

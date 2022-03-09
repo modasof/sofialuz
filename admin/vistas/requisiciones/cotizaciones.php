@@ -128,9 +128,29 @@ $campos = $res->getCampos();
 foreach ($campos as $campo) {
     $proveedor_id_proveedor = $campo['proveedor_id_proveedor'];
     $nomproveedor           = Proveedores::obtenerNombreProveedor($proveedor_id_proveedor);
+
+    if ($idproveedor==$proveedor_id_proveedor) {
     ?>
-                <li><a href="?controller=requisiciones&&action=vercotizacion&&id=<?php echo ($proveedor_id_proveedor); ?>"><?php echo ($nomproveedor); ?></a></li>
+
+                <li>
+
+                  <a class="bg bg-success" href="?controller=requisiciones&&action=vercotizacion&&id=<?php echo ($proveedor_id_proveedor); ?>"><strong><?php echo ($nomproveedor); ?></strong></a>
+                </li>
                 <?php
+            }else{
+
+              ?>
+               <li>
+
+                  <a  href="?controller=requisiciones&&action=vercotizacion&&id=<?php echo ($proveedor_id_proveedor); ?>"><?php echo ($nomproveedor); ?></a>
+                </li>
+
+
+
+              <?php
+
+            }
+
 
 }
 ?>
@@ -143,17 +163,7 @@ foreach ($campos as $campo) {
 
       <!-- title row -->
       <div class="row">
-        <div class="col-xs-12">
-          <h2 class="page-header">
-            <i class="">
-              <img width="150px" height="100px" src="../Login/logo-ppal.png" >
-            </i> Orden de Compra
-            <small class="pull-right">Fecha: <?php
-$imprfechalarga = fechalarga($MarcaTemporal);
-echo ($imprfechalarga);
-?></small>
-          </h2>
-        </div>
+       
         <!-- /.col -->
       </div>
       <!-- info row -->
@@ -196,10 +206,10 @@ foreach ($campos as $campo) {
           <b>Orden Compra #N<?php echo ($MarcaTemporal) ?></b><br>
           <br>
 
-          <b>Método de pago:</b>
+         
           <?php
 $mediopago = ObtenerMediopago($idproveedor, "1");
-echo ($mediopago);
+//echo ($mediopago);
 ?>
           <br>
         </div>
@@ -211,7 +221,7 @@ echo ($mediopago);
       <div class="row">
         <div class="col-xs-12 table-responsive">
           <form action="?controller=requisicionesitems&action=guardarocompra" method="post" id="formularioppal">
-  <button id="btncrearorden" style="display:none;" onclick="submitform(); return false;" type="submit" class="btn btn-success btn-xs pull-right"><i class="fa fa-check"></i> Autorizar Orden
+  <button id="btncrearorden" style="display:none;"  onclick="submitform(); return false;" type="submit" class="btn btn-success btn-xs pull-right"><i class="fa fa-check"></i> Autorizar Orden
   </button>
 <?php
 date_default_timezone_set("America/Bogota");
@@ -227,15 +237,32 @@ $DiaActualfor = date('Y-m-d');
         <input type="hidden" name="estado_recibido" value="Pendiente Llegada">
         <input type="hidden" name="estado_orden" value="1">
         <input type="hidden" name="proveedor_id_proveedor" value="<?php echo ($idproveedor); ?>">
-        <input type="hidden" name="medio_pago" value="<?php echo ($mediopago); ?>">
+        
         <input type="hidden" name="observaciones" value="Orden de compra creada correctamente">
         <input type="hidden" name="marca_temporal" value="<?php echo $TiempoActual ?>">
         <input type="hidden" name="usuario_creador" value="<?php echo $IdSesion ?>">
 
+
+         
+         
+          <b>Método de pago:</b>
+          <select name="medio_pago" >
+                    <option selected="" value="<?php echo($mediopago) ?>"><?php echo($mediopago); ?></option>
+                     <option value="A convenir">A convenir</option>
+                    <option value="Contado">Contado</option>
+                    <option value="Credito">Crédito</option>
+          </select>
+          <br>
+       
+
+         
+
           <table class="table table-striped" style="font-size:13px;">
             <thead>
             <tr>
-              <th>Código</th>
+              <th>Código
+                 <input type="checkbox" id="seleccionar-todos"> 
+              </th>
               <th>Detalle</th>
               <th>Cantidades</th>
               <th>Unidad</th>
@@ -308,6 +335,7 @@ foreach ($campos as $campo) {
               <td class="success">
 
                 <i class="fa fa-caret-square-o-right"></i> <small id="primerrefresh<?php echo ($id1); ?>"></small>
+               
               </td>
               <td class="success">
                <strong><?php echo ($detallesolicitado); ?>
@@ -385,22 +413,23 @@ foreach ($campos as $campo) {
                </td>
              </tr>
             <tr>
-              <td>
+              <td id="listado">
 
                RQ <?php echo ($requisicion_id . "-" . $item_id1); 
 
 
 
                ?>
-                <input type="hidden" value="<?php echo ($item_id1); ?>" name="items[]">
+                <input type="checkbox" value="<?php echo ($item_id1); ?>" name="items[]" onclick="marcardespacho(<?php echo $item_id1; ?>)" style="cursor: pointer;">
                 <input type="hidden" value="<?php echo ($label) ?>" name="compra_de">
+          </td>
 </form>
               <?php 
 
 
                ?>
               
-              </td>
+            
               <td>
                <small>Proveedor: </small><?php echo ($primerproveedor); ?>
               </td>
@@ -608,28 +637,9 @@ $(document).ready(function(){
 
       <div class="row">
         <!-- accepted payments column -->
-        <div class="col-xs-12 col-md-7">
-
-         <p class="lead"><strong>Términos Comerciales</strong></p>
-          <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;font-size: 8px; text-align: justify;">
-           1   Señor proveedor, debera citar el numero de la orden de compra y/o servicio en la factura cuenta de cobro emitida por usted
-2. Los materiales deben ser entregados donde el cotizante lo designe en el contenido de la orden de compray/o servicio.
-3. Nuestra empresa registra la obligacion de retencion en la fuente a titulo de renta, por lo tanto de acuerdo a la naturaleza del servicio se aplicara la respectiva retencion.
-4. La empresa se abstendra de recibir cuenta de cobro o factura sin los requisitos exigidos por la ley
-5. El valor total de la orden de compra y/o servicio es un valor aproximado y por lo tanto el contratante podra a su juicio y para evitar la paralizacion del objeto contratado
-ordenar la ejecucion de cantidades adicionales o mayores cantidades de las solicitadas en la orden, teniendo en  cuenta, que estas deveran ser autorizadas por escrito
-6. El ordenante no tiene ningun vinculo laboral con el ordenado; ademas el presente servicio o trabajo se realiza por cuenta y riesgos exclusivos del ordenado; para los pagos a
-que tiene derecho el ordenado debera aportar el registro unico a tributario (RUT) y los demas documentos de la lista de chequeo
-para pagos final de servicios debe anexar acta de recibo (de servicio u obra) a satifaccion so pena de abstenerce de pagar el ordenante al ordenado la suma pactada; los pagos
-establecidos en esta orden quedan sujetos a una retencion en la fuente sobre el valor total or el servicio y a la existencia de fondos en banco o cajas al momento de cancelarlos;
-cualquier detrimento patrimonial del ordenante , causado por el ordenado en razon de los servicios o trabajos prestados, con la sola firma del presente documento el ordenado
-autoriza descvontar dicha suma de los saldos adeudados; la presente orden esta regida por el derecho civil; el incumplimiento de las obligaciones contratados o la mora
-en la entrega de los trabajos causara una multa de 10% sobre el valor total y obligara al ordenado a devolver los dineros entregado como anticipo
-Ante cualquier duda puede comunicarse con el jefe de compras al 3126638421 o al 3002720234
-          </p>
-        </div>
+       
         <!-- /.col -->
-        <div class="col-xs-12 col-md-5">
+        <div class="col-xs-12 col-md-12">
 
           <div class="table-responsive">
             <table class="table">
@@ -659,53 +669,15 @@ echo ($mediopago);
             </table>
           </div>
         </div>
-        <div class="col-xs-4">
-          <div class="table-responsive">
-            <table class="table">
-              <tbody><tr>
-                <th style="width:50%"><small>VoBo Jefe de compra</small></th>
-                <td></td>
-              </tr>
-            </tbody></table>
-          </div>
-        </div>
-         <div class="col-xs-4">
-          <div class="table-responsive">
-            <table class="table">
-              <tbody><tr>
-                <th style="width:50%"><small>VoBo Jefe area financiera</small></th>
-                <td></td>
-              </tr>
-            </tbody></table>
-          </div>
-        </div>
-        <div class="col-xs-4">
-          <div class="table-responsive">
-            <table class="table">
-              <tbody><tr>
-                <th style="width:50%"><small>Firma proveedor</small></th>
-
-                <td></td>
-              </tr>
-            </tbody></table>
-          </div>
-        </div>
+       
+      
         <!-- /.col -->
       </div>
       <!-- /.row -->
 
       <!-- this row will not appear when printing -->
 
-      <div class="row no-print">
-        <div class="col-xs-12">
-          <a href="vistas/requisiciones/cotizaciones_print.php?id=<?php echo ($idproveedor); ?>" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
-
-          <button   style="display:none;" type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">
-            <i class="fa fa-download"></i> Generate PDF
-          </button>
-
-        </div>
-      </div>
+     
 
             </div>
           </div> <!-- FIN DE ROW-->
@@ -748,6 +720,14 @@ else
 }
 </script>
 <!-- Inicio Libreria formato moneda -->
+
+<script>
+      $(function(){
+        $('#seleccionar-todos').change(function() {
+          $('#listado > input[type=checkbox]').prop('checked', $(this).is(':checked'));
+        });
+      });
+</script>
 
 
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>

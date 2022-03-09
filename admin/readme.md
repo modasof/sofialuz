@@ -45,4 +45,7 @@
 - Se agrega columna con rendimientos por equipo en volquetas
 - Se agrega opción de anticipo a proveedor en los egresos de cuentas.
 
+# Actuualización 7 de Marzo
+
+- Se agrega la función de seleccionar por items para aprobación de orden de compra, adicional a eso se habilita la función retornar a Espera de aprobación. 
 

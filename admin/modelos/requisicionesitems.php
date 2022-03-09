@@ -565,9 +565,9 @@ class Requisicionesitems
 
             $db     = Db::getConnect();
             $update = $db->prepare('UPDATE cotizaciones_item SET
-								cantidadcot=:cantidadcot,
-								valor_cot=:valor_cot
-								WHERE id=:id');
+                                cantidadcot=:cantidadcot,
+                                valor_cot=:valor_cot
+                                WHERE id=:id');
             $update->bindValue('cantidadcot', utf8_decode($cantidadcot));
             $update->bindValue('valor_cot', utf8_decode($valor_cot));
             $update->bindValue('id', utf8_decode($id));
@@ -591,23 +591,23 @@ class Requisicionesitems
             extract($campostraidos);
 
             $update = $db->prepare('UPDATE requisiciones_items SET
-								actividad=:actividad,
-								insumo_id_insumo=:insumo_id_insumo,
-								servicio_id_servicio=:servicio_id_servicio,
-								equipo_id_equipo=:equipo_id_equipo,
-								fecha_reporte=:fecha_reporte,
-								cantidad=:cantidad,
-								fecha_entrega=:fecha_entrega,
-								observaciones=:observaciones,
-								requisicion_id=:requisicion_id,
-								marca_temporal=:marca_temporal,
-								usuario_creador=:usuario_creador,
-								estado_item=:estado_item,
+                                actividad=:actividad,
+                                insumo_id_insumo=:insumo_id_insumo,
+                                servicio_id_servicio=:servicio_id_servicio,
+                                equipo_id_equipo=:equipo_id_equipo,
+                                fecha_reporte=:fecha_reporte,
+                                cantidad=:cantidad,
+                                fecha_entrega=:fecha_entrega,
+                                observaciones=:observaciones,
+                                requisicion_id=:requisicion_id,
+                                marca_temporal=:marca_temporal,
+                                usuario_creador=:usuario_creador,
+                                estado_item=:estado_item,
                                 item_publicado=:item_publicado,
-								tipo_req=:tipo_req,
-								ordencompra_num=:ordencompra_num,
-								duplicado_de=:duplicado_de
-								WHERE id=:id');
+                                tipo_req=:tipo_req,
+                                ordencompra_num=:ordencompra_num,
+                                duplicado_de=:duplicado_de
+                                WHERE id=:id');
 
             $t          = strtotime($fecha_reporte);
             $nuevafecha = date('y-m-d', $t);
@@ -653,18 +653,18 @@ class Requisicionesitems
             extract($campostraidos);
 
             $update = $db->prepare('UPDATE requisiciones_items SET
-								imagen=:imagen,
-								fecha_reporte=:fecha_reporte,
-								solicitado_por=:solicitado_por,
-								requisicion_num=:requisicion_num,
-								cliente_id_cliente=:cliente_id_cliente,
-								proyecto_id_proyecto=:proyecto_id_proyecto,
-								creado_por=:creado_por,
-								estado_requisicion=:estado_requisicion,
-								publicada=:publicada,
-								marca_temporal=:marca_temporal,
-								observaciones=:observaciones
-								WHERE id=:id');
+                                imagen=:imagen,
+                                fecha_reporte=:fecha_reporte,
+                                solicitado_por=:solicitado_por,
+                                requisicion_num=:requisicion_num,
+                                cliente_id_cliente=:cliente_id_cliente,
+                                proyecto_id_proyecto=:proyecto_id_proyecto,
+                                creado_por=:creado_por,
+                                estado_requisicion=:estado_requisicion,
+                                publicada=:publicada,
+                                marca_temporal=:marca_temporal,
+                                observaciones=:observaciones
+                                WHERE id=:id');
 
             $t          = strtotime($fecha_reporte);
             $nuevafecha = date('y-m-d', $t);
@@ -702,8 +702,8 @@ class Requisicionesitems
             $items = explode(",", $items);
             foreach ($items as $key => $despachounico) {
                 $update = $db->prepare('UPDATE requisiciones_items SET
-								estado_item=:estado_item
-								WHERE id=:despachounico');
+                                estado_item=:estado_item
+                                WHERE id=:despachounico');
                 $update->bindValue('estado_item', utf8_decode($estado_item));
                 $update->bindValue('despachounico', utf8_decode($despachounico));
                 $update->execute();
@@ -741,8 +741,8 @@ class Requisicionesitems
             $db = Db::getConnect();
             foreach ($_POST['items'] as $despachounico) {
                 $update = $db->prepare('UPDATE requisiciones_items SET
-								estado_item=:estado_item
-								WHERE id=:despachounico');
+                                estado_item=:estado_item
+                                WHERE id=:despachounico');
                 $update->bindValue('estado_item', utf8_decode($estado_item));
                 $update->bindValue('despachounico', utf8_decode($despachounico));
                 $update->execute();
@@ -834,8 +834,8 @@ class Requisicionesitems
 
             foreach ($_POST['items'] as $despachounico) {
                 $update = $db->prepare('UPDATE requisiciones_items SET
-								ordencompra_num=:ordencompra_num
-								WHERE id=:despachounico');
+                                ordencompra_num=:ordencompra_num
+                                WHERE id=:despachounico');
                 $update->bindValue('ordencompra_num', utf8_decode($ordencompra_num));
                 $update->bindValue('despachounico', utf8_decode($despachounico));
                 $update->execute();
@@ -858,10 +858,10 @@ class Requisicionesitems
             //$items = explode(",", $items);
             foreach ($_POST['items'] as $despachounico) {
                 $update = $db->prepare("UPDATE cotizaciones_item SET
-								ordencompra_num=:ordencompra_num,
-								usuario_aprobador=:usuario_aprobador,
-								estado_cotizacion=:estado_cotizacion
-								WHERE item_id=:despachounico and proveedor_id_proveedor='" . $proveedor_id_proveedor . "'and estado_cotizacion='1'");
+                                ordencompra_num=:ordencompra_num,
+                                usuario_aprobador=:usuario_aprobador,
+                                estado_cotizacion=:estado_cotizacion
+                                WHERE item_id=:despachounico and proveedor_id_proveedor='" . $proveedor_id_proveedor . "'and estado_cotizacion='1'");
                 $update->bindValue('ordencompra_num', utf8_decode($ordencompra_num));
                 $update->bindValue('usuario_aprobador', utf8_decode($usuario_aprobador));
                 $update->bindValue('estado_cotizacion', utf8_decode($estado_nuevo_cot));
@@ -873,6 +873,47 @@ class Requisicionesitems
             echo '{"error al guardar la configuraciónes ":{"text":' . $e->getMessage() . '}}';
         }
     }
+
+
+/*******************************************************
+** FUNCION PARA MOSTRAR  **
+********************************************************/
+public static function sqlvalortotalordencompra($id){
+    try {
+        $db=Db::getConnect();
+
+        $select=$db->query("SELECT IFNULL(sum(valor_cot),0) as total FROM cotizaciones_item WHERE ordencompra_num='".$id."'");
+        $camposs=$select->fetchAll();
+        $campos = new Requisicionesitems('',$camposs);
+        $marcas = $campos->getCampos();
+        foreach($marcas as $marca){
+            $mar = $marca['total'];
+        }
+        return $mar;
+    }
+    catch(PDOException $e) {
+        echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+    }
+}
+
+/***************************************************************
+*** FUNCION PARA GUARDAR INGRESO DE PAGO DE ORDEN DE COMPRA **** 
+***************************************************************/
+public static function actualizarvalorfinal($id,$valornuevo){
+    try {
+        $db=Db::getConnect();
+
+    $select=$db->query("UPDATE ordenescompra SET valor_total='".$valornuevo."' WHERE id='".$id."'");
+        if ($select){
+            return true;
+            }else{return false;}
+    }
+    catch(PDOException $e) {
+        echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+    }
+}
+
+
 
 /***************************************************************
  *** FUNCION PARA GUARDAR **

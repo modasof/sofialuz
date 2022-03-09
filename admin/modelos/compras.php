@@ -475,7 +475,8 @@ public static function actualizarpagoabonos($ordenunica,$fecha_reporte,$estado_e
 	try {
 		$db=Db::getConnect();
 
-		$select=$db->query("UPDATE detalle_pagos_ordenescompra SET egreso_id='".$ultimoegreso."',estado_pago='".$estado_egreso."', fecha_registro='".$fecha_reporte."' WHERE compra_id='".$ordenunica."' and estado_pago='0'");
+			$select=$db->query("UPDATE detalle_pagos_ordenescompra SET egreso_id='".$ultimoegreso."',estado_pago='".$estado_egreso."', fecha_registro='".$fecha_reporte."' WHERE compra_id='".$ordenunica."' and estado_pago='0'");
+			
 		if ($select){
 			return true;
 			}else{return false;}
@@ -851,12 +852,16 @@ public static function actualizarvalorfinal($id,$valornuevo){
 /***************************************************************
 *** FUNCION PARA GUARDAR INGRESO DE PAGO DE ORDEN DE COMPRA **** 
 ***************************************************************/
-public static function log($usuario_creador,$marca_temporal, $logdetalle,$modulo){
+public static function log($usuario_creador, $logdetalle,$modulo){
 
 	try {
 		$db=Db::getConnect();
 
-	$select=$db->query("INSERT INTO log_usuarios (usuario_creador,marca_temporal,log_detalle,log_modulo) VALUES ('".utf8_decode($usuario_creador)."','".utf8_decode($marca_temporal)."','".utf8_decode($logdetalle)."','".utf8_decode($modulo)."')");
+date_default_timezone_set("America/Bogota");
+$TiempoActual = date('Y-m-d H:i:s');
+
+
+	$select=$db->query("INSERT INTO log_usuarios (usuario_creador,marca_temporal,log_detalle,log_modulo) VALUES ('".utf8_decode($usuario_creador)."','".utf8_decode($TiempoActual)."','".utf8_decode($logdetalle)."','".utf8_decode($modulo)."')");
 		if ($select){
 			return true;
 			}else{return false;}
@@ -865,6 +870,47 @@ public static function log($usuario_creador,$marca_temporal, $logdetalle,$modulo
 		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
 	}
 }
+
+/*******************************************************
+** FUNCION PARA MOSTRAR  **
+********************************************************/
+public static function contadoritemscotizacion($id){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT count(id) as total FROM cotizaciones_item WHERE ordencompra_num='".$id."' and estado_cotizacion='2'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Compras('',$camposs);
+    	$marcas = $campos->getCampos();
+		foreach($marcas as $marca){
+			$mar = $marca['total'];
+		}
+		return $mar;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
+/***************************************************************
+** FUNCION PARA ELIINAR POR ID  **
+***************************************************************/
+public static function RetornarItemcotizado($id){
+	try {
+		$db=Db::getConnect();
+		$select=$db->query("UPDATE cotizaciones_item SET ordencompra_num='0', estado_cotizacion='1'  WHERE id='".$id."'");
+		if ($select){
+			return true;
+			}else{return false;}
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
+
 
 
 }

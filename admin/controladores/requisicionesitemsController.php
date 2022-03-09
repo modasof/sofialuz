@@ -207,10 +207,14 @@ class RequisicionesitemsController
         $res = Requisicionesitems::actualizaritemcotizasoc($usuario_creador, $ordencompra_num, $arregloitems, $proveedor_id_proveedor, $estado_cotizacion, $estado_nuevo_cot);
 // 5. Se cambia el estado al item
         $res = Requisicionesitems::actualizarestadooc($estado_item, $arregloitems);
-// 6. Se actualiza la trazabilidad en cada item y se agrega el estado 8
+ // 6. Se verifica el valor total de la orden de compra por id de orden de compra
+        $valor_final = Requisicionesitems::sqlvalortotalordencompra($ordencompra_num);
+//  7. Se actualiza el nuevo valor de la orden de compra 
+        $res = Requisicionesitems::actualizarvalorfinal($ordencompra_num,$valor_final);
+// 8. Se actualiza la trazabilidad en cada item y se agrega el estado 8
         $observaciontrazabilidad = $observaciones . " Con orden de Compra N." . $ordencompra_num;
         $res                     = Requisicionesitems::guardartrazabilidadoc($estado_item, $items, $usuario_creador, $observaciontrazabilidad);
-// 7. Notificación de mensaje de Texto a usuario contabilidad
+// 9. Notificación de mensaje de Texto a usuario contabilidad
 
         if ($res) {
             echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina\", \"success\").then(function(){window.location='?controller=requisiciones&&action=cotizaciones';});});</script>";
