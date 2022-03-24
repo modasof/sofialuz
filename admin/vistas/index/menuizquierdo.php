@@ -269,7 +269,7 @@ foreach($campos as $campo){
       <?php } ?>
 
       <?php if ($m_rqentrada=="Si") { ?>
-        <li class=""><a href="?controller=compras&&action=recibiroc"><i class="fa fa-shopping-cart"></i>Recibir OC</a></li>
+        <li class=""><a href="?controller=compras&&action=todosrecibirinsumos"><i class="fa fa-shopping-cart"></i>Recibir OC</a></li>
       <?php } ?>   
 
         <?php if ($m_rq=="Si") { ?>

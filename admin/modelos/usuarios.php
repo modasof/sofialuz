@@ -349,6 +349,27 @@ public static function obtenerNombreUsuario($id){
 /*******************************************************
 ** FUNCION PARA MOSTRAR EL NOMBRE DEL USUARIO **
 ********************************************************/
+public static function obtenerRolUsuario($id){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT rol_id_rol FROM usuarios WHERE id_usuario='".$id."'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Usuarios('',$camposs);
+    	$marcas = $campos->getCampos();
+		foreach($marcas as $marca){
+			$mar = $marca['rol_id_rol'];
+		}
+		return $mar;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/*******************************************************
+** FUNCION PARA MOSTRAR EL NOMBRE DEL USUARIO **
+********************************************************/
 public static function obtenerImagenPerfil($id){
 	try {
 		$db=Db::getConnect();

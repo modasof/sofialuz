@@ -111,6 +111,10 @@ foreach ($campos as $campo) {
                <a href="?controller=usuarios&&action=editarpermisos&&id=<?php echo $id_usuario; ?>" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Editar Permisos">
                 <i class="fa fa-check bigger-110 "></i>
               </a>
+              <br>
+               <a href="?controller=usuariosrubros&&action=todospor&&id_usuario=<?php echo $id_usuario; ?>" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Editar Permisos">
+                <i class="fa fa-check bigger-110 ">Asignar Rubros</i>
+              </a>
               </td>
             </tr>
             <?php

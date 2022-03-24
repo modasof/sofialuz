@@ -13,6 +13,28 @@
 });
 </script>
 
+<script type="text/javascript">
+$(document).ready(function(){
+    $('#rubro_id').on('change',function(){
+        var rubroID = $(this).val();
+        //alert (rubroID);
+        if(rubroID){
+            $.ajax({
+                type:'POST',
+                url:'vistas/requisiciones/ajax.php',
+                data:'rubro_id='+rubroID,
+                success:function(html){
+                    $('#subrubro_id').html(html);  
+                }
+            });
+        }else{
+            $('#subrubro_id').html('<option value="">Seleccione primero el rubro</option>');
+            
+        }
+    });
+});
+</script>
+
 <div class="box box-primary">
             <div class="box-header with-border">
               <h3 class="box-title"> Crear Requisición 
@@ -98,6 +120,35 @@
 								</select>
 												</div>
 						</div>
+
+							<div class="col-md-4">
+												<div class="form-group">
+													<label> Seleccione el Rubro: <span>*</span></label>
+								<select style="width: 300px;" class="form-control mi-selector" id="rubro_id" name="rubro_id" required>
+										<option value="" selected>Seleccionar Rubro...</option>
+										<?php
+										$rubros = Rubros::obtenerListaRubrospermitidos($IdSesion);
+										foreach ($rubros as $campo){
+											$id_rubro = $campo['rubro_id_autorizado'];
+											$nombre_rubro=Rubros::obtenerNombreRubro($id_rubro);
+											
+										?>
+										<option value="<?php echo $id_rubro; ?>"><?php echo utf8_encode($nombre_rubro); ?></option>
+										<?php } ?>
+								</select>
+
+												</div>
+							</div>
+
+							<div id="divsubrubro" class="col-md-4">
+												<div class="form-group">
+													  <label for="sel1">Sub-Rubro:<span>*</span></label>
+													  <select class="form-control mi-selector" id="subrubro_id" name="subrubro_id" >
+													  	<option value="0">Seleccionar Subrubro</option>
+													  </select>
+												</div>
+												
+							</div>
 										</div>
 										<div class="row">
 								<div class="card-footer ">

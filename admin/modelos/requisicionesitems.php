@@ -513,7 +513,7 @@ class Requisicionesitems
     {
         try {
             $db     = Db::getConnect();
-            $select = $db->query("UPDATE requisiciones_items SET estado_item='4' WHERE requisicion_id='" . $id . "'");
+            $select = $db->query("UPDATE requisiciones_items SET estado_item='6' WHERE requisicion_id='" . $id . "'");
             if ($select) {
                 return true;
             } else {return false;}

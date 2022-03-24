@@ -20,8 +20,6 @@ $controllers = array(
 	// Funcionalidad de Categorio de los Insumos
 	'categoriainsumos' => ['todos','nuevo','guardar','eliminar','editar','actualizar'],
 
-	// Funcionalidad Clientes Precios
-	'clientesprecios' => ['nuevoValoresRuta','nuevoValoresHora','nuevoValoresProducto','editarValoresRuta','editarValoresHora','editarValoresProducto','guardar','guardarvalorhora','guardarvalorproducto','eliminar','eliminarhora','eliminarproducto','todos','todoshora','todosproducto'],
 
 	// Funcionalidad Concreto
     'concreto' => ['todos','formularioconcreto','guardar','eliminar','editar','actualizar','despachosporfecha','detallepuntos'],
@@ -30,13 +28,16 @@ $controllers = array(
     'consolidados' => ['editar','guardar','actualizar','todos','nuevo','eliminar','documentoscuentas','documentosequipos','totalreporteseq'],
 
     // Funcionalidad compras
-	'compras' => ['todos','formulario','guardar','eliminar','editar','actualizar','porfecha','verdetalle','cambiarestado','actualizarpago','cambiarestadocreditos','pagotemporal','deletepagotemporal','actualizarpagocredito','recibiroc','todospormes','cxpusuario','actualizardetallecot','editardetallecot'],
+	'compras' => ['todos','formulario','guardar','eliminar','editar','actualizar','porfecha','verdetalle','cambiarestado','actualizarpago','cambiarestadocreditos','pagotemporal','deletepagotemporal','actualizarpagocredito','recibiroc','todospormes','cxpusuario','actualizardetallecot','editardetallecot','todosrecibirinsumos','porfechainsumos','cargarinventario'],
 
 	// Funcionalidad Cotizaciones
 	'cotizaciones' => ['todos','editar','actualizar','porfecha','todosporinsumo'],
 
 	// Funcionalidad Clientes
 	'clientes' => ['editar','guardar','actualizar','todos','nuevo','eliminar'],
+
+	// Funcionalidad Clientes Precios
+	'clientesprecios' => ['nuevoValoresRuta','nuevoValoresHora','nuevoValoresProducto','editarValoresRuta','editarValoresHora','editarValoresProducto','guardar','guardarvalorhora','guardarvalorproducto','eliminar','eliminarhora','eliminarproducto','todos','todoshora','todosproducto'],
 
 
 	// Funcionalidad Cuentas
@@ -172,7 +173,10 @@ $controllers = array(
 	'unidadesmed' => ['todos','nuevo','guardar','eliminar','editar','actualizar'],
 
 	// Funcionalidad Gestión Usuarios
-	'usuarios' => ['editar','guardar','actualizar','todos','nuevo','eliminar','editarpermisos','activarmenuPor','desactivarmenuPor','activartodo','desactivartodo'],
+	'usuarios' => ['editar','guardar','actualizar','todos','nuevo','eliminar','editarpermisos','activarmenuPor','desactivarmenuPor','activartodo','desactivartodo','activarrubros'],
+
+	// Funcionalidad Activar Rubros por Usuario
+	'usuariosrubros' => ['todospor','activarrubroPor','desactivarrubroPor','activartodo','activarporRol'],
 
     // Funcionalidad Gráficas Volquetas
 	'visorgraficas' => ['todos'],
@@ -475,6 +479,11 @@ function call($controller, $action) {
 	case 'usuarios':
 		require_once 'modelos/usuarios.php';
 		$controller = new UsuariosController();
+		break;
+
+	case 'usuariosrubros':
+		require_once 'modelos/usuariosrubros.php';
+		$controller = new UsuariosrubrosController();
 		break;
 
 	case 'visorgraficas':

@@ -89,7 +89,7 @@ https://sofialuz.net/admin/index.php?controller=concreto&action=formularioconcre
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="?controller=index&&action=index">Inicio</a></li>
-            <li class="breadcrumb-item"><a href="?controller=cotizaciones&&action=todos">Ordenes de Compra</a></li>
+            <li class="breadcrumb-item"><a href="?controller=compras&&action=todosrecibirinsumos">Recibir OC</a></li>
             
           </ol>
         </div><!-- /.col -->
@@ -160,25 +160,25 @@ $TiempoActual = date('Y-m-d H:i:s');
 											<div class="col-md-4">
 												<div class="form-group">
 													<label>Valor Unitario<span>*</span></label>
-													<input type="text" name="vr_unitario" placeholder="Valor M3" class="form-control" id="demo1" value="<?php echo $vr_unitario; ?>">
+													<input type="text" name="vr_unitario" placeholder="Valor M3" class="form-control" id="demo1" value="<?php echo $vr_unitario; ?>" disabled="">
 												</div>
 											</div>
 												<div class="col-md-2">
 												<div class="form-group">
 													<label>Cantidades<span>*</span></label>
-													<input type="number" step="any" name="contador1" placeholder="Contador Inicial" class="form-control" required value="<?php echo $cantidadcot; ?>">
+													<input type="number" step="any" name="contador1" placeholder="Contador Inicial" class="form-control" required value="<?php echo $cantidadcot; ?>" disabled="">
 												</div>
 											</div>
 											<div class="col-md-4">
 												<div class="form-group">
 													<label>Valor Total<span>*</span></label>
-													<input type="text" name="valor_cot" placeholder="Valor Material" class="form-control" id="demo2" value="<?php echo $valor_cot; ?>">
+													<input type="text" name="valor_cot" placeholder="Valor Material" class="form-control" id="demo2" value="<?php echo $valor_cot; ?>" disabled="">
 												</div>
 											</div>
 											<hr>
 											
 										</div>
-							<div class="row">
+							<div style="display: none;" class="row">
 								<div class="card-footer">
 								  <button name="Submit" type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Haz clic aqui para guardar la información">Actualizar</button>
 								</div>

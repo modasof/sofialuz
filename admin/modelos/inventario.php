@@ -541,12 +541,12 @@ LEFT JOIN detalle_salida_ins ON  detalle_salida_ins.fecha_registro=detalle_entra
 /*******************************************************
  ** FUNCION PARA MOSTRAR  **
  ********************************************************/
-    public static function sqldetalleentradatemporal($id, $fecha_registro)
+    public static function sqldetalleentradatemporal($id)
     {
         try {
             $db = Db::getConnect();
 
-            $select  = $db->query("SELECT IFNULL(sum(cantidad),0) as EntradasAntes FROM detalle_entrada_ins WHERE cotizacion_item_id='" . $id . "' and estado_detalle_entrada='0' and fecha_registro='" . $fecha_registro . "'");
+            $select  = $db->query("SELECT IFNULL(sum(cantidad),0) as EntradasAntes FROM detalle_entrada_ins WHERE cotizacion_item_id='" . $id . "' and estado_detalle_entrada='0'");
             $camposs = $select->fetchAll();
             $campos  = new Inventario('', $camposs);
             $marcas  = $campos->getCampos();
@@ -582,6 +582,7 @@ LEFT JOIN detalle_salida_ins ON  detalle_salida_ins.fecha_registro=detalle_entra
 
 /***************************************************************
  *** FUNCION PARA GUARDAR INGRESO DE PAGO DE ORDEN DE COMPRA ****
+ * //(`id`, `cotizacion_item_id`, `oc_id`, `insumo_id`, `servicio_id`, `cantidad`, `entrada_id`, `fecha_registro`, `estado_detalle_entrada`, `marca_temporal`, `creado_por`, `entrada_por`)
  ***************************************************************/
     public static function guardarentradadetalletem($campos)
     {
@@ -591,11 +592,12 @@ LEFT JOIN detalle_salida_ins ON  detalle_salida_ins.fecha_registro=detalle_entra
             $campostraidos = $campos->getCampos();
             extract($campostraidos);
 
-            $insert = $db->prepare('INSERT INTO detalle_entrada_ins VALUES (NULL,:cotizacion_item_id,:oc_id,:insumo_id,:cantidad,:entrada_id,:fecha_registro,:estado_detalle_entrada,:marca_temporal,:creado_por,:entrada_por)');
+            $insert = $db->prepare('INSERT INTO detalle_entrada_ins VALUES (NULL,:cotizacion_item_id,:oc_id,:insumo_id,:servicio_id,:cantidad,:entrada_id,:fecha_registro,:estado_detalle_entrada,:marca_temporal,:creado_por,:entrada_por)');
 
             $insert->bindValue('cotizacion_item_id', utf8_decode($cotizacion_item_id));
             $insert->bindValue('oc_id', utf8_decode($oc_id));
             $insert->bindValue('insumo_id', utf8_decode($insumo_id));
+            $insert->bindValue('servicio_id', utf8_decode($servicio_id));
             $insert->bindValue('cantidad', utf8_decode($cantidad));
             $insert->bindValue('entrada_id', utf8_decode($entrada_id));
             $insert->bindValue('fecha_registro', utf8_decode($fecha_registro));

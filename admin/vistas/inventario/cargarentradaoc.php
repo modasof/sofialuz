@@ -77,8 +77,8 @@ $getOrden = $_GET['id'];
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="?controller=index&&action=index">Inicio</a></li>
-            <li class="breadcrumb-item active"><a href="?controller=compras&&action=todos">Ordenes de compra</a></li>
-            <li class="breadcrumb-item active"><a href="?controller=compras&&action=recibiroc">OC Espera Recepción</a></li>
+
+            <li class="breadcrumb-item active"><a href="?controller=compras&&action=todosrecibirinsumos">Recibir OC</a></li>
           </ol>
         </div><!-- /.col -->
       </div><!-- /.row -->
@@ -134,13 +134,27 @@ foreach ($campos as $campo) {
     $estado_cotizacion      = $campo['estado_cotizacion'];
     $ordencompra_num        = $campo['ordencompra_num'];
     $insumo_id_insumo       = $campo['insumo_id_insumo'];
+    $servicio_id_servicio   = $campo['servicio_id_servicio'];
     $vr_unitario            = $campo['vr_unitario'];
     $cantidadcot            = $campo['cantidadcot'];
-    $nominsumo              = Insumos::obtenerNombreInsumo($insumo_id_insumo);
-    $unidadmedidaid         = Insumos::obtenerUnidadmed($insumo_id_insumo);
-    $nomunidadmedida        = Unidadesmed::obtenerNombre($unidadmedidaid);
-    $cant_anteriores        = Inventario::sqldetalleentrada($id);
-    $cant_anteriorestemp    = Inventario::sqldetalleentradatemporal($id,$fechadia);
+
+    $cant_anteriores     = Inventario::sqldetalleentrada($id);
+    $cant_anteriorestemp = Inventario::sqldetalleentradatemporal($id);
+
+    if ($insumo_id_insumo != "0") {
+        $nominsumo           = Insumos::obtenerNombreInsumo($insumo_id_insumo);
+        $labelinsumo         = "OcInsumo:";
+        $unidadmedidaid      = Insumos::obtenerUnidadmed($insumo_id_insumo);
+        $nomunidadmedida     = Unidadesmed::obtenerNombre($unidadmedidaid);
+    
+    } elseif ($servicio_id_servicio != "0") {
+        $nominsumo         = Servicios::obtenerNombre($servicio_id_servicio);
+        $labelinsumo       = "OcServicio:";
+        $unidadmedidaid    = Servicios::obtenerUnidadServicio($servicio_id_servicio);
+        $nomunidadmedida   = Unidadesmed::obtenerNombre($unidadmedidaid);
+    }
+
+      
 
     $pendiente = $cantidadcot - $cant_anteriores;
     $sumatotal += $cantidadcot;
@@ -157,15 +171,16 @@ date_default_timezone_set("America/Bogota");
     $TiempoActual = date('Y-m-d H:i:s');
     $campofecha   = date('Y-m-d');
     ?>
-                                <input type="hidden" name="cotizacion_item_id" value="<?php echo ($id) ?>">
-                                <input type="hidden" name="oc_id" value="<?php echo ($getOrden) ?>">
-                                <input type="hidden" name="insumo_id" value="<?php echo ($insumo_id_insumo) ?>">
-                                <input type="hidden" name="entrada_id" value="<?php echo ($entrada_id) ?>">
-                                <input type="hidden" name="fecha_registro" value="<?php echo ($campofecha) ?>">
-                                <input type="hidden" name="estado_detalle_entrada" value="0">
-                                <input type="hidden" name="marca_temporal" value="<?php echo ($TiempoActual) ?>">
-                                <input type="hidden" name="creado_por" value="<?php echo ($IdSesion) ?>">
-                                <input type="hidden" name="entrada_por" value="Entrada por OC">
+                        <input type="hidden" name="cotizacion_item_id" value="<?php echo ($id) ?>">
+                        <input type="hidden" name="oc_id" value="<?php echo ($getOrden) ?>">
+                        <input type="hidden" name="insumo_id" value="<?php echo ($insumo_id_insumo) ?>">
+                        <input type="hidden" name="servicio_id" value="<?php echo ($servicio_id_servicio) ?>">
+                        <input type="hidden" name="entrada_id" value="<?php echo ($entrada_id) ?>">
+                      
+                        <input type="hidden" name="estado_detalle_entrada" value="0">
+                        <input type="hidden" name="marca_temporal" value="<?php echo ($TiempoActual) ?>">
+                        <input type="hidden" name="creado_por" value="<?php echo ($IdSesion) ?>">
+                        <input type="hidden" name="entrada_por" value="Entrada por OC">
         <td>OC 00<?php echo ($getOrden . "-" . $id); ?></td>
         <td><?php echo ($nominsumo); ?></td>
         <td><?php echo ($nomunidadmedida); ?></td>
@@ -267,7 +282,11 @@ date_default_timezone_set("America/Bogota");
     <input disabled="" class='input input-group-sm' type="number" step="any" value="<?php echo ($cant_anteriorestemp); ?>">
     <a href="?controller=inventario&action=deletedellentradatemp&&id=<?php echo ($getOrden); ?>&&iddelete=<?php echo ($id); ?>"><i class="fa fa-close text-danger"></i></a>
  </td>
-        <td><input id="" class='input input-sm' type="number" step="any" name="cantidad" value="<?php echo ($pendiente); ?>"></td>
+        <td>
+            <input id="" class='input input-sm' type="number" step="any" name="cantidad" value="<?php echo ($pendiente); ?>">
+
+        <input type="date" name="fecha_registro" placeholder="Fecha" class="form-control required" required id="fecha_reporte">
+        </td>
         <td><button type="submit" class="btn btn-success fa fa-check"></button></td>
     </form>
 
@@ -285,7 +304,7 @@ date_default_timezone_set("America/Bogota");
                 <td><strong><?php echo ($sumaanteriorestemp); ?> </strong></td>
                 <td> <strong><?php echo ($pendientetotal); ?> </strong></td>
             </tr>
-    <input id="inputcantidadrecibida" type="hidden" value="<?php echo ($sumaanteriorestemp); ?>"> 
+    <input id="inputcantidadrecibida" type="hidden" value="<?php echo ($sumaanteriorestemp); ?>">
     <input id="inputcantidacomprada" type="hidden" value="<?php echo ($sumatotal); ?>">
 
               </tbody></table>
@@ -301,7 +320,7 @@ date_default_timezone_set("America/Bogota");
 
 date_default_timezone_set("America/Bogota");
 $TiempoActual = date('Y-m-d H:i:s');
- $campofecha   = date('Y-m-d');
+$campofecha   = date('Y-m-d');
 ?>
 
 
@@ -310,7 +329,7 @@ $TiempoActual = date('Y-m-d H:i:s');
                     <input type="hidden" name="marca_temporal" value="<?php echo ($TiempoActual) ?>">
                     <input type="hidden" name="creado_por" value="<?php echo ($IdSesion) ?>">
                     <input type="hidden" name="tipo_entrada" value="Entrada por OC">
-                     <input type="hidden" name="ocid" value="<?php echo($getOrden);?>">
+                     <input type="hidden" name="ocid" value="<?php echo ($getOrden); ?>">
 
                               <div class="card-body">
 
@@ -320,25 +339,25 @@ $TiempoActual = date('Y-m-d H:i:s');
                         <label for="">Indique el estado:</label>
                         <div class="form-group">
                           <select style="width:300px;" class="mi-selector" name="estadoOC" id="estadoOC" required="">
-                           
+
                           </select>
                         </div>
-                        
+
                       </div>
                     <div class="col-md-12">
                         <div class="form-group">
                           <label>Observaciones<span>*</span></label>
                   <textarea class="form-control" rows="2" id="descripcion" name="observaciones" required></textarea>
                         </div>
-                      </div> 
+                      </div>
 
 <script type="text/javascript">
 $(document).ready(function(){
-   
+
         var recibido = $("#inputcantidadrecibida").val();
         var comprado = $("#inputcantidacomprada").val();
 
-        
+
         //alert ("El valor del IVA aplicado es de:"+comprado);
         if (recibido<comprado) {
         var mySelect = document.getElementById("estadoOC");
@@ -351,7 +370,7 @@ $(document).ready(function(){
             addOption2(mySelect,"Pendiente x saldo","Pendiente");
             addOption2(mySelect,"Pendiente x cambio","Pendiente");
             addOption2(mySelect,"Pendiente x devolucion","Pendiente");
-    
+
         }
         else if(recibido==comprado){
             var mySelect = document.getElementById("estadoOC");
@@ -360,17 +379,17 @@ $(document).ready(function(){
             console.log(typeof opt)
             select.appendChild(opt);
             }
-            addOption2(mySelect,"Recibido Ok","Recibido Ok");  
+            addOption2(mySelect,"Recibido Ok","Recibido Ok");
         }
-        
+
 });
 </script>
-                                  
+
                   </div>
                    <div class="card-footer">
                               <button  name="Submit" type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="bottom" title="Haz clic aqui para guardar la información">Guardar Entrada Centro de Distribución</button>
                         </div>
-                    
+
 
                           </div>
                           <!-- /.card -->

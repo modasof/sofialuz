@@ -18,6 +18,9 @@ include_once 'modelos/requisicionesitems.php';
 include_once 'controladores/requisicionesController.php';
 include_once 'modelos/requisiciones.php';
 
+include_once 'modelos/rubros.php';
+include_once 'controladores/rubrosController.php';
+
 include_once 'modelos/servicios.php';
 include_once 'controladores/serviciosController.php';
 

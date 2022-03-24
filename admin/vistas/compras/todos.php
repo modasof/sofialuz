@@ -97,6 +97,87 @@ if ($FechaDos == "") {
   <div class="content">
     <div class="container-fluid">
       <div class="row">
+                                  <div class="row">
+        <form action="?controller=compras&&action=todos" method="post" id="FormFechas" autocomplete="off">
+         <div class="col-md-8">
+                        <div class="form-group">
+                          <label>Seleccione el Rango de Fecha<span>*</span></label>
+                          <input type="text"  name="daterange" class="form-control" required value="">
+                        </div>
+                      </div>
+          <div class="form-group">
+            <div class="col-xs-12 col-sm-6">
+              <button class="btn btn-primary btn-sm" type="Submit">Realizar Consulta</button>
+          </div>
+          </div>
+        </form>
+        <script type="text/javascript">
+  $('input[name="daterange"]').daterangepicker({
+    ranges: {
+        'Hoy': [moment(), moment()],
+        'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+        'Últimos 7 días': [moment().subtract(6, 'days'), moment()],
+        'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
+        'Este Mes': [moment().startOf('month'), moment().endOf('month')],
+        'Mes Anterior': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+    },
+    "locale": {
+        "format": "MM/DD/YYYY",
+        "separator": " - ",
+        "applyLabel": "Aplicar",
+        "cancelLabel": "Cancelar",
+        "fromLabel": "desde",
+        "toLabel": "hasta",
+        "customRangeLabel": "Personalizado",
+        "weekLabel": "W",
+        "daysOfWeek": [
+            "Do",
+            "Lu",
+            "Ma",
+            "Mi",
+            "Ju",
+            "Vi",
+            "Sa"
+        ],
+        "monthNames": [
+            "Enero",
+            "Febrero",
+            "Marzo",
+            "Abril",
+            "Mayo",
+            "Junio",
+            "Julio",
+            "Agosto",
+            "Septiembre",
+            "Octubre",
+            "Noviembre",
+            "Diciembre"
+        ],
+        "firstDay": 1
+    },
+    //"startDate": "03/24/2019",
+    //"endDate": "03/30/2019",
+    "opens": "left"
+}, function(start, end, label) {
+  console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+});
+</script>
+      </div>
+       <div class="col-sm-12">
+        <?php
+if ($fechaform != "") {
+    ?>
+           <h3 class="m-0 text-dark">Reporte Compras Insumos/Servicios del <?php echo (fechalarga($datofechain)) ?> al <?php echo (fechalarga($datofechafinal)) ?></h3>
+          <?php
+} else {
+    ?>
+           <h3 class="m-0 text-dark">Reporte Compras Insumos/Servicios últimos 8 días</h3>
+          <?php
+}
+
+?>
+
+        </div><!-- /.col -->
 
 
             <!-- ESTE DIV LO USO PARA CENTRAR EL FORMULARIO -->
@@ -436,8 +517,15 @@ if ($imagen != "0") {
           </thead>
        <tbody>
             <?php
-$res2    = Compras::todosocservicios();
-$camposb = $res2->getCampos();
+
+if ($fechaform != "") {
+    $res2    = Compras::porfechaservicios($FechaStart, $FechaEnd);
+    $camposb = $res2->getCampos();
+} else {
+    $res2    = Compras::todosocservicios();
+    $camposb = $res2->getCampos();
+}
+
 foreach ($camposb as $campo2) {
     $id                     = $campo2['id'];
     $fecha_reporte          = $campo2['fecha_reporte'];
@@ -667,8 +755,14 @@ if ($imagen != "0") {
           </thead>
        <tbody>
             <?php
-$res3    = Compras::todosocequipos();
-$camposc = $res3->getCampos();
+
+if ($fechaform != "") {
+    $res3    = Compras::porfechaequipos($FechaStart, $FechaEnd);
+    $camposc = $res3->getCampos();
+} else {
+    $res3    = Compras::todosocequipos();
+    $camposc = $res3->getCampos();
+}
 foreach ($camposc as $campo3) {
     $id                     = $campo3['id'];
     $fecha_reporte          = $campo3['fecha_reporte'];
@@ -897,25 +991,31 @@ if ($imagen != "0") {
           </thead>
        <tbody>
             <?php
-$res2    = Compras::todosoccuentasxpagar();
-$camposb = $res2->getCampos();
-foreach ($camposb as $campo2) {
-    $id                     = $campo2['id'];
-    $fecha_reporte          = $campo2['fecha_reporte'];
-    $imagen                 = $campo2['imagen'];
-    $valor_total            = $campo2['valor_total'];
-    $valor_retenciones      = $campo2['valor_retenciones'];
-    $valor_iva              = $campo2['valor_iva'];
-    $estado_orden           = $campo2['estado_orden'];
-    $rubro_id               = $campo2['rubro_id'];
-    $subrubro_id            = $campo2['subrubro_id'];
-    $vencimiento            = $campo2['vencimiento'];
-    $proveedor_id_proveedor = $campo2['proveedor_id_proveedor'];
-    $medio_pago             = $campo2['medio_pago'];
-    $marca_temporal         = $campo2['marca_temporal'];
-    $observaciones          = $campo2['observaciones'];
-    $usuario_creador        = $campo2['usuario_creador'];
-    $facturanum             = $campo2['factura'];
+
+if ($fechaform != "") {
+    $res4    = Compras::porfechacuentasporpagar($FechaStart, $FechaEnd);
+    $camposd = $res4->getCampos();
+} else {
+    $res4    = Compras::todosoccuentasxpagar();
+    $camposd = $res4->getCampos();
+}
+foreach ($camposd as $campo4) {
+    $id                     = $campo4['id'];
+    $fecha_reporte          = $campo4['fecha_reporte'];
+    $imagen                 = $campo4['imagen'];
+    $valor_total            = $campo4['valor_total'];
+    $valor_retenciones      = $campo4['valor_retenciones'];
+    $valor_iva              = $campo4['valor_iva'];
+    $estado_orden           = $campo4['estado_orden'];
+    $rubro_id               = $campo4['rubro_id'];
+    $subrubro_id            = $campo4['subrubro_id'];
+    $vencimiento            = $campo4['vencimiento'];
+    $proveedor_id_proveedor = $campo4['proveedor_id_proveedor'];
+    $medio_pago             = $campo4['medio_pago'];
+    $marca_temporal         = $campo4['marca_temporal'];
+    $observaciones          = $campo4['observaciones'];
+    $usuario_creador        = $campo4['usuario_creador'];
+    $facturanum             = $campo4['factura'];
 
     $nomproveedor  = Proveedores::obtenerNombreProveedor($proveedor_id_proveedor);
     $nomreportador = usuarios::obtenerNombreUsuario($usuario_creador);

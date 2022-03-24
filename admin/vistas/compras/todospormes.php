@@ -98,6 +98,88 @@ if ($FechaDos == "") {
     <div class="container-fluid">
       <div class="row">
 
+        <div class="row">
+        <form action="?controller=compras&&action=todospormes" method="post" id="FormFechas" autocomplete="off">
+         <div class="col-md-8">
+                        <div class="form-group">
+                          <label>Seleccione el Rango de Fecha<span>*</span></label>
+                          <input type="text"  name="daterange" class="form-control" required value="">
+                        </div>
+                      </div>
+          <div class="form-group">
+            <div class="col-xs-12 col-sm-6">
+              <button class="btn btn-primary btn-sm" type="Submit">Realizar Consulta</button>
+          </div>
+          </div>
+        </form>
+        <script type="text/javascript">
+  $('input[name="daterange"]').daterangepicker({
+    ranges: {
+        'Hoy': [moment(), moment()],
+        'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+        'Últimos 7 días': [moment().subtract(6, 'days'), moment()],
+        'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
+        'Este Mes': [moment().startOf('month'), moment().endOf('month')],
+        'Mes Anterior': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+    },
+    "locale": {
+        "format": "MM/DD/YYYY",
+        "separator": " - ",
+        "applyLabel": "Aplicar",
+        "cancelLabel": "Cancelar",
+        "fromLabel": "desde",
+        "toLabel": "hasta",
+        "customRangeLabel": "Personalizado",
+        "weekLabel": "W",
+        "daysOfWeek": [
+            "Do",
+            "Lu",
+            "Ma",
+            "Mi",
+            "Ju",
+            "Vi",
+            "Sa"
+        ],
+        "monthNames": [
+            "Enero",
+            "Febrero",
+            "Marzo",
+            "Abril",
+            "Mayo",
+            "Junio",
+            "Julio",
+            "Agosto",
+            "Septiembre",
+            "Octubre",
+            "Noviembre",
+            "Diciembre"
+        ],
+        "firstDay": 1
+    },
+    //"startDate": "03/24/2019",
+    //"endDate": "03/30/2019",
+    "opens": "left"
+}, function(start, end, label) {
+  console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
+});
+</script>
+      </div>
+       <div class="col-sm-12">
+        <?php
+if ($fechaform != "") {
+    ?>
+           <h3 class="m-0 text-dark">Reporte Compras Insumos/Servicios del <?php echo (fechalarga($datofechain)) ?> al <?php echo (fechalarga($datofechafinal)) ?></h3>
+          <?php
+} else {
+    ?>
+           <h3 class="m-0 text-dark">Reporte Compras Insumos/Servicios últimos 8 días</h3>
+          <?php
+}
+
+?>
+
+        </div><!-- /.col -->
+
 
             <!-- ESTE DIV LO USO PARA CENTRAR EL FORMULARIO -->
             <!-- left column -->
@@ -187,7 +269,7 @@ if ($FechaDos == "") {
        <tbody>
             <?php
 if ($fechaform != "") {
-    $res    = Compras::porfecha($FechaStart, $FechaEnd);
+    $res    = Compras::porfechaall($FechaStart, $FechaEnd);
     $campos = $res->getCampos();
 } else {
     $campos = $campos->getCampos();

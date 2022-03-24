@@ -14,9 +14,33 @@ class ComprasController
         require_once 'vistas/compras/todos.php';
     }
 
+    public function todosrecibirinsumos()
+    {
+        $campos = Compras::todosrecibirinsumos();
+        require_once 'vistas/compras/cargarinsumos.php';
+    }
+
+    public function porfechainsumos()
+    {
+
+        if (isset($_POST['daterange'])) {
+            $fechaform = $_POST['daterange'];
+        } elseif (isset($_GET['daterange'])) {
+            $fechaform = $_GET['daterange'];
+        }
+        $campos = Compras::todosrecibirinsumos();
+        require_once 'vistas/compras/cargarinsumos.php';
+    }
+
     public function todospormes()
     {
-        $campos = Compras::todos();
+         if (isset($_POST['daterange'])) {
+            $fechaform = $_POST['daterange'];
+        } elseif (isset($_GET['daterange'])) {
+            $fechaform = $_GET['daterange'];
+        }
+
+        $campos = Compras::todospormes();
         require_once 'vistas/compras/todospormes.php';
     }
 
@@ -92,6 +116,41 @@ class ComprasController
         require_once 'vistas/compras/todos.php';
     }
 
+    /*************************************************************/
+/* FUNCION PARA ELIMINAR  LLAMADO DESDE ROUTING.PHP*/
+/*************************************************************/
+    public function cargarinventario()
+    {
+        $fechaform = $_GET['daterange'];
+
+        //(id, cotizacion_item_id, oc_id, insumo_id, servicio_id, cantidad, entrada_id, fecha_registro, estado_detalle_entrada, marca_temporal, creado_por, entrada_por)
+        $cotizacion_item_id     = $_POST['cotizacion_item_id'];
+        $item_id                = $_POST['itemid'];
+        $oc_id                  = $_POST['oc_id'];
+        $insumo_id              = $_POST['insumo_id'];
+        $servicio_id            = $_POST['servicio_id'];
+        $cantidad               = $_POST['cantidad'];
+        $entrada_id             = "0";
+        $fecha_registro         = $_POST['fecha_registro'];
+        $estado_detalle_entrada = "1";
+        $marca_temporal         = $_POST['marca_temporal'];
+        $creado_por             = $_POST['creado_por'];
+        $entrada_por            = "Entrada por OC";
+       
+        $estado                 = "12";
+
+        $res = Compras::cargarentradainventario($cotizacion_item_id, $oc_id, $insumo_id, $servicio_id, $cantidad, $entrada_id, $fecha_registro, $estado_detalle_entrada, $marca_temporal, $creado_por, $entrada_por);
+
+        $res = Compras::actualizarestadoItemsOC($item_id, $estado);
+
+        if ($res) {
+            echo "<script>jQuery(function(){swal(\"¡Datos Guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+        } else {
+            echo "<script>jQuery(function(){swal(\"¡Datos Guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+        }
+        $campos = Compras::todosrecibirinsumos();
+        require_once 'vistas/compras/cargarinsumos.php';
+    }
 /*************************************************************/
 /* FUNCION PARA GUARDAR NUEVO REGISTRO */
 /*************************************************************/
@@ -151,18 +210,18 @@ class ComprasController
 /*************************************************************/
     public function retornar()
     {
-        $id       = $_GET['id'];
-        $idcotiza = $_GET['idcotiza'];
+        $id              = $_GET['id'];
+        $idcotiza        = $_GET['idcotiza'];
         $usuario_creador = $_GET['reporta'];
 
-        $res = Compras::RetornarItemcotizado($idcotiza);
+        $res        = Compras::RetornarItemcotizado($idcotiza);
         $valorfinal = Compras::sqlvalortotalordencompra($id);
-        $res = Compras::actualizarvalorfinal($id, $valorfinal);
+        $res        = Compras::actualizarvalorfinal($id, $valorfinal);
 
-        $modulo = "Ordenes de compra";
-        $logdetalle = "Id cotizacion ".$idcotiza." de orden de compra N.00C".$id." retornaron a espera de aprobacion.";
+        $modulo     = "Ordenes de compra";
+        $logdetalle = "Id cotizacion " . $idcotiza . " de orden de compra N.00C" . $id . " retornaron a espera de aprobacion.";
 
-        $res    = Compras::log($usuario_creador, $logdetalle, $modulo);
+        $res = Compras::log($usuario_creador, $logdetalle, $modulo);
 
         if ($res) {
             echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
@@ -302,7 +361,7 @@ class ComprasController
 
         // 5. Actualizamos registro del log
         $modulo = "Ordenes de compra";
-        $res    = Compras::log($usuario_creador,$logdetalle, $modulo);
+        $res    = Compras::log($usuario_creador, $logdetalle, $modulo);
 
         if ($res) {
             echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina de miembros\", \"success\");});</script>";
@@ -377,6 +436,7 @@ class ComprasController
         $tipo_egreso      = "Otro tipo de egreso";
         $estado_egreso    = "1";
         $egreso_publicado = "1";
+        $proveedor = "0";
 
         $res = Compras::actualizarpago($id, $ruta_imagen, $valor_total, $valor_retenciones, $valor_iva, $estado_item, $rubro_id, $subrubro_id);
 
@@ -389,7 +449,9 @@ class ComprasController
             $ruta_imagen2 = $this->subir_ficherodos('images/egresoscuenta', 'imagen2');
         }
 
-        $res = Compras::guardaregresoOrdenCompra($cuenta_id, $ruta_imagen2, $tipo_egreso, $beneficiario, $rubro_id, $subrubro_id, $egreso_en, $valor_total, $observaciones, $estado_egreso, $egreso_publicado, $marca_temporal, $fecha_reporte, $creado_por);
+        //$cuenta_id_cuenta,$imagen,$tipo_egreso,$proveedor,$beneficiario,$id_rubro,$id_subrubro,$egreso_en,$valor_egreso,$observaciones,$estado_egreso,$egreso_publicado,$marca_temporal,$fecha_egreso,$creado_por
+
+        $res = Compras::guardaregresoOrdenCompra($cuenta_id, $ruta_imagen2, $tipo_egreso,$proveedor, $beneficiario, $rubro_id, $subrubro_id, $egreso_en, $valor_total, $observaciones, $estado_egreso, $egreso_publicado, $marca_temporal, $fecha_reporte, $creado_por);
 
         if ($res) {
             echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina de miembros\", \"success\");});</script>";

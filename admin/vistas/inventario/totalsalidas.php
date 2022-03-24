@@ -167,12 +167,14 @@ if ($fechaform != "") {
                                     <th style="background-color: #fcf8e3" class="success"></th>
                                     <th style="background-color: #fcf8e3" class="success"></th>
                                     <th style="background-color: #fcf8e3" class="success"></th>
+                                     <th style="background-color: #fcf8e3" class="success"></th>
 
                             </tfoot>
           <thead>
             <tr style="background-color: #4f5962;color: white;">
                 <th>Id-Ent</th>
-                <th>Hora y Fecha de Salida</th>
+                <th>Registrado el</th>
+                <th>Fecha de Salida</th>
                 <th>Entregado por</th>
                 <th>Recibido por</th>
                 <th>Estado</th>
@@ -182,7 +184,8 @@ if ($fechaform != "") {
             </tr>
             <tr>
                 <th>Id-Ent</th>
-                <th>Hora y Fecha de Salida</th>
+                <th>Registrado el</th>
+                <th>Fecha de Salida</th>
                 <th>Entregado por</th>
                 <th>Recibido por</th>
                 <th>Estado</th>
@@ -225,6 +228,7 @@ foreach ($campos as $campo) {
             <tr>
              <td><?php echo ("DES-".$id_salida_ins) ?></td>
               <td><?php echo ($marca_temporal) ?></td>
+              <td><?php echo ($fecha_reporte) ?></td>
               <td><?php echo ($nombreentrega) ?></td>
                <td><?php echo ($nombrerecibe) ?></td>
               <td><?php echo utf8_encode($estadoactual); ?></td>

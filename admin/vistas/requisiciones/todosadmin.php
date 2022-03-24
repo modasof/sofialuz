@@ -21,6 +21,9 @@ include_once 'modelos/equipos.php';
 include_once 'controladores/equiposController.php';
 include_once 'controladores/requisicionesitemsController.php';
 
+include_once 'modelos/rubros.php';
+include_once 'controladores/rubrosController.php';
+
 include_once 'modelos/estadosreq.php';
 include_once 'controladores/estadosreqController.php';
 

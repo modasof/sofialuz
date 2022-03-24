@@ -202,6 +202,24 @@ public static function obtenerListaRubros(){
 }
 
 
+/*******************************************************
+** FUNCION PARA OBTENER LA LISTA DE CLIENTES	  **
+********************************************************/
+public static function obtenerListaRubrospermitidos($id){
+	try {
+		$db=Db::getConnect();
+		$select=$db->query("SELECT DISTINCT(rubro_id_autorizado) FROM usuarios_rubros  WHERE id_usuario='".$id."'");
+    	$campos=$select->fetchAll();
+		$camposs = new Rubros('',$campos);
+		$campostraidos = $camposs->getCampos();
+		return $campostraidos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
 }
 
 ?>

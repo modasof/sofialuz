@@ -137,7 +137,7 @@ foreach ($campos2 as $campo1) {
             <i class="">
               <img width="150px" height="100px" src="../Login/logonomadas.png" >
             </i> Comprobante de Entrega
-            <small class="pull-right">Fecha: <?php
+            <small class="pull-right">Fecha impresión: <?php
 $imprfechalarga = fechalarga($MarcaTemporal);
 echo ($imprfechalarga);
 ?></small>
@@ -161,7 +161,7 @@ echo ($imprfechalarga);
           Despachado por:
           <address>
             <strong><?php echo ($nomdespacha) ?></strong><br>
-            Fecha y hora Entrega: <?php echo ($marca_temporal); ?><br>
+            Fecha Entrega: <?php echo ($fecha_reporte); ?><br>
            <strong>Equipo : <?php echo ($nombreequipo); ?></strong> <br>
           </address>
 

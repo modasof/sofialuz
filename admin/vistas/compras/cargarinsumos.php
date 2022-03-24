@@ -6,6 +6,9 @@ include_once 'controladores/usuariosController.php';
 include_once 'modelos/insumos.php';
 include_once 'controladores/insumosController.php';
 
+include_once 'modelos/compras.php';
+include_once 'controladores/comprasController.php';
+
 include_once 'modelos/unidadesmed.php';
 include_once 'controladores/unidadesmedController.php';
 
@@ -38,13 +41,13 @@ require_once 'vistas/index/header-formdate.php';
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0 text-dark">Reporte Cotizaciones Aprobadas</h1>
+          <h1 class="m-0 text-dark">Cargar Insumos a Inventario</h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="?controller=index&&action=index">Inicio</a></li>
-            <li class="breadcrumb-item"><a href="?controller=requisiciones&&action=cotizaciones">Cotizaciones Pendientes</a></li>
-            
+
+
             <!--<li class="breadcrumb-item active"><a href="?controller=equipos&&action=todos">Equipos</a></li>-->
           </ol>
         </div><!-- /.col -->
@@ -75,7 +78,7 @@ require_once 'vistas/index/header-formdate.php';
           <div class="box box-success">
 
             <div class="box-header with-border">
-              <h3 class="box-title">Cotizaciones </h3>
+              <h3 class="box-title">Compras </h3>
               <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
                 </button>
@@ -85,7 +88,7 @@ require_once 'vistas/index/header-formdate.php';
             <!-- /.box-header -->
             <div class="box-body">
                           <div class="row">
-        <form action="?controller=cotizaciones&&action=porfecha" method="post" id="FormFechas" autocomplete="off">
+        <form action="?controller=compras&&action=porfechainsumos" method="post" id="FormFechas" autocomplete="off">
          <div class="col-md-8">
                         <div class="form-group">
                           <label>Seleccione el Rango de Fecha<span>*</span></label>
@@ -154,11 +157,11 @@ require_once 'vistas/index/header-formdate.php';
         <?php
 if ($fechaform != "") {
     ?>
-           <h3 class="m-0 text-dark">Reporte Cotizaciones del <?php echo (fechalarga($datofechain)) ?> al <?php echo (fechalarga($datofechafinal)) ?></h3>
+           <h3 class="m-0 text-dark">Reporte Compras Insumos/Servicios del <?php echo (fechalarga($datofechain)) ?> al <?php echo (fechalarga($datofechafinal)) ?></h3>
           <?php
 } else {
     ?>
-           <h3 class="m-0 text-dark">Reporte Total Cotizaciones </h3>
+           <h3 class="m-0 text-dark">Reporte Compras Insumos/Servicios últimos 8 días</h3>
           <?php
 }
 
@@ -183,50 +186,60 @@ if ($fechaform != "") {
               <th style="background-color: #fcf8e3" class="success"></th>
               <th style="background-color: #fcf8e3" class="success"></th>
                <th style="background-color: #fcf8e3" class="success"></th>
-              
+              <th style="background-color: #fcf8e3" class="success"></th>
+                <th style="background-color: #fcf8e3" class="success"></th>
+
+
             </tfoot>
           <thead>
             <tr style="background-color: #4f5962;color: white;">
              <th>RQ-IT</th>
               <th>Fecha</th>
               <th>Creada por</th>
-              <th>Aprobada por</th>
+
               <th>OC Número</th>
               <th>Proveedor</th>
              <th>Insumo/Servicio</th>
               <th>Unidad</th>
-              <th>Cant.</th>
+              <th>Compra</th>
+             <th>Recibido</th>
+              <th>Pendiente</th>
               <th>Vr. Unitario</th>
-              <th>Vr. Total</th>
-               <th>Estado</th>
+              <th>Vr. Comprado</th>
+               <th>Vr. Recibido</th>
+               <th>Acción</th>
             </tr>
             <tr>
               <th>RQ-IT</th>
               <th>Fecha</th>
               <th>Creada por</th>
-              <th>Aprobada por</th>
+
               <th>OC Número</th>
               <th>Proveedor</th>
               <th>Insumo/Servicio</th>
               <th>Unidad</th>
-              <th>Cant.</th>
+              <th>Compra</th>
+               <th>Recibido</th>
+              <th>Pendiente</th>
               <th>Vr. Unitario</th>
-              <th>Vr. Total</th>
-               <th>Estado</th>
+             <th>Vr. Comprado</th>
+               <th>Vr. Recibido</th>
+               <th>Acción</th>
             </tr>
           </thead>
        <tbody>
             <?php
 echo ($fechaform);
 if ($fechaform != "") {
-    $res    = Cotizaciones::porfecha($FechaStart, $FechaEnd);
+    $res    = Compras::porfechacargarinsumos($FechaStart, $FechaEnd);
     $campos = $res->getCampos();
 
 } else {
     $campos = $campos->getCampos();
 }
 foreach ($campos as $campo) {
-    $id                     = $campo['id'];
+    $cotizacionid           = $campo['cotizacionid'];
+    $ordenid                = $campo['ordenid'];
     $proveedor_id_proveedor = $campo['proveedor_id_proveedor'];
     $cotizacion             = $campo['cotizacion'];
     $medio_pago             = $campo['medio_pago'];
@@ -244,38 +257,86 @@ foreach ($campos as $campo) {
     $vr_unitario            = $campo['vr_unitario'];
     $cantidadcot            = $campo['cantidadcot'];
 
-    if ($insumo_id_insumo!="0") {
-        $nominsumo    = Insumos::obtenerNombreInsumo($insumo_id_insumo);
-         $idunidad     = Insumos::obtenerUnidadmed($insumo_id_insumo);
-         $nomunidad    = Unidadesmed::obtenerNombre($idunidad);
+    if ($insumo_id_insumo != "0") {
+        $nominsumo         = Insumos::obtenerNombreInsumo($insumo_id_insumo);
+        $labelinsumo       = "OcInsumo:";
+        $idunidad          = Insumos::obtenerUnidadmed($insumo_id_insumo);
+        $nomunidad         = Unidadesmed::obtenerNombre($idunidad);
+        $cantidadrecibida  = Compras::cantidadcargada($ordencompra_num, $insumo_id_insumo);
+        $cantidadpendiente = $cantidadcot - $cantidadrecibida;
+        $valorpendiente    = $cantidadrecibida * $vr_unitario;
+    } elseif ($servicio_id_servicio != "0") {
+        $nominsumo         = Servicios::obtenerNombre($servicio_id_servicio);
+        $labelinsumo       = "OcServicio:";
+        $idunidad          = Servicios::obtenerUnidadServicio($servicio_id_servicio);
+        $nomunidad         = Unidadesmed::obtenerNombre($idunidad);
+        $cantidadrecibida  = Compras::cantidadcargadaser($ordencompra_num, $servicio_id_servicio);;
+        $cantidadpendiente = $cantidadcot - $cantidadrecibida;
+        $valorpendiente    = $cantidadrecibida * $vr_unitario;
     }
-    elseif ($servicio_id_servicio!="0") {
-        $nominsumo = Servicios::obtenerNombre($servicio_id_servicio);
-        $idunidad     = Servicios::obtenerUnidadServicio($servicio_id_servicio);
-         $nomunidad    = Unidadesmed::obtenerNombre($idunidad);
-    }
-
 
     $nomcreador   = Usuarios::obtenerNombreUsuario($usuario_creador);
     $nomaprobador = Usuarios::obtenerNombreUsuario($usuario_aprobador);
-   
-   
+
     $nomproveedor = Proveedores::obtenerNombreProveedor($proveedor_id_proveedor);
     $estadoitem   = Requisicionesitems::sqlestadorq($item_id);
     ?>
             <tr>
-              <td> <a href="?controller=cotizaciones&&action=editar&&id=<?php echo($id) ?>"><?php echo ("RQ" . $requisicion_id . "-" . $item_id); ?></a></td>
+              <td> <a href="?controller=cotizaciones&&action=editar&&id=<?php echo ($ordencompra_num) ?>"><?php echo ("RQ" . $requisicion_id . "-" . $item_id); ?></a></td>
               <td> <?php echo ($fecha_reporte); ?></td>
               <td> <?php echo ($nomcreador); ?></td>
-              <td> <?php echo ($nomaprobador); ?></td>
-              <td><a href="vistas/compras/cotizaciones_print.php?id=<?php echo ($proveedor_id_proveedor); ?>&&idcompra=<?php echo ($ordencompra_num); ?>" target="_blank" class="btn btn-default"><i class="fa fa-print"> </i> </a> <?php echo ($ordencompra_num) ?></td>
+
+              <td><a href="vistas/compras/cotizaciones_print.php?id=<?php echo ($proveedor_id_proveedor); ?>&&idcompra=<?php echo ($ordencompra_num); ?>" target="_blank" class="btn btn-default"><?php echo ($ordencompra_num) ?> </a> </td>
               <td><?php echo ($nomproveedor) ?></td>
-              <td><?php echo utf8_encode($nominsumo); ?></td>
+              <td><strong><?php echo utf8_encode($labelinsumo); ?></strong><?php echo utf8_encode($nominsumo); ?></td>
               <td> <?php echo ($nomunidad); ?></td>
               <td> <?php echo ($cantidadcot); ?></td>
-              <td> <?php echo (number_format($vr_unitario,0)); ?></td>
-              <td> <?php echo (number_format($valor_cot,0)); ?></td>
-               <td> <?php echo ($estadoitem); ?></td>
+               <?php
+if ($cantidadrecibida == $cantidadcot) {
+        echo ("<td class='success'>" . $cantidadrecibida . "</td>");
+    } else {
+        echo ("<td class='danger'>" . $cantidadrecibida . "</td>");
+    }
+
+    ?>
+                 <td> <?php echo ($cantidadpendiente); ?></td>
+              <td> <?php echo (number_format($vr_unitario, 0)); ?></td>
+              <td> <?php echo (number_format($valor_cot, 0)); ?></td>
+               <td> <?php echo (number_format($valorpendiente, 0)); ?></td>
+               <td>
+                <?php 
+                if ($cantidadpendiente<="0") {
+                    echo("<span>Cargado a Inventario</span>");
+                }else
+                {
+
+                 ?>
+<form action="?controller=compras&&action=cargarinventario&&daterange=<?php echo($fechaform); ?>" method="post">
+        <?php  
+            date_default_timezone_set("America/Bogota");
+            $TiempoActual = date('Y-m-d H:i:s');
+            ?>
+                        <input type="date" name="fecha_registro" placeholder="Fecha" class="form-control required" required id="fecha_reporte">
+                        <input type="hidden" name="marca_temporal" value="<?php echo($TiempoActual);?>">
+                        <input type="hidden" name="creado_por" value="<?php echo($IdSesion);?>">
+                        <input type="hidden" name="cotizacion_item_id" value="<?php echo($cotizacionid);?>">
+                        <input type="hidden" name="oc_id" value="<?php echo($ordencompra_num);?>">
+                        <input type="hidden" name="insumo_id" value="<?php echo($insumo_id_insumo);?>">
+                        <input type="hidden" name="servicio_id" value="<?php echo($servicio_id_servicio);?>">
+                        <input type="hidden" name="cantidad" value="<?php echo($cantidadcot);?>">
+                        <input type="hidden" name="itemid" value="<?php echo($item_id);?>">
+                        <button  class="btn btn-success">
+                            Recibir
+                        </button>
+                       
+                         <a href="?controller=inventario&&action=cargarentradaoc&&id=<?php echo ($ordencompra_num); ?>" class="btn btn-warning">
+                <i class="fa fa-list bigger-110 "> Carga Parcial </i>
+              </a>
+                   </form>
+                   <?php } ?>
+                   
+                   
+               </td>
             </tr>
             <?php
 }
@@ -400,7 +461,7 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
     var table = $('#cotizaciones').DataTable({
       responsive:true,
       "ordering": true,
-        "order": [[ 4, "asc" ]],
+        "order": [[ 3, "desc" ]],
         orderCellsTop: true,
         "language": {
             "lengthMenu": "Mostrar _MENU_ registros por página",
@@ -429,19 +490,30 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
             // Total over all pages
 
 
-            pageTotal10 = api
-                .column( 10, { page: 'current'} )
+            pageTotal11 = api
+                .column( 11, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
-           
+
+             pageTotal12 = api
+                .column( 12, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
 
 
-              $( api.column( 10 ).footer() ).html(
-                '$'+formatmoneda(pageTotal10,'' )
+
+              $( api.column( 11 ).footer() ).html(
+                '$'+formatmoneda(pageTotal11,'' )
                 );
-             
+
+               $( api.column( 12 ).footer() ).html(
+                '$'+formatmoneda(pageTotal12,'' )
+                );
+
         },
 
     });

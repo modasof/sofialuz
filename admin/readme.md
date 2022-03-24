@@ -49,3 +49,13 @@
 
 - Se agrega la función de seleccionar por items para aprobación de orden de compra, adicional a eso se habilita la función retornar a Espera de aprobación. 
 
+# Actualización 7 Marzo a 12 de Marzo
+- Opción de pago "a convenir "
+- Opción de pagar orden de compra sin adjunto de factura
+- Ajustar rubros por usuario
+- Agregar RQ el rubro y sub rubro
+- Link a la RQ en la orden de compra 
+- Pasar a cotización lo que este aprobado por el jefe de área
+- Actualización y ajuste del módulo carga a inventario de las compras por rango de fecha, se cambia el campo de fecha que estaba por defecto del día actual a un campo editable.
+
+

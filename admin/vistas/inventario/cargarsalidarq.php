@@ -330,7 +330,8 @@ $TiempoActual = date('Y-m-d H:i:s');
 $campofecha   = date('Y-m-d');
 
 ?>
-                    <input type="hidden" name="fecha_reporte" value="<?php echo ($campofecha); ?>">
+                   
+
                     <input type="hidden" name="fecha_recepcion" value="<?php echo ($campofecha); ?>">
                     <input type="hidden" name="requisicion_id" value="<?php echo ($idreq); ?>">
                     <input type="hidden" name="marca_temporal" value="<?php echo ($TiempoActual); ?>">
@@ -447,8 +448,15 @@ foreach ($rubros as $campo) {
                                 </select>
                                                 </div>
         </div>
+         <div  class="col-md-4">
+                                                <div class="form-group">
+                                                    <label>Fecha Salida<span>*</span></label>
+                                   <input type="date" name="fecha_reporte" placeholder="Fecha" class="form-control required" required id="fecha_reporte">
+                                                </div>
+                                </div>
+         
 
-                                <div  class="col-md-8">
+                                <div  class="col-md-4">
                                                 <div class="form-group">
                                                     <label>Observaciones<span>*</span></label>
                                     <textarea class="form-control" rows="2" id="descripcion" name="observaciones"></textarea>

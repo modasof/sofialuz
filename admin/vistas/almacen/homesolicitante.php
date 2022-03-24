@@ -21,6 +21,9 @@ include_once 'modelos/unidadesmed.php';
 include_once 'controladores/usuariosController.php';
 include_once 'modelos/usuarios.php';
 
+include_once 'controladores/rubrosController.php';
+include_once 'modelos/rubros.php';
+
 include_once 'controladores/unidadesmedController.php';
 include_once 'modelos/unidadesmed.php';
 
@@ -68,7 +71,7 @@ require_once 'vistas/index/header-formdate.php';
     <!-- Main content -->
     <section class="content">
     <div class="row">
-        <div class="col-md-7">
+        <div class="col-md-12">
               <?php
 require_once 'vistas/requisiciones/formrequisiciones.php';
 ?>

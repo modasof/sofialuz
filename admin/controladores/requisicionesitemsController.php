@@ -23,9 +23,9 @@ class RequisicionesitemsController
 
     public function movimientositem()
     {
-        $id     = $_GET['id'];
-        $campos = Requisicionesitems::movimientositem($id);
-        require_once 'vistas/requisicionesitems/gestioncantidades.php';
+        //$id     = $_GET['id'];
+        //$campos = Requisicionesitems::movimientositem($id);
+        //require_once 'vistas/requisicionesitems/gestioncantidades.php';
     }
 
 /*************************************************************/
@@ -492,7 +492,7 @@ class RequisicionesitemsController
         $id             = $_GET['idrq'];
         $items          = $_GET['itemsrq'];
         $userautoriza   = $_GET['userautoriza'];
-        $estadoaprobado = 4;
+        $estadoaprobado = 6;
         $observaciones  = "Item revisado y autorizado correctamente";
         # ======  Actulizar los items  =======
         $res = Requisicionesitems::aprobaritemsporRq($id);

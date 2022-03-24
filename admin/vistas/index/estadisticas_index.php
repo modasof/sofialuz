@@ -183,16 +183,15 @@ function Comprasmesgeneral($mes,$ano){
 	return $total;
 	}
 
-
 function Abonoscomprasmes($mes,$ano){
 	$db = Db::getConnect();
 	//$mesactual = date("n");
-	$select = $db->prepare("SELECT fecha_reporte,IFNULL(sum(ROUND(valor_total,2)),0) as totales FROM facturas_compras
-WHERE  MONTH(fecha_reporte)='".$mes."' and YEAR(fecha_reporte)='".$ano."' and factura_publicada='1'  GROUP BY fecha_reporte");
+	$select = $db->prepare("SELECT IFNULL(sum(valor),0) as totales FROM detalle_pagos_ordenescompra as A, ordenescompra as B
+WHERE  MONTH(B.fecha_reporte)='".$mes."' and YEAR(B.fecha_reporte)='".$ano."' and estado_pago='1' AND A.compra_id=B.id;");
 	$select->execute();
 	$valor = $select->fetchAll(); 
 	foreach($valor as $campo){
-		$total=$total.$campo['totales'].",";
+		$total=$campo['totales'];
 		}
 	return $total;
 	}

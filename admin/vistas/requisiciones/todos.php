@@ -12,6 +12,9 @@ include_once 'controladores/proyectosController.php';
 include_once 'modelos/usuarios.php';
 include_once 'controladores/usuariosController.php';
 
+include_once 'modelos/rubros.php';
+include_once 'controladores/rubrosController.php';
+
 include_once 'controladores/requisicionesitemsController.php';
 include_once 'modelos/requisicionesitems.php';
 
