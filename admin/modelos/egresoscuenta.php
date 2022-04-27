@@ -354,6 +354,46 @@ public static function obtenerRubros(){
 }
 
 
+/*******************************************************
+** FUNCION PARA MOSTRAR A QUE CAJA SE ENVÍO EL EGRESO **
+********************************************************/
+public static function obtenerMediopago($id){
+	try {
+		$db=Db::getConnect();
+		$select=$db->query("SELECT egreso_en FROM egresos_cuenta WHERE id_egreso_cuenta='".$id."'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Egresoscuenta('',$camposs);
+    	$cajas = $campos->getCampos();
+		foreach($cajas as $ncaja){
+			$lacaja = $ncaja['egreso_en'];
+		}
+		return $lacaja;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/*******************************************************
+** FUNCION PARA MOSTRAR A QUE CAJA SE ENVÍO EL EGRESO **
+********************************************************/
+public static function obtenersoportepago($id){
+	try {
+		$db=Db::getConnect();
+		$select=$db->query("SELECT imagen FROM egresos_cuenta WHERE id_egreso_cuenta='".$id."'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Egresoscuenta('',$camposs);
+    	$cajas = $campos->getCampos();
+		foreach($cajas as $ncaja){
+			$lacaja = $ncaja['imagen'];
+		}
+		return $lacaja;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
 
 
 /*******************************************************
@@ -736,7 +776,7 @@ public static function guardar($campos,$imagen){
 		$campostraidos = $campos->getCampos();
 		extract($campostraidos);
 
-	$insert=$db->prepare('INSERT INTO egresos_cuenta VALUES (NULL,:cuenta_id_cuenta,:imagen,:tipo_egreso,:cuenta_beneficiada,:proveedor_id_proveedor,:beneficiario,:id_rubro,:id_subrubro,:caja_beneficiada,:egreso_en,:cheque_id_cheque,:valor_egreso,:observaciones,:estado_egreso,:egreso_publicado,:marca_temporal,:fecha_egreso,:creado_por)');
+	$insert=$db->prepare('INSERT INTO egresos_cuenta VALUES (NULL,:cuenta_id_cuenta,:imagen,:tipo_egreso,:cuenta_beneficiada,:proveedor_id_proveedor,:beneficiario,:id_rubro,:id_subrubro,:caja_beneficiada,:egreso_en,:cheque_id_cheque,:valor_egreso,:observaciones,:estado_egreso,:egreso_publicado,:marca_temporal,:fecha_egreso,:creado_por,:relacion_id_relacion)');
 
 
 		$V1=str_replace(".","",$valor_egreso);
@@ -774,6 +814,7 @@ public static function guardar($campos,$imagen){
 		$insert->bindValue('marca_temporal',utf8_decode($marca_temporal));
 		$insert->bindValue('fecha_egreso',utf8_decode($nuevafecha));
 		$insert->bindValue('creado_por',utf8_decode($creado_por));
+		$insert->bindValue('relacion_id_relacion',utf8_decode($relacion_id_relacion));
 
 		$insert->execute();
 		return true;
@@ -897,6 +938,127 @@ public static function obteneridCuentapor($id){
 			$elrubro = $nrubro['cuenta_id_cuenta'];
 		}
 		return $elrubro;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/*******************************************************
+** FUNCION PARA MOSTRAR EGRESOS EN CUENTA POR TIPO DE GASTO**
+********************************************************/
+public static function egresosporproveedor($id){
+	try {
+		$db=Db::getConnect();
+		$select=$db->query("SELECT IFNULL(SUM(valor_egreso),0) as sumaegreso FROM egresos_cuenta WHERE egreso_publicado='1' AND proveedor_id_proveedor='".$id."'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Egresoscuenta('',$camposs);
+    	$cajas = $campos->getCampos();
+		foreach($cajas as $ncaja){
+			$lacaja = $ncaja['sumaegreso'];
+		}
+		return $lacaja;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/*******************************************************
+** FUNCION PARA MOSTRAR TODOS LOS CAMPOS DE FECHAS	  **
+********************************************************/
+public static function anticiposproveedor($id){
+	try {
+		$db=Db::getConnect();
+		$sql="SELECT * FROM egresos_cuenta WHERE egreso_publicado='1' AND proveedor_id_proveedor='".$id."' and tipo_egreso='Anticipo a proveedor'";
+		//echo($sql);
+		$select=$db->query($sql);
+    	$camposs=$select->fetchAll();
+    	$campos = new Egresoscuenta('',$camposs);
+		return $campos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
+/*******************************************************
+** FUNCION PARA MOSTRAR EGRESOS EN CUENTA POR TIPO DE GASTO**
+********************************************************/
+public static function valoraeliminar($id){
+	try {
+		$db=Db::getConnect();
+		$select=$db->query("SELECT IFNULL(SUM(valor_egreso),0) as sumaegreso FROM egresos_cuenta WHERE id_egreso_cuenta='".$id."'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Egresoscuenta('',$camposs);
+    	$cajas = $campos->getCampos();
+		foreach($cajas as $ncaja){
+			$lacaja = $ncaja['sumaegreso'];
+		}
+		return $lacaja;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
+/*******************************************************
+** FUNCION PARA MOSTRAR LA CUENTA A LA CUAL APLICA EL EGRESO**
+********************************************************/
+public static function idrelacionpor($id){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT relacion_id_relacion FROM egresos_cuenta WHERE id_egreso_cuenta='".$id."'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Egresoscuenta('',$camposs);
+    	$rubros = $campos->getCampos();
+		foreach($rubros as $nrubro){
+			$elrubro = $nrubro['relacion_id_relacion'];
+		}
+		return $elrubro;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/*******************************************************
+** FUNCION PARA MOSTRAR EGRESOS EN CUENTA POR TIPO DE GASTO**
+********************************************************/
+public static function valorpagado($id){
+	try {
+		$db=Db::getConnect();
+		$select=$db->query("SELECT IFNULL(SUM(valor_pagado),0) as totales FROM detalle_pagos_proyectados WHERE id='".$id."'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Egresoscuenta('',$camposs);
+    	$cajas = $campos->getCampos();
+		foreach($cajas as $ncaja){
+			$lacaja = $ncaja['totales'];
+		}
+		return $lacaja;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
+/***************************************************************
+*** FUNCION PARA GUARDAR INGRESO DE PAGO DE ORDEN DE COMPRA ****
+* (fecha_reporte, marca_temporal, creado_por, recurso_destinado) 
+***************************************************************/
+public static function actualizarvalorautorizado($valorfinal,$idrelacion){
+
+	try {
+		$db=Db::getConnect();
+
+	$select=$db->query("UPDATE detalle_pagos_proyectados SET valor_pagado='".$valorfinal."'  WHERE id='".$idrelacion."'");
+		if ($select){
+			return true;
+			}else{return false;}
 	}
 	catch(PDOException $e) {
 		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';

@@ -23,14 +23,20 @@ $RolSesion = $_SESSION['IdRol'];
 $IdSesion  = $_SESSION['IdUser'];
 
 $idreq = $_GET['id'];
-//$listaids=$_GET['des'];
+$relacionid=$_GET['relacionid'];
+
+$valorautorizado=Proveedores::sqlvalorautorizado($relacionid);
+$valorejecutado=Proveedores::sqlvalorejecutado($relacionid);
+
+$valormaximo=$valorautorizado-$valorejecutado;
+
 
 $res    = compras::editarpor($idreq);
 $campos = $res->getCampos();
 foreach ($campos as $campo) {
     $id                     = $campo['id'];
     $fecha_reporte          = $campo['fecha_reporte'];
-    $imagen                 = $campo['imagen'];
+   // $imagen             = $campo['imagen'];
     $imagenfactura          = $campo['imagen'];
     $valor_total            = $campo['valor_total'];
     $valor_retenciones      = $campo['valor_retenciones'];
@@ -207,6 +213,7 @@ $(document).ready(function(){
                    <th>Confirmar</th>
                 </tr>
                 <?php
+                
 $itemsget = $_GET['des'];
 $items = explode(",", $itemsget);
 foreach ($items as $key => $despachounico) {
@@ -284,7 +291,7 @@ $(document).ready(function(){
 
 
             <tr>
-    <form action="?controller=compras&action=pagotemporal&&id=<?php echo ($idreq); ?>&&des=<?php echo($itemsget); ?>" method="post" onsubmit="return checkSubmit();">
+    <form action="?controller=compras&action=pagotemporal&&id=<?php echo ($idreq); ?>&&des=<?php echo($itemsget); ?>&&relacionid=<?php echo($relacionid); ?>" method="post" onsubmit="return checkSubmit();">
         
  <?php
 date_default_timezone_set("America/Bogota");
@@ -303,7 +310,7 @@ $campofecha = date('Y-m-d');
         <?php 
 
         if ($factura!='0') {
-            echo("<a target='_blank' href=".$imagenfactura."><i class='fa fa-eye'> Ver Factura ".$factura_num."</i></a>");
+            echo("<a target='_blank' href='".$imagenfactura."'><i class='fa fa-eye'> Ver Factura ".$factura_num."</i></a>");
         }
        
 
@@ -438,7 +445,7 @@ $campofecha = date('Y-m-d');
    
     ?>
     <input disabled="" class='input input-group-sm' type="text" value="<?php echo (number_format($oc_abonostem, 0)); ?>">
-    <a href="?controller=compras&action=deletepagotemporal&&id=<?php echo ($idreq); ?>&&des=<?php echo($itemsget); ?>&&iddelete=<?php echo($despachounico); ?>"><i class="fa fa-close text-danger"></i></a>
+    <a href="?controller=compras&action=deletepagotemporal&&id=<?php echo ($idreq); ?>&&des=<?php echo($itemsget); ?>&&iddelete=<?php echo($despachounico); ?>&&relacionid=<?php echo($relacionid); ?>"><i class="fa fa-close text-danger"></i></a>
  </td>
 
         <td>
@@ -556,6 +563,7 @@ $TiempoActual = date('Y-m-d H:i:s');
 ?>
                     <input type="hidden" name="marca_temporal" value="<?php echo ($TiempoActual) ?>">
                     <input type="hidden" name="creado_por" value="<?php echo ($IdSesion) ?>">
+                    <input type="hidden" name="relacion_id_relacion" value="<?php echo ($relacionid) ?>">
                   
 
                               <div class="card-body">
@@ -590,6 +598,19 @@ $TiempoActual = date('Y-m-d H:i:s');
                                                 <div class="form-group">
                                                     <label>Valor Egreso: <span>*</span></label>
                                                     <input type="text" disabled class="form-control" id="demo1" value="<?php echo("$ ".number_format($sumaabonostem,0)); ?>">
+                                                    <?php 
+                                                //    if ($sumaabonostem>$valormaximo) {
+                                                //        echo("<small class='text-danger'><strong>El valor máximo autorizado es $".number_format($valormaximo,0)." </strong></small>");
+                                                //    }elseif($sumaabonostem==$valormaximo){
+                                                //         echo("<small class='text-success'><strong>El abono es correcto $".number_format($valormaximo,0)." </strong></small>");
+                                                //    }elseif ($sumaabonostem<$valormaximo) {
+                                                //        $pendienteredimir=$valormaximo-$sumaabonostem;
+                                                //        echo("<small class='text-success'><strong> Puede pagar hasta $".number_format($pendienteredimir,0). "  </strong></small>");
+                                                //    }
+
+                                                     ?>
+
+                                                   
                                                 </div>
                                             </div>
                                             <div style="display:none;" class="col-md-4">
@@ -734,8 +755,7 @@ foreach ($rubros as $rubro) {
                           </small>
 
                         <?php
-                    }
-                    elseif($contadorpagos!=0){
+                    }elseif($contadorpagos!=0){
                         ?>
 
                          <div class="card-footer">

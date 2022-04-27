@@ -40,9 +40,9 @@ class FuncionariosController {
 		$id = $_GET['id'];
 		$res = Funcionarios::eliminarPor($id);
 		if ($res){
-			echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+			echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
 		}else{
-				echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+				echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
 		}
 		$campos = Funcionarios::obtenerPagina();
 		require_once 'vistas/funcionarios/todos.php';
@@ -57,9 +57,9 @@ class FuncionariosController {
 		$idfun = $_GET['idfun'];
 		$res = Funcionarios::eliminarnovedadPor($id);
 		if ($res){
-			echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+			echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
 		}else{
-				echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+				echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
 		}
 		$campos = Funcionarios::obtenerPaginaPor($idfun);
 		require_once 'vistas/funcionarios/editar.php';
@@ -73,9 +73,9 @@ class FuncionariosController {
 		$idfun = $_GET['idfun'];
 		$res = Funcionarios::eliminarsoportePor($id);
 		if ($res){
-			echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+			echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
 		}else{
-				echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+				echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
 		}
 		$campos = Funcionarios::obtenerPaginaPor($idfun);
 		require_once 'vistas/funcionarios/editar.php';
@@ -110,9 +110,9 @@ function guardar() {
 	$campo = new Usuarios('',$nuevoarreglo);
 	$res = Funcionarios::guardar($campo,$ruta_imagen);
 	if ($res){
-		echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
 	}else{
-		echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
 	}
 	$this->show();
 }
@@ -147,9 +147,9 @@ function actualizar(){
 	$datosguardar = new Usuarios($id,$nuevoarreglo);
 	$res = Funcionarios::actualizar($id,$datosguardar,$ruta_imagen);
 	if ($res){
-		echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina de miembros\", \"success\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\");});</script>";
 	}else{
-				echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+				echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
 		}
 	$this->show();
 }
@@ -192,9 +192,9 @@ function reportarnovedad() {
 
 
 	if ($res){
-		echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
 	}else{
-		echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
 	}
 	$this->showfuncionario($id);
 }
@@ -226,9 +226,9 @@ function reportarsoporte() {
 	$campo = new Funcionarios('',$nuevoarreglo);
 	$res = Funcionarios::reportarsoporte($campo,$ruta_imagen);
 	if ($res){
-		echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
 	}else{
-		echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
 	}
 	$this->showfuncionario($id);
 }

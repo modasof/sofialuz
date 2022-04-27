@@ -229,7 +229,7 @@ $TiempoActual = date('Y-m-d H:i:s');
 $DiaActualfor = date('Y-m-d');
 ?>
         <input type="hidden" name="imagen" value="0">
-        <input type="hidden" name="imagen_cot" value="0">
+       
         <input type="hidden" name="fecha_reporte" value="<?php echo ($DiaActualfor); ?>">
         <input type="hidden" name="valor_total" value="<?php echo ($Subtotalcot); ?>">
         <input type="hidden" name="valor_retenciones" value="0">
@@ -293,10 +293,12 @@ foreach ($campos as $campo) {
     $cantidad               = $campo['cantidad'];
     $cantidadoriginal += $cantidad;
     $canticotizada1  = $campo['cantidadcot'];
-
+    $imagencot1       = imagencot($item_id1, $cotizacion);
 
     $idproyecto= requisiciones::obtenerIdproyectoporRQ($requisicion_id);
     $idcreador= requisiciones::obtenerIdCreadoporRQ($requisicion_id);
+    $rubrorq = requisiciones::obtenerRubroidRQ($requisicion_id);
+    $subrubrorq = requisiciones::obtenerSubRubroidRQ($requisicion_id);
     $nomcreador = Usuarios::ObtenerNombreUsuario($idcreador);
     $nomproyecto = Proyectos::obtenerNombreProyecto($idproyecto);
     $primerproveedor = Proveedores::obtenerNombreProveedor($proveedor_id_proveedor);
@@ -305,6 +307,8 @@ foreach ($campos as $campo) {
     $nomunidadmedida = Unidadesmed::obtenerNombre($unidadmedidaid);
     $valorunitario1  = $valor_cot1 / $canticotizada1;
     $cantorigen1 += $canticotizada1;
+
+
 
     if ($insumo_id_insumo != '0') {
         $insumo_id_insumo  = ObtenerIdInsumo($item_id1);
@@ -335,6 +339,20 @@ foreach ($campos as $campo) {
               <td class="success">
 
                 <i class="fa fa-caret-square-o-right"></i> <small id="primerrefresh<?php echo ($id1); ?>"></small>
+                <?php if ($imagencot1!='') {
+                ?>
+
+             <a target="_blank" href="<?php echo($imagencot1); ?>"  class="tooltip-primary text-primary" title="Ver Soporte">
+                <i class="fa fa-file-pdf-o bigger-110 "> Ver Soporte</i>
+              </a>
+
+                <?php
+            }else{
+                //echo("<i class='fa fa-ban bigger-110 bg-red'> Sin Soporte </i>");
+            } 
+
+            ?>
+
                
               </td>
               <td class="success">
@@ -417,11 +435,13 @@ foreach ($campos as $campo) {
 
                RQ <?php echo ($requisicion_id . "-" . $item_id1); 
 
-
-
                ?>
                 <input type="checkbox" value="<?php echo ($item_id1); ?>" name="items[]" onclick="marcardespacho(<?php echo $item_id1; ?>)" style="cursor: pointer;">
                 <input type="hidden" value="<?php echo ($label) ?>" name="compra_de">
+                <input type="hidden" name="imagen_cot" value="<?php echo($imagencot1); ?>">
+                <input type="hidden" name="rubro_id" value="<?php echo($rubrorq); ?>">
+                <input type="hidden" name="subrubro_id" value="<?php echo($subrubrorq); ?>">
+
           </td>
 </form>
               <?php 
@@ -431,7 +451,7 @@ foreach ($campos as $campo) {
               
             
               <td>
-               <small>Proveedor: </small><?php echo ($primerproveedor); ?>
+                               <small>Proveedor: </small><?php echo ($primerproveedor); ?>
               </td>
               <td><?php echo ($canticotizada1 . " de " . $cantidadfinal); ?></td>
               <td><?php echo ($nomunidadmedida); ?></td>
@@ -529,9 +549,28 @@ $ver       = Requisiciones::vermascotizaciones($item_id1, $idproveedor);
         $canticotizada2      = $campo2['cantidadcot'];
         $valorunitario2      = $valor_cot2 / $canticotizada2;
         $cantorigen2 += $canticotizada2;
+        $imagencot2       = imagencot($item_id2, $cotizacion2);
         ?>
                   <tr class="info">
-                    <td>RQ <?php echo ($requisicion_id2 . "-" . $item_id2); ?></td>
+                    <td>
+
+
+                      RQ <?php echo ($requisicion_id2 . "-" . $item_id2); ?>
+                     <?php if ($imagencot1!='') {
+                ?>
+
+             <a target="_blank" href="<?php echo($imagencot2); ?>"  class="tooltip-primary text-primary" title="Ver Soporte">
+                <i class="fa fa-file-pdf-o bigger-110 "> Ver Soporte</i>
+              </a>
+
+                <?php
+            }else{
+                //echo("<i class='fa fa-ban bigger-110 bg-red'> Sin Soporte </i>");
+            } 
+
+            ?>
+
+                      </td>
               <td><small>Proveedor : </small><?php echo ($nombreotroproveedor); ?>
               <br>
               <small id="segundorefresh<?php echo ($id2); ?>"></small>

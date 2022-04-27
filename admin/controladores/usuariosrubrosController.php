@@ -26,9 +26,9 @@ class UsuariosrubrosController
         
         $res  = Usuariosrubros::desactivarrubroPor($id, $rubro);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
         }
          $campos = Usuariosrubros::obtenerPaginausuariosrubros($id);
         require_once 'vistas/usuariosrubros/todospor.php';
@@ -49,12 +49,12 @@ class UsuariosrubrosController
             $res = Usuariosrubros::activarrubroPor($rol, $id_usuario, $rubro);
 
             if ($res) {
-                echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+                echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
             } else {
-                echo "<script>jQuery(function(){swal(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+                echo "<script>jQuery(function(){Swal.fire(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
             }
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Verificar datos!\", \"El permiso ya está autorizado\", \"warning\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Verificar datos!\", \"El permiso ya está autorizado\", \"warning\");});</script>";
         }
 
         $campos = Usuariosrubros::obtenerPaginausuariosrubros($id_usuario);
@@ -79,12 +79,12 @@ class UsuariosrubrosController
                 $res = Usuariosrubros::activarrubroPor($rol, $id_usuario, $id_rubro);
 
                 if ($res) {
-                    echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+                    echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
                 } else {
-                    echo "<script>jQuery(function(){swal(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+                    echo "<script>jQuery(function(){Swal.fire(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
                 }
             } else {
-                // echo "<script>jQuery(function(){swal(\"¡Verificar datos!\", \"El permiso ya está autorizado\", \"warning\");});</script>";
+                // echo "<script>jQuery(function(){Swal.fire(\"¡Verificar datos!\", \"El permiso ya está autorizado\", \"warning\");});</script>";
             }
 
         }
@@ -115,12 +115,12 @@ class UsuariosrubrosController
                     $res = Usuariosrubros::activarrubroPor($rol, $id_usuario, $id_rubro);
 
                     if ($res) {
-                        echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+                        echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
                     } else {
-                        echo "<script>jQuery(function(){swal(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+                        echo "<script>jQuery(function(){Swal.fire(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
                     }
                 } else {
-                    // echo "<script>jQuery(function(){swal(\"¡Verificar datos!\", \"El permiso ya está autorizado\", \"warning\");});</script>";
+                    // echo "<script>jQuery(function(){Swal.fire(\"¡Verificar datos!\", \"El permiso ya está autorizado\", \"warning\");});</script>";
                 }
 
             }
@@ -131,9 +131,9 @@ class UsuariosrubrosController
             $res = Usuariosrubros::activarrubroPor($rol, $id_usuario, 2);
 
             if ($res) {
-                echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+                echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
             } else {
-                echo "<script>jQuery(function(){swal(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+                echo "<script>jQuery(function(){Swal.fire(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
             }
 
         } elseif ($rol == 4) { // Rol Doble Troque
@@ -141,18 +141,18 @@ class UsuariosrubrosController
             $res = Usuariosrubros::activarrubroPor($rol, $id_usuario, 2);
 
             if ($res) {
-                echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+                echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
             } else {
-                echo "<script>jQuery(function(){swal(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+                echo "<script>jQuery(function(){Swal.fire(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
             }
         } elseif ($rol == 5) { // Rol Siso
            
             $res = Usuariosrubros::activarrubroPor($rol, $id_usuario, 3);
 
             if ($res) {
-                echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+                echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
             } else {
-                echo "<script>jQuery(function(){swal(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+                echo "<script>jQuery(function(){Swal.fire(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
             }
 
         } elseif ($rol == 8) { // Jefe de Planta
@@ -160,18 +160,18 @@ class UsuariosrubrosController
             $res = Usuariosrubros::activarrubroPor($rol, $id_usuario, 7);
 
             if ($res) {
-                echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+                echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
             } else {
-                echo "<script>jQuery(function(){swal(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+                echo "<script>jQuery(function(){Swal.fire(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
             }
         } elseif ($rol == 10) { // Operador Máquinaria
             
             $res = Usuariosrubros::activarrubroPor($rol, $id_usuario, 1);
 
             if ($res) {
-                echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+                echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
             } else {
-                echo "<script>jQuery(function(){swal(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+                echo "<script>jQuery(function(){Swal.fire(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
             }
 
         } elseif ($rol == 11) { // Asistente Administrativo y contable
@@ -180,9 +180,9 @@ class UsuariosrubrosController
             $res = Usuariosrubros::activarrubroPor($rol, $id_usuario, 6);
 
             if ($res) {
-                echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+                echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
             } else {
-                echo "<script>jQuery(function(){swal(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+                echo "<script>jQuery(function(){Swal.fire(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
             }
 
         } elseif ($rol == 12) { // Asistente Contable
@@ -191,9 +191,9 @@ class UsuariosrubrosController
             $res = Usuariosrubros::activarrubroPor($rol, $id_usuario, 4);
 
             if ($res) {
-                echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+                echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
             } else {
-                echo "<script>jQuery(function(){swal(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+                echo "<script>jQuery(function(){Swal.fire(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
             }
 
         } elseif ($rol == 13) { // Almacen
@@ -205,9 +205,9 @@ class UsuariosrubrosController
             $res = Usuariosrubros::activarrubroPor($rol, $id_usuario, 5);
 
             if ($res) {
-                echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+                echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
             } else {
-                echo "<script>jQuery(function(){swal(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+                echo "<script>jQuery(function(){Swal.fire(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
             }
 
         } elseif ($rol == 14) { // Requisiciones
@@ -215,9 +215,9 @@ class UsuariosrubrosController
             $res = Usuariosrubros::activarrubroPor($rol, $id_usuario, 3);
            
             if ($res) {
-                echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+                echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
             } else {
-                echo "<script>jQuery(function(){swal(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+                echo "<script>jQuery(function(){Swal.fire(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
             }
 
 
@@ -226,9 +226,9 @@ class UsuariosrubrosController
              $res = Usuariosrubros::activarrubroPor($rol, $id_usuario, 3);
            
             if ($res) {
-                echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+                echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
             } else {
-                echo "<script>jQuery(function(){swal(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+                echo "<script>jQuery(function(){Swal.fire(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
             }
 
         } elseif ($rol == 16) { // Conductor Tractomula
@@ -236,9 +236,9 @@ class UsuariosrubrosController
              $res = Usuariosrubros::activarrubroPor($rol, $id_usuario, 2);
            
             if ($res) {
-                echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+                echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
             } else {
-                echo "<script>jQuery(function(){swal(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+                echo "<script>jQuery(function(){Swal.fire(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
             }
 
         } else {

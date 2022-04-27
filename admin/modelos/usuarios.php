@@ -51,6 +51,24 @@ public static function obtenerPagina(){
 	}
 }
 
+
+/*******************************************************
+** FUNCION PARA MOSTRAR TODOS LOS CAMPOS DE TESTIMONIOS	  **
+********************************************************/
+public static function obtenerPaginanotificaciones($id){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT * FROM modulo_alertas WHERE usuario_receptor='".$id."'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Usuarios('',$camposs);
+		return $campos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
 /*******************************************************
 ** FUNCION PARA OBTENER TODAS LAS MARCAS DEL VEHICULO	  **
 ********************************************************/
@@ -666,6 +684,48 @@ public static function perfilequipos($rol_id_rol,$ultimoid,$No){
 		'".utf8_decode($No)."',
 		'".utf8_decode($No)."',
 		'".utf8_decode($No)."')");
+		if ($select){
+			return true;
+			}else{return false;}
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
+
+/*******************************************************
+** FUNCION PARA MOSTRAR TODOS LOS CAMPOS POR RANGO DE FECHA	  **
+********************************************************/
+public static function mostrarnotificaciones($id){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT * FROM modulo_alertas WHERE usuario_receptor='".$id."' and estado_alerta='0' order by id asc");
+    	$camposs=$select->fetchAll();
+    	$campos = new Usuarios('',$camposs);
+		return $campos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
+/***************************************************************
+** FUNCION PARA ELIINAR POR ID  **
+***************************************************************/
+public static function notificacionleida($id,$marcadapor){
+	try {
+		$db=Db::getConnect();
+
+		date_default_timezone_set("America/Bogota");
+		$TiempoActual = date('Y-m-d H:i:s');
+		$diactual = date('Y-m-d');
+		$estadonotificacion=1;
+
+		$select=$db->query("UPDATE modulo_alertas SET estado_alerta='1', fecha_leida='".$diactual."',marca_leida='".$TiempoActual."' WHERE usuario_receptor='".$marcadapor."' and id='".$id."'");
 		if ($select){
 			return true;
 			}else{return false;}

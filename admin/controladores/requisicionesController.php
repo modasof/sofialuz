@@ -187,9 +187,9 @@ function guardar() {
 
 
 	if ($res){
-		echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina\", \"success\").then(function(){window.location='?controller=requisicionesitems&&action=todosporreq&&id=".$ultimoid."';});});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina\", \"success\").then(function(){window.location='?controller=requisicionesitems&&action=todosporreq&&id=".$ultimoid."';});});</script>";
 	}else{
-		echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
 	}
 	$this->showsiguiente($ultimoid);
 }
@@ -202,9 +202,9 @@ function guardar() {
 		$res = Requisiciones::eliminarpor($id);
 		$res = Requisiciones::eliminaritemsRQpor($id);
 		if ($res){
-			echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+			echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
 		}else{
-				echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+				echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
 		}
 		$campos = Requisiciones::todos();
 		require_once 'vistas/almacen/homesolicitante.php';
@@ -218,9 +218,9 @@ function guardar() {
 			$iddeleteitem = $_GET['iddeleteitem'];
 		$res = Requisiciones::eliminaritemcot($iddeleteitem);
 		if ($res){
-			echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+			echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
 		}else{
-				echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+				echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
 		}
 		$campos = Requisiciones::vercotizacion($id);
 		require_once 'vistas/requisiciones/cotizaciones.php';
@@ -276,9 +276,9 @@ function actualizar(){
 	
 
 	if ($res){
-		echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina de miembros\", \"success\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\");});</script>";
 	}else{
-		echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
 	}
 	$this->showrequisiciones();
 }

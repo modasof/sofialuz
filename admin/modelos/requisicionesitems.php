@@ -37,6 +37,47 @@ class Requisicionesitems
         $this->campos = $campos;
     }
 
+
+/***************************************************************
+*** FUNCION PARA GUARDAR **
+* 
+* (`id`, `usuario_creador`, `accion`, `usuario_receptor`, `rol_receptor`, `estado_alerta`, `fecha_reporte`, `marca_temporal`, `fecha_leida`, `marca_leida`, `detalle`)
+***************************************************************/
+public static function guardarnotificacion($usuario_creador,$usuario_receptor,$marca_temporal,$fecha_reporte,$detalle){
+    try {
+        $db=Db::getConnect();
+        
+        $select=$db->query("INSERT INTO modulo_alertas (usuario_creador,usuario_receptor,marca_temporal,fecha_reporte,detalle) VALUES ('".utf8_decode($usuario_creador)."','".$usuario_receptor."','".utf8_decode($marca_temporal)."','".utf8_decode($fecha_reporte)."','".utf8_decode($detalle)."')");
+        if ($select){
+            return true;
+            }else{return false;}
+    }
+    catch(PDOException $e) {
+    echo '{"error":{"text":'. $e->getMessage() .'}}';
+    }
+}
+
+/*******************************************************
+** FUNCION PARA MOSTRAR EL NOMBRE DEL EQUIPO **
+********************************************************/
+public static function obtenerNombreProveedor($id){
+    try {
+        $db=Db::getConnect();
+        $select=$db->query("SELECT nombre_proveedor FROM proveedores WHERE id_proveedor='".$id."'");
+        $camposs=$select->fetchAll();
+        $campos = new Requisicionesitems('',$camposs);
+        $marcas = $campos->getCampos();
+        foreach($marcas as $marca){
+            $mar = $marca['nombre_proveedor'];
+        }
+        return $mar;
+    }
+    catch(PDOException $e) {
+        echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+    }
+}
+
+
 /*******************************************************
  ** FUNCION PARA MOSTRAR TODOS LOS CAMPOS DE FECHAS      **
  ********************************************************/
@@ -416,27 +457,25 @@ class Requisicionesitems
         }
     }
 
+
 /***************************************************************
  *** FUNCION PARA GUARDAR COTIZACION **
  ***************************************************************/
-    public static function guardarcotizacionmultiple($proveedor_id_proveedor, $cotizacion, $medio_pago, $item_id, $valor_cot, $requisicion_id, $fecha_reporte, $marca_temporal, $usuario_creador, $usuario_aprobador, $estado_cotizacion, $ordencompra_num, $insumo_id_insumo, $servicio_id_servicio, $equipo_id_equipo, $cantidadcot)
+    public static function guardarsoportecotizacionmultiple($imagen,$proveedor_id_proveedor, $cotizacion, $medio_pago, $items, $valor_cot, $requisicion_id, $fecha_reporte, $marca_temporal, $usuario_creador, $usuario_aprobador, $estado_cotizacion, $ordencompra_num, $insumo_id_insumo, $servicio_id_servicio, $equipo_id_equipo, $cantidadcot)
     {
+
         try {
-            $db     = Db::getConnect();
-            $insert = $db->prepare('INSERT INTO cotizaciones_item VALUES (NULL,:proveedor_id_proveedor,:cotizacion,:medio_pago,:item_id,:valor_cot,:requisicion_id,:fecha_reporte,:marca_temporal,:usuario_creador,:usuario_aprobador,:estado_cotizacion,:ordencompra_num,:insumo_id_insumo,:servicio_id_servicio,:equipo_id_equipo,:vr_unitario,:cantidadcot)');
 
-            $V1          = str_replace(".", "", $valor_cot);
-            $V2          = str_replace(" ", "", $V1);
-            $valor_final = str_replace("$", "", $V2);
-            $valornumero = (int) $valor_final;
+            $db       = Db::getConnect();
+          
+                $insert = $db->prepare('INSERT INTO cotizaciones_item VALUES (NULL,:imagen,:proveedor_id_proveedor,:cotizacion,:medio_pago,:item_id,:valor_cot,:requisicion_id,:fecha_reporte,:marca_temporal,:usuario_creador,:usuario_aprobador,:estado_cotizacion,:ordencompra_num,:insumo_id_insumo,:servicio_id_servicio,:equipo_id_equipo,:vr_unitario,:cantidadcot)');
 
-            $vrunitario = round($valornumero / $cantidadcot, 0);
-
+            $insert->bindValue('imagen', utf8_decode($imagen));
             $insert->bindValue('proveedor_id_proveedor', utf8_decode($proveedor_id_proveedor));
             $insert->bindValue('cotizacion', utf8_decode($cotizacion));
             $insert->bindValue('medio_pago', utf8_decode($medio_pago));
-            $insert->bindValue('item_id', utf8_decode($item_id));
-            $insert->bindValue('valor_cot', utf8_decode($valornumero));
+            $insert->bindValue('item_id', utf8_decode($items));
+            $insert->bindValue('valor_cot', utf8_decode($valor_cot));
             $insert->bindValue('requisicion_id', utf8_decode($requisicion_id));
             $insert->bindValue('fecha_reporte', utf8_decode($fecha_reporte));
             $insert->bindValue('marca_temporal', utf8_decode($marca_temporal));
@@ -447,16 +486,62 @@ class Requisicionesitems
             $insert->bindValue('insumo_id_insumo', utf8_decode($insumo_id_insumo));
             $insert->bindValue('servicio_id_servicio', utf8_decode($servicio_id_servicio));
             $insert->bindValue('equipo_id_equipo', utf8_decode($equipo_id_equipo));
-            $insert->bindValue('vr_unitario', utf8_decode($vrunitario));
+            $insert->bindValue('vr_unitario', utf8_decode($valor_cot));
             $insert->bindValue('cantidadcot', utf8_decode($cantidadcot));
 
             $insert->execute();
 
-            return true;
+        } catch (PDOException $e) {
+            echo '{"error al guardar la configuraciónes ":{"text":' . $e->getMessage() . '}}';
+        }
+
+    }
+
+/***************************************************************
+ *** FUNCION PARA GUARDAR **
+ ***************************************************************/
+    public static function actualizarsoportecotizacionmultiple($imagen,$items,$cotizacion1)
+    {
+        try {
+
+            $db     = Db::getConnect();
+            $select = $db->query("UPDATE cotizaciones_item SET imagen='".$imagen."' WHERE item_id='" . $items . "' and cotizacion='".$cotizacion1."'");
+            if ($select) {
+                return true;
+            } else {return false;}
+        } catch (PDOException $e) {
+            echo '{"error al guardar la configuraciónes ":{"text":' . $e->getMessage() . '}}';
+        }
+    }
+
+
+
+/***************************************************************
+ *** FUNCION PARA GUARDAR COTIZACION **
+ ***************************************************************/
+    public static function guardarcotizacionmultiple($proveedor_id_proveedor, $cotizacion, $item_id, $valor_cot, $requisicion_id, $marca_temporal, $usuario_creador,$insumo_id_insumo, $servicio_id_servicio, $equipo_id_equipo, $cantidadcot)
+    {
+        try {
+
+             $db     = Db::getConnect();
+
+            $V1          = str_replace(".", "", $valor_cot);
+            $V2          = str_replace(" ", "", $V1);
+            $valor_final = str_replace("$", "", $V2);
+            $valornumero = (int) $valor_final;
+
+            $vrunitario = round($valornumero / $cantidadcot, 0);
+            $sql="UPDATE cotizaciones_item SET valor_cot='".$valornumero."',insumo_id_insumo='".$insumo_id_insumo."', servicio_id_servicio='".$servicio_id_servicio."',equipo_id_equipo='".$equipo_id_equipo."', vr_unitario='".$vrunitario."', cantidadcot='".$cantidadcot."', usuario_creador='".$usuario_creador."', marca_temporal='".$marca_temporal."', requisicion_id='".$requisicion_id."' WHERE item_id='" . $item_id . "' and cotizacion='".$cotizacion."' and proveedor_id_proveedor='".$proveedor_id_proveedor."'";
+            $select = $db->query($sql);
+            //echo($sql);
+            if ($select) {
+                return true;
+            } else {return false;}
         } catch (PDOException $e) {
             echo '{"error":{"text":' . $e->getMessage() . '}}';
         }
     }
+
 
 /***************************************************************
  ** FUNCION PARA ELIINAR POR ID  **
@@ -529,7 +614,7 @@ class Requisicionesitems
     {
         try {
             $db     = Db::getConnect();
-            $select = $db->query("DELETE FROM cotizaciones_item WHERE id='" . $id . "'");
+            $select = $db->query("UPDATE cotizaciones_item SET valor_cot='0', vr_unitario='0' WHERE id='" . $id . "'");
             if ($select) {
                 return true;
             } else {return false;}
@@ -695,7 +780,6 @@ class Requisicionesitems
     public static function actualizarestado($estado_item, $items)
     {
         try {
-
             $db       = Db::getConnect();
             $dbselect = Db::getConnect();
             //$campostraidos = $campos->getCampos();
@@ -758,7 +842,7 @@ class Requisicionesitems
  * `id`, `imagen`, `fecha_reporte`, `valor_total`, `valor_retenciones`, `estado_orden`, `proveedor_id_proveedor`, `medio_pago`, `observaciones`, `marca_temporal`, `usuario_creador`
  ***************************************************************/
 
-    public static function guardaroccompra($imagen,$imagen_cot, $fecha_reporte, $valor_total, $valor_retenciones, $valor_iva, $estado_orden, $proveedor_id_proveedor, $medio_pago, $observaciones, $marca_temporal, $usuario_creador, $items, $factura, $estado_recibido, $compra_de)
+    public static function guardaroccompra($imagen,$imagen_cot, $fecha_reporte, $valor_total, $valor_retenciones, $valor_iva, $estado_orden, $proveedor_id_proveedor, $medio_pago, $observaciones, $marca_temporal, $usuario_creador, $items, $rubro_id,$subrubro_id,$factura, $estado_recibido, $compra_de)
     {
         try {
             $db = Db::getConnect();
@@ -772,8 +856,7 @@ class Requisicionesitems
             $valor_final = str_replace("$", "", $V2);
             $valornumero = (int) $valor_final;
 
-            $rubro_id    = 0;
-            $subrubro_id = 0;
+           
             $vencimiento = 0;
             $insert->bindValue('imagen', utf8_decode($imagen));
              $insert->bindValue('imagen_cot', utf8_decode($imagen_cot));
@@ -1106,5 +1189,27 @@ public static function actualizarvalorfinal($id,$valornuevo){
             echo '{"error en obtener la pagina":{"text":' . $e->getMessage() . '}}';
         }
     }
+
+
+    /*******************************************************
+** FUNCION PARA MOSTRAR  **
+********************************************************/
+public static function consultarsoporteporitem($id,$cotizacion1){
+    try {
+        $db=Db::getConnect();
+
+        $select=$db->query("SELECT count(imagen) as total FROM cotizaciones_item WHERE item_id='".$id."' and cotizacion='".$cotizacion1."'");
+        $camposs=$select->fetchAll();
+        $campos = new Requisicionesitems('',$camposs);
+        $marcas = $campos->getCampos();
+        foreach($marcas as $marca){
+            $mar = $marca['total'];
+        }
+        return $mar;
+    }
+    catch(PDOException $e) {
+        echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+    }
+}
 
 }

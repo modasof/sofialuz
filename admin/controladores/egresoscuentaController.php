@@ -90,9 +90,9 @@ class EgresoscuentaController
         $id_caja = $_GET['id_caja'];
         $res     = Egresoscuenta::eliminarPor($id);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
         }
         $campos = Egresoscuenta::obtenerPagina($id_caja);
         require_once 'vistas/egresoscuenta/todos.php';
@@ -110,9 +110,9 @@ class EgresoscuentaController
         $res = Egresoscuenta::eliminaregresocuenta($idegreso);
         $res = Egresoscuenta::eliminaringresocaja($idingreso);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
         }
         $campos = Egresoscuenta::obtenerPagina($id_cuenta);
         require_once 'vistas/egresoscuenta/todos.php';
@@ -130,9 +130,9 @@ class EgresoscuentaController
         $res = Egresoscuenta::eliminaregresocuenta($idegreso);
         $res = Egresoscuenta::eliminaringresocuenta($idingreso);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
         }
         $campos = Egresoscuenta::obtenerPagina($id_cuenta);
         require_once 'vistas/egresoscuenta/todos.php';
@@ -145,12 +145,23 @@ class EgresoscuentaController
     {
         $id_cuenta = $_GET['id_cuenta'];
         $idegreso  = $_GET['idegreso'];
+
+        $consultarvaloreliminado=Egresoscuenta::valoraeliminar($idegreso);
+
+        $idrelacion =Egresoscuenta::idrelacionpor($idegreso);
+
+        $valorpagado =Egresoscuenta::valorpagado($idrelacion);
+
+        $valorfinal = $valorpagado-$consultarvaloreliminado;
+
+        $res = Egresoscuenta::actualizarvalorautorizado($valorfinal,$idrelacion);
+
         $res       = Egresoscuenta::eliminarot($idegreso);
         $res       = Egresoscuenta::eliminarabono($idegreso);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
         }
         $campos = Egresoscuenta::obtenerPagina($id_cuenta);
         require_once 'vistas/egresoscuenta/todos.php';
@@ -186,9 +197,9 @@ class EgresoscuentaController
         $res   = Egresoscuenta::guardar($campo, $ruta_imagen);
 
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
         }
 
         if ($tipo_egreso == "Cuenta") {
@@ -200,9 +211,9 @@ class EgresoscuentaController
             $res = Egresoscuenta::guardaringreso($tipo_egreso, $fecha_egreso, $caja_beneficiada, $cuenta_id_cuenta, $valor_egreso, $observaciones, $marca_temporal, $egreso_publicado, $creado_por, $ultimoIdEgreso);
 
             if ($res) {
-                echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+                echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
             } else {
-                echo "<script>jQuery(function(){swal(\"¡Errores al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+                echo "<script>jQuery(function(){Swal.fire(\"¡Errores al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
             }
 
         }
@@ -219,9 +230,9 @@ class EgresoscuentaController
             // Actualizamos el
 
             if ($res) {
-                echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+                echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
             } else {
-                echo "<script>jQuery(function(){swal(\"¡Errores al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+                echo "<script>jQuery(function(){Swal.fire(\"¡Errores al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
             }
 
         }
@@ -278,9 +289,9 @@ class EgresoscuentaController
         $res= Egresoscuenta::actualizarmvcjmenor($id,$valor_egreso,$observaciones,$ruta_imagen,$estado_egreso,$fecha_egreso);
         
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente el egreso en caja\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente el egreso en caja\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
         $this->show($id_cuenta);
     }
@@ -333,9 +344,9 @@ class EgresoscuentaController
         $res = Egresoscuenta::actualizarmvc($id, $valor_egreso, $observaciones, $ruta_imagen, $estado_egreso, $fecha_egreso, $egreso_en);
 
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente el egreso en caja\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente el egreso en caja\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
         $this->show($id_cuenta);
     }
@@ -372,9 +383,9 @@ class EgresoscuentaController
         $datosguardar = new Egresoscuenta($id, $nuevoarreglo);
         $res          = Egresoscuenta::actualizarot($id, $datosguardar, $ruta_imagen);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente el egreso en caja\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente el egreso en caja\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
         $this->show($id_cuenta);
     }

@@ -34,9 +34,9 @@ class DestinosController {
 		$id = $_GET['id'];
 		$res = Destinos::eliminarPor($id);
 		if ($res){
-			echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+			echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
 		}else{
-				echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+				echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
 		}
 		$campos = Destinos::obtenerPagina();
 		require_once 'vistas/destinos/todos.php';
@@ -68,9 +68,9 @@ function guardar() {
 	$campo = new Destinos('',$nuevoarreglo);
 	$res = Destinos::guardar($campo);
 	if ($res){
-		echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
 	}else{
-		echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
 	}
 	$this->show();
 }
@@ -100,9 +100,9 @@ function destinoextra() {
 	$campo = new Destinos('',$nuevoarreglo);
 	$res = Destinos::guardar($campo);
 	if ($res){
-		echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
 	}else{
-		echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
 	}
 	if ($tiporeporte==1) { // Establecemos 1 para el retornar al formulario de ventas
 		$this->showventas();
@@ -128,9 +128,9 @@ function actualizar(){
 	$campo=$_POST['nombre_destino'];
 	$res = Destinos::actualizarNombre($campo,$id);
 	if ($res){
-		echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
 	}else{
-		echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
 	}
 	$this->show();
 }

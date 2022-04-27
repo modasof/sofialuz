@@ -24,6 +24,9 @@ $IdSesion  = $_SESSION['IdUser'];
 $idreq = $_GET['id'];
 //$listaids=$_GET['des'];
 
+$itemsget = $_GET['des'];
+$items    = explode(",", $itemsget);
+
 ?>
 <!-- CCS Y JS PARA LA CARGA DE IMAGEN -->
 
@@ -76,9 +79,96 @@ if ($RolSesion == 1 or $RolSesion == 13) {
             <div class="row">
                 <div class="container-fluid">
                     <div class="row">
+
+                <div class="col-md-3">
+    <form role="form" autocomplete="off" action="?controller=requisicionesitems&action=guardarsoportecotizacionmultiple&&id=<?php echo ($idreq); ?>&&des=<?php echo($itemsget); ?>" method="POST" enctype="multipart/form-data" >
+
+
+      <?php
+date_default_timezone_set("America/Bogota");
+    $TiempoActual = date('Y-m-d H:i:s');
+     $campofecha = date('Y-m-d');
+    ?>
+
+
+          <input type="hidden" name="estado_cotizacion" value="1">
+          <input type="hidden" name="ordencompra_num" value="0">
+          <input type="hidden" name="cantidadcot" value="0">
+          <input type="hidden" name="insumo_id_insumo" value="0">
+          <input type="hidden" name="servicio_id_servicio" value="0">
+          <input type="hidden" name="equipo_id_equipo" value="0">
+          <input type="hidden" name="requisicion_id" value="0">
+          <input type="hidden" name="usuario_creador" value="<?php echo ($IdSesion); ?>">
+          <input type="hidden" name="usuario_aprobador" value="0">
+          <input type="hidden" name="marca_temporal" value="<?php echo ($TiempoActual); ?>">
+          <input type="hidden" name="fecha_reporte" value="<?php echo ($campofecha); ?>">
+
+                             <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="fila2_columna1">Soporte Cotización<small>Tamaño máximo 10MB</small></label>
+                        <div class="custom-file">
+                           <input name="imagen" type="file" id="input-file-now" class="dropify" data-default-file=""  multiple="multiple" data-allowed-file-extensions="png jpg jpeg pdf webm" data-show-errors="true" data-max-file-size="10M" data-errors-position="outside" accept="image/png, .jpeg, .jpg, image/gif,.pdf"/ required>
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="fila2_columna1">Seleccionar Proveedor</small></label>
+                        <div class="custom-file">
+                          <select  class="form-control" id="mi-selector2" name="proveedor" >
+          <option value="" selected>Seleccionar...</option>
+                                        <?php
+$rubros = Proveedores::obtenerListaProveedores();
+    foreach ($rubros as $campo) {
+        $id     = $campo['id_proveedor'];
+        $nombre = $campo['nombre_proveedor'];
+        ?>
+            <option value="<?php echo $id; ?>"><?php echo utf8_encode($nombre); ?></option>
+                                        <?php }?>
+        </select>
+                        </div>
+                    </div>
+                </div>
+
+ <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="fila2_columna1">Forma de Pago</small></label>
+                        <div class="custom-file">
+                          <select  class="form-control" id="mi-selector2" name="formadepago" >
+          <option value="" selected>Seleccionar...</option>
+          <option value="A convenir" >A convenir</option>
+           <option value="Contado" >Contado</option>
+             <option value="Credito" >Crédito</option>                         
+        </select>
+                        </div>
+                    </div>
+</div>
+
+<div class="col-md-12">
+                    <div class="form-group">
+                      <label for="fila2_columna1">Cotización Nº</small></label>
+                        <div class="custom-file">
+                          <select  class="form-control" id="mi-selector2" name="cotizacion_num" >
+        <option value="" selected>Seleccionar...</option>
+        <option value="Cotizacion 1" >Cotizacion 1</option>
+        <option value="Cotizacion 2" >Cotizacion 2</option>
+        <option value="Cotizacion 3" >Cotizacion 3</option>
+                                      
+        </select>
+                        </div>
+                    </div>
+</div>
+
+  <div class="card-footer">
+                                  <button name="Submit" type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="bottom" title="Haz clic aqui para actualizar la información">Subir Datos</button>
+                                </div>
+                    </form>
+                    
+                </div>
                         <!-- ESTE DIV LO USO PARA CENTRAR EL FORMULARIO -->
                         <!-- left column -->
-                        <div class="col-md-12">
+                        <div class="col-md-9">
                           <!-- general form elements -->
                           <div class="card card-primary">
                             <!-- /.card-header -->
@@ -95,21 +185,11 @@ if ($RolSesion == 1 or $RolSesion == 13) {
               <table class="table table-striped" style="font-size: 13px;">
                 <tbody>
                  
-               
-                <tr>
-                  <th>RQ</th>
-                  <th style="width:300px;">Detalle</th>
-                  <th>Cotización 1</th>
-                  <th>Cotización 2</th>
-                   <th>Cotización 3 </th>
-                   <th>Confirmar</th>
-                </tr>
-                <?php
-$itemsget = $_GET['des'];
-$items    = explode(",", $itemsget);
+ <?php
+
 foreach ($items as $key => $despachounico) {
 
-    $listRq  = ObtenerIdReq($despachounico);
+ $listRq  = ObtenerIdReq($despachounico);
     $tiporeq = ObtenerTipoReq($listRq);
 
 # ========================================================
@@ -117,6 +197,7 @@ foreach ($items as $key => $despachounico) {
     # ========================================================
 
     $idproveedor1       = proveedorcot($despachounico, 'Cotizacion 1');
+    $imagencot1       = imagencot($despachounico, 'Cotizacion 1');
     $nomproveedor1      = Proveedores::obtenerNombreProveedor($idproveedor1);
     $pago1              = pagocot($despachounico, 'Cotizacion 1');
     $valor1             = valorcot($despachounico, 'Cotizacion 1');
@@ -131,7 +212,7 @@ foreach ($items as $key => $despachounico) {
     if ($idcotizaciondelete == "") {
          $btneliminar = "";
     } else {
-        $btneliminar = "<a href='?controller=requisicionesitems&action=eliminarcotizacion&&id=" . $listRq . "&&des=" . $itemsget . "&&iddelete=" . $idcotizaciondelete . "'><i class='fa fa-trash text-danger'> Eliminar </i> </a>";
+        $btneliminar = "<a style='display:none;' href='?controller=requisicionesitems&action=eliminarcotizacion&&id=" . $listRq . "&&des=" . $itemsget . "&&iddelete=" . $idcotizaciondelete . "'><i class='fa fa-trash text-danger'> Eliminar </i> </a>";
     }
 
     # ======  End of Validación Btn Eliminar  =======
@@ -145,7 +226,7 @@ foreach ($items as $key => $despachounico) {
     # ======  End of Validación Proveedor  =======
 
     if ($nomproveedor1 == "") {
-        $cotizacion1de = "Seleccionar Proveedor";
+        $cotizacion1de = "Subir Soporte";
     } else {
         $cotizacion1de = $nomproveedor1;
     }
@@ -183,6 +264,7 @@ foreach ($items as $key => $despachounico) {
     # ========================================================
 
     $idproveedor2        = proveedorcot($despachounico, 'Cotizacion 2');
+    $imagencot2       = imagencot($despachounico, 'Cotizacion 2');
     $nomproveedor2       = Proveedores::obtenerNombreProveedor($idproveedor2);
     $pago2               = pagocot($despachounico, 'Cotizacion 2');
     $valor2              = valorcot($despachounico, 'Cotizacion 2');
@@ -197,7 +279,7 @@ foreach ($items as $key => $despachounico) {
     if ($idcotizaciondelete2 == "") {
          $btneliminar2 = "";
     } else {
-        $btneliminar2 = "<a href='?controller=requisicionesitems&action=eliminarcotizacion&&id=" . $listRq . "&&des=" . $itemsget . "&&iddelete=" . $idcotizaciondelete2 . "'><i class='fa fa-trash text-danger'> Eliminar </i> </a>";
+        $btneliminar2 = "<a style='display:none;' href='?controller=requisicionesitems&action=eliminarcotizacion&&id=" . $listRq . "&&des=" . $itemsget . "&&iddelete=" . $idcotizaciondelete2 . "'><i class='fa fa-trash text-danger'> Eliminar </i> </a>";
     }
 
     if ($idproveedor2 == "") {
@@ -207,7 +289,7 @@ foreach ($items as $key => $despachounico) {
     }
 
     if ($nomproveedor2 == "") {
-        $cotizacion2de = "Seleccionar Proveedor";
+        $cotizacion2de = "Subir Soporte";
     } else {
         $cotizacion2de = $nomproveedor2;
     }
@@ -245,6 +327,7 @@ foreach ($items as $key => $despachounico) {
     # ========================================================
 
     $idproveedor3        = proveedorcot($despachounico, 'Cotizacion 3');
+    $imagencot3       = imagencot($despachounico, 'Cotizacion 3');
     $nomproveedor3       = Proveedores::obtenerNombreProveedor($idproveedor3);
     $pago3               = pagocot($despachounico, 'Cotizacion 3');
     $valor3              = valorcot($despachounico, 'Cotizacion 3');
@@ -259,7 +342,7 @@ foreach ($items as $key => $despachounico) {
     if ($idcotizaciondelete3 == "") {
         $btneliminar3 = "";
     } else {
-        $btneliminar3 = "<a href='?controller=requisicionesitems&action=eliminarcotizacion&&id=" . $listRq . "&&des=" . $itemsget . "&&iddelete=" . $idcotizaciondelete3 . "'><i class='fa fa-trash text-danger'> Eliminar </i> </a>";
+        $btneliminar3 = "<a style='display:none;' href='?controller=requisicionesitems&action=eliminarcotizacion&&id=" . $listRq . "&&des=" . $itemsget . "&&iddelete=" . $idcotizaciondelete3 . "'><i class='fa fa-trash text-danger'> Eliminar </i> </a>";
     }
 
     if ($idproveedor3 == "") {
@@ -269,7 +352,7 @@ foreach ($items as $key => $despachounico) {
     }
 
     if ($nomproveedor3 == "") {
-        $cotizacion3de = "Seleccionar Proveedor";
+        $cotizacion3de = "Subir Soporte";
     } else {
         $cotizacion3de = $nomproveedor3;
     }
@@ -299,6 +382,72 @@ foreach ($items as $key => $despachounico) {
                       <input type='radio' name='formapago3' id='optionsRadios3".$despachounico."' value='Contado' >Contado
                     </label>";
     }
+
+    ?>
+                <tr>
+                  <th>RQ</th>
+                  <th style="width:300px;">Detalle</th>
+                  <th>
+            <?php if ($imagencot1!='') {
+                ?>
+
+             <a target="_blank" href="<?php echo($imagencot1); ?>"  class="tooltip-primary text-primary" title="Ver Soporte">
+                <i class="fa fa-file-pdf-o bigger-110 "> </i>
+              </a>
+
+                <?php
+            }else{
+                echo("<i class='fa fa-close bigger-110 bg-red'> </i>");
+            } 
+
+            ?>
+
+              
+                    <?php echo($cotizacion1de."<br>".$pago1);?>
+
+
+                </th>
+                  <th>
+                
+                     <?php if ($imagencot2!='') {
+                ?>
+
+             <a target="_blank" href="<?php echo($imagencot2); ?>"  class="tooltip-primary text-primary" title="Ver Soporte">
+                <i class="fa fa-file-pdf-o bigger-110 "> </i>
+              </a>
+
+                <?php
+            }else{
+                echo("<i class='fa fa-close bigger-110 bg-red'> </i>");
+            } 
+
+            ?>
+
+
+                    <?php echo($cotizacion2de."<br>".$pago2);?></th>
+                  <th>
+                    
+                     <?php if ($imagencot3!='') {
+                ?>
+
+             <a target="_blank" href="<?php echo($imagencot3); ?>"  class="tooltip-primary text-primary" title="Ver Soporte">
+                <i class="fa fa-file-pdf-o bigger-110 "> </i>
+              </a>
+
+                <?php
+            }else{
+                echo("<i class='fa fa-close bigger-110 bg-red'> </i>");
+            } 
+
+            ?>
+
+
+                    <?php echo($cotizacion3de."<br>".$pago3);?></th>
+                   <th>Confirmar</th>
+                </tr>
+               
+<?php
+   
 
 # ======  End of Validación Cotización 1 por Item  =======
 
@@ -347,12 +496,28 @@ date_default_timezone_set("America/Bogota");
           <input type="hidden" name="usuario_aprobador" value="0">
           <input type="hidden" name="marca_temporal" value="<?php echo ($TiempoActual); ?>">
           <input type="hidden" name="fecha_reporte" value="<?php echo ($campofecha); ?>">
+
+          <input type="hidden" name="proveedor1" value="<?php echo ($idprovcotizacion1) ?>">
+          <input type="hidden" name="proveedor2" value="<?php echo ($idprovcotizacion2) ?>">
+          <input type="hidden" name="proveedor3" value="<?php echo ($idprovcotizacion3) ?>">
+
+          <input type="hidden"name="formapago1" value="<?php echo ($pago1) ?>">
+          <input type="hidden" name="formapago2" value="<?php echo ($pago2) ?>">
+          <input type="hidden" name="formapago3" value="<?php echo ($pago3) ?>">
+
+
           <input type="hidden" name="cotizacion1" value="Cotizacion 1">
           <input type="hidden" name="cotizacion2" value="Cotizacion 2">
           <input type="hidden" name="cotizacion3" value="Cotizacion 3">
 
+           <?php echo ($campovalidacion1); ?>
+            <?php echo ($campovalidacion2); ?>
+           <?php echo ($campovalidacion3); ?>
+
+
         <td>RQ<?php echo ($listRq . "-" . $despachounico); ?></td>
         <td>
+
             <?php echo ("<strong>" . $cantidad . " " . $nomunidadmedida . "</strong><br> " . $detallesolicitado . ""); ?>
                 <br>
                 <strong class="text-success">Valor Promedio Histórico <br>
@@ -361,65 +526,87 @@ date_default_timezone_set("America/Bogota");
             </td>
 
         <td>
-        <select style="width:250px" class="form-control" id="<?php echo ($despachounico); ?>mi-selector" name="proveedor1" required>
-                <option value="<?php echo ($idprovcotizacion1) ?>" selected><?php echo ($cotizacion1de) ?></option>
-                                        <?php
-$rubros = Proveedores::obtenerListaProveedores();
-    foreach ($rubros as $campo) {
-        $id     = $campo['id_proveedor'];
-        $nombre = $campo['nombre_proveedor'];
-        ?>
-        <option value="<?php echo $id; ?>"><?php echo utf8_encode($nombre); ?></option>
-                                        <?php }?>
-        </select>
-                  <div class="radio">
-                   <?php echo ($pago1de); ?>
-                    <?php echo ($campovalidacion1); ?>
-                  </div>
+        
+      <?php 
+      if ($idcotizaciondelete=="") {
+          ?>
+           <input required id="<?php echo ($despachounico . "-demo"); ?>" class='input input-sm' type="hidden" name="valor_cot1" value="<?php echo ($valor1); ?>">
 
-            <input required id="<?php echo ($despachounico . "-demo"); ?>" class='input input-sm' type="text" name="valor_cot1" value="<?php echo ($valor1); ?>">
+            <input disabled="true"  id="<?php echo ($despachounico . "-demo2"); ?>" class='input input-sm' type="text" name="valor_cot11" value="<?php echo ($valor1); ?>">
+
+          <?php
+      }else{
+        ?>
+          <input required id="<?php echo ($despachounico . "-demo"); ?>" class='input input-sm' type="text" name="valor_cot1" value="<?php echo ($valor1); ?>">
             <?php echo ($btneliminar); ?>
+
+        <?php
+      }
+       ?>
+           
         
         </td>
          <td>
-      <select style="width:250px" class="form-control" id="<?php echo ($despachounico); ?>mi-selector2" name="proveedor2" >
-          <option value="<?php echo ($idprovcotizacion2) ?>" selected><?php echo ($cotizacion2de) ?></option>
-                                        <?php
-$rubros = Proveedores::obtenerListaProveedores();
-    foreach ($rubros as $campo) {
-        $id     = $campo['id_proveedor'];
-        $nombre = $campo['nombre_proveedor'];
-        ?>
-                                        <option value="<?php echo $id; ?>"><?php echo utf8_encode($nombre); ?></option>
-                                        <?php }?>
-        </select>
-          <div class="radio">
-                   <?php echo ($pago2de); ?>
-                   <?php echo ($campovalidacion2); ?>
-                  </div>
-            <input  id="<?php echo ($despachounico . "-demo2"); ?>" class='input input-sm' type="text" name="valor_cot2" value="<?php echo ($valor2); ?>">
+
+         <?php 
+      if ($idcotizaciondelete2=="") {
+          ?>
+
+           <input disabled="true"  id="<?php echo ($despachounico . "-demo2"); ?>" class='input input-sm' type="text" name="valor_cot22" value="<?php echo ($valor2); ?>">
+    
+            <input  id="<?php echo ($despachounico . "-demo2"); ?>" class='input input-sm' type="hidden" name="valor_cot2" value="<?php echo ($valor2); ?>">
               <?php echo ($btneliminar2); ?>
+          <?php
+      }else{
+        ?>
+
+          <input   id="<?php echo ($despachounico . "-demo2"); ?>" class='input input-sm' type="text" name="valor_cot2" value="<?php echo ($valor2); ?>">
+              <?php echo ($btneliminar2); ?>
+
+          <?php
+      }
+       ?>
+
+
+
         </td>
          <td>
-        <select style="width:250px" class="form-control " id="<?php echo ($despachounico); ?>mi-selector3" name="proveedor3" >
-             <option value="<?php echo ($idprovcotizacion3) ?>" selected><?php echo ($cotizacion3de) ?></option>
-                                        <?php
-$rubros = Proveedores::obtenerListaProveedores();
-    foreach ($rubros as $campo) {
-        $id     = $campo['id_proveedor'];
-        $nombre = $campo['nombre_proveedor'];
-        ?>
-                                        <option value="<?php echo $id; ?>"><?php echo utf8_encode($nombre); ?></option>
-                                        <?php }?>
-        </select>
-         <div class="radio">
-                   <?php echo ($pago3de); ?>
-                   <?php echo ($campovalidacion3); ?>
-                  </div>
-            <input id="<?php echo ($despachounico . "-demo3"); ?>" class='input input-sm' type="text" name="valor_cot3" value="<?php echo ($valor3); ?>">
+          <?php 
+      if ($idcotizaciondelete3=="") {
+          ?>   
+           <input disabled="true"  id="<?php echo ($despachounico . "-demo2"); ?>" class='input input-sm' type="text" name="valor_cot33" value="<?php echo ($valor3); ?>">
+
+            <input id="<?php echo ($despachounico . "-demo3"); ?>" class='input input-sm' type="hidden" name="valor_cot3" value="<?php echo ($valor3); ?>">
              <?php echo ($btneliminar3); ?>
+      <?php
+      }else{
+        ?>
+         <input id="<?php echo ($despachounico . "-demo3"); ?>" class='input input-sm' type="text" name="valor_cot3" value="<?php echo ($valor3); ?>">
+             <?php echo ($btneliminar3); ?>
+
+         <?php
+      }
+       ?>
+
         </td>
-        <td><button type="submit" id="comprobarDatos<?php echo ($despachounico); ?>" class="btn btn-success fa fa-check"></button></td>
+        <td>
+            <?php 
+    if ($nomproveedor1 == "") {
+       ?>
+        <button disabled="true" type="submit" id="comprobarDatos<?php echo ($despachounico); ?>" class="btn btn-success fa fa-check"></button>
+       <?php
+    } else {
+       ?>
+
+        <button type="submit" id="comprobarDatos<?php echo ($despachounico); ?>" class="btn btn-success fa fa-check"></button>
+
+       <?php
+    }
+
+             ?>
+
+           
+        </td>
     </form>
 
 <script src="dist/js/jquery.maskMoney.js" type="text/javascript"></script>

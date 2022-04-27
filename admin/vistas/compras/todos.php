@@ -296,7 +296,7 @@ foreach ($campos as $campo) {
 
     $nomproveedor  = Proveedores::obtenerNombreProveedor($proveedor_id_proveedor);
     $nomreportador = usuarios::obtenerNombreUsuario($usuario_creador);
-    $totalpago     = $valor_total - $valor_retenciones + $valor_iva;
+    $totalpago     = ($valor_total - $valor_retenciones) + $valor_iva;
     $detalleabonos        = Compras::sqlabonos($id);
     $cuentaporpagar= $totalpago-$detalleabonos;
 
@@ -546,7 +546,7 @@ foreach ($camposb as $campo2) {
 
     $nomproveedor  = Proveedores::obtenerNombreProveedor($proveedor_id_proveedor);
     $nomreportador = usuarios::obtenerNombreUsuario($usuario_creador);
-    $totalpago     = $valor_total - $valor_retenciones - $abonos;
+    $totalpago     = ($valor_total - $valor_retenciones) + $valor_iva;
     $detalleabonos        = Compras::sqlabonos($id);
     $cuentaporpagar= $totalpago-$detalleabonos;
 
@@ -783,7 +783,7 @@ foreach ($camposc as $campo3) {
 
     $nomproveedor  = Proveedores::obtenerNombreProveedor($proveedor_id_proveedor);
     $nomreportador = usuarios::obtenerNombreUsuario($usuario_creador);
-    $totalpago     = $valor_total - $valor_retenciones - $abonos;
+    $totalpago     = ($valor_total - $valor_retenciones) + $valor_iva;
     $detalleabonos        = Compras::sqlabonos($id);
     $cuentaporpagar= $totalpago-$detalleabonos;
 
@@ -1019,7 +1019,7 @@ foreach ($camposd as $campo4) {
 
     $nomproveedor  = Proveedores::obtenerNombreProveedor($proveedor_id_proveedor);
     $nomreportador = usuarios::obtenerNombreUsuario($usuario_creador);
-    $totalpago     = $valor_total - $valor_retenciones - $abonos;
+    $totalpago     = ($valor_total - $valor_retenciones) + $valor_iva;
     $detalleabonos        = Compras::sqlabonos($id);
     $cuentaporpagar= $totalpago-$detalleabonos;
 

@@ -74,7 +74,7 @@ public static function todosalmacen(){
 public static function cotizaciones(){
 	try {
 		$db=Db::getConnect();
-		$sql="SELECT DISTINCT(proveedor_id_proveedor) FROM cotizaciones_item WHERE estado_cotizacion='1' order by id DESC";
+		$sql="SELECT DISTINCT(proveedor_id_proveedor) FROM cotizaciones_item as A, proveedores as B, requisiciones_items as C WHERE estado_cotizacion='1' and A.proveedor_id_proveedor=B.id_proveedor AND A.item_id=C.id order by nombre_proveedor ASC";
 		//echo($sql);
 		$select=$db->query($sql);
     	$camposs=$select->fetchAll();
@@ -562,6 +562,49 @@ public static function obtenerIdproyectoporRQ($id){
     	$marcas = $campos->getCampos();
 		foreach($marcas as $marca){
 			$mar = $marca['proyecto_id_proyecto'];
+		}
+		return $mar;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
+/*******************************************************
+** FUNCION PARA MOSTRAR EL NOMBRE DEL PRODUCTO **
+********************************************************/
+public static function obtenerRubroidRQ($id){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT rubro_id FROM  requisiciones WHERE id='".$id."'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Requisiciones('',$camposs);
+    	$marcas = $campos->getCampos();
+		foreach($marcas as $marca){
+			$mar = $marca['rubro_id'];
+		}
+		return $mar;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/*******************************************************
+** FUNCION PARA MOSTRAR EL NOMBRE DEL PRODUCTO **
+********************************************************/
+public static function obtenerSubRubroidRQ($id){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT subrubro_id FROM  requisiciones WHERE id='".$id."'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Requisiciones('',$camposs);
+    	$marcas = $campos->getCampos();
+		foreach($marcas as $marca){
+			$mar = $marca['subrubro_id'];
 		}
 		return $mar;
 	}

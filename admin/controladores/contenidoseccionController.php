@@ -34,9 +34,9 @@ class ContenidoseccionController {
 		$id = $_GET['id'];
 		$res = Contenidoseccion::eliminarPor($id);
 		if ($res){
-			echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+			echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
 		}else{
-				echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+				echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
 		}
 		$campos = Contenidoseccion::obtenerPagina();
 		require_once 'vistas/contenidoseccion/todos.php';
@@ -49,9 +49,9 @@ class ContenidoseccionController {
 		$id = $_GET['id'];
 		$res = Contenidoseccion::publicarPor($id);
 		if ($res){
-			echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se ha publicado en el home\", \"success\");});</script>";
+			echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se ha publicado en el home\", \"success\");});</script>";
 		}else{
-				echo "<script>jQuery(function(){swal(\"¡Error al publicar!\", \"No se han publicado correctamente los datos\", \"error\");});</script>";
+				echo "<script>jQuery(function(){Swal.fire(\"¡Error al publicar!\", \"No se han publicado correctamente los datos\", \"error\");});</script>";
 		}
 		$campos = Contenidoseccion::obtenerPagina();
 		require_once 'vistas/contenidoseccion/todos.php';
@@ -66,9 +66,9 @@ class ContenidoseccionController {
 		
 		$res = Contenidoseccion::despublicarPor($id);
 		if ($res){
-			echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se ha despublicado en el sitio\", \"success\");});</script>";
+			echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se ha despublicado en el sitio\", \"success\");});</script>";
 		}else{
-				echo "<script>jQuery(function(){swal(\"¡Error al publicar!\", \"No se han despublicado correctamente los datos\", \"error\");});</script>";
+				echo "<script>jQuery(function(){Swal.fire(\"¡Error al publicar!\", \"No se han despublicado correctamente los datos\", \"error\");});</script>";
 		}
 		
 		$campos = Contenidoseccion::obtenerPagina();
@@ -112,9 +112,9 @@ function guardarAccesorio() {
 	$campo = new Contenidoseccion('',$nuevoarreglo);
 	$res = Contenidoseccion::guardarContenidoseccion($campo,$imagen_principal,$imagen1,$imagen2,$imagen3,$imagen4,$imagen5,$imagen6,$imagen7,$imagen8);
 	if ($res){
-		echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
 	}else{
-		echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
 	}
 	$campos = Contenidoseccion::obtenerPagina();
 			require_once 'vistas/contenidoseccion/todos.php';
@@ -158,9 +158,9 @@ function actualizarContenidoseccion() {
 	$campo = new Contenidoseccion('',$nuevoarreglo);
 	$res = Contenidoseccion::actualizarContenidoseccion($id,$campo,$imagen_banner,$imagen1);
 	if ($res){
-		echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
 	}else{
-		echo "<script>jQuery(function(){swal(\"¡Erro al actualizar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al actualizar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
 	}
 
 		$this->editar();

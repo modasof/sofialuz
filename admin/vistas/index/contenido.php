@@ -8,8 +8,8 @@ include_once 'controladores/cuentasController.php';
 include_once 'modelos/gestiondocumental.php';
 include_once 'controladores/gestiondocumentalController.php';
 
-include_once 'modelos/requisicionesitems.php';
-include_once 'controladores/requisicionesitemsController.php';
+include_once 'modelos/usuarios.php';
+include_once 'controladores/usuariosController.php';
 
 include_once 'modelos/requisiciones.php';
 include_once 'controladores/requisicionesController.php';
@@ -159,6 +159,68 @@ else
   }
 
  ?>
+
+
+<?php 
+    $res=Usuarios::mostrarnotificaciones($IdSesion);
+    $campos = $res->getCampos();
+     foreach ($campos as $campo){        
+            $id = $campo['id']; 
+            $usuario_creador = $campo['usuario_creador']; 
+            $marca_temporal = $campo['marca_temporal']; 
+            $nomusuariocreador = Usuarios::obtenerNombreUsuario($usuario_creador);
+            $detalle = $campo['detalle']; 
+
+            ?>
+
+            <script>
+    $(function() {
+Command: toastr["success"]("<?php echo($detalle."<br/>Fecha:".$marca_temporal); ?><br /><br /><button type='button' onclick='myFunction<?php echo($id); ?>(<?php echo($id); ?>,<?php echo($IdSesion); ?>)' class='btn btn-danger'>Ok</button>", "<?php echo($nomusuariocreador); ?>")
+
+toastr.options = {
+  "closeButton": true,
+  "debug": false,
+  "newestOnTop": false,
+  "progressBar": true,
+  "positionClass": "toast-bottom-right",
+  "preventDuplicates": false,
+  "showDuration": "7000",
+  "hideDuration": "2000",
+  "timeOut": 0,
+  "extendedTimeOut": 0,
+  "showEasing": "swing",
+  "hideEasing": "linear",
+  "showMethod": "fadeIn",
+  "hideMethod": "fadeOut",
+  "tapToDismiss": false
+}
+});
+</script>
+
+
+
+<script>
+function myFunction<?php echo($id); ?>(id,usuario) {
+  window.location.href="?controller=usuarios&&action=notificacionleida&&id="+id+"&&marcadopor="+usuario;
+  //alert("Notificación Marcada como leída");
+}
+</script>
+
+
+            <?php
+
+    }
+
+
+ ?>
+
+
+
+ 
+
+
+
+
  <!-- CCS Y JS DATERANGE -->
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
@@ -212,38 +274,10 @@ else
  ?>
 <!--Final Contenido Según Perfil-->
 
-<link rel="stylesheet" href="dist/css/owl.carousel.min.css">
-<!--<link rel="stylesheet" href="dist/css/owl.theme.default.min.css">-->
-<!--<script src="dist/js/jquery.min.js"></script>-->
-<script src="dist/js/owl.carousel.min.js"></script>
+
 
 <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.stock.min.js"></script> 
-<script type="text/javascript">
-  $(document).ready(function(){
-  $('.owl-carousel').owlCarousel({
-    rtl:false,
-    loop:true,
-    margin:20,
-    nav:true,
-    autoplay:true,
-    autoplayTimeout:2500,
-    autoplayHoverPause:true,
-    autoWidth:true,
-    items:6
-    // responsive:{
-    //     500:{
-    //         items:3
-    //     },
-    //     100:{
-    //         items:4
-    //     },
-    //     0:{
-    //         items:5
-    //     }
-    // }
-})
-});
-</script>
+
  <?php 
     include 'vistas/graficas/compras-index-script.php';
  ?>

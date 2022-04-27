@@ -33,6 +33,7 @@ foreach ($campos as $campo) {
     $usuario_creador        = $campo['usuario_creador'];
     $rubro_id               = $campo['rubro_id'];
     $subrubro_id            = $campo['subrubro_id'];
+    $compra_de              = $campo['compra_de'];
     $vencimiento            = $campo['vencimiento'];
     $factura                = $campo['factura'];
 
@@ -42,9 +43,9 @@ foreach ($campos as $campo) {
     $nomreportador  = usuarios::obtenerNombreUsuario($usuario_creador);
 
     if ($estado_orden == "1") {
-        $nomestado = "<span class='text-danger'><strong>Sin Facturar</strong></span>";
+        $nomestado = "Sin Facturar";
     } elseif ($estado_orden == "2") {
-        $nomestado = "<span class='text-warning'><strong>Facturado</strong></span>";
+        $nomestado = "Facturado";
     } else {
         $nomestado = "Sin Estado";
     }
@@ -124,7 +125,7 @@ $(document).ready(function(){
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="?controller=index&&action=index">Inicio</a></li>
             
-            <!--<li class="breadcrumb-item active"><a href="?controller=equipos&&action=todos">Equipos</a></li>-->
+            <li class="breadcrumb-item active"><a href="?controller=compras&&action=todos">Compras</a></li>
           </ol>
         </div><!-- /.col -->
       </div><!-- /.row -->
@@ -150,8 +151,8 @@ $TiempoActual = date('Y-m-d H:i:s');
 					<input type="hidden" name="usuario_creador" value="<?php echo ($IdSesion); ?>">
 					<input type="hidden" name="marca_temporal" value="<?php echo ($TiempoActual); ?>">
 					<input type="hidden" name="valor_retenciones" value="<?php echo ($valor_retenciones); ?>">
-					<input type="hidden" name="estado_orden" value="<?php echo ($estado_orden); ?>">
-					<input type="hidden" name="proveedor_id_proveedor" value="<?php echo ($proveedor_id_proveedor); ?>">
+			<input type="hidden" name="imagen_cot" value="<?php echo ($imagen_cot); ?>">
+			<input type="hidden" name="proveedor_id_proveedor" value="<?php echo ($proveedor_id_proveedor); ?>">
 					<input type="hidden" name="factura" value="<?php echo ($factura); ?>">
 					<input type="hidden" name="valor_iva" value="<?php echo ($valor_iva); ?>">
 
@@ -159,10 +160,10 @@ $TiempoActual = date('Y-m-d H:i:s');
 							<div class="row">
 								 <div class="col-md-4">
 										<div class="form-group">
-										  <label for="fila2_columna1">Cotización <small>Tamaño máximo 10MB</small></label>
+										  <label for="fila2_columna1">Soporte Factura <small>Tamaño máximo 10MB</small></label>
 												<div class="custom-file">
-													 <input  name="imagen_cot" type="file" id="input-file-now" class="dropify" data-default-file="<?php echo $imagen_cot; ?>" multiple="multiple" data-allowed-file-extensions="png jpg jpeg mp4 pdf xls xlsx webm" data-show-errors="true" data-max-file-size="10M" data-errors-position="outside" accept="image/png, .jpeg, .jpg, image/gif,.pdf,.xlsx"/ >
-													 <input type="hidden" name="ruta1" value="<?php echo $imagen_cot; ?>" >
+													 <input  name="imagen" type="file" id="input-file-now" class="dropify" data-default-file="<?php echo $imagen; ?>" multiple="multiple" data-allowed-file-extensions="png jpg jpeg mp4 pdf xls xlsx webm" data-show-errors="true" data-max-file-size="10M" data-errors-position="outside" accept="image/png, .jpeg, .jpg, image/gif,.pdf,.xlsx"/ >
+													 <input type="hidden" name="ruta1" value="<?php echo $imagen; ?>" >
 												</div>
 										</div>
 									   </div>
@@ -173,7 +174,7 @@ $TiempoActual = date('Y-m-d H:i:s');
 												</div>
 											</div>
 
-										<div  class="col-md-4">
+										<div style="display: none;"  class="col-md-4">
 												<div class="form-group">
 													<label>Valor Sub Total: <span>*</span></label>
 													<input required type="text" name="valor_total" placeholder="Valor Subtotal" class="form-control" id="demo1" value="<?php echo ($valor_total); ?>">
@@ -207,6 +208,32 @@ foreach ($rubros as $rubro) {
 												</div>
 											</div>
 
+										<div  class="col-md-3">
+
+												<div class="form-group">
+													<label> Estado Orden: <span>*</span></label>
+							<select  style="width: 200px;" class="form-control mi-selector3" id="estado_orden" name="estado_orden" required>
+
+					<option value="<?php echo ($estado_orden); ?>" selected><?php echo ($nomestado); ?></option>
+									<option value="1">Sin Facturar</option>
+									<option value="2" >Facturado</option>
+								</select>
+												</div>
+											</div>
+
+								<div  class="col-md-3">
+
+												<div class="form-group">
+													<label> Tipo de Orden: <span>*</span></label>
+							<select  style="width: 200px;" class="form-control mi-selector3" id="compra_de" name="compra_de" required>
+
+					<option value="<?php echo ($compra_de); ?>" selected><?php echo ($compra_de); ?></option>
+									<option value="Insumos">Insumos</option>
+									<option value="Servicios" >Servicios</option>
+								</select>
+												</div>
+											</div>
+
 											<div id="adicional" class="col-md-3">
 												<div class="form-group">
 													<label> Forma de pago: <span>*</span></label>
@@ -218,6 +245,7 @@ foreach ($rubros as $rubro) {
 								</select>
 												</div>
 											</div>
+
 						<?php
 if ($medio_pago == "Contado") {
     echo ("<div style='display:none;' id='campo_vencimiento' class='col-md-4'>");
@@ -227,10 +255,10 @@ if ($medio_pago == "Contado") {
 
 ?>
 
-												<div  class="col-md-12">
+												<div style="display: none;"  class="col-md-12">
 							<label>Vencimiento a: <span>*</span></label>
 								<select class="form-control" id="vencimiento" name="vencimiento" >
-										<option value="<?php echo ($medio_pago); ?>" selected=""><?php echo ($medio_pago); ?></option>
+										<option value="<?php echo ($vencimiento); ?>" selected=""><?php echo ($vencimiento); ?></option>
 										<?php
 $min = 150;
 for ($i = 0; $i < $min; $i++) {
@@ -326,7 +354,7 @@ if (datefield.type != "date"){ //if browser doesn't support input type="date", i
 
 	$('.dropify').dropify({
 				messages: {
-					'default': 'Adjuntar Cotización',
+					'default': 'Adjuntar Soporte Factura',
 					'replace': 'Arrastra y suelta o haz clic para reemplazar',
 					'remove':  'Remover',
 					'error':   'Oops, sucedió algo mal.'

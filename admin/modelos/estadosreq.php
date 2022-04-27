@@ -186,7 +186,7 @@ public static function obtenerColor($id){
 public static function ObtenerListaEstados(){
 	try {
 		$db=Db::getConnect();
-		$select=$db->query("SELECT * FROM estadosreq WHERE publicado='1' and id<=7 order by prioridad");
+		$select=$db->query("SELECT * FROM estadosreq WHERE publicado='1' and id<=7 and id<>'4' and id<>'5' order by prioridad");
     	$campos=$select->fetchAll();
 		$camposs = new Estadosreq('',$campos);
 		$campostraidos = $camposs->getCampos();

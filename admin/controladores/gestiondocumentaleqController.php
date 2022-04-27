@@ -23,9 +23,9 @@ class GestiondocumentaleqController {
 		$id_cuenta = $_GET['id'];
 		$res=Gestiondocumentaleq::cargarTodos($id_modulo,$id_cuenta);
 		if ($res){
-			echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se han actualizado correctamente los datos\", \"success\");});</script>";
+			echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se han actualizado correctamente los datos\", \"success\");});</script>";
 		}else{
-				echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+				echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
 		}
 		$campos=Gestiondocumentaleq::obtenerConfig($id_modulo);;
 		require_once 'vistas/gestiondocumentaleq/configuracion.php';
@@ -80,9 +80,9 @@ class GestiondocumentaleqController {
 		$id_cuenta = $_GET['id'];
 		$res = Gestiondocumentaleq::eliminarPor($id);
 		if ($res){
-			echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+			echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
 		}else{
-				echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+				echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
 		}
 		$campos = Gestiondocumentaleq::obtenerPagina($id_modulo);
 		require_once 'vistas/gestiondocumentaleq/todos.php';
@@ -97,9 +97,9 @@ class GestiondocumentaleqController {
 		$id_cuenta = $_GET['id'];
 		$res = Gestiondocumentaleq::eliminarPor($id);
 		if ($res){
-			echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se han actualizado correctamente los datos\", \"success\");});</script>";
+			echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se han actualizado correctamente los datos\", \"success\");});</script>";
 		}else{
-				echo "<script>jQuery(function(){swal(\"¡Error al Actualizar!\", \"No se han actualizado correctamente los datos\", \"error\");});</script>";
+				echo "<script>jQuery(function(){Swal.fire(\"¡Error al Actualizar!\", \"No se han actualizado correctamente los datos\", \"error\");});</script>";
 		}
 		$campos = Gestiondocumentaleq::obtenerPagina($id_modulo);
 		require_once 'vistas/gestiondocumentaleq/todos.php';
@@ -113,9 +113,9 @@ class GestiondocumentaleqController {
 		$id_cuenta = $_GET['id_cuenta'];
 		$res = Gestiondocumentaleq::eliminarvariosPor($id);
 		if ($res){
-			echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+			echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
 		}else{
-				echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+				echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
 		}
 		$campos = Gestiondocumentaleq::obtenerPaginavarios($id_cuenta);
 		require_once 'vistas/gestiondocumentaleq/varios.php';
@@ -131,9 +131,9 @@ class GestiondocumentaleqController {
 		$imagen= $_GET['imagen'];
 		$res = Gestiondocumentaleq::desactivarDocumento($id_cuenta,$id_modulo,$id_documento,$imagen);
 		if ($res){
-			echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se han actualizado correctamente los datos\", \"success\");});</script>";
+			echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se han actualizado correctamente los datos\", \"success\");});</script>";
 		}else{
-				echo "<script>jQuery(function(){swal(\"¡Error al Actualizar!\", \"No se han actualizado correctamente los datos\", \"error\");});</script>";
+				echo "<script>jQuery(function(){Swal.fire(\"¡Error al Actualizar!\", \"No se han actualizado correctamente los datos\", \"error\");});</script>";
 		}
 		$campos = Gestiondocumentaleq::obtenerPagina($id_modulo);
 		require_once 'vistas/gestiondocumentaleq/todos.php';
@@ -170,9 +170,9 @@ function guardar() {
 	$campo = new Gestiondocumentaleq('',$nuevoarreglo);
 	$res = Gestiondocumentaleq::guardar($campo,$ruta_imagen);
 	if ($res){
-		echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
 	}else{
-		echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
 	}
 	$this->show($id_modulo);
 }
@@ -205,9 +205,9 @@ function guardarvarios() {
 	$campo = new Gestiondocumentaleq('',$nuevoarreglo);
 	$res = Gestiondocumentaleq::guardarvarios($campo,$ruta_imagen);
 	if ($res){
-		echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
 	}else{
-		echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
 	}
 	$this->showvarios($id_cuenta);
 }
@@ -248,9 +248,9 @@ function actualizar(){
 	$datosguardar = new Gestiondocumentaleq($id,$nuevoarreglo);
 	$res = Gestiondocumentaleq::actualizar($id,$datosguardar,$ruta_imagen);
 	if ($res){
-		echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina de miembros\", \"success\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\");});</script>";
 	}else{
-				echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+				echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
 		}
 	$this->show($id_cuenta);
 }
@@ -286,9 +286,9 @@ function actualizarvarios(){
 	$datosguardar = new Gestiondocumentaleq($id,$nuevoarreglo);
 	$res = Gestiondocumentaleq::actualizarvarios($id,$datosguardar,$ruta_imagen);
 	if ($res){
-		echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina de miembros\", \"success\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\");});</script>";
 	}else{
-				echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+				echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
 		}
 	$this->showvarios($id_cuenta);
 }

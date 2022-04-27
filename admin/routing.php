@@ -28,7 +28,7 @@ $controllers = array(
     'consolidados' => ['editar','guardar','actualizar','todos','nuevo','eliminar','documentoscuentas','documentosequipos','totalreporteseq'],
 
     // Funcionalidad compras
-	'compras' => ['todos','formulario','guardar','eliminar','editar','actualizar','porfecha','verdetalle','cambiarestado','actualizarpago','cambiarestadocreditos','pagotemporal','deletepagotemporal','actualizarpagocredito','recibiroc','todospormes','cxpusuario','actualizardetallecot','editardetallecot','todosrecibirinsumos','porfechainsumos','cargarinventario'],
+	'compras' => ['todos','formulario','guardar','eliminar','editar','actualizar','porfecha','verdetalle','cambiarestado','actualizarpago','cambiarestadocreditos','pagotemporal','deletepagotemporal','actualizarpagocredito','recibiroc','todospormes','cxpusuario','actualizardetallecot','editardetallecot','todosrecibirinsumos','porfechainsumos','cargarinventario','retornar','todosproveedorpagos'],
 
 	// Funcionalidad Cotizaciones
 	'cotizaciones' => ['todos','editar','actualizar','porfecha','todosporinsumo'],
@@ -42,6 +42,9 @@ $controllers = array(
 
 	// Funcionalidad Cuentas
 	'cuentas' => ['editar','guardar','actualizar','todos','nuevo','eliminar','reporteporfecha','crucecuentas','detallecruce'],
+
+	// Módulo de Dashboard 
+	'dashboards' =>['dashboardcompras'],
 
 	// Funcionalidad Destinos
 	'destinos' => ['editar','guardar','actualizar','todos','nuevo','eliminar','destinoextra'],
@@ -91,11 +94,12 @@ $controllers = array(
 	// Funcionalidad Horas Máquinaria 
 	'horasmq' => ['horas','guardarhoras','eliminarhoras','editarhoras','actualizarhoras','horasporfecha'],
 
+
 	// Redireccionamiento Inicial  
 	'index' => ['index','informe1','informegerencia','informeclientes','informedetalleclientes','informeventaclientes','informedetalleclientesventas','micajamenor','dashboardalmacen','vistarqusuariosdashboard','aprobarRq'],
 
 	// Adicional de Informes 
-	'informes' =>['cuentas','movimientoscuentas','subrubrosegresos','cajas','movimientoscaja','subrubrosegresoscaja','ventas','detallelineanegocio','clientes','compras','totalrq','rqporfecha'],
+	'informes' =>['cuentas','movimientoscuentas','subrubrosegresos','cajas','movimientoscaja','subrubrosegresoscaja','ventas','detallelineanegocio','clientes','compras','totalrq','rqporfecha','dashboardcompras'],
 
 	// Funcionalidad cuentas por cobrar
 	'informecuentasporcobrar' => ['cuentasxcobrarconsolidado','cuentasxcobrarporfechaconsolidado','cuentasxcobrardetalle','cuentasxcobrarporfechadetalle'],
@@ -141,9 +145,8 @@ $controllers = array(
 	// Funcionalidad Proyectos
 	'proyectos' => ['editar','guardar','actualizar','todos','nuevo','eliminar','proyectoextra'],
 
-
 	// Funcionalidad Proveedores
-	'proveedores' => ['editar','guardar','actualizar','todos','nuevo','eliminar'],
+	'proveedores' => ['editar','guardar','actualizar','todos','nuevo','eliminar','cxpproveedor','estadocuenta','listadoproveedorespago','proyecciontemporal','deleteproyecciontemporal','actualizarrelacionpagos','showrelacionpagos','eliminarrelacion'],
 
 	// Funcionalidad de reportes diarios
 	'reportes' => ['ventas','clienteextra','productoextra','guardarventa','eliminarventa','cambiarestadoventa','editarventa','actualizarventa','ventasporfecha','compras','insumoextra','guardarcompra','eliminarcompra','editarcompra','actualizarcompra','comprasporfecha','despachos','guardardespacho','eliminardespacho','editardespacho','actualizardespacho','despachosporfecha','despachosclientes','despachosclientesf','despachosclientesunico','despachosproveedorunico','despachospropietario','guardardespachoclientes','eliminardespachoclientes','editardespachoclientes','actualizardespachoclientes','despachosporfechaclientes','despachosporfechaclientesunico','despachosporfechaproveedorunico','despachosporfechapropietario','facturas','guardarfactura','eliminarfactura','editarfactura','actualizarfactura','facturasporfecha','guardarabono','eliminarabono','cuentasxpagar','cuentasxpagarconsolidado','cuentasxpagardetalle','guardarcuentaxpagar','eliminarcuentaxpagar','cancelarcuentaxpagar','editarcuentaxpagar','actualizarcuentaxpagar','cuentasxpagarporfecha','cuentasxpagarporfechaconsolidado','cuentasxpagarporfechadetalle','prestamos','guardarprestamo','eliminarprestamo','cambiarestadoprestamo','editarprestamo','actualizarprestamo','prestamosporfecha','combustibles','combustiblescisterna','combustiblesporfechacisterna','mescombustibleseq','mesfletes','meshorasmq','infovolqueta','guardarcombustible','eliminarcombustible','editarcombustible','actualizarcombustible','combustiblesporfecha','proveedorextra','horas','guardarhoras','eliminarhoras','editarhoras','actualizarhoras','horasporfecha','despachostrituradora','guardardespachotrituradora','eliminardespachotrituradora','editardespachotrituradora','actualizardespachotrituradora','despachosporfechatrituradora','insumosxpagar','guardarinsumoxpagar','eliminarinsumoxpagar','cancelarinsumoxpagar','editarinsumoxpagar','actualizarinsumoxpagar','insumosxpagarporfecha'],
@@ -155,7 +158,7 @@ $controllers = array(
 	'requisiciones' => ['todosporusuario','todosalmacen','todosmiusuario','todos','guardar','eliminar','editar','actualizar','porfecha','todosporusuarioestado','reqalmacenestado','todosporusuarioadmin','todosporusuarioestadoadmin','cotizaciones','vercotizacion','eliminaritemcot','reqparaentrega'],
 
 	// Funcionalidad Requisiciones Items
-	'requisicionesitems' => ['todosporreq','todos','guardar','eliminar','editar','actualizar','porfecha','cambiarestado','guardarestado','actualizarestado','trazabilidad','agregarvalores','guardarcotizacion','cambiarestadoadmin','actualizarestadoadmin','trazabilidadadmin','guardarocompra','actualizaritem','actualizarcantidadcot','gestionarvalores','guardarcotizacionmultiple','eliminarcotizacion','finalizarrq','aprobarrq'],
+	'requisicionesitems' => ['todosporreq','todos','guardar','eliminar','editar','actualizar','porfecha','cambiarestado','guardarestado','actualizarestado','trazabilidad','agregarvalores','guardarcotizacion','cambiarestadoadmin','actualizarestadoadmin','trazabilidadadmin','guardarocompra','actualizaritem','actualizarcantidadcot','gestionarvalores','guardarcotizacionmultiple','eliminarcotizacion','finalizarrq','aprobarrq','guardarsoportecotizacionmultiple'],
 
 	// Funcionalidad Rubros
 	'rubros' => ['editar','guardar','actualizar','todos','nuevo','eliminar'],
@@ -173,7 +176,7 @@ $controllers = array(
 	'unidadesmed' => ['todos','nuevo','guardar','eliminar','editar','actualizar'],
 
 	// Funcionalidad Gestión Usuarios
-	'usuarios' => ['editar','guardar','actualizar','todos','nuevo','eliminar','editarpermisos','activarmenuPor','desactivarmenuPor','activartodo','desactivartodo','activarrubros'],
+	'usuarios' => ['editar','guardar','actualizar','todos','nuevo','eliminar','editarpermisos','activarmenuPor','desactivarmenuPor','activartodo','desactivartodo','activarrubros','notificacionleida','notificaciones'],
 
 	// Funcionalidad Activar Rubros por Usuario
 	'usuariosrubros' => ['todospor','activarrubroPor','desactivarrubroPor','activartodo','activarporRol'],
@@ -263,6 +266,11 @@ function call($controller, $action) {
 	case 'cuentas':
 		require_once 'modelos/cuentas.php';
 		$controller = new CuentasController();
+		break;
+
+	case 'dashboards':
+		require_once 'modelos/dashboards.php';
+		$controller = new dashboardsController();
 		break;
 
 	case 'destinos':

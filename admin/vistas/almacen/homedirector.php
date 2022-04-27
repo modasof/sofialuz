@@ -315,6 +315,10 @@ foreach ($campos as $campo) {
     $nombresolicita        = Usuarios::obtenerNombreUsuario($solicitado_por);
     $nombreproyecto       = Proyectos::obtenerNombreProyecto($proyecto_id_proyecto);
 
+     $verificacionrq= contaritemsporrq($id);
+
+    if ($verificacionrq==0) {
+      
     ?>
            <tr>
              <td><?php echo ("RQ".$id) ?><br><br><?php echo($nomestado); ?></td>
@@ -350,6 +354,7 @@ else
 </script>
             </tr>
             <?php
+        }
 }
 ?>
           </tbody>

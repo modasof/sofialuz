@@ -1142,6 +1142,26 @@ public static function guardarcuentaxpagar($campos,$imagen){
 	}
 }
 
+
+/***************************************************************
+*** FUNCION PARA GUARDAR **
+* 
+* (`id`, `usuario_creador`, `accion`, `usuario_receptor`, `rol_receptor`, `estado_alerta`, `fecha_reporte`, `marca_temporal`, `fecha_leida`, `marca_leida`, `detalle`)
+***************************************************************/
+public static function guardarnotificacion($usuario_creador,$usuario_receptor,$marca_temporal,$fecha_reporte,$detalle){
+	try {
+		$db=Db::getConnect();
+		
+		$select=$db->query("INSERT INTO modulo_alertas (usuario_creador,usuario_receptor,marca_temporal,fecha_reporte,detalle) VALUES ('".utf8_decode($usuario_creador)."','".$usuario_receptor."','".utf8_decode($marca_temporal)."','".utf8_decode($fecha_reporte)."','".utf8_decode($detalle)."')");
+		if ($select){
+			return true;
+			}else{return false;}
+	}
+	catch(PDOException $e) {
+	echo '{"error":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
 /***************************************************************
 ** FUNCION PARA ELIINAR POR ID  **
 ***************************************************************/
@@ -3052,6 +3072,26 @@ public static function GraficaHistorialDespachos(){
 		$camposs=$select->fetchAll();
 		$campos = new Reportes('',$camposs);
 		return $campos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/*******************************************************
+** FUNCION PARA MOSTRAR EL NOMBRE DEL EQUIPO **
+********************************************************/
+public static function obtenerNombreProveedoralerta($id){
+	try {
+		$db=Db::getConnect();
+		$select=$db->query("SELECT nombre_proveedor FROM proveedores WHERE id_proveedor='".$id."'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Reportes('',$camposs);
+    	$marcas = $campos->getCampos();
+		foreach($marcas as $marca){
+			$mar = $marca['nombre_proveedor'];
+		}
+		return $mar;
 	}
 	catch(PDOException $e) {
 		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';

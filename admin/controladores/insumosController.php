@@ -44,9 +44,9 @@ class InsumosController
         $id  = $_GET['id'];
         $res = Insumos::eliminarPor($id);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
         }
         $campos = Insumos::obtenerPagina();
         require_once 'vistas/insumos/todos.php';
@@ -88,9 +88,9 @@ class InsumosController
 
                 $res = Insumos::guardarinventarioIn($FechaActual, $ultimoid, $proyecto_id_proyecto, $categoriainsumo_id, $cantidad, $TiempoActual, $creado_por, $observaciones, $tipoentrada, $soporte_num);
             }
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Erro al actualizar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Erro al actualizar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
         }
         $this->show();
     }
@@ -110,9 +110,9 @@ class InsumosController
 
         $res = Insumos::actualizar($id, $categoriainsumo_id, $nombre_insumo, $unidadmedida_id, $parametrizado, $cantidadminima);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
         }
         $this->show();
     }

@@ -11,6 +11,12 @@ class UsuariosController {
 		require_once 'vistas/usuarios/todos.php';
 	}
 
+   function notificaciones() {
+		$id = $_GET['id_usuario'];
+		$campos=Usuarios::obtenerPaginanotificaciones($id);;
+		require_once 'vistas/usuarios/notificaciones.php';
+	}
+
 /*************************************************************/
 /* FUNCION PARA AGREGAR NUEVO LLAMADO DESDE ROUTING.PHP */
 /*************************************************************/
@@ -34,12 +40,24 @@ class UsuariosController {
 		$id = $_GET['id'];
 		$campos = Usuarios::activartodo($id);
 		if ($campos){
-		echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
 	}else{
-		echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
 	}
 		$this->showpermisos($id);
 	}
+
+/*************************************************************/
+/* FUNCION PARA MODIFICAR  LLAMADO DESDE ROUTING.PHP*/
+/*************************************************************/
+	function notificacionleida() {
+		$id = $_GET['id'];
+		$marcadopor = $_GET['marcadopor'];
+		$campos = Usuarios::notificacionleida($id,$marcadopor);
+		require_once 'vistas/index/contenido.php';
+	}
+
+
 
 /*************************************************************/
 /* FUNCION PARA MODIFICAR  LLAMADO DESDE ROUTING.PHP*/
@@ -48,9 +66,9 @@ class UsuariosController {
 		$id = $_GET['id'];
 		$campos = Usuarios::desactivartodo($id);
 		if ($campos){
-		echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
 	}else{
-		echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
 	}
 		$this->showpermisos($id);
 	}
@@ -72,9 +90,9 @@ class UsuariosController {
 		$menu = $_GET['menu'];
 		$res = Usuarios::desactivarmenuPor($id,$menu);
 		if ($res){
-			echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+			echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
 		}else{
-				echo "<script>jQuery(function(){swal(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+				echo "<script>jQuery(function(){Swal.fire(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
 		}
 		$campos = Usuarios::obtenerMenuPor($id);
 		require_once 'vistas/usuarios/editarpermisos.php';
@@ -89,9 +107,9 @@ class UsuariosController {
 		$menu = $_GET['menu'];
 		$res = Usuarios::activarmenuPor($id,$menu);
 		if ($res){
-			echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+			echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
 		}else{
-				echo "<script>jQuery(function(){swal(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+				echo "<script>jQuery(function(){Swal.fire(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
 		}
 		$campos = Usuarios::obtenerMenuPor($id);
 		require_once 'vistas/usuarios/editarpermisos.php';
@@ -104,9 +122,9 @@ class UsuariosController {
 		$id = $_GET['id'];
 		$res = Usuarios::eliminarPor($id);
 		if ($res){
-			echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+			echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
 		}else{
-				echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+				echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
 		}
 		$campos = Usuarios::obtenerPagina();
 		require_once 'vistas/usuarios/todos.php';
@@ -159,9 +177,9 @@ function guardar() {
 	}
 
 	if ($res){
-		echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
 	}else{
-		echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
 	}
 	$this->show();
 }
@@ -196,9 +214,9 @@ function actualizar(){
 	$datosguardar = new Usuarios($id,$nuevoarreglo);
 	$res = Usuarios::actualizar($id,$datosguardar,$ruta_imagen);
 	if ($res){
-		echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina de miembros\", \"success\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\");});</script>";
 	}else{
-				echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+				echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
 		}
 	$this->show();
 }

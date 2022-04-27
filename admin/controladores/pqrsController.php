@@ -133,7 +133,7 @@ class PqrsController {
 		if (!empty($id)){
 				//TRAIGO LA INFORMACIÓN REQUERIDA
 				$valor = Pqrs::cambiarstatus($id,$status);
-				$devolver="<script>jQuery(function(){swal(\"¡Excelente!\", \"Se ha cambiado correctamente el status\", \"success\");});</script>";
+				$devolver="<script>jQuery(function(){Swal.fire(\"¡Excelente!\", \"Se ha cambiado correctamente el status\", \"success\");});</script>";
 				echo $devolver;
 		}
 	}	 
@@ -161,7 +161,7 @@ class PqrsController {
 
 				require_once 'vistas/verpqrs/leer.php';
 			}else{
-				echo "<script>jQuery(function(){swal(\"¡Error!\", \"Se ha encontrado un error al solicitar los datos\", \"error\");});</script>";
+				echo "<script>jQuery(function(){Swal.fire(\"¡Error!\", \"Se ha encontrado un error al solicitar los datos\", \"error\");});</script>";
 				}
 		}	 
  

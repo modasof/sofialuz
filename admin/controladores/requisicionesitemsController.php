@@ -128,9 +128,9 @@ class RequisicionesitemsController
         $res = Requisicionesitems::guardartrazabilidad($estado_item, $items, $usuario_creador, $observaciones);
 
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al guardar !\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al guardar !\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
         }
         if ($cargo == 1 or $cargo == 13) {
             $this->showtodosporalmacen();
@@ -154,9 +154,9 @@ class RequisicionesitemsController
         $res = Requisicionesitems::actualizarcantidadcot($id, $cantidadcot, $valor_cot);
 
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al guardar !\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al guardar !\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
         }
         $this->vercotizacion();
     }
@@ -182,6 +182,8 @@ class RequisicionesitemsController
         $valor_retenciones = $_POST['valor_retenciones'];
         $estado_recibido   = $_POST['estado_recibido'];
         $compra_de         = $_POST['compra_de'];
+        $rubro_id          = $_POST['rubro_id'];
+        $subrubro_id       = $_POST['subrubro_id'];
 
         $estado_orden           = $_POST['estado_orden'];
         $proveedor_id_proveedor = $_POST['proveedor_id_proveedor'];
@@ -198,7 +200,7 @@ class RequisicionesitemsController
             $arregloitems = array($items . ",");
         }
 // 1. Se guarda el registro de la orden de compra
-        $res = Requisicionesitems::guardaroccompra($imagen,$imagen_cot,$fecha_reporte, $valor_total, $valor_retenciones, $valor_iva, $estado_orden, $proveedor_id_proveedor, $medio_pago, $observaciones, $marca_temporal, $usuario_creador, $items, $factura, $estado_recibido, $compra_de);
+        $res = Requisicionesitems::guardaroccompra($imagen, $imagen_cot, $fecha_reporte, $valor_total, $valor_retenciones, $valor_iva, $estado_orden, $proveedor_id_proveedor, $medio_pago, $observaciones, $marca_temporal, $usuario_creador, $items, $rubro_id, $subrubro_id, $factura, $estado_recibido, $compra_de);
 // 2. Se obtiene el último registro de OC y se toma como consecutivo
         $ordencompra_num = Requisicionesitems::obtenerUltimo();
 // 3. Se actualizan los items con el consecutivo OC
@@ -207,19 +209,31 @@ class RequisicionesitemsController
         $res = Requisicionesitems::actualizaritemcotizasoc($usuario_creador, $ordencompra_num, $arregloitems, $proveedor_id_proveedor, $estado_cotizacion, $estado_nuevo_cot);
 // 5. Se cambia el estado al item
         $res = Requisicionesitems::actualizarestadooc($estado_item, $arregloitems);
- // 6. Se verifica el valor total de la orden de compra por id de orden de compra
+        // 6. Se verifica el valor total de la orden de compra por id de orden de compra
         $valor_final = Requisicionesitems::sqlvalortotalordencompra($ordencompra_num);
-//  7. Se actualiza el nuevo valor de la orden de compra 
-        $res = Requisicionesitems::actualizarvalorfinal($ordencompra_num,$valor_final);
+//  7. Se actualiza el nuevo valor de la orden de compra
+        $res = Requisicionesitems::actualizarvalorfinal($ordencompra_num, $valor_final);
 // 8. Se actualiza la trazabilidad en cada item y se agrega el estado 8
         $observaciontrazabilidad = $observaciones . " Con orden de Compra N." . $ordencompra_num;
         $res                     = Requisicionesitems::guardartrazabilidadoc($estado_item, $items, $usuario_creador, $observaciontrazabilidad);
 // 9. Notificación de mensaje de Texto a usuario contabilidad
 
+        $nomproveedor = Requisicionesitems::obtenerNombreProveedor($proveedor_id_proveedor);
+
+        $detalle = "Autorizada OC00" . $ordencompra_num . " de " . $nomproveedor . " por valor:" . $valor_final;
+
+        $res = Requisicionesitems::guardarnotificacion($usuario_creador, 16, $marca_temporal, $fecha_reporte, $detalle);
+        $res = Requisicionesitems::guardarnotificacion($usuario_creador, 58, $marca_temporal, $fecha_reporte, $detalle);
+        $res = Requisicionesitems::guardarnotificacion($usuario_creador, 39, $marca_temporal, $fecha_reporte, $detalle);
+        $res = Requisicionesitems::guardarnotificacion($usuario_creador, 144, $marca_temporal, $fecha_reporte, $detalle);
+        $res = Requisicionesitems::guardarnotificacion($usuario_creador, 151, $marca_temporal, $fecha_reporte, $detalle);
+        $res = Requisicionesitems::guardarnotificacion($usuario_creador, 150, $marca_temporal, $fecha_reporte, $detalle);
+        $res = Requisicionesitems::guardarnotificacion($usuario_creador, 68, $marca_temporal, $fecha_reporte, $detalle);
+
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina\", \"success\").then(function(){window.location='?controller=requisiciones&&action=cotizaciones';});});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina\", \"success\").then(function(){window.location='?controller=requisiciones&&action=cotizaciones';});});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al guardar !\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al guardar !\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
         }
 
         $this->showCotizaciones();
@@ -242,9 +256,9 @@ class RequisicionesitemsController
         $res = Requisicionesitems::guardartrazabilidad($estado_item, $items, $usuario_creador, $observaciones);
 
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al guardar !\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al guardar !\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
         }
 
         $this->showRequisicionesitems();
@@ -289,9 +303,9 @@ class RequisicionesitemsController
         $res   = Requisicionesitems::guardarcotizacion($campo);
         $res   = Requisicionesitems::guardartrazabilidad($estado_item, $id, $usuario_creador, $observaciones1);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
         }
         $this->showtodosporusuario($usuario_creador);
 
@@ -320,7 +334,7 @@ class RequisicionesitemsController
         $identificador1       = $_POST['identificador1'];
         $identificador2       = $_POST['identificador2'];
         $identificador3       = $_POST['identificador3'];
-        $estado_item          = 6;
+        $estado_item          = 7;
 
         $proveedor1     = $_POST['proveedor1'];
         $cotizacion1    = $_POST['cotizacion1'];
@@ -342,31 +356,88 @@ class RequisicionesitemsController
         # =           Validación de Cotización 1      =
         # =============================================
 
-        if ($identificador1 == "vacio" and $valor_cot1 != "") {
-            $res = Requisicionesitems::guardarcotizacionmultiple($proveedor1, $cotizacion1, $formapago1, $item_id, $valor_cot1, $requisicion_id, $fecha_reporte, $marca_temporal, $usuario_creador, $usuario_aprobador, $estado_cotizacion, $ordencompra_num, $insumo_id_insumo, $servicio_id_servicio, $equipo_id_equipo, $cantidadcot);
-            $res = Requisicionesitems::guardartrazabilidad($estado_item, $id, $usuario_creador, $observaciones1);
+        if ($valor_cot1 != "") {
+            $res = Requisicionesitems::guardarcotizacionmultiple($proveedor1, $cotizacion1, $item_id, $valor_cot1, $requisicion_id, $marca_temporal, $usuario_creador, $insumo_id_insumo, $servicio_id_servicio, $equipo_id_equipo, $cantidadcot);
+            $res=Requisicionesitems::actualizarestado($estado_item, $item_id);
+            //$res = Requisicionesitems::guardartrazabilidad($estado_item, $id, $usuario_creador, $observaciones1);
         }
-        if ($identificador2 == "vacio" and $valor_cot2 != "") {
-            $res = Requisicionesitems::guardarcotizacionmultiple($proveedor2, $cotizacion2, $formapago2, $item_id, $valor_cot2, $requisicion_id, $fecha_reporte, $marca_temporal, $usuario_creador, $usuario_aprobador, $estado_cotizacion, $ordencompra_num, $insumo_id_insumo, $servicio_id_servicio, $equipo_id_equipo, $cantidadcot);
-            $res = Requisicionesitems::guardartrazabilidad($estado_item, $id, $usuario_creador, $observaciones2);
+        if ($valor_cot2 != "") {
+            $res = Requisicionesitems::guardarcotizacionmultiple($proveedor2, $cotizacion2, $item_id, $valor_cot2, $requisicion_id, $marca_temporal, $usuario_creador, $insumo_id_insumo, $servicio_id_servicio, $equipo_id_equipo, $cantidadcot);
+             $res=Requisicionesitems::actualizarestado($estado_item, $item_id);
+            //$res = Requisicionesitems::guardartrazabilidad($estado_item, $id, $usuario_creador, $observaciones2);
         }
-        if ($identificador3 == "vacio" and $valor_cot3 != "") {
+        if ($valor_cot3 != "") {
 
-            $res = Requisicionesitems::guardarcotizacionmultiple($proveedor3, $cotizacion3, $formapago3, $item_id, $valor_cot3, $requisicion_id, $fecha_reporte, $marca_temporal, $usuario_creador, $usuario_aprobador, $estado_cotizacion, $ordencompra_num, $insumo_id_insumo, $servicio_id_servicio, $equipo_id_equipo, $cantidadcot);
-            $res = Requisicionesitems::guardartrazabilidad($estado_item, $id, $usuario_creador, $observaciones3);
+            $res = Requisicionesitems::guardarcotizacionmultiple($proveedor3, $cotizacion3, $item_id, $valor_cot3, $requisicion_id, $marca_temporal, $usuario_creador, $insumo_id_insumo, $servicio_id_servicio, $equipo_id_equipo, $cantidadcot);
+             $res=Requisicionesitems::actualizarestado($estado_item, $item_id);
+            //$res = Requisicionesitems::guardartrazabilidad($estado_item, $id, $usuario_creador, $observaciones3);
         }
 
         if ($valor_cot1 >= 0 and $valor_cot2 >= 0 and $valor_cot3 >= 0) {
             // ?controller=requisicionesitems&action=gestionarvalores&des=107,109&id=61
 
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina\", \"success\").then(function(){window.location='?controller=requisicionesitems&action=gestionarvalores&des=" . $items . "&id=" . $id . "';});});</script>";
+            // echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina\", \"success\").then(function(){window.location='?controller=requisicionesitems&action=gestionarvalores&des=" . $items . "&id=" . $id . "';});});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina\", \"success\")});</script>";
 
         } elseif ($valor_cot1 >= 0 or $valor_cot2 >= 0 or $valor_cot3 >= 0) {
-           echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina\", \"success\").then(function(){window.location='?controller=requisicionesitems&action=gestionarvalores&des=" . $items . "&id=" . $id . "';});});</script>";
+            // echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina\", \"success\").then(function(){window.location='?controller=requisicionesitems&action=gestionarvalores&des=" . $items . "&id=" . $id . "';});});</script>";
+
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina\", \"success\")});</script>";
 
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
         }
+
+        $this->gestionarvalores();
+
+    }
+
+/*************************************************************/
+/* FUNCION PARA GUARDAR NUEVA COTIZACION */
+/*************************************************************/
+    public function guardarsoportecotizacionmultiple()
+    {
+        $id    = $_GET['id'];
+        $items = $_GET['des'];
+
+        if (empty($_FILES['imagen']['name'])) {
+            $ruta_imagen = $_POST['ruta1'];
+        } else {
+            $ruta_imagen = $this->subir_fichero('images/cotizaciones', 'imagen');
+        }
+
+        $requisicion_id       = $_POST['requisicion_id'];
+        $fecha_reporte        = $_POST['fecha_reporte'];
+        $marca_temporal       = $_POST['marca_temporal'];
+        $usuario_creador      = $_POST['usuario_creador'];
+        $usuario_aprobador    = $_POST['usuario_aprobador'];
+        $estado_cotizacion    = $_POST['estado_cotizacion'];
+        $ordencompra_num      = $_POST['ordencompra_num'];
+        $insumo_id_insumo     = $_POST['insumo_id_insumo'];
+        $servicio_id_servicio = $_POST['servicio_id_servicio'];
+        $equipo_id_equipo     = $_POST['equipo_id_equipo'];
+        $cantidadcot          = $_POST['cantidadcot'];
+        $formapago1           = $_POST['formadepago'];
+        $proveedor1           = $_POST['proveedor'];
+        $cotizacion1          = $_POST['cotizacion_num'];
+        $valor_cot1           = 0;
+
+        $items = explode(",", $items);
+        foreach ($items as $key => $despachounico) {
+
+            // Validación si el item ya tiene soporte o no
+            $verificacion = requisicionesitems::consultarsoporteporitem($despachounico, $cotizacion1);
+
+            if ($verificacion == 0) {
+
+                $res = Requisicionesitems::guardarsoportecotizacionmultiple($ruta_imagen, $proveedor1, $cotizacion1, $formapago1, $despachounico, $valor_cot1, $requisicion_id, $fecha_reporte, $marca_temporal, $usuario_creador, $usuario_aprobador, $estado_cotizacion, $ordencompra_num, $insumo_id_insumo, $servicio_id_servicio, $equipo_id_equipo, $cantidadcot);
+            } else {
+
+                $res = Requisicionesitems::actualizarsoportecotizacionmultiple($ruta_imagen, $despachounico, $cotizacion1);
+            }
+        }
+
+        echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina\", \"success\")});</script>";
 
         $this->gestionarvalores();
 
@@ -386,9 +457,9 @@ class RequisicionesitemsController
         $res = Requisicionesitems::eliminarcotizacion($iddelete);
 
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina\", \"success\").then(function(){window.location='?controller=requisicionesitems&action=gestionarvalores&des=" . $des . "&id=" . $id . "';});});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina\", \"success\").then(function(){window.location='?controller=requisicionesitems&action=gestionarvalores&des=" . $des . "&id=" . $id . "';});});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
         }
         $this->gestionarvalores();
 
@@ -444,9 +515,9 @@ class RequisicionesitemsController
         $res   = Requisicionesitems::guardar($campo);
         if ($res) {
             // ?controller=requisicionesitems&&action=todosporreq&&id=61
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina\", \"success\").then(function(){window.location='?controller=requisicionesitems&&action=todosporreq&&id=" . $id . "';});});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina\", \"success\").then(function(){window.location='?controller=requisicionesitems&&action=todosporreq&&id=" . $id . "';});});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
         }
         $this->showRequisicionesitemspor($id);
     }
@@ -460,9 +531,9 @@ class RequisicionesitemsController
         $id         = $_GET['id'];
         $res        = Requisicionesitems::eliminarpor($ideliminar);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina\", \"success\").then(function(){window.location='?controller=requisicionesitems&&action=todosporreq&&id=" . $id . "';});});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina\", \"success\").then(function(){window.location='?controller=requisicionesitems&&action=todosporreq&&id=" . $id . "';});});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
         }
         $campos = Requisicionesitems::todosporreq($id);
         require_once 'vistas/requisicionesitems/todosporreq.php';
@@ -476,9 +547,9 @@ class RequisicionesitemsController
         $id  = $_GET['id'];
         $res = Requisicionesitems::finalizarpor($id);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina\", \"success\").then(function(){window.location='?controller=requisicionesitems&&action=todosporreq&&id=" . $id . "';});});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina\", \"success\").then(function(){window.location='?controller=requisicionesitems&&action=todosporreq&&id=" . $id . "';});});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
         }
         $campos = Requisicionesitems::todosporreq($id);
         require_once 'vistas/requisicionesitems/todosporreq.php';
@@ -503,9 +574,9 @@ class RequisicionesitemsController
         $res = Requisicionesitems::guardartrazabilidad($estadoaprobado, $items, $userautoriza, $observaciones);
 
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina\", \"success\")});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina\", \"success\")});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al Aprobar!\", \"No se han aprobado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al Aprobar!\", \"No se han aprobado correctamente los datos\", \"error\");});</script>";
         }
         //$campos = Requisicionesitems::todosporreq($id);
         require_once 'vistas/almacen/homedirector.php';
@@ -558,9 +629,9 @@ class RequisicionesitemsController
         $datosguardar = new Requisicionesitems($id, $nuevoarreglo);
         $res          = Requisicionesitems::actualizar($id, $datosguardar, $ruta_imagen);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina de miembros\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
         $this->showRequisicionesitems();
     }
@@ -599,9 +670,9 @@ class RequisicionesitemsController
         $res          = Requisicionesitems::guardartrazabilidad($estado_item, $id, $usuario_creador, $observacionestra);
 
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina de miembros\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
         $this->showveritem($id);
     }

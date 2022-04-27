@@ -219,7 +219,7 @@ $despachosmes = Despachosclmes($FechaInicioDia, $FechaFinalDia);
                 <i class="fa fa-users"></i> Aprobar RQ
               </a>
              
-                <a href="?controller=compras&&action=recibiroc" class="btn btn-app">
+                <a href="?controller=dashboards&&action=dashboardcompras" class="btn btn-app">
                 <i class="fa fa-cart-plus"></i> Compras
               </a>
             
@@ -227,6 +227,13 @@ $despachosmes = Despachosclmes($FechaInicioDia, $FechaFinalDia);
                 <span class="badge bg-green"></span>
                 <i class="fa fa-file-pdf-o"></i> Aprobar OC
               </a>
+
+               <a href="?controller=proveedores&&action=cxpproveedor" class="btn btn-app">
+<i class="fa fa-dollar"></i> CxP Proveedor
+</a>
+
+<a href="?controller=proveedores&&action=showrelacionpagos" class="btn btn-app">
+<i class="fa fa-list"></i> Relaciones de Pago</a>
               
             </div>
             <!-- /.box-body -->

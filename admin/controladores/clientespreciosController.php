@@ -88,9 +88,9 @@ class ClientespreciosController
         $id_cliente = $_GET['id_cliente'];
         $res     = Clientesprecios::eliminarPor($id);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
         }
         $campos = Clientesprecios::obtenerPaginarutas($id_cliente);
         require_once 'vistas/clientesprecios/todosruta.php';
@@ -102,9 +102,9 @@ class ClientespreciosController
         $id_cliente = $_GET['id_cliente'];
         $res     = Clientesprecios::eliminarPor($id);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
         }
         $campos = Clientesprecios::obtenerPaginahoras($id_cliente);
         require_once 'vistas/clientesprecios/todoshora.php';
@@ -116,9 +116,9 @@ class ClientespreciosController
         $id_cliente = $_GET['id_cliente'];
         $res     = Clientesprecios::eliminarPor($id);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
         }
         $campos = Clientesprecios::obtenerPaginaproductos($id_cliente);
         require_once 'vistas/clientesprecios/todosproducto.php';
@@ -136,7 +136,7 @@ function guardar() {
     $destino_id=$_POST['destino_id'];
 
     if ($origen_id==$destino_id) {
-        echo "<script>jQuery(function(){swal(\"¡Error al guardar!\", \" Se seleccionaron origen y destino iguales \", \"warning\");});</script>";
+        echo "<script>jQuery(function(){Swal.fire(\"¡Error al guardar!\", \" Se seleccionaron origen y destino iguales \", \"warning\");});</script>";
          $this->show();
     }
     else{
@@ -160,9 +160,9 @@ function guardar() {
     $campo = new Clientesprecios('',$nuevoarreglo);
     $res = Clientesprecios::guardar($campo);
     if ($res){
-        echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+        echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
     }else{
-        echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+        echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
     }
      $this->show();
  }
@@ -194,9 +194,9 @@ function guardarvalorhora() {
     $campo = new Clientesprecios('',$nuevoarreglo);
     $res = Clientesprecios::guardar($campo);
     if ($res){
-        echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+        echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
     }else{
-        echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+        echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
     }
      $this->showvalorhora();
  
@@ -227,9 +227,9 @@ function guardarvalorproducto() {
     $campo = new Clientesprecios('',$nuevoarreglo);
     $res = Clientesprecios::guardar($campo);
     if ($res){
-        echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+        echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
     }else{
-        echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+        echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
     }
      $this->showvalorproducto();
  
@@ -262,9 +262,9 @@ function actualizar(){
     $datosguardar = new Clientesprecios($id,$nuevoarreglo);
     $res = Clientesprecios::actualizar($id,$datosguardar);
     if ($res){
-        echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina de miembros\", \"success\");});</script>";
+        echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\");});</script>";
     }else{
-                echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+                echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
     $this->show($id_cliente);
 }

@@ -158,7 +158,7 @@ WHERE  MONTH(fecha_reporte)='".$mes."' and YEAR(fecha_reporte)='".$ano."' and re
 	function Contarrqporaprobar($area){
 	$db = Db::getConnect();
 	//$mesactual = date("n");
-	$sql="SELECT COUNT(id) as totales FROM requisiciones WHERE ".$area." and requisicion_publicada='1' order by fecha_reporte DESC";
+	$sql="SELECT COUNT(A.id) as totales FROM requisiciones as A, requisiciones_items as B WHERE ".$area." and requisicion_publicada='1' AND A.id=B.requisicion_id and B.estado_item='1' order by A.fecha_reporte DESC";
 	//echo($sql);
 	$select = $db->prepare($sql);
 	$select->execute();
@@ -182,6 +182,124 @@ function Comprasmesgeneral($mes,$ano){
 		}
 	return $total;
 	}
+
+
+function Comprasanogeneral($ano){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$select = $db->prepare("SELECT IFNULL(sum(valor_total),0) as totales FROM ordenescompra WHERE YEAR(fecha_reporte)='".$ano."' and estado_orden<>'0' ");
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$total = $campo['totales'];
+		}
+	return $total;
+	}
+
+
+function Comprasmesgeneralfecha($FechaStart,$FechaEnd){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$select = $db->prepare("SELECT IFNULL(sum(valor_total),0) as totales FROM ordenescompra WHERE fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' and estado_orden<>'0'");
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$total = $campo['totales'];
+		}
+	return $total;
+	}
+
+
+function Comprasmesgeneralfechatipo($FechaStart,$FechaEnd,$tipo){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$select = $db->prepare("SELECT IFNULL(sum(valor_total),0) as totales FROM ordenescompra WHERE fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' and estado_orden<>'0' and compra_de='".$tipo."'");
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$total = $campo['totales'];
+		}
+	return $total;
+	}
+
+
+function Comprasproyectofecha($FechaStart,$FechaEnd,$proyecto){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$select = $db->prepare("SELECT SUM(B.vr_unitario*B.cantidadcot) AS totales FROM ordenescompra as C, cotizaciones_item as B, requisiciones as A WHERE C.fecha_reporte >='".$FechaStart."' and C.fecha_reporte <='".$FechaEnd."' AND C.estado_orden<>'0' AND A.id=B.requisicion_id AND C.id=B.ordencompra_num AND  B.estado_cotizacion='02' AND A.proyecto_id_proyecto='".$proyecto."'");
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$total = $campo['totales'];
+		}
+	return $total;
+	}
+
+function Comprascategoriafecha($FechaStart,$FechaEnd,$proyecto){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$select = $db->prepare("SELECT SUM(B.vr_unitario*B.cantidadcot) AS totales FROM ordenescompra as C, cotizaciones_item as B, requisiciones as A , insumos as D WHERE C.fecha_reporte >='".$FechaStart."' and C.fecha_reporte <='".$FechaEnd."' AND C.estado_orden<>'0' AND A.id=B.requisicion_id AND C.id=B.ordencompra_num AND  B.estado_cotizacion='02' AND B.insumo_id_insumo=D.id_insumo AND D.categoriainsumo_id='".$proyecto."' ");
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$total = $campo['totales'];
+		}
+	return $total;
+	}
+
+
+function Comprasrubrofecha($FechaStart,$FechaEnd,$rubro){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$select = $db->prepare("SELECT SUM(valor_total) AS totales FROM ordenescompra WHERE fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' AND estado_orden<>'0' AND rubro_id='".$rubro."';");
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$total = $campo['totales'];
+		}
+	return $total;
+	}
+
+
+function Comprasmesgeneraltipo($mes,$ano,$tipo){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$select = $db->prepare("SELECT IFNULL(sum(valor_total),0) as totales FROM ordenescompra WHERE YEAR(fecha_reporte)='".$ano."' and MONTH(fecha_reporte)='".$mes."' and estado_orden<>'0' and compra_de='".$tipo."'");
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$total = $campo['totales'];
+		}
+	return $total;
+	}
+
+
+
+function Comprasmesgeneralinventario($mes,$ano){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$select = $db->prepare("SELECT IFNULL(sum(C.vr_unitario*B.cantidad),0) as totales FROM ordenescompra as A, detalle_entrada_ins as B, cotizaciones_item as C WHERE A.id=B.oc_id AND YEAR(A.fecha_reporte)='".$ano."' AND MONTH (A.fecha_reporte)='".$mes."' and A.id=C.ordencompra_num and B.insumo_id<>0 and B.estado_detalle_entrada='1' and A.compra_de='Insumos' and B.insumo_id=C.insumo_id_insumo");
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$total = $campo['totales'];
+		}
+	return $total;
+	}
+
+
+function Comprasmesgeneralinventariosalidas($mes,$ano){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$select = $db->prepare("SELECT IFNULL(sum(valor_salida),0) as totales FROM salidas_ins WHERE  YEAR(fecha_reporte)='".$ano."' AND MONTH (fecha_reporte)='".$mes."' and estado_salida='Despachado'");
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$total = $campo['totales'];
+		}
+	return $total;
+	}
+
 
 function Abonoscomprasmes($mes,$ano){
 	$db = Db::getConnect();

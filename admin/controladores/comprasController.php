@@ -14,6 +14,13 @@ class ComprasController
         require_once 'vistas/compras/todos.php';
     }
 
+    public function todosproveedorpagos()
+    {
+        $id     = $_GET['idproveedor'];
+        $campos = Compras::todosporproveedor($id);
+        require_once 'vistas/compras/pagosproveedor.php';
+    }
+
     public function todosrecibirinsumos()
     {
         $campos = Compras::todosrecibirinsumos();
@@ -34,7 +41,7 @@ class ComprasController
 
     public function todospormes()
     {
-         if (isset($_POST['daterange'])) {
+        if (isset($_POST['daterange'])) {
             $fechaform = $_POST['daterange'];
         } elseif (isset($_GET['daterange'])) {
             $fechaform = $_GET['daterange'];
@@ -136,17 +143,17 @@ class ComprasController
         $marca_temporal         = $_POST['marca_temporal'];
         $creado_por             = $_POST['creado_por'];
         $entrada_por            = "Entrada por OC";
-       
-        $estado                 = "12";
+
+        $estado = "12";
 
         $res = Compras::cargarentradainventario($cotizacion_item_id, $oc_id, $insumo_id, $servicio_id, $cantidad, $entrada_id, $fecha_registro, $estado_detalle_entrada, $marca_temporal, $creado_por, $entrada_por);
 
         $res = Compras::actualizarestadoItemsOC($item_id, $estado);
 
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos Guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos Guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Datos Guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos Guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
         }
         $campos = Compras::todosrecibirinsumos();
         require_once 'vistas/compras/cargarinsumos.php';
@@ -182,9 +189,9 @@ class ComprasController
         $campo = new Compras('', $nuevoarreglo);
         $res   = Compras::guardar($campo, $ruta_imagen);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
         }
         $this->showtodos();
     }
@@ -197,9 +204,9 @@ class ComprasController
         $id  = $_GET['id'];
         $res = Compras::eliminarpor($id);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
         }
         $campos = Compras::todos();
         require_once 'vistas/compras/todos.php';
@@ -224,9 +231,9 @@ class ComprasController
         $res = Compras::log($usuario_creador, $logdetalle, $modulo);
 
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
         }
         $campos = Compras::verdetalle($id);
         require_once 'vistas/compras/verdetalle.php';
@@ -243,9 +250,9 @@ class ComprasController
 
         $res = Compras::eliminarpagotem($iddelete);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
         }
         $this->cambiarestadocreditos();
     }
@@ -267,10 +274,10 @@ class ComprasController
     public function actualizar()
     {
         $id = $_GET['id'];
-        if (empty($_FILES['imagen_cot']['name'])) {
+        if (empty($_FILES['imagen']['name'])) {
             $ruta_imagen = $_POST['ruta1'];
         } else {
-            $ruta_imagen = $this->subir_fichero('images/cotizaciones', 'imagen_cot');
+            $ruta_imagen = $this->subir_fichero('images/compras', 'imagen');
         }
         $variable     = $_POST;
         $nuevoarreglo = array();
@@ -286,7 +293,7 @@ class ComprasController
 
                 $valor = strip_tags(trim($valor));
                 $valor = htmlspecialchars($valor, ENT_QUOTES, 'UTF-8');
-                if ($campo == "imagen_cot") {
+                if ($campo == "imagen") {
                     $nuevoarreglo[$campo] = $ruta_imagen;
                 } else {
                     $nuevoarreglo[$campo] = $valor;
@@ -297,9 +304,9 @@ class ComprasController
         $datosguardar = new Compras($id, $nuevoarreglo);
         $res          = Compras::actualizar($id, $datosguardar, $ruta_imagen);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina de miembros\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
         $this->showtodos();
     }
@@ -364,9 +371,9 @@ class ComprasController
         $res    = Compras::log($usuario_creador, $logdetalle, $modulo);
 
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina de miembros\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
 
         $campos = Compras::verdetalle($id);
@@ -394,9 +401,9 @@ class ComprasController
         $res = Compras::pagotemporal($itemunico, $valorpago, $fecha_registro, $estado_pago, $creado_por, $marca_temporal);
 
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina de miembros\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
         $this->cambiarestadocreditos();
 
@@ -436,7 +443,7 @@ class ComprasController
         $tipo_egreso      = "Otro tipo de egreso";
         $estado_egreso    = "1";
         $egreso_publicado = "1";
-        $proveedor = "0";
+        $proveedor        = "0";
 
         $res = Compras::actualizarpago($id, $ruta_imagen, $valor_total, $valor_retenciones, $valor_iva, $estado_item, $rubro_id, $subrubro_id);
 
@@ -451,12 +458,12 @@ class ComprasController
 
         //$cuenta_id_cuenta,$imagen,$tipo_egreso,$proveedor,$beneficiario,$id_rubro,$id_subrubro,$egreso_en,$valor_egreso,$observaciones,$estado_egreso,$egreso_publicado,$marca_temporal,$fecha_egreso,$creado_por
 
-        $res = Compras::guardaregresoOrdenCompra($cuenta_id, $ruta_imagen2, $tipo_egreso,$proveedor, $beneficiario, $rubro_id, $subrubro_id, $egreso_en, $valor_total, $observaciones, $estado_egreso, $egreso_publicado, $marca_temporal, $fecha_reporte, $creado_por);
+        $res = Compras::guardaregresoOrdenCompra($cuenta_id, $ruta_imagen2, $tipo_egreso, $proveedor, $beneficiario, $rubro_id, $subrubro_id, $egreso_en, $valor_total, $observaciones, $estado_egreso, $egreso_publicado, $marca_temporal, $fecha_reporte, $creado_por);
 
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina de miembros\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
         $this->showtodos();
     }
@@ -480,23 +487,24 @@ class ComprasController
             $ruta_imagen = $this->subir_fichero('images/compras', 'imagen');
         }
 
-        $fecha_reporte     = $_POST['fecha_reporte'];
-        $valor_total       = $_POST['valor_total'];
-        $valor_retenciones = $_POST['valor_retenciones'];
-        $valor_iva         = $_POST['valor_iva'];
-        $estado_item       = $_POST['estado_item'];
-        $factura           = $_POST['factura'];
-        $ordenes           = $_POST['ordenes'];
-        $rubro_id          = $_POST['rubro_id'];
-        $subrubro_id       = $_POST['subrubro_id'];
-        $cuenta_id         = $_POST['cuenta_id'];
-        $beneficiario      = $_POST['beneficiario'];
-        $egreso_en         = $_POST['egreso_en'];
-        $observaciones     = $_POST['observaciones'];
-        $proveedor         = $_POST['proveedor_id_proveedor'];
-        $tipo_egreso       = "Pago a proveedor";
-        $estado_egreso     = "1";
-        $egreso_publicado  = "1";
+        $fecha_reporte        = $_POST['fecha_reporte'];
+        $valor_total          = $_POST['valor_total'];
+        $valor_retenciones    = $_POST['valor_retenciones'];
+        $valor_iva            = $_POST['valor_iva'];
+        $estado_item          = $_POST['estado_item'];
+        $factura              = $_POST['factura'];
+        $ordenes              = $_POST['ordenes'];
+        $rubro_id             = $_POST['rubro_id'];
+        $subrubro_id          = $_POST['subrubro_id'];
+        $cuenta_id            = $_POST['cuenta_id'];
+        $beneficiario         = $_POST['beneficiario'];
+        $egreso_en            = $_POST['egreso_en'];
+        $observaciones        = $_POST['observaciones'];
+        $relacion_id_relacion = $_POST['relacion_id_relacion'];
+        $proveedor            = $_POST['proveedor_id_proveedor'];
+        $tipo_egreso          = "Pago a proveedor";
+        $estado_egreso        = "1";
+        $egreso_publicado     = "1";
 
         $ordenes = $_POST['ordenes'];
         $items   = explode(",", $ordenes);
@@ -513,7 +521,12 @@ class ComprasController
             $ruta_imagen2 = $this->subir_ficherodos('images/egresoscuenta', 'imagen2');
         }
 
-        $res = Compras::guardaregresoOrdenCompra($cuenta_id, $ruta_imagen2, $tipo_egreso, $proveedor, $beneficiario, $rubro_id, $subrubro_id, $egreso_en, $valor_total, $observaciones, $estado_egreso, $egreso_publicado, $marca_temporal, $fecha_reporte, $creado_por);
+        $res = Compras::guardaregresoOrdenCompra($cuenta_id, $ruta_imagen2, $tipo_egreso, $proveedor, $beneficiario, $rubro_id, $subrubro_id, $egreso_en, $valor_total, $observaciones, $estado_egreso, $egreso_publicado, $marca_temporal, $fecha_reporte, $creado_por, $relacion_id_relacion);
+
+        $sumapagos = Compras::sumavaloresrelacion($relacion_id_relacion);
+
+        $res = Compras::Actualizarlopagado($sumapagos,$relacion_id_relacion);
+
 
 /*=============================================================
 =            Guardado Valores de factura           =
@@ -532,9 +545,9 @@ class ComprasController
         }
 
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina de miembros\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
         $this->showtodos();
     }

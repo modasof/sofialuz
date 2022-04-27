@@ -110,7 +110,7 @@ $TiempoActual = date('Y-m-d H:i:s');
 
 					<input type="hidden" name="usuario_creador" value="<?php echo ($IdSesion); ?>">
 					<input type="hidden" name="estado_id_requisicion" value="1">
-					<input type="hidden" name="requisicion_publicada" value="1">
+					<input type="hidden" name="requisicion_publicada" value="<?php echo($requisicion_publicada);?>">
 					<input type="hidden" name="marca_temporal" value="<?php echo ($TiempoActual); ?>">
 
 					<div class="card-body">

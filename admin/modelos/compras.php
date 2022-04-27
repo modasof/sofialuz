@@ -82,6 +82,76 @@ public static function porfechacargarinsumos($FechaStart,$FechaEnd){
 
 
 /*******************************************************
+** FUNCION PARA MOSTRAR TODOS LOS CAMPOS POR RANGO DE FECHA	  **
+********************************************************/
+public static function porproveedorcargarinsumos($id){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT * FROM cotizaciones_item as A, ordenescompra as B WHERE estado_cotizacion='2' and B.proveedor_id_proveedor='".$id."' and A.ordencompra_num=B.id  and B.estado_orden<>'0' order by B.fecha_reporte desc");
+    	$camposs=$select->fetchAll();
+    	$campos = new Compras('',$camposs);
+		return $campos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
+/*******************************************************
+** FUNCION PARA MOSTRAR TODOS LOS CAMPOS POR RANGO DE FECHA	  **
+********************************************************/
+public static function porfechacompraproyecto($FechaStart,$FechaEnd){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT DISTINCT(A.proyecto_id_proyecto) AS proyecto FROM ordenescompra as C, cotizaciones_item as B, requisiciones as A WHERE C.fecha_reporte >='".$FechaStart."' and C.fecha_reporte <='".$FechaEnd."' AND C.estado_orden<>'0' AND A.id=B.requisicion_id AND C.id=B.ordencompra_num AND  B.estado_cotizacion='02'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Compras('',$camposs);
+		return $campos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/*******************************************************
+** FUNCION PARA MOSTRAR TODOS LOS CAMPOS POR RANGO DE FECHA	  **
+********************************************************/
+public static function porfechacomprarubro($FechaStart,$FechaEnd){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT DISTINCT(rubro_id) AS rubro FROM ordenescompra WHERE fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' AND estado_orden<>'0'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Compras('',$camposs);
+		return $campos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/*******************************************************
+** FUNCION PARA MOSTRAR TODOS LOS CAMPOS POR RANGO DE FECHA	  **
+********************************************************/
+public static function porfechacompracategoria($FechaStart,$FechaEnd){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT DISTINCT(D.categoriainsumo_id) AS categoria FROM ordenescompra as C, cotizaciones_item as B, requisiciones as A , insumos AS D WHERE C.fecha_reporte >='".$FechaStart."' and C.fecha_reporte <='".$FechaEnd."' AND C.estado_orden<>'0' AND A.id=B.requisicion_id AND C.id=B.ordencompra_num AND  B.estado_cotizacion='02' AND B.insumo_id_insumo=D.id_insumo");
+    	$camposs=$select->fetchAll();
+    	$campos = new Compras('',$camposs);
+		return $campos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
+/*******************************************************
 ** FUNCION PARA MOSTRAR TODOS LOS CAMPOS DE FECHAS	  **
 ********************************************************/
 public static function todos(){
@@ -107,6 +177,43 @@ public static function todospormes(){
 	try {
 		$db=Db::getConnect();
 		$sql="SELECT * FROM ordenescompra WHERE estado_orden<>'0' order by fecha_reporte DESC";
+		//echo($sql);
+		$select=$db->query($sql);
+    	$camposs=$select->fetchAll();
+    	$campos = new Compras('',$camposs);
+		return $campos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/*******************************************************
+** FUNCION PARA MOSTRAR TODOS LOS CAMPOS DE FECHAS	  **
+********************************************************/
+public static function todosporproveedor($id){
+	try {
+		$db=Db::getConnect();
+		$sql="SELECT * FROM ordenescompra WHERE estado_orden<>'0' and proveedor_id_proveedor='".$id."' order by fecha_reporte DESC";
+		//echo($sql);
+		$select=$db->query($sql);
+    	$camposs=$select->fetchAll();
+    	$campos = new Compras('',$camposs);
+		return $campos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
+/*******************************************************
+** FUNCION PARA MOSTRAR TODOS LOS CAMPOS DE FECHAS	  **
+********************************************************/
+public static function detallepagos($id){
+	try {
+		$db=Db::getConnect();
+		$sql="SELECT * FROM detalle_pagos_ordenescompra WHERE estado_pago='1' and compra_id='".$id."' order by fecha_registro DESC";
 		//echo($sql);
 		$select=$db->query($sql);
     	$camposs=$select->fetchAll();
@@ -213,7 +320,7 @@ public static function verdetalle($id){
 	try {
 		$db=Db::getConnect();
 
-		$select=$db->query("SELECT A.id, A.proveedor_id_proveedor, A.cotizacion, A.medio_pago, A.item_id, A.valor_cot, A.requisicion_id, A.marca_temporal, A.usuario_creador, A.estado_cotizacion, A.ordencompra_num, B.insumo_id_insumo,B.cantidad,A.cantidadcot,A.vr_unitario FROM cotizaciones_item as A, requisiciones_items as B WHERE A.ordencompra_num='".$id."' and A.item_id=B.id order by id DESC");
+		$select=$db->query("SELECT A.id, A.proveedor_id_proveedor, A.cotizacion, A.medio_pago, A.item_id, A.valor_cot, A.requisicion_id, A.marca_temporal, A.usuario_creador, A.estado_cotizacion, A.ordencompra_num, B.insumo_id_insumo,B.cantidad,A.cantidadcot,A.vr_unitario,B.servicio_id_servicio FROM cotizaciones_item as A, requisiciones_items as B WHERE A.ordencompra_num='".$id."' and A.item_id=B.id order by id DESC");
     	$camposs=$select->fetchAll();
     	$campos = new Compras('',$camposs);
 		return $campos;
@@ -498,7 +605,8 @@ public static function actualizar($id,$campos,$imagen){
 								rubro_id=:rubro_id,
 								subrubro_id=:subrubro_id,
 								vencimiento=:vencimiento,
-								factura=:factura
+								factura=:factura,
+								compra_de=:compra_de
 								WHERE id=:id');
 		
 		$V1=str_replace(".","",$valor_total);
@@ -514,10 +622,10 @@ public static function actualizar($id,$campos,$imagen){
 		$t = strtotime($fecha_reporte);
 		$nuevafecha=date('y-m-d',$t);
 
-		$imagenfac=0;
 
-		$update->bindValue('imagen',utf8_decode($imagenfac));
-		$update->bindValue('imagen_cot',utf8_decode($imagen));
+
+		$update->bindValue('imagen',utf8_decode($imagen));
+		$update->bindValue('imagen_cot',utf8_decode($imagen_cot));
 		$update->bindValue('fecha_reporte',utf8_decode($nuevafecha));
 		$update->bindValue('valor_total',utf8_decode($valornumero));
 		$update->bindValue('valor_retenciones',utf8_decode($valornumero1));
@@ -532,6 +640,7 @@ public static function actualizar($id,$campos,$imagen){
 		$update->bindValue('subrubro_id',utf8_decode($subrubro_id));
 		$update->bindValue('vencimiento',utf8_decode($vencimiento));
 		$update->bindValue('factura',utf8_decode($factura));
+		$update->bindValue('compra_de',utf8_decode($compra_de));
 		$update->bindValue('id',utf8_decode($id));
 
 		$update->execute();
@@ -697,7 +806,7 @@ public static function guardarfactura($facturanum,$fecha_reporte,$valor_total,$v
 /***************************************************************
 *** FUNCION PARA GUARDAR INGRESO DE PAGO DE ORDEN DE COMPRA **** 
 ***************************************************************/
-public static function guardaregresoOrdenCompra($cuenta_id_cuenta,$imagen,$tipo_egreso,$proveedor,$beneficiario,$id_rubro,$id_subrubro,$egreso_en,$valor_egreso,$observaciones,$estado_egreso,$egreso_publicado,$marca_temporal,$fecha_egreso,$creado_por){
+public static function guardaregresoOrdenCompra($cuenta_id_cuenta,$imagen,$tipo_egreso,$proveedor,$beneficiario,$id_rubro,$id_subrubro,$egreso_en,$valor_egreso,$observaciones,$estado_egreso,$egreso_publicado,$marca_temporal,$fecha_egreso,$creado_por,$relacion_id_relacion){
 
 	$V1=str_replace(".","",$valor_egreso);
 		$V2=str_replace(" ", "", $V1);
@@ -711,7 +820,7 @@ public static function guardaregresoOrdenCompra($cuenta_id_cuenta,$imagen,$tipo_
 		$db=Db::getConnect();
 
 		
-	$select=$db->query("INSERT INTO egresos_cuenta (cuenta_id_cuenta,imagen,tipo_egreso,proveedor_id_proveedor,beneficiario,id_rubro,id_subrubro,egreso_en,valor_egreso,observaciones,estado_egreso,egreso_publicado,marca_temporal,fecha_egreso,creado_por) VALUES ('".utf8_decode($cuenta_id_cuenta)."','".utf8_decode($imagen)."','".utf8_decode($tipo_egreso)."','".$proveedor."','".utf8_decode($beneficiario)."','".utf8_decode($id_rubro)."','".$id_subrubro."','".utf8_decode($egreso_en)."','".utf8_decode($valor_final)."','".utf8_decode($observaciones)."','".utf8_decode($estado_egreso)."','".utf8_decode($egreso_publicado)."','".utf8_decode($marca_temporal)."','".utf8_decode($nuevafecha)."','".utf8_decode($creado_por)."')");
+	$select=$db->query("INSERT INTO egresos_cuenta (cuenta_id_cuenta,imagen,tipo_egreso,proveedor_id_proveedor,beneficiario,id_rubro,id_subrubro,egreso_en,valor_egreso,observaciones,estado_egreso,egreso_publicado,marca_temporal,fecha_egreso,creado_por,relacion_id_relacion) VALUES ('".utf8_decode($cuenta_id_cuenta)."','".utf8_decode($imagen)."','".utf8_decode($tipo_egreso)."','".$proveedor."','".utf8_decode($beneficiario)."','".utf8_decode($id_rubro)."','".$id_subrubro."','".utf8_decode($egreso_en)."','".utf8_decode($valor_final)."','".utf8_decode($observaciones)."','".utf8_decode($estado_egreso)."','".utf8_decode($egreso_publicado)."','".utf8_decode($marca_temporal)."','".utf8_decode($nuevafecha)."','".utf8_decode($creado_por)."','".$relacion_id_relacion."')");
 		if ($select){
 			return true;
 			}else{return false;}
@@ -1116,6 +1225,66 @@ public static function cantidadcargadaser($ordencompra_num,$servicio_id_servicio
 			$mar = $marca['total'];
 		}
 		return $mar;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/*******************************************************
+** FUNCION PARA MOSTRAR  **
+********************************************************/
+public static function comprasporproveedor($id){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT IFNULL(sum((valor_total-valor_retenciones)+valor_iva),0) as totales FROM ordenescompra WHERE proveedor_id_proveedor='".$id."' and estado_orden<>'0'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Compras('',$camposs);
+    	$marcas = $campos->getCampos();
+		foreach($marcas as $marca){
+			$mar = $marca['totales'];
+		}
+		return $mar;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
+/*******************************************************
+** FUNCION PARA MOSTRAR  **
+********************************************************/
+public static function sumavaloresrelacion($id){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT IFNULL(sum(valor_egreso),0) as total FROM egresos_cuenta WHERE relacion_id_relacion='".$id."'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Compras('',$camposs);
+    	$marcas = $campos->getCampos();
+		foreach($marcas as $marca){
+			$mar = $marca['total'];
+		}
+		return $mar;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
+/***************************************************************
+** FUNCION PARA ELIINAR POR ID  **
+***************************************************************/
+public static function 	Actualizarlopagado($valor,$relacion){
+	try {
+		$db=Db::getConnect();
+		$select=$db->query("UPDATE detalle_pagos_proyectados SET valor_pagado='".$valor."' WHERE id='".$relacion."'");
+		if ($select){
+			return true;
+			}else{return false;}
 	}
 	catch(PDOException $e) {
 		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';

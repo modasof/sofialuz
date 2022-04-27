@@ -194,9 +194,9 @@ class InventarioController
 
         if ($res) {
             # ======  Se redirecciona a la url original para eviar doble envío de datos  =======
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina\", \"success\").then(function(){window.location='?controller=inventario&&action=cargarentradaoc&&id=" . $id . "';});});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina\", \"success\").then(function(){window.location='?controller=inventario&&action=cargarentradaoc&&id=" . $id . "';});});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
         $this->cargarentradaoc();
 
@@ -232,11 +232,11 @@ class InventarioController
         if ($res) {
             # ======  Se redirecciona a la url original para eviar doble envío de datos  =======
 
-            echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se han actualizado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se han actualizado correctamente los datos\", \"success\");});</script>";
 
-            //echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina\", \"success\").then(function(){window.location='?controller=inventario&action=cargarsalidasrq&des=" . $itemsget . "&id=" . $id . "';});});</script>";
+            //echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina\", \"success\").then(function(){window.location='?controller=inventario&action=cargarsalidasrq&des=" . $itemsget . "&id=" . $id . "';});});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
         $this->cargarsalidasrq();
 
@@ -255,10 +255,10 @@ class InventarioController
         $res = Inventario::deletedellsalidatemp($iddelete);
         if ($res) {
             # ======  Se redirecciona a la url original para eviar doble envío de datos  =======
-             echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se han actualizado correctamente los datos\", \"success\");});</script>";
-           // echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina\", \"success\").then(function(){window.location='?controller=inventario&action=cargarsalidasrq&des=" . $itemsget . "&id=" . $id . "';});});</script>";
+             echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se han actualizado correctamente los datos\", \"success\");});</script>";
+           // echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina\", \"success\").then(function(){window.location='?controller=inventario&action=cargarsalidasrq&des=" . $itemsget . "&id=" . $id . "';});});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
         $this->cargarsalidasrq();
 
@@ -276,9 +276,9 @@ class InventarioController
         $res = Inventario::deletedellentradatemp($iddelete);
         if ($res) {
             # ======  Se redirecciona a la url original para eviar doble envío de datos  =======
-            echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se han actualizado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se han actualizado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
         $this->cargarentradaoc();
 
@@ -298,9 +298,9 @@ class InventarioController
         $res = Inventario::actualizardetalledespacho($idsalida);
         if ($res) {
             # ======  Se redirecciona a la url original para eviar doble envío de datos  =======
-            echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se han actualizado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se han actualizado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
         
         $campos=Inventario::todosporusuariorecibir($idusuario,$estado);;
@@ -337,11 +337,11 @@ class InventarioController
         $res         = Inventario::actualizarestadoItemsOC($ocid, $estadoItem);
 
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se han actualizado correctamente los datos\", \"success\");});</script>";
-            //echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\").then(function(){window.location='?controller=compras&&action=recibiroc';});});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se han actualizado correctamente los datos\", \"success\");});</script>";
+            //echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\").then(function(){window.location='?controller=compras&&action=recibiroc';});});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\").then(function(){window.location='?controller=compras&&action=recibiroc';});});</script>";
-            //echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\").then(function(){window.location='?controller=compras&&action=recibiroc';});});</script>";
+            //echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
         $this->vercompras();
 
@@ -400,12 +400,12 @@ class InventarioController
         $res           =Inventario::guardartrazabilidad($estadofinalrq, $items, $creado_por, $observacionestrazabilidad);
 
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se han actualizado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se han actualizado correctamente los datos\", \"success\");});</script>";
 
-            //echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\").then(function(){window.location='?controller=inventario&&action=totalsalidas';});});</script>";
+            //echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\").then(function(){window.location='?controller=inventario&&action=totalsalidas';});});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados2!\", \"Se ha actualizado correctamente la pagina \", \"success\")});</script>";
-            //echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados2!\", \"Se ha actualizado correctamente la pagina \", \"success\")});</script>";
+            //echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
         $this->totalsalidas();
 

@@ -80,9 +80,9 @@ class VehiculosController{
 		$tipoeliminar = $_GET['tipoeliminar'];
 		$res = Vehiculos::eliminarPor($id);
 		if ($res){
-			echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+			echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
 		}else{
-				echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+				echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
 		}
 
 		if ($tipoeliminar=='Nuevo') {
@@ -103,9 +103,9 @@ class VehiculosController{
 		$tipoeliminar = $_GET['tipoeliminar'];
 		$res = Vehiculos::eliminarofertaPor($id);
 		if ($res){
-			echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+			echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
 		}else{
-				echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+				echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
 		}
 
 		if ($tipoeliminar=='Oferta') {
@@ -123,9 +123,9 @@ class VehiculosController{
 
 		$res = Vehiculos::publicarPor($id);
 		if ($res){
-			echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se ha publicado en el home\", \"success\");});</script>";
+			echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se ha publicado en el home\", \"success\");});</script>";
 		}else{
-				echo "<script>jQuery(function(){swal(\"¡Error al publicar!\", \"No se han publicado correctamente los datos\", \"error\");});</script>";
+				echo "<script>jQuery(function(){Swal.fire(\"¡Error al publicar!\", \"No se han publicado correctamente los datos\", \"error\");});</script>";
 		}
 		if ($tipopublicar=='Nuevo') {
 			$campos = Vehiculos::obtenerPagina($tipopublicar);
@@ -149,9 +149,9 @@ class VehiculosController{
 		$tipodespublicar = $_GET['tipodespublicar'];
 		$res = Vehiculos::despublicarPor($id);
 		if ($res){
-			echo "<script>jQuery(function(){swal(\"¡Datos Actualizados!\", \"Se ha despublicado en el home\", \"success\");});</script>";
+			echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se ha despublicado en el home\", \"success\");});</script>";
 		}else{
-				echo "<script>jQuery(function(){swal(\"¡Error al publicar!\", \"No se han despublicado correctamente los datos\", \"error\");});</script>";
+				echo "<script>jQuery(function(){Swal.fire(\"¡Error al publicar!\", \"No se han despublicado correctamente los datos\", \"error\");});</script>";
 		}
 		
 		if ($tipodespublicar=='Nuevo') {
@@ -207,9 +207,9 @@ function guardar() {
 	$campo = new Vehiculos('',$nuevoarreglo);
 	$res = Vehiculos::guardar($campo,$imagen_principal,$img_frontal,$img_posterior,$img_lateral_izq,$img_lateral_der,$img_maleta,$img_interna,$img_motor,$img_interior_2,$img_ofertas);
 	if ($res){
-		echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
 	}else{
-		echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
 	}
 	if ($tipoguardar=='Usado') {
 		$this->showusado();
@@ -252,9 +252,9 @@ function guardaroferta() {
 	$campo = new Vehiculos('',$nuevoarreglo);
 	$res = Vehiculos::guardaroferta($campo,$imagen_principal);
 	if ($res){
-		echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
 	}else{
-		echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
 	}
 	if ($tipoguardar=='Usado') {
 		$this->showusado();
@@ -348,9 +348,9 @@ function actualizar() {
 	$campo = new Vehiculos('',$nuevoarreglo);
 	$res = Vehiculos::actualizar($id,$campo,$imagen_principal,$img_frontal,$img_posterior,$img_lateral_izq,$img_lateral_der,$img_maleta,$img_interna,$img_motor,$img_interior_2,$img_ofertas);
 	if ($res){
-		echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
 	}else{
-		echo "<script>jQuery(function(){swal(\"¡Erro al actualizar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al actualizar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
 	}
 
 	if ($tipoedicion=='Usado') {
@@ -402,9 +402,9 @@ function actualizaroferta() {
 	$campo = new Vehiculos('',$nuevoarreglo);
 	$res = Vehiculos::actualizaroferta($id,$campo,$imagen_principal);
 	if ($res){
-		echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
 	}else{
-		echo "<script>jQuery(function(){swal(\"¡Erro al actualizar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al actualizar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
 	}
 
 	if ($tipoedicion=='Usado') {

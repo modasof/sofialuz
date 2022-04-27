@@ -53,6 +53,25 @@ public static function obtenerPagina(){
 	}
 }
 
+
+/*******************************************************
+** FUNCION PARA MOSTRAR TODOS LOS CAMPOS	  **
+********************************************************/
+public static function obtenerPaginapagos(){
+	try {
+		$db=Db::getConnect();
+		$consulta="SELECT * FROM detalle_pagos_proyectados WHERE estado_pago='1' and relacion_id_relacion<>'0' order by valor_autorizado asc";
+		$select=$db->query($consulta);
+		//echo($consulta);
+    	$camposs=$select->fetchAll();
+    	$campos = new Proveedores('',$camposs);
+		return $campos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
 /*******************************************************
 ** FUNCION PARA MOSTRAR LOS INSUMOS PENDIENTES X PAGAR	  **
 ********************************************************/
@@ -105,6 +124,22 @@ public static function eliminarPor($id){
 	}
 }
 
+
+/***************************************************************
+** FUNCION PARA ELIINAR POR ID  **
+***************************************************************/
+public static function eliminarrelacionPor($id){
+	try {
+		$db=Db::getConnect();
+		$select=$db->query("UPDATE detalle_pagos_proyectados SET estado_pago='2' WHERE id='".$id."'");
+		if ($select){
+			return true;
+			}else{return false;}
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
 
 /********************************************************************
 *** FUNCION PARA MODIFICAR ****
@@ -232,6 +267,179 @@ public static function obtenerAbonos($proveedor){
     	$marcas = $campos->getCampos();
 		foreach($marcas as $marca){
 			$mar = $marca['abonos'];
+		}
+		return $mar;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/***************************************************************
+*** FUNCION PARA GUARDAR INGRESO DE PAGO DE ORDEN DE COMPRA **** 
+***************************************************************/
+public static function proyecciontemporal($id,$valor,$valordeuda,$fecha_registro,$estado_pago,$creado_por,$marca_temporal){
+
+	$V1=str_replace(".","",$valor);
+		$V2=str_replace(" ", "", $V1);
+		$valor_final=str_replace("$", "", $V2);
+		$valornumero=(int) $valor_final;
+
+
+	try {
+		$db=Db::getConnect();
+
+	$select=$db->query("INSERT INTO detalle_pagos_proyectados (proveedor_id_proveedor,valor_deuda,valor_autorizado,valor_pagado,fecha_registro,estado_pago,creado_por,marca_temporal,relacion_id_relacion) VALUES ('".utf8_decode($id)."','".$valordeuda."','".utf8_decode($valornumero)."','0','".utf8_decode($fecha_registro)."','".utf8_decode($estado_pago)."','".utf8_decode($creado_por)."','".utf8_decode($marca_temporal)."','0')");
+		if ($select){
+			return true;
+			}else{return false;}
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
+/*******************************************************
+** FUNCION PARA MOSTRAR  **
+********************************************************/
+public static function sqlproyecciontemporal($id){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT IFNULL(sum(valor_autorizado),0) as Abonos FROM detalle_pagos_proyectados WHERE proveedor_id_proveedor='".$id."' and estado_pago='0'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Proveedores('',$camposs);
+    	$marcas = $campos->getCampos();
+		foreach($marcas as $marca){
+			$mar = $marca['Abonos'];
+		}
+		return $mar;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/***************************************************************
+** FUNCION PARA ELIINAR POR ID  **
+***************************************************************/
+public static function eliminarproyecciontem($id){
+	try {
+		$db=Db::getConnect();
+		$select=$db->query("DELETE FROM detalle_pagos_proyectados  WHERE proveedor_id_proveedor='".$id."' and estado_pago='0'");
+		if ($select){
+			return true;
+			}else{return false;}
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
+/***************************************************************
+*** FUNCION PARA GUARDAR INGRESO DE PAGO DE ORDEN DE COMPRA ****
+* (fecha_reporte, marca_temporal, creado_por, recurso_destinado) 
+***************************************************************/
+public static function guardarrelacionpagos($fecha_reporte,$marca_temporal,$creado_por,$recurso_destinado){
+
+	$V1=str_replace(".","",$recurso_destinado);
+		$V2=str_replace(" ", "", $V1);
+		$valor_final=str_replace("$", "", $V2);
+		$valornumero=(int) $valor_final;
+
+
+	try {
+		$db=Db::getConnect();
+
+	$select=$db->query("INSERT INTO relacion_pagos (fecha_reporte, marca_temporal, creado_por, recurso_destinado) VALUES ('".utf8_decode($fecha_reporte)."','".$marca_temporal."','".utf8_decode($creado_por)."','".utf8_decode($valornumero)."')");
+		if ($select){
+			return true;
+			}else{return false;}
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/*******************************************************
+** FUNCION PARA MOSTRAR EL NOMBRE DEL PRODUCTO **
+********************************************************/
+public static function obtenerUltimarelacion($fecha,$id){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT id FROM relacion_pagos WHERE fecha_reporte='".$fecha."' and creado_por='".$id."' order by id desc limit 1");
+    	$camposs=$select->fetchAll();
+    	$campos = new Proveedores('',$camposs);
+    	$marcas = $campos->getCampos();
+		foreach($marcas as $marca){
+			$mar = $marca['id'];
+		}
+		return $mar;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
+/***************************************************************
+*** FUNCION PARA GUARDAR INGRESO DE PAGO DE ORDEN DE COMPRA ****
+* (fecha_reporte, marca_temporal, creado_por, recurso_destinado) 
+***************************************************************/
+public static function actualizarpagoproyectado($proveedorid, $fecha_reporte, $estado, $ultimarelacion){
+
+	try {
+		$db=Db::getConnect();
+
+	$select=$db->query("UPDATE detalle_pagos_proyectados SET estado_pago='".$estado."' , relacion_id_relacion='".$ultimarelacion."' WHERE proveedor_id_proveedor='".$proveedorid."' and estado_pago='0' and relacion_id_relacion='0'");
+		if ($select){
+			return true;
+			}else{return false;}
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/*******************************************************
+** FUNCION PARA MOSTRAR  **
+********************************************************/
+public static function sqlvalorautorizado($id){
+	try {
+		$db=Db::getConnect();
+		$sql="SELECT IFNULL(sum(valor_autorizado),0) as totales FROM detalle_pagos_proyectados WHERE id='".$id."'";
+		//echo($sql);
+		$select=$db->query($sql);
+    	$camposs=$select->fetchAll();
+    	$campos = new Proveedores('',$camposs);
+    	$marcas = $campos->getCampos();
+		foreach($marcas as $marca){
+			$mar = $marca['totales'];
+		}
+		return $mar;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/*******************************************************
+** FUNCION PARA MOSTRAR  **
+********************************************************/
+public static function sqlvalorejecutado($id){
+	try {
+		$db=Db::getConnect();
+		$sql="SELECT IFNULL(sum(valor_pagado),0) as totales FROM detalle_pagos_proyectados WHERE id='".$id."'";
+		//echo($sql);
+		$select=$db->query($sql);
+    	$camposs=$select->fetchAll();
+    	$campos = new Proveedores('',$camposs);
+    	$marcas = $campos->getCampos();
+		foreach($marcas as $marca){
+			$mar = $marca['totales'];
 		}
 		return $mar;
 	}

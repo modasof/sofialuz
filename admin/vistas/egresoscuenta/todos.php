@@ -413,7 +413,7 @@ foreach($cuentas as $caja){
               </a>
             </button>
                <?php
-              }elseif ($tipo_egreso=="Otro tipo de egreso" || $tipo_egreso=="Pago a proveedor" ) {
+              }elseif ($tipo_egreso=="Otro tipo de egreso" || $tipo_egreso=="Pago a proveedor" || $tipo_egreso=="Anticipo a proveedor" ) {
                 ?>
                 <button type="button" class="btn btn-default btn-flat"><a href="?controller=egresoscuenta&&action=editarot&&id=<?php echo $id_egreso_cuenta; ?>&&id_cuenta=<?php echo($id_cuenta); ?>" class="tooltip-primary text-success" title="Editar Egreso">
                 <i class="fa fa-edit bigger-110 "></i>

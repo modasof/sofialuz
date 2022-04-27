@@ -240,6 +240,12 @@ foreach ($campos as $campo) {
     $nombresolicita        = Usuarios::obtenerNombreUsuario($solicitado_por);
     $nombreproyecto       = Proyectos::obtenerNombreProyecto($proyecto_id_proyecto);
 
+    $verificacionrq= contaritemsporrq($id);
+
+    if ($verificacionrq==0) {
+      
+
+
     ?>
            <tr>
              <td><?php echo ("RQ".$id) ?><br><?php echo($rq_area); ?><br><?php echo($nomestado); ?>
@@ -287,6 +293,7 @@ else
 </script>
             </tr>
             <?php
+        }
 }
 ?>
           </tbody>

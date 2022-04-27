@@ -487,7 +487,8 @@ if ($RolSesion == 1) {
               <li class="user-footer">
                 <div class="pull-left">
 
-                  <a href="?controller=misdocumentos&&action=todos&&id_usuario=<?php echo ($IdSesion); ?>" class="btn btn-default btn-flat">Mis Documentos</a>
+                  <a href="?controller=misdocumentos&&action=todos&&id_usuario=<?php echo ($IdSesion); ?>" class="btn btn-primary btn-flat"><i class="fa fa-folder-open"></i></a>
+                    <a href="?controller=usuarios&&action=notificaciones&&id_usuario=<?php echo ($IdSesion); ?>" class="btn btn-success btn-flat"><i class="fa fa-bell"></i></a>
                 </div>
                 <div class="pull-right">
                   <a href="../admin/logout.php" class="btn btn-default btn-flat">Cerar Sesión</a>

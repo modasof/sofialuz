@@ -17,7 +17,19 @@
 <script src="plugins/chartjs/Chart.min.js"></script>
 <script src="plugins/knob/jquery.knob.js"></script>
 <!-- Libreria JS de las alertas -->
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<!--<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+-->
+
+<link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma@4/bulma.css" rel="stylesheet">
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+
+
+<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+
+
+
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <!-- <script src="dist/js/pages/dashboard2.js"></script> -->
 <!-- AdminLTE for demo purposes -->
@@ -47,11 +59,12 @@
 
  <script>
     $(function() {
-  //swal({
-//title: "Mantenimiento planificado",
-//text: "El viernes 17 de Septiembre el sistema estará inactivo alrededor de 60 minutos desde las 2:00 pm.  \n  Motivo: mantenimiento del servidor para aumentar la velocidad de carga.",
-//timer: 6000,
-//showConfirmButton: true
-//});
+//Swal.fire(
+ // 'Good job!',
+ // 'You clicked the button!',
+ // 'success'
+//)
+
 });
 </script>
+

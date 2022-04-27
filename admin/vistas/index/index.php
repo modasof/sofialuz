@@ -75,8 +75,6 @@ function dias_transcurridos($fecha_i,$fecha_f)
   <link rel="stylesheet" href="dist/css/jquery.dataTables.min.css">
   <link rel="stylesheet" href="dist/css/buttons.dataTables.min.css">
   
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.6/dist/sweetalert2.min.css">
-  
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>

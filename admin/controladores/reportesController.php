@@ -55,9 +55,9 @@ class ReportesController
         $campo = new Reportes('', $nuevoarreglo);
         $res   = Reportes::guardarcliente($campo);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
         }
         if ($tiporeporte == 1) {
             // Establecemos 1 para el retornar al formulario de ventas
@@ -100,9 +100,9 @@ class ReportesController
         $campo = new Reportes('', $nuevoarreglo);
         $res   = Reportes::guardarproducto($campo);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
         }
         if ($tiporeporte == 1) {
             // Establecemos 1 para el retornar al formulario de ventas
@@ -141,9 +141,9 @@ class ReportesController
         $campo = new Reportes('', $nuevoarreglo);
         $res   = Reportes::guardarventa($campo);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
         }
         $this->showventas();
     }
@@ -157,9 +157,9 @@ class ReportesController
         $res = Reportes::eliminarventaPor($id);
         $res = Reportes::eliminarabonoPorventa($id);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
         }
         $campos = Reportes::Reporteventas();
         require_once 'vistas/reportes/reporteventas.php';
@@ -173,9 +173,9 @@ class ReportesController
         $id  = $_GET['id'];
         $res = Reportes::cambiarestadoventaPor($id);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se han actualizado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se han actualizado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"No se han actualizado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"No se han actualizado correctamente los datos\", \"error\");});</script>";
         }
         $campos = Reportes::Reporteventas();
         require_once 'vistas/reportes/reporteventas.php';
@@ -189,9 +189,9 @@ class ReportesController
         $id  = $_GET['id'];
         $res = Reportes::cambiarestadoprestamoPor($id);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se han actualizado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se han actualizado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"No se han actualizado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"No se han actualizado correctamente los datos\", \"error\");});</script>";
         }
         $campos = Reportes::ReportePrestamos();
         require_once 'vistas/reportes/reporteprestamos.php';
@@ -235,9 +235,9 @@ class ReportesController
         $datosguardar = new Reportes($id, $nuevoarreglo);
         $res          = Reportes::actualizarventa($id, $datosguardar);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina de miembros\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
         $this->showventas();
     }
@@ -312,9 +312,9 @@ class ReportesController
         $campo = new Reportes('', $nuevoarreglo);
         $res   = Reportes::guardarinsumo($campo);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
         }
         if ($tiporeporte == 1) {
             // Establecemos 1 para el retornar al formulario de ventas
@@ -352,9 +352,9 @@ class ReportesController
         $campo = new Reportes('', $nuevoarreglo);
         $res   = Reportes::guardarproveedor($campo);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
         }
         if ($tiporeporte == 1) {
             // Establecemos 1 para el retornar al formulario de ventas
@@ -392,9 +392,9 @@ class ReportesController
         $campo = new Reportes('', $nuevoarreglo);
         $res   = Reportes::guardarcompra($campo);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
         }
         $this->showcompras();
     }
@@ -407,9 +407,9 @@ class ReportesController
         $id  = $_GET['id'];
         $res = Reportes::eliminarcompraPor($id);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
         }
         $campos = Reportes::Reportecompras();
         require_once 'vistas/reportes/reportecompras.php';
@@ -453,9 +453,9 @@ class ReportesController
         $datosguardar = new Reportes($id, $nuevoarreglo);
         $res          = Reportes::actualizarcompra($id, $datosguardar);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina de miembros\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
         $this->showcompras();
     }
@@ -530,9 +530,9 @@ class ReportesController
         $campo = new Reportes('', $nuevoarreglo);
         $res   = Reportes::guardardespacho($campo);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
         }
         $this->showdespachos();
     }
@@ -545,9 +545,9 @@ class ReportesController
         $id  = $_GET['id'];
         $res = Reportes::eliminardespachoPor($id);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
         }
         $campos = Reportes::Reportedespachos();
         require_once 'vistas/reportes/reportedespachos.php';
@@ -591,9 +591,9 @@ class ReportesController
         $datosguardar = new Reportes($id, $nuevoarreglo);
         $res          = Reportes::actualizardespacho($id, $datosguardar);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina de miembros\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
         $this->showdespachos();
     }
@@ -668,9 +668,9 @@ class ReportesController
         $campo = new Reportes('', $nuevoarreglo);
         $res   = Reportes::guardarfactura($campo, $ruta_imagen);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
         }
         $this->showfacturas();
     }
@@ -683,9 +683,9 @@ class ReportesController
         $id  = $_GET['id'];
         $res = Reportes::eliminarfacturaPor($id);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
         }
         $campos = Reportes::Reportefacturas();
         require_once 'vistas/reportes/reportefacturas.php';
@@ -736,9 +736,9 @@ class ReportesController
         $datosguardar = new Reportes($id, $nuevoarreglo);
         $res          = Reportes::actualizarfactura($id, $datosguardar, $ruta_imagen);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina de miembros\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
         $campos = Reportes::editarfacturaPor($id);
         require_once 'vistas/reportes/formeditarfactura.php';
@@ -771,9 +771,9 @@ class ReportesController
         $campo = new Reportes('', $nuevoarreglo);
         $res   = Reportes::guardarabono($campo);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina de miembros\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
 
         if ($tipo == "Venta_Material") {
@@ -802,9 +802,9 @@ class ReportesController
         $idabono = $_GET['idabono'];
         $res     = Reportes::eliminarabonoPor($idabono);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
         }
         if ($tipo == "Material") {
             $campos = Reportes::ReporteVentas();
@@ -902,6 +902,15 @@ class ReportesController
     {
 
         $ruta_imagen = $this->subir_fichero('images/cuentasporpagar', 'imagen');
+
+        $usuario_creador        = $_POST['usuario_creador'];
+        $marca_temporal         = $_POST['marca_temporal'];
+        $fecha_reporte          = $_POST['fecha_reporte'];
+        $proveedor_id_proveedor = $_POST['proveedor_id_proveedor'];
+        $valor_total            = $_POST['valor_total'];
+        $nomproveedor=Reportes::obtenerNombreProveedoralerta($proveedor_id_proveedor);
+        $detalle = "Ha ingresado una cuenta de cobro de ".$nomproveedor." por: " . $valor_total . ".";
+
         //$nuevo['imagen']=$ruta_imagen;
         $variable     = $_POST;
         $nuevoarreglo = array();
@@ -921,11 +930,17 @@ class ReportesController
         }
         //array_push($nuevoarreglo,$nuevo);
         $campo = new Reportes('', $nuevoarreglo);
-        $res   = Reportes::guardarcuentaxpagar($campo, $ruta_imagen);
+    $res   = Reportes::guardarcuentaxpagar($campo, $ruta_imagen);
+    $res = Reportes::guardarnotificacion($usuario_creador, 16, $marca_temporal, $fecha_reporte, $detalle);
+    $res = Reportes::guardarnotificacion($usuario_creador, 58, $marca_temporal, $fecha_reporte, $detalle);
+    $res = Reportes::guardarnotificacion($usuario_creador, 39, $marca_temporal, $fecha_reporte, $detalle);
+    $res = Reportes::guardarnotificacion($usuario_creador, 144, $marca_temporal, $fecha_reporte, $detalle);
+    $res = Reportes::guardarnotificacion($usuario_creador, 151, $marca_temporal, $fecha_reporte, $detalle);
+
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
         }
         $this->showcuentasxpagar();
     }
@@ -938,9 +953,9 @@ class ReportesController
         $id  = $_GET['id'];
         $res = Reportes::eliminarcuentaxpagarPor($id);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
         }
         $campos = Reportes::ReporteCuentasxpagar();
         require_once 'vistas/reportes/reportecuentasxpagar.php';
@@ -954,9 +969,9 @@ class ReportesController
         $id  = $_GET['id'];
         $res = Reportes::cancelarcuentaxpagarPor($id);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos Trasladados!\", \"Los datos se han pasado a compras correctamente \", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos Trasladados!\", \"Los datos se han pasado a compras correctamente \", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al Trasladadar!\", \"No se han trasladado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al Trasladadar!\", \"No se han trasladado correctamente los datos\", \"error\");});</script>";
         }
         $campos = Reportes::ReporteCuentasxpagar();
         require_once 'vistas/reportes/reportecuentasxpagar.php';
@@ -1005,9 +1020,9 @@ class ReportesController
         $datosguardar = new Reportes($id, $nuevoarreglo);
         $res          = Reportes::actualizarcuentaxpagar($id, $datosguardar, $ruta_imagen);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina de miembros\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
         $this->showcuentasxpagar();
     }
@@ -1141,9 +1156,9 @@ class ReportesController
         $campo = new Reportes('', $nuevoarreglo);
         $res   = Reportes::guardarinsumoxpagar($campo, $ruta_imagen);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
         }
         $this->showinsumosxpagar();
     }
@@ -1156,9 +1171,9 @@ class ReportesController
         $id  = $_GET['id'];
         $res = Reportes::eliminarinsumoxpagarPor($id);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
         }
         $campos = Reportes::ReporteInsumosxpagar();
         require_once 'vistas/reportes/reporteinsumosxpagar.php';
@@ -1172,9 +1187,9 @@ class ReportesController
         $id  = $_GET['id'];
         $res = Reportes::cancelarinsumoxpagarPor($id);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos Trasladados!\", \"Los datos se han pasado a compras correctamente \", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos Trasladados!\", \"Los datos se han pasado a compras correctamente \", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al Trasladadar!\", \"No se han trasladado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al Trasladadar!\", \"No se han trasladado correctamente los datos\", \"error\");});</script>";
         }
         $campos = Reportes::ReporteInsumosxpagar();
         require_once 'vistas/reportes/reporteinsumosxpagar.php';
@@ -1223,9 +1238,9 @@ class ReportesController
         $datosguardar = new Reportes($id, $nuevoarreglo);
         $res          = Reportes::actualizarinsumoxpagar($id, $datosguardar, $ruta_imagen);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina de miembros\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
         $this->showinsumosxpagar();
     }
@@ -1296,9 +1311,9 @@ class ReportesController
         $campo = new Reportes('', $nuevoarreglo);
         $res   = Reportes::guardarprestamo($campo);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
         }
         $this->showprestamos();
     }
@@ -1312,9 +1327,9 @@ class ReportesController
         $res = Reportes::eliminarprestamoPor($id);
         $res = Reportes::eliminarabonoPorprestamo($id);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
         }
         $campos = Reportes::ReportePrestamos();
         require_once 'vistas/reportes/reporteprestamos.php';
@@ -1358,9 +1373,9 @@ class ReportesController
         $datosguardar = new Reportes($id, $nuevoarreglo);
         $res          = Reportes::actualizarprestamo($id, $datosguardar);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina de miembros\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
         $this->showprestamos();
     }
@@ -1486,9 +1501,9 @@ class ReportesController
         $campo = new Reportes('', $nuevoarreglo);
         $res   = Reportes::guardarcombustible($campo, $ruta_imagen);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
         }
         $this->showcombustibles();
     }
@@ -1501,9 +1516,9 @@ class ReportesController
         $id  = $_GET['id'];
         $res = Reportes::eliminarcombustiblePor($id);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
         }
         $campos = Reportes::ReporteCombustibles();
         require_once 'vistas/reportes/reportecombustibles.php';
@@ -1558,9 +1573,9 @@ class ReportesController
         $datosguardar = new Reportes($id, $nuevoarreglo);
         $res          = Reportes::actualizarcombustible($id, $datosguardar, $ruta_imagen);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina de miembros\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
 
         if ($validacisterna = '') {
@@ -1720,9 +1735,9 @@ class ReportesController
 
         $res = Reportes::guardardespachoclientesf($campo, $ruta_imagen);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
         }
         $this->showdespachosclientesf();
     }
@@ -1765,11 +1780,11 @@ class ReportesController
 
         //array_push($nuevoarreglo,$nuevo);
         $campo = new Reportes('', $nuevoarreglo);
-        $res   = Reportes::guardardespachoclientes($campo, $ruta_imagen,$valor_calculado);
+        $res   = Reportes::guardardespachoclientes($campo, $ruta_imagen, $valor_calculado);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
         }
         $this->showdespachosclientesf();
     }
@@ -1782,9 +1797,9 @@ class ReportesController
         $id  = $_GET['id'];
         $res = Reportes::eliminardespachoPorclientes($id);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
         }
         $campos = Reportes::Reportedespachosclientes();
         require_once 'vistas/reportes/reportedespachosclientes.php';
@@ -1833,9 +1848,9 @@ class ReportesController
         $datosguardar = new Reportes($id, $nuevoarreglo);
         $res          = Reportes::actualizardespachoclientes($id, $datosguardar, $ruta_imagen);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina de miembros\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
         $this->showdespachosclientes();
     }
@@ -1916,9 +1931,9 @@ class ReportesController
         $campo = new Reportes('', $nuevoarreglo);
         $res   = Reportes::guardarhoras($campo);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
         }
         $this->showhoras();
     }
@@ -1931,9 +1946,9 @@ class ReportesController
         $id  = $_GET['id'];
         $res = Reportes::eliminarhorasPor($id);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
         }
         $campos = Reportes::ReporteHoras();
         require_once 'vistas/reportes/reportehoras.php';
@@ -1977,9 +1992,9 @@ class ReportesController
         $datosguardar = new Reportes($id, $nuevoarreglo);
         $res          = Reportes::actualizarhoras($id, $datosguardar);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina de miembros\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
         $this->showhoras();
     }
@@ -2054,9 +2069,9 @@ class ReportesController
         $campo = new Reportes('', $nuevoarreglo);
         $res   = Reportes::guardardespachotrituradora($campo);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
         }
         $this->showdespachostrituradora();
     }
@@ -2069,9 +2084,9 @@ class ReportesController
         $id  = $_GET['id'];
         $res = Reportes::eliminardespachoPortrituradora($id);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
         }
         $campos = Reportes::Reportedespachostrituradora();
         require_once 'vistas/reportes/reportedespachostrituradora.php';
@@ -2115,9 +2130,9 @@ class ReportesController
         $datosguardar = new Reportes($id, $nuevoarreglo);
         $res          = Reportes::actualizardespachotrituradora($id, $datosguardar);
         if ($res) {
-            echo "<script>jQuery(function(){swal(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina de miembros\", \"success\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\");});</script>";
         } else {
-            echo "<script>jQuery(function(){swal(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
         $this->showdespachostrituradora();
     }

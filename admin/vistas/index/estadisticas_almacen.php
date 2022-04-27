@@ -180,6 +180,18 @@ function proveedorcot($id,$cotizacion){
 	return $proveedor_id_proveedor;
 	}
 
+function imagencot($id,$cotizacion){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$select = $db->prepare("SELECT imagen FROM cotizaciones_item WHERE item_id='".$id."' and cotizacion='".$cotizacion."'");
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$imagen = $campo['imagen'];
+		}
+	return $imagen;
+	}
+
 function idcot($id,$cotizacion){
 	$db = Db::getConnect();
 	$sql="SELECT id FROM cotizaciones_item WHERE item_id='".$id."' and cotizacion='".$cotizacion."'";
@@ -285,7 +297,7 @@ function contarregistros($id){
 function contarregistrosporestado($id,$usuario){
 	$db = Db::getConnect();
 	//$mesactual = date("n");
-	$select = $db->prepare("SELECT COUNT(id) as totalitems FROM requisiciones_items WHERE estado_item='".$id."' and usuario_creador='".$usuario."'");
+	$select = $db->prepare("SELECT COUNT(id) as totalitems FROM requisiciones_items WHERE estado_item='".$id."' and usuario_creador='".$usuario."' and item_publicado='1'");
 	$select->execute();
 	$valor = $select->fetchAll(); 
 	foreach($valor as $campo){
@@ -309,7 +321,7 @@ function contarregistrospararecibir($estado,$usuario){
 function contarregistrosporestadototal($id){
 	$db = Db::getConnect();
 	//$mesactual = date("n");
-	$select = $db->prepare("SELECT COUNT(id) as totalitems FROM requisiciones_items WHERE estado_item='".$id."'");
+	$select = $db->prepare("SELECT COUNT(id) as totalitems FROM requisiciones_items WHERE estado_item='".$id."' and item_publicado='1'");
 	$select->execute();
 	$valor = $select->fetchAll(); 
 	foreach($valor as $campo){
@@ -321,7 +333,7 @@ function contarregistrosporestadototal($id){
 function contarregistrosporusuario($usuario){
 	$db = Db::getConnect();
 	//$mesactual = date("n");
-	$select = $db->prepare("SELECT COUNT(id) as totalreq FROM requisiciones WHERE estado_id_requisicion<>'0' and usuario_creador='".$usuario."'");
+	$select = $db->prepare("SELECT COUNT(id) as totalreq FROM requisiciones WHERE estado_id_requisicion<>'0' and usuario_creador='".$usuario."' and item_publicado='1'");
 	$select->execute();
 	$valor = $select->fetchAll(); 
 	foreach($valor as $campo){
@@ -334,7 +346,7 @@ function contarregistrosporusuario($usuario){
 function contarregistrosporestadoadmin($id){
 	$db = Db::getConnect();
 	//$mesactual = date("n");
-	$select = $db->prepare("SELECT COUNT(id) as totalitems FROM requisiciones_items WHERE estado_item='".$id."'");
+	$select = $db->prepare("SELECT COUNT(id) as totalitems FROM requisiciones_items WHERE estado_item='".$id."' and item_publicado='1'");
 	$select->execute();
 	$valor = $select->fetchAll(); 
 	foreach($valor as $campo){
@@ -365,6 +377,18 @@ function obtenerultimoidreq(){
 		$ultimo = $campo['id']+1;
 		}
 	return $ultimo;
+	}
+
+function contaritemsporrq($id){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$select = $db->prepare("SELECT COUNT(id) as totalitems FROM requisiciones_items WHERE estado_item<>'1' and requisicion_id='".$id."'");
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$totalitems = $campo['totalitems'];
+		}
+	return $totalitems;
 	}
 
 
