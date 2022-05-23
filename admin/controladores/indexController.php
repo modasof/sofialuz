@@ -53,6 +53,10 @@ elseif (isset($_GET['daterange2'])) {
 	function micajamenor() {
 		require_once 'vistas/index/reportemicajamenor.php';
 	}
+
+	function micajamenorcon() {
+		require_once 'vistas/index/reportemicajamenorcon.php';
+	}
 	
 
 

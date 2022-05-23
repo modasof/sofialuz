@@ -427,7 +427,7 @@ public static function obtenerNombreProveedor($id){
             $campostraidos = $campos->getCampos();
             extract($campostraidos);
 
-            $insert = $db->prepare('INSERT INTO cotizaciones_item VALUES (NULL,:proveedor_id_proveedor,:cotizacion,:medio_pago,:item_id,:valor_cot,:requisicion_id,:marca_temporal,:usuario_creador,:estado_cotizacion,:ordencompra_num,:insumo_id_insumo,:vr_unitario,:cantidadcot)');
+            $insert = $db->prepare('INSERT INTO cotizaciones_item VALUES (NULL,:proveedor_id_proveedor,:cotizacion,:medio_pago,:item_id,:valor_cot,:requisicion_id,:marca_temporal,:usuario_creador,:estado_cotizacion,:ordencompra_num,:insumo_id_insumo,:vr_unitario,:iva,:valor_iva,:cantidadcot,:id_factura)');
 
             $V1          = str_replace(".", "", $valor_cot);
             $V2          = str_replace(" ", "", $V1);
@@ -447,8 +447,10 @@ public static function obtenerNombreProveedor($id){
             $insert->bindValue('ordencompra_num', utf8_decode($ordencompra_num));
             $insert->bindValue('insumo_id_insumo', utf8_decode($insumo_id_insumo));
             $insert->bindValue('vr_unitario', utf8_decode($vrunitario));
+            $insert->bindValue('iva', utf8_decode($iva));
+            $insert->bindValue('valor_iva', utf8_decode($valor_iva));
             $insert->bindValue('cantidadcot', utf8_decode($cantidadcot));
-
+             $insert->bindValue('id_factura', utf8_decode($id_factura));
             $insert->execute();
 
             return true;
@@ -468,7 +470,7 @@ public static function obtenerNombreProveedor($id){
 
             $db       = Db::getConnect();
           
-                $insert = $db->prepare('INSERT INTO cotizaciones_item VALUES (NULL,:imagen,:proveedor_id_proveedor,:cotizacion,:medio_pago,:item_id,:valor_cot,:requisicion_id,:fecha_reporte,:marca_temporal,:usuario_creador,:usuario_aprobador,:estado_cotizacion,:ordencompra_num,:insumo_id_insumo,:servicio_id_servicio,:equipo_id_equipo,:vr_unitario,:cantidadcot)');
+                $insert = $db->prepare('INSERT INTO cotizaciones_item VALUES (NULL,:imagen,:proveedor_id_proveedor,:cotizacion,:medio_pago,:item_id,:valor_cot,:requisicion_id,:fecha_reporte,:marca_temporal,:usuario_creador,:usuario_aprobador,:estado_cotizacion,:ordencompra_num,:insumo_id_insumo,:servicio_id_servicio,:equipo_id_equipo,:vr_unitario,:iva,:valor_iva,:cantidadcot,:id_factura)');
 
             $insert->bindValue('imagen', utf8_decode($imagen));
             $insert->bindValue('proveedor_id_proveedor', utf8_decode($proveedor_id_proveedor));
@@ -487,7 +489,10 @@ public static function obtenerNombreProveedor($id){
             $insert->bindValue('servicio_id_servicio', utf8_decode($servicio_id_servicio));
             $insert->bindValue('equipo_id_equipo', utf8_decode($equipo_id_equipo));
             $insert->bindValue('vr_unitario', utf8_decode($valor_cot));
+            $insert->bindValue('iva', utf8_decode($valor_cot));
+            $insert->bindValue('valor_iva', utf8_decode($valor_cot));
             $insert->bindValue('cantidadcot', utf8_decode($cantidadcot));
+            $insert->bindValue('id_factura', utf8_decode(0));
 
             $insert->execute();
 
@@ -496,7 +501,6 @@ public static function obtenerNombreProveedor($id){
         }
 
     }
-
 /***************************************************************
  *** FUNCION PARA GUARDAR **
  ***************************************************************/
@@ -849,7 +853,7 @@ public static function obtenerNombreProveedor($id){
             //$campostraidos = $campos->getCampos();
             //extract($campostraidos);
 
-            $insert = $db->prepare('INSERT INTO ordenescompra VALUES (NULL,:imagen,:imagen_cot,:fecha_reporte,:valor_total,:valor_retenciones,:valor_iva,:estado_orden,:proveedor_id_proveedor,:medio_pago,:observaciones,:marca_temporal,:usuario_creador,:rubro_id,:subrubro_id,:vencimiento,:factura,:estado_recibido,:compra_de)');
+            $insert = $db->prepare('INSERT INTO ordenescompra VALUES (NULL,:imagen,:imagen_cot,:fecha_reporte,:valor_total,:valor_retenciones,:valor_iva,:estado_orden,:proveedor_id_proveedor,:medio_pago,:observaciones,:marca_temporal,:usuario_creador,:rubro_id,:subrubro_id,:vencimiento,:factura,:estado_recibido,:compra_de,:id_factura_compra)');
 
             $V1          = str_replace(".", "", $valor_total);
             $V2          = str_replace(" ", "", $V1);
@@ -876,6 +880,7 @@ public static function obtenerNombreProveedor($id){
             $insert->bindValue('factura', utf8_decode($factura));
             $insert->bindValue('estado_recibido', utf8_decode($estado_recibido));
             $insert->bindValue('compra_de', utf8_decode($compra_de));
+            $insert->bindValue('id_factura_compra', utf8_decode($id_factura_compra));
             $insert->execute();
             return true;
         } catch (Exception $e) {

@@ -28,7 +28,7 @@ $controllers = array(
     'consolidados' => ['editar','guardar','actualizar','todos','nuevo','eliminar','documentoscuentas','documentosequipos','totalreporteseq'],
 
     // Funcionalidad compras
-	'compras' => ['todos','formulario','guardar','eliminar','editar','actualizar','porfecha','verdetalle','cambiarestado','actualizarpago','cambiarestadocreditos','pagotemporal','deletepagotemporal','actualizarpagocredito','recibiroc','todospormes','cxpusuario','actualizardetallecot','editardetallecot','todosrecibirinsumos','porfechainsumos','cargarinventario','retornar','todosproveedorpagos'],
+	'compras' => ['todos','formulario','guardar','eliminar','editar','actualizar','porfecha','verdetalle','cambiarestado','actualizarpago','cambiarestadocreditos','pagotemporal','deletepagotemporal','actualizarpagocredito','recibiroc','todospormes','cxpusuario','actualizardetallecot','editardetallecot','todosrecibirinsumos','porfechainsumos','cargarinventario','retornar','todosproveedorpagos','cargarfactura','ivamultiple','descartar','descartarinversa','guardarfacturacompras','detallefacturacompra','facturascompraspormes','cargarfacturacp','todosporproveedorespera','pagofacturacompra','editarfacturacompra','actualizarfacturacompras','editarfacturacompracp','guardarpagoanticipo','guardarpagofactura'],
 
 	// Funcionalidad Cotizaciones
 	'cotizaciones' => ['todos','editar','actualizar','porfecha','todosporinsumo'],
@@ -96,7 +96,7 @@ $controllers = array(
 
 
 	// Redireccionamiento Inicial  
-	'index' => ['index','informe1','informegerencia','informeclientes','informedetalleclientes','informeventaclientes','informedetalleclientesventas','micajamenor','dashboardalmacen','vistarqusuariosdashboard','aprobarRq'],
+	'index' => ['index','informe1','informegerencia','informeclientes','informedetalleclientes','informeventaclientes','informedetalleclientesventas','micajamenor','micajamenorcon','dashboardalmacen','vistarqusuariosdashboard','aprobarRq'],
 
 	// Adicional de Informes 
 	'informes' =>['cuentas','movimientoscuentas','subrubrosegresos','cajas','movimientoscaja','subrubrosegresoscaja','ventas','detallelineanegocio','clientes','compras','totalrq','rqporfecha','dashboardcompras'],
@@ -159,6 +159,9 @@ $controllers = array(
 
 	// Funcionalidad Requisiciones Items
 	'requisicionesitems' => ['todosporreq','todos','guardar','eliminar','editar','actualizar','porfecha','cambiarestado','guardarestado','actualizarestado','trazabilidad','agregarvalores','guardarcotizacion','cambiarestadoadmin','actualizarestadoadmin','trazabilidadadmin','guardarocompra','actualizaritem','actualizarcantidadcot','gestionarvalores','guardarcotizacionmultiple','eliminarcotizacion','finalizarrq','aprobarrq','guardarsoportecotizacionmultiple'],
+
+	// Funcionalidad Retefuentes
+	'retefuente' => ['editar','guardar','actualizar','todos','nuevo','eliminar'],
 
 	// Funcionalidad Rubros
 	'rubros' => ['editar','guardar','actualizar','todos','nuevo','eliminar'],
@@ -456,6 +459,11 @@ function call($controller, $action) {
 	case 'requisicionesitems':
 		require_once 'modelos/requisicionesitems.php';
 		$controller = new RequisicionesitemsController();
+		break;
+
+	case 'retefuente':
+		require_once 'modelos/retefuente.php';
+		$controller = new RetefuenteController();
 		break;
 
 	case 'rubros':

@@ -308,7 +308,9 @@ foreach($campos as $campo){
           </a>
           <ul class="treeview-menu">
       <?php if ($m_compras=="Si") { ?>
-         <li class=""><a href="?controller=compras&&action=todos"><i class="fa fa-shopping-cart"></i>Compras</a></li>
+         <li class=""><a href="?controller=compras&&action=todospormes"><i class="fa fa-shopping-cart"></i>Compras</a></li>
+
+          <li class=""><a href="?controller=compras&&action=facturascompraspormes"><i class="fa fa-shopping-cart"></i>Facturas Compras</a></li>
      <?php } ?> 
        <?php if ($m_cuentasxpagar=="Si") { ?>
             <li><a href="?controller=reportes&&action=cuentasxpagar"><i class="fa fa-circle-o"></i> Subir CxP</a></li>

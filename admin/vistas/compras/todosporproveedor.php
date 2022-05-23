@@ -14,6 +14,9 @@ include_once 'controladores/subrubrosController.php';
 $RolSesion = $_SESSION['IdRol'];
 $IdSesion  = $_SESSION['IdUser'];
 
+$id=$_GET['idproveedor'];
+$nombreproveedor=Proveedores::obtenerNombreProveedor($id);
+
 //id, fecha_reporte, cliente_id_cliente, producto_id_producto, valor_m3, cantidad, creado_por, estado_reporte, reporte_publicado, marca_temporal, observaciones.
 
 if (isset($_POST['daterange'])) {
@@ -80,12 +83,12 @@ if ($FechaDos == "") {
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0 text-dark">Reporte Ordenes Compra</h1>
+          <h1 class="m-0 text-dark">Reporte OC <br><small><?php echo($nombreproveedor); ?></small></h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="?controller=index&&action=index">Inicio</a></li>
-            <li class="breadcrumb-item active"><a href="?controller=compras&&action=?controller=compras&&action=facturascompraspormes">Facturas Compras</a></li>
+            <li class="breadcrumb-item active"><a href="?controller=compras&&action=todospormes">Compras</a></li>
           </ol>
         </div><!-- /.col -->
       </div><!-- /.row -->
@@ -98,87 +101,8 @@ if ($FechaDos == "") {
     <div class="container-fluid">
       <div class="row">
 
-        <div class="row">
-        <form action="?controller=compras&&action=todospormes" method="post" id="FormFechas" autocomplete="off">
-         <div class="col-md-8">
-                        <div class="form-group">
-                          <label>Seleccione el Rango de Fecha<span>*</span></label>
-                          <input type="text"  name="daterange" class="form-control" required value="">
-                        </div>
-                      </div>
-          <div class="form-group">
-            <div class="col-xs-12 col-sm-6">
-              <button class="btn btn-primary btn-sm" type="Submit">Realizar Consulta</button>
-          </div>
-          </div>
-        </form>
-        <script type="text/javascript">
-  $('input[name="daterange"]').daterangepicker({
-    ranges: {
-        'Hoy': [moment(), moment()],
-        'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-        'Últimos 7 días': [moment().subtract(6, 'days'), moment()],
-        'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
-        'Este Mes': [moment().startOf('month'), moment().endOf('month')],
-        'Mes Anterior': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-    },
-    "locale": {
-        "format": "MM/DD/YYYY",
-        "separator": " - ",
-        "applyLabel": "Aplicar",
-        "cancelLabel": "Cancelar",
-        "fromLabel": "desde",
-        "toLabel": "hasta",
-        "customRangeLabel": "Personalizado",
-        "weekLabel": "W",
-        "daysOfWeek": [
-            "Do",
-            "Lu",
-            "Ma",
-            "Mi",
-            "Ju",
-            "Vi",
-            "Sa"
-        ],
-        "monthNames": [
-            "Enero",
-            "Febrero",
-            "Marzo",
-            "Abril",
-            "Mayo",
-            "Junio",
-            "Julio",
-            "Agosto",
-            "Septiembre",
-            "Octubre",
-            "Noviembre",
-            "Diciembre"
-        ],
-        "firstDay": 1
-    },
-    //"startDate": "03/24/2019",
-    //"endDate": "03/30/2019",
-    "opens": "left"
-}, function(start, end, label) {
-  console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
-});
-</script>
-      </div>
-       <div class="col-sm-12">
-        <?php
-if ($fechaform != "") {
-    ?>
-           <h3 class="m-0 text-dark">Reporte Ordenes Insumos/Servicios del <?php echo (fechalarga($datofechain)) ?> al <?php echo (fechalarga($datofechafinal)) ?></h3>
-          <?php
-} else {
-    ?>
-           <h3 class="m-0 text-dark">Total Ordenes de compra</h3>
-          <?php
-}
-
-?>
-
-        </div><!-- /.col -->
+      
+      
 
 
             <!-- ESTE DIV LO USO PARA CENTRAR EL FORMULARIO -->
@@ -191,13 +115,13 @@ if ($fechaform != "") {
             </div>
 
 <div class="col-md-12">
-    <a id="btnrelacionar" href="" class="btn btn-success" style="float: right; display: none; cursor: pointer;"><i class="fa fa-check bigger-110 "></i> Subir Factura</a>
+    <a target="_blank" id="btnrelacionar" href="" class="btn btn-success" style="float: right; display: none; cursor: pointer;"><i class="fa fa-check bigger-110 "></i> Subir Factura</a>
 
                   <br><br>
           <!-- Custom Tabs -->
           <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
-              <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">Ordenes Compra</a></li>
+              <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">Ordenes de Compra</a></li>
              
 
             </ul>
@@ -217,7 +141,7 @@ if ($fechaform != "") {
             <tfoot style="display: table-header-group;">
 
                                       <th style="background-color: #fcf8e3" class="success">
-                                         
+                                          <input type="checkbox" id="seleccionar-todos"> todos
                                     </th>
                                     <th style="background-color: #fcf8e3;display:none;" class="success"></th>
                                     <th style="background-color: #fcf8e3;display:none;" class="success"></th>
@@ -343,13 +267,13 @@ foreach ($campos as $campo) {
 
         if ($compra_de=="cxp") {
            ?>
-            <input style="display: none;" type="checkbox" id="<?php echo $id; ?>" name="inputdespachos" onclick="marcardespachocp(<?php echo $proveedor_id_proveedor; ?>)" style="cursor: pointer;">
+            <input type="checkbox" id="<?php echo $id; ?>" name="inputdespachos" onclick="marcardespachocp(<?php echo $proveedor_id_proveedor; ?>)" style="cursor: pointer;">
            <?php
         }
         else{
             ?>
 
-             <input style="display: none;" type="checkbox" id="<?php echo $id; ?>" name="inputdespachos" onclick="marcardespacho(<?php echo $proveedor_id_proveedor; ?>)" style="cursor: pointer;">
+             <input type="checkbox" id="<?php echo $id; ?>" name="inputdespachos" onclick="marcardespacho(<?php echo $proveedor_id_proveedor; ?>)" style="cursor: pointer;">
             <?php
         }
 
@@ -387,7 +311,7 @@ echo ("OC00" . $id);
                 </td>
                 <td><?php echo ($fecha_reporte); ?></td>
                 <td><?php echo ($compra_de); ?></td>
-                <td><a href="?controller=compras&&action=todosporproveedorespera&&idproveedor=<?php echo ($proveedor_id_proveedor); ?>"><?php echo ($nomproveedor); ?></a></td>
+                <td><?php echo ($nomproveedor); ?></td>
                 <td><?php echo ($medio_pago); ?>
                       <br>
                   <i data-toggle="tooltip" data-placement="left" title="Creada por  por <?php echo($nomreportador." Fecha : ".$marca_temporal); ?>" class="fa fa-question-circle"></i>

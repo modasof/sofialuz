@@ -58,4 +58,40 @@
 - Pasar a cotización lo que este aprobado por el jefe de área
 - Actualización y ajuste del módulo carga a inventario de las compras por rango de fecha, se cambia el campo de fecha que estaba por defecto del día actual a un campo editable.
 
+# Actualización 12 de Marzo al 27 de Abril 
+-   Replicar anticipo a proveedor
+-   Agregar opción de seleccionar diferentes item para aprobar
+-   Verificar órdenes de compra con items que no aplican
+-   Ajuste de los pagos a compras anteriores a Marzo 01 - Terluz - Nomadas
+-   Opción de pago "a convenir "
+-   Opción de pagar orden de compra sin adjunto de factura
+-   Ajustar rubros por usuario
+-   Agregar RQ el rubro y sub rubro
+-   Link a la RQ en la orden de compra 
+-   Notificaciones de las cuentas por pagar que se suben en el dashboard
+-   Pasar a cotización lo que este aprobado por el jefe de área
+-   Actualización y ajuste del módulo carga a inventario de las compras por rango de fecha, se cambia el campo de fecha que estaba por defecto del día actual a un campo editable.
+-   Quitar lo que está aprobado en el dashboard de RQ (verificar todos los roles)
+-   Subir adjunto de cotizaciones por proveedor al finalizar las cotizaciones
+-   Pasar a espera de aprobación cuando se sube la cotización 
+-   Módulo de aprobación y proyección de pagos 
+-   Módulo cuentas por pagar 
+-   Módulo cuentas por cobrar
+# Actualización 23 de Mayo 
+
+- Seleccionar ordenes de compra y agregar botón Factura
+- Mostrar todos los item de las ordenes de compra seleccionadas y dejar eliminar y editar valores
+- La edición por ajax  sin refrescar la página
+- Agregar columna de iva (campo porcentaje)
+- Agregar campos y que estos se calculen automaticamente (Subtotal, Iva, Retenciones, Descuentos, retención asumida, total) 
+- Mostrar relación de anticipos para cruzar con la factura "
+- Editar cantidades sin actualizar la vista
+- Agregar campo base y aplicar retención , aplica para dos bases
+- Módulo de retenciones, editar, crear, eliminar, agregar a listado en"subir factura"
+- Editar factura (vista igua que al momento de cargarla)
+- Centralizar todas las ordenes de compra en un solo lugar
+- Filtrar por proveedor todas las ordenes de compra
+- Validación al cargar la factura de una orden de compra, que no se repita. 
+- Cruce con anticipos
+- Realizar Abonos / pagos 
 

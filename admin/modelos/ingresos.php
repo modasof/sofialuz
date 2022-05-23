@@ -69,7 +69,26 @@ public static function obtenerPagina($id_caja){
 	try {		
 		$db=Db::getConnect();
 
-		$select=$db->query("SELECT * FROM ingresos_caja WHERE caja_ppal='".$id_caja."' and ingreso_publicado='1' and estado_ingreso='0' order by fecha_ingreso DESC");
+
+		$select=$db->query("SELECT * FROM ingresos_caja WHERE caja_ppal='".$id_caja."' and ingreso_publicado='1' and estado_ingreso<>'2' order by fecha_ingreso DESC");
+    	$camposs=$select->fetchAll();
+    	$campos = new Ingresos('',$camposs);
+		return $campos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}	
+}
+
+/*******************************************************
+** FUNCION PARA MOSTRAR TODOS LOS CAMPOS DE TESTIMONIOS	  **
+********************************************************/
+public static function obtenerPaginacon($id_caja){ 
+	try {		
+		$db=Db::getConnect();
+
+
+		$select=$db->query("SELECT * FROM ingresos_caja WHERE caja_ppal='".$id_caja."' and ingreso_publicado='1' and estado_ingreso='2' order by fecha_ingreso DESC");
     	$camposs=$select->fetchAll();
     	$campos = new Ingresos('',$camposs);
 		return $campos;
@@ -542,6 +561,7 @@ public static function guardaringreso($campos,$imagen){
 	echo '{"error":{"text":'. $e->getMessage() .'}}';
 	}
 }
+
 
 
 /***************************************************************

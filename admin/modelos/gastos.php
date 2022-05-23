@@ -55,6 +55,23 @@ public static function obtenerPagina($id_caja){
 /*******************************************************
 ** FUNCION PARA MOSTRAR TODOS LOS CAMPOS DE TESTIMONIOS	  **
 ********************************************************/
+public static function obtenerPaginacon($id_caja){ 
+	try {		
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT * FROM egresos_caja WHERE caja_ppal='".$id_caja."' and estado_egreso='2' order by id_egreso_caja DESC");
+    	$camposs=$select->fetchAll();
+    	$campos = new Gastos('',$camposs);
+		return $campos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}	
+}
+
+/*******************************************************
+** FUNCION PARA MOSTRAR TODOS LOS CAMPOS DE TESTIMONIOS	  **
+********************************************************/
 public static function obtenertotalPagina(){ 
 	try {		
 		$db=Db::getConnect();

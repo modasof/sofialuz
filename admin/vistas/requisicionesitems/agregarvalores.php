@@ -31,13 +31,6 @@ $tiporeq=ObtenerTipoReq($idreq);
     });
 });
 </script>
-<script type="text/javascript">
-  jQuery(document).ready(function($){
-    $(document).ready(function() {
-        $('.mi-selector2').select2();
-    });
-});
-</script>
 
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -79,7 +72,7 @@ $tiporeq=ObtenerTipoReq($idreq);
 								
 							  <div class="card-body">
 								<div class="card-header">
-								  <h3 class="card-title">Agregar Cotizaciones</h3>
+								  <h3 class="card-title">Agregare Cotizaciones</h3>
 								</div>
 							
 								<div class="row">
@@ -210,6 +203,9 @@ $tiporeq=ObtenerTipoReq($idreq);
 							?>
 										<input type="hidden" name="estado_cotizacion" value="1">
 										<input type="hidden" name="ordencompra_num" value="0">
+										<input type="hidden" name="iva" value="0">
+										<input type="hidden" name="valor_iva" value="0">
+										<input type="hidden" name="id_factura" value="0">
 										<input type="hidden" name="cantidadcot" value="<?php echo($cantidad); ?>">
 										<input type="hidden" name="insumo_id_insumo" value="<?php echo($insumo_id_insumo) ?>">
 										<input type="hidden" name="requisicion_id" value="<?php echo($idreq); ?>">
@@ -231,7 +227,7 @@ $tiporeq=ObtenerTipoReq($idreq);
 										<div class="form-group">
 
 										  <label for="sel1">Lista de Proveedores:</label>
-										  <select class="form-control mi-selector2" id="proveedor_id_proveedor" name="proveedor_id_proveedor" required>
+										  <select class="form-control mi-selector" id="proveedor_id_proveedor" name="proveedor_id_proveedor" required>
 											<option value="" selected>Seleccionar...</option>
 										<?php
 										$rubros = Proveedores::obtenerListaProveedores();

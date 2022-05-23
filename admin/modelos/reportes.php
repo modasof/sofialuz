@@ -1105,7 +1105,7 @@ public static function guardarcuentaxpagar($campos,$imagen){
 		$campostraidos = $campos->getCampos();
 		extract($campostraidos);
 
-		$insert=$db->prepare('INSERT INTO ordenescompra VALUES (NULL,:imagen, :imagen_cot, :fecha_reporte, :valor_total, :valor_retenciones, :valor_iva, :estado_orden, :proveedor_id_proveedor, :medio_pago, :observaciones, :marca_temporal, :usuario_creador, :rubro_id, :subrubro_id, :vencimiento, :factura, :estado_recibido, :compra_de)');
+		$insert=$db->prepare('INSERT INTO ordenescompra VALUES (NULL,:imagen, :imagen_cot, :fecha_reporte, :valor_total, :valor_retenciones, :valor_iva, :estado_orden, :proveedor_id_proveedor, :medio_pago, :observaciones, :marca_temporal, :usuario_creador, :rubro_id, :subrubro_id, :vencimiento, :factura, :estado_recibido, :compra_de,:id_factura_compra)');
 
 		$V1=str_replace(".","",$valor_total);
 		$V2=str_replace(" ", "", $V1);
@@ -1133,6 +1133,7 @@ public static function guardarcuentaxpagar($campos,$imagen){
 		$insert->bindValue('factura',utf8_decode($factura));
 		$insert->bindValue('estado_recibido',utf8_decode($estado_recibido));
 		$insert->bindValue('compra_de',utf8_decode($compra_de));
+		$insert->bindValue('id_factura_compra',utf8_decode($id_factura_compra));
 		$insert->execute();
 
 		return true;

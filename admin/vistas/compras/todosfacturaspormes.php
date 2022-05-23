@@ -7,6 +7,10 @@ include_once 'modelos/proyectos.php';
 include_once 'controladores/proyectosController.php';
 include_once 'modelos/proveedores.php';
 include_once 'controladores/proveedoresController.php';
+
+include_once 'modelos/retefuente.php';
+include_once 'controladores/retefuenteController.php';
+
 include_once 'modelos/rubros.php';
 include_once 'controladores/rubrosController.php';
 include_once 'modelos/subrubros.php';
@@ -80,12 +84,12 @@ if ($FechaDos == "") {
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0 text-dark">Reporte Ordenes Compra</h1>
+          <h1 class="m-0 text-dark">Reporte Facturas Compras</h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="?controller=index&&action=index">Inicio</a></li>
-            <li class="breadcrumb-item active"><a href="?controller=compras&&action=?controller=compras&&action=facturascompraspormes">Facturas Compras</a></li>
+            <!--<li class="breadcrumb-item active"><a href="?controller=equipos&&action=todos">Equipos</a></li>-->
           </ol>
         </div><!-- /.col -->
       </div><!-- /.row -->
@@ -99,7 +103,7 @@ if ($FechaDos == "") {
       <div class="row">
 
         <div class="row">
-        <form action="?controller=compras&&action=todospormes" method="post" id="FormFechas" autocomplete="off">
+        <form action="?controller=compras&&action=facturascompraspormes" method="post" id="FormFechas" autocomplete="off">
          <div class="col-md-8">
                         <div class="form-group">
                           <label>Seleccione el Rango de Fecha<span>*</span></label>
@@ -168,11 +172,11 @@ if ($FechaDos == "") {
         <?php
 if ($fechaform != "") {
     ?>
-           <h3 class="m-0 text-dark">Reporte Ordenes Insumos/Servicios del <?php echo (fechalarga($datofechain)) ?> al <?php echo (fechalarga($datofechafinal)) ?></h3>
+           <h3 class="m-0 text-dark">Reporte Facturas Compras del <?php echo (fechalarga($datofechain)) ?> al <?php echo (fechalarga($datofechafinal)) ?></h3>
           <?php
 } else {
     ?>
-           <h3 class="m-0 text-dark">Total Ordenes de compra</h3>
+           <h3 class="m-0 text-dark">Reporte Facturas Compras</h3>
           <?php
 }
 
@@ -191,14 +195,13 @@ if ($fechaform != "") {
             </div>
 
 <div class="col-md-12">
-    <a id="btnrelacionar" href="" class="btn btn-success" style="float: right; display: none; cursor: pointer;"><i class="fa fa-check bigger-110 "></i> Subir Factura</a>
+    <a  id="btnrelacionar" href="" class="btn btn-success" style="float: right; display: none; cursor: pointer;"><i class="fa fa-exchange bigger-110 "></i> Cargar Abonos</a>
 
                   <br><br>
           <!-- Custom Tabs -->
           <div class="nav-tabs-custom">
             <ul class="nav nav-tabs">
-              <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">Ordenes Compra</a></li>
-             
+              <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">Facturas</a></li>
 
             </ul>
             <div class="tab-content">
@@ -208,20 +211,20 @@ if ($fechaform != "") {
 ======================================-->
 
             <div class="clearfix">
-                 
+
                       <div class="pull-right tableTools-container"></div>
             </div>
         <div class="table-responsive mailbox-messages">
             <!-- Inicio de la tabla -->
-              <table id="cotizaciones" class="table  table-responsive table-striped table-bordered table-hover" style="width: 100%;font-size: 13px;">
+              <table id="cotizaciones" class="table  table-responsive table-striped table-bordered table-hover" style="width: 100%;font-size: 10px;">
             <tfoot style="display: table-header-group;">
 
-                                      <th style="background-color: #fcf8e3" class="success">
-                                         
-                                    </th>
-                                    <th style="background-color: #fcf8e3;display:none;" class="success"></th>
-                                    <th style="background-color: #fcf8e3;display:none;" class="success"></th>
-                                    <th style="background-color: #fcf8e3;display:none;" class="success"></th>
+                                    <th style="background-color: #fcf8e3" class="success"></th>
+                                    <th style="background-color: #fcf8e3" class="success"></th>
+                                    <th style="background-color: #fcf8e3" class="success"></th>
+                                    <th style="background-color: #fcf8e3" class="success"></th>
+                                    <th style="background-color: #fcf8e3" class="success"></th>
+                                    <th style="background-color: #fcf8e3" class="success"></th>
                                     <th style="background-color: #fcf8e3" class="success"></th>
                                     <th style="background-color: #fcf8e3" class="success"></th>
                                     <th style="background-color: #fcf8e3" class="success"></th>
@@ -231,87 +234,92 @@ if ($fechaform != "") {
                                     <th style="background-color: #fcf8e3" class="success"></th>
                                     <th style="background-color: #fcf8e3" class="success"></th>
                                    
-                                   
+
+
 
                             </tfoot>
           <thead>
             <tr style="background-color: #4f5962;color: white;">
 
-              <th>OC-N.</th>
+              <th>FC Número</th>
               <th>Fecha</th>
-               <th>Tipo</th>
               <th>Proveedor</th>
-              <th>Pago a</th>
-            <th style="display: none;" >Vr. Subtotal</th>
-              <th style="display: none;" >Vr. Retenciones</th>
-              <th style="display: none;" >Vr. Iva</th>
-              <th >Valor</th>
+              <th>Subtotal</th>
+              <th>Base</th>
+              <th>RTF1</th>
+              <th>Base</th>
+              <th>RTF2</th>
+              <th >IVA</th>
+              <th >Descuentos</th>
+              <th >Total a Pagar</th>
               <th >Abonos</th>
-              <th>Saldo Pendiente</th>
-               <th>Acción</th>
+              <th >Saldo</th>
+              <th>Observaciones</th>
+             
             </tr>
             <tr>
 
-              <th>OC-N.</th>
+              <th>FC Número</th>
               <th>Fecha</th>
-             <th>Tipo</th>
               <th>Proveedor</th>
-              <th>Pago a</th>
-             <th style="display: none;" >Vr. Subtotal</th>
-              <th style="display: none;" >Vr. Retenciones</th>
-              <th style="display: none;" >Vr. Iva</th>
-                <th >Valor</th>
+              <th>Subtotal</th>
+              <th>Base</th>
+              <th>RTF1</th>
+              <th>Base</th>
+              <th>RTF2</th>
+              <th >IVA</th>
+              <th >Descuentos</th>
+              <th >Total a Pagar</th>
               <th >Abonos</th>
-              <th>Saldo Pendiente</th>
-               <th>Acción</th>
+              <th >Saldo</th>
+              <th>Observaciones</th>
+              
             </tr>
           </thead>
        <tbody>
             <?php
 if ($fechaform != "") {
-    $res    = Compras::porfechaall($FechaStart, $FechaEnd);
+    $res    = Compras::porfechafacturaall($FechaStart, $FechaEnd);
     $campos = $res->getCampos();
 } else {
     $campos = $campos->getCampos();
 }
 foreach ($campos as $campo) {
-    $id                     = $campo['id'];
-    $fecha_reporte          = $campo['fecha_reporte'];
-    $compra_de          = $campo['compra_de'];
-    $imagen                 = $campo['imagen'];
-    $imagen_cot             = $campo['imagen_cot'];
-    $valor_total            = $campo['valor_total'];
-    $valor_retenciones      = $campo['valor_retenciones'];
-    $valor_iva              = $campo['valor_iva'];
-    $estado_orden           = $campo['estado_orden'];
-    $rubro_id               = $campo['rubro_id'];
-    $subrubro_id            = $campo['subrubro_id'];
-    $vencimiento            = $campo['vencimiento'];
-    $proveedor_id_proveedor = $campo['proveedor_id_proveedor'];
-    $medio_pago             = $campo['medio_pago'];
-    $marca_temporal         = $campo['marca_temporal'];
-    $observaciones          = $campo['observaciones'];
-    $usuario_creador        = $campo['usuario_creador'];
-    $facturanum             = $campo['factura'];
 
-    $nomproveedor  = Proveedores::obtenerNombreProveedor($proveedor_id_proveedor);
-    $nomreportador = usuarios::obtenerNombreUsuario($usuario_creador);
-    $totalpago     = $valor_total - $valor_retenciones + $valor_iva;
-    $detalleabonos        = Compras::sqlabonos($id);
-    $cuentaporpagar= $totalpago-$detalleabonos;
+    //`id`, `imagen`, `proveedor_id_proveedor`, `facturanum`, `fecha_reporte`, `valor_subtotal`, `base_uno`, `retefuente_id_retefuente1`, `porcentaje_ret`, `valor_ret`, `base_dos`, `retefuente_id_retefuente2`, `porcentaje_ret2`, `valor_ret2`, `valor_iva`, `valor_descuentos`, `total_pago`, `observaciones`, `rubro_id`, `subrubro_id`, `marca_temporal`, `creado_por`, `estado_factura`, `factura_publicada`
 
-    # ==================================================
-    # =           Validación de los estados            =
-    # ==================================================
+    $id                        = $campo['id'];
+    $imagen                    = $campo['imagen'];
+    $proveedor_id_proveedor    = $campo['proveedor_id_proveedor'];
+    $facturanum                = $campo['facturanum'];
+    $fecha_reporte             = $campo['fecha_reporte'];
+    $valor_subtotal            = $campo['valor_subtotal'];
+    $base_uno                  = $campo['base_uno'];
+    $retefuente_id_retefuente1 = $campo['retefuente_id_retefuente1'];
+    $porcentaje_ret            = $campo['porcentaje_ret'];
+    $valor_ret                 = $campo['valor_ret'];
+    $base_dos                  = $campo['base_dos'];
+    $retefuente_id_retefuente2 = $campo['retefuente_id_retefuente2'];
+    $porcentaje_ret2           = $campo['porcentaje_ret2'];
+    $valor_ret2                = $campo['valor_ret2'];
+    $valor_iva                 = $campo['valor_iva'];
+    $valor_descuentos          = $campo['valor_descuentos'];
+    $total_pago                = $campo['total_pago'];
+    $observaciones             = $campo['observaciones'];
+    $rubro_id                  = $campo['rubro_id'];
+    $subrubro_id               = $campo['subrubro_id'];
+    $marca_temporal            = $campo['marca_temporal'];
+    $creado_por                = $campo['creado_por'];
+    $estado_factura            = $campo['estado_factura'];
+    $factura_publicada         = $campo['factura_publicada'];
+    $mascaraporcentaje = $porcentaje_ret*100;
+    $mascaraporcentaje2 = $porcentaje_ret2*100;
+    $nomproveedor   = Proveedores::obtenerNombreProveedor($proveedor_id_proveedor);
+    $nomreportador  = usuarios::obtenerNombreUsuario($creado_por);
+    $nomretefuente1 = Retefuente::obtenerNombre($retefuente_id_retefuente1);
+    $nomretefuente2 = Retefuente::obtenerNombre($retefuente_id_retefuente2);
 
-    if ($estado_orden == "1") {
-        $nomestado = "<small style='color:red;' class='label pull-left bg-red'>Sin Facturar</small>";
-    } elseif ($estado_orden == "2") {
-        $nomestado = "<small style='color:green;' class='label pull-left bg-green'>Facturado</small>";
-    } else {
-        $nomestado = "Sin Estado";
-    }
-
+   
     # ========================================================
     # =           Verificación de Rubro - Subrubro           =
     # ========================================================
@@ -334,142 +342,30 @@ foreach ($campos as $campo) {
 
     ?>
             <tr>
-                <td id="listado">
-
-            <a style="display:none;" href="?controller=compras&action=cambiarestado&id=<?php echo ($id); ?>" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Detalle">
-                <i class="fa fa-dollar bigger-110 "> </i></a>
-
-    <?php 
-
-        if ($compra_de=="cxp") {
-           ?>
-            <input style="display: none;" type="checkbox" id="<?php echo $id; ?>" name="inputdespachos" onclick="marcardespachocp(<?php echo $proveedor_id_proveedor; ?>)" style="cursor: pointer;">
-           <?php
-        }
-        else{
-            ?>
-
-             <input style="display: none;" type="checkbox" id="<?php echo $id; ?>" name="inputdespachos" onclick="marcardespacho(<?php echo $proveedor_id_proveedor; ?>)" style="cursor: pointer;">
-            <?php
-        }
-
-     ?>
-
-                 
-
-                  <?php
-echo ("OC00" . $id);
-    if ($imagen != "0") {
-        ?>
-                   <a target="_blank" href="<?php echo ($imagen); ?>"  class="tooltip-primary text-primary" title="Ver Soporte">
-                <i class="fa fa-eye bigger-110 "> Factura</i>
+                <td><?php echo ($facturanum);?>
+                <br>
+            <a target="_blank" href="<?php echo ($imagen); ?>"  class="tooltip-primary text-primary" title="Ver Soporte">
+            <i class="fa fa-eye bigger-110 "> Factura</i>
               </a>
-                  <?php
-} else {
-        echo "<i class='tooltip-danger text-danger fa fa-unlink'>Factura<i>";
-    }
-
-    ?>
-
-     <?php
-    if ($imagen_cot != "0") {
-        ?>
-                   <a target="_blank" href="<?php echo ($imagen_cot); ?>"  class="tooltip-primary text-primary" title="Ver Soporte">
-                <i class="fa fa-eye bigger-110 "> Cotización</i>
-              </a>
-                  <?php
-} else {
-        echo "<i class='tooltip-danger text-danger fa fa-unlink'>Cotización<i>";
-    }
-
-    ?>
-
                 </td>
                 <td><?php echo ($fecha_reporte); ?></td>
-                <td><?php echo ($compra_de); ?></td>
-                <td><a href="?controller=compras&&action=todosporproveedorespera&&idproveedor=<?php echo ($proveedor_id_proveedor); ?>"><?php echo ($nomproveedor); ?></a></td>
-                <td><?php echo ($medio_pago); ?>
-                      <br>
-                  <i data-toggle="tooltip" data-placement="left" title="Creada por  por <?php echo($nomreportador." Fecha : ".$marca_temporal); ?>" class="fa fa-question-circle"></i>
+                <td><?php echo ($nomproveedor); ?></td>
+                <td><?php echo ("$" . number_format($valor_subtotal)); ?></td>
+                <td><?php echo ("$" . number_format($base_uno)); ?><br>
+                    <?php echo ($nomretefuente1."[".$mascaraporcentaje."%]") ?>
                 </td>
-               
-                <td style="display: none;" ><?php echo ("$" . number_format($valor_total)); ?></td>
-                <td style="display: none;" ><?php echo ("$" . number_format($valor_retenciones)); ?></td>
-                 <td style="display: none;" ><?php echo ("$" . number_format($valor_iva)); ?></td>
-                <td><?php echo ("$" . number_format($totalpago)); ?></td>
-                 <td><?php echo ("$" . number_format($detalleabonos)); ?></td>
-                  <td><?php echo ("$" . number_format($cuentaporpagar)); ?></td>
-                 <td>
-                <?php 
-                if ($compra_de!="cxp") {
-                    ?>
-                     <a href="vistas/compras/cotizaciones_print.php?id=<?php echo ($proveedor_id_proveedor); ?>&&idcompra=<?php echo ($id); ?>" target="_blank" class="btn btn-default"><i class="fa fa-print"></i></a>
-                    <?php
-                }
-
-                 ?>
-
-                 
-                 <div class="btn-group">
-                        <button data-toggle="dropdown" class="btn btn-info btn-sm dropdown-toggle">
-                          Acción
-                          <span class="ace-icon fa fa-caret-down icon-on-right"></span>
-                        </button>
-
-                        <ul class="dropdown-menu dropdown-info dropdown-menu-right">
- <?php 
-                if ($compra_de!="cxp") {
-                    ?>
-           <li>
-                <a href="?controller=compras&&action=verdetalle&&id=<?php echo ($id); ?>" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Detalle">
-                <i class="fa fa-list bigger-110 "> Detalle</i>
-              </a>
-            </li>
-  <?php
-                }
-
-                 ?>
-            <li>
-                             <a href="?controller=compras&&action=editar&&id=<?php echo $id; ?>&&vereditar=1" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Editar">
-                <i class="fa fa-edit bigger-110 "> Editar</i>
-              </a>
-                          </li>
-                          <li>
-                            <a href="#" onclick="eliminar(<?php echo $id; ?>);" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Anular Oc">
-                <i class="fa fa-trash bigger-110 "> Anular OC</i>
-              </a>
-                          </li>
-              <?php
-if ($imagen != "0") {
-        ?>
-                    <li>
-             <a target="_blank" href="<?php echo ($imagen); ?>"  class="tooltip-primary text-primary" title="Ver Soporte">
-                <i class="fa fa-eye bigger-110 "> Ver Soporte</i>
-              </a>
-                          </li>
-                          <li>
-               <a download="Soporte" href="<?php echo ($imagen); ?>"  class="tooltip-primary text-dark" title="Descargar Soporte">
-                <i class="fa fa-cloud-download bigger-110 "> Descargar Soporte</i>
-                </a>
-                          </li>
-                  <?php
-} else {
-        ?>
-                  <li>
-             <a target="_blank" href="#"  class="tooltip-primary text-danger" title="Ver Soporte">
-                <i class="fa fa-unlink bigger-110 "> Sin Soporte</i>
-              </a>
-                          </li>
-
-                  <?php
-}
-
-    ?>
-
-
-                        </ul>
-                      </div>
-              </td>
+                <td><?php echo ("$" . number_format($valor_ret)); ?></td>
+                <td><?php echo ("$" . number_format($base_dos)); ?><br>
+                    <?php echo ($nomretefuente2."[".$mascaraporcentaje2."%]") ?>
+                </td>
+                <td><?php echo ("$" . number_format($valor_ret2)); ?></td>
+                <td><?php echo ("$" . number_format($valor_iva)); ?></td>
+                <td><?php echo ("$" . number_format($valor_descuentos)); ?></td>
+                <td><?php echo ("$" . number_format($total_pago)); ?></td>
+                <td><?php echo ("$" . number_format(0)); ?></td>
+                <td><?php echo ("$" . number_format(0)); ?></td>
+                <td><?php echo ($observaciones); ?></td>
+                
             </tr>
             <?php
 }
@@ -523,13 +419,13 @@ if ($imagen != "0") {
     }
 
     var btn = document.getElementById("btnrelacionar");
-    
+
     if (valoresconcant==""){
       btn.style.display = "none";
-       
+
     }else{
       btn.style.display = "";
-      btn.href = "?controller=compras&action=cargarfactura&des="+valoresconcant+"&id="+id;
+      btn.href = "?controller=compras&action=cambiarestadocreditos&des="+valoresconcant+"&id="+id;
     }
 
   }
@@ -538,46 +434,6 @@ if ($imagen != "0") {
         $(document).ready(function() {
 } );
     </script>
-
-
-<script>
-
-  function marcardespachocp(id){
-    var valores = document.getElementsByName("inputdespachos");
-    var valoresconcant = "";
-    for (i = 0; i < valores.length; i++) {
-        var idelemento = valores[i].id;
-        var valor = valores[i].value;
-        var checked = valores[i].checked;
-
-        if (checked==true){
-          if (valoresconcant == "") {
-              valoresconcant = idelemento;
-          } else {
-              valoresconcant = valoresconcant + "," + idelemento;
-          }
-        }
-
-    }
-
-    var btn = document.getElementById("btnrelacionar");
-    
-    if (valoresconcant==""){
-      btn.style.display = "none";
-       
-    }else{
-      btn.style.display = "";
-      btn.href = "?controller=compras&action=cargarfacturacp&des="+valoresconcant+"&id="+id;
-    }
-
-  }
-
-
-        $(document).ready(function() {
-} );
-    </script>
-
-
 <script>
 function eliminar(id){
    eliminar=confirm("¿Deseas Anular este registro?");
@@ -660,20 +516,21 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
                         i : 0;
             };
 
-               pageTotal5 = api
+               pageTotal3 = api
+                .column( 3, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+              pageTotal5 = api
                 .column( 5, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
 
-            // Total over all pages
-              pageTotal6 = api
-                .column( 6, { page: 'current'} )
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );
+           
             pageTotal7 = api
                 .column( 7, { page: 'current'} )
                 .data()
@@ -703,15 +560,32 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
                     return intVal(a) + intVal(b);
                 }, 0 );
 
-         
-           
-                  $( api.column( 5 ).footer() ).html(
+             pageTotal11 = api
+                .column( 11, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+            pageTotal12 = api
+                .column( 12, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
+
+
+                $( api.column( 3 ).footer() ).html(
+                '$'+formatmoneda(pageTotal3,'' )
+                );
+
+                 $( api.column( 5 ).footer() ).html(
                 '$'+formatmoneda(pageTotal5,'' )
                 );
 
-                 $( api.column( 6 ).footer() ).html(
-                '$'+formatmoneda(pageTotal6,'' )
-                 );
+
+               
                $( api.column( 7 ).footer() ).html(
                 '$'+formatmoneda(pageTotal7,'' )
                  );
@@ -728,8 +602,16 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
                 '$'+formatmoneda(pageTotal10,'' )
                  );
 
-            
-             
+                $( api.column( 11 ).footer() ).html(
+                '$'+formatmoneda(pageTotal11,'' )
+                 );
+
+                $( api.column( 12 ).footer() ).html(
+                '$'+formatmoneda(pageTotal12,'' )
+                 );
+
+
+
 
         },
 

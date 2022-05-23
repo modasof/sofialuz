@@ -64,6 +64,7 @@ $(document).ready(function(){
 							
 					<input type="hidden" name="valor_retenciones" value="0">
 					<input type="hidden" name="valor_iva" value="0">
+					<input type="hidden" name="id_factura_compra" value="0">
 					<input type="hidden" name="estado_orden" value="1">
 					<input type="hidden" name="medio_pago" value="Credito">
 					<input type="hidden" name="marca_temporal" value="<?php echo($TiempoActual);?>">

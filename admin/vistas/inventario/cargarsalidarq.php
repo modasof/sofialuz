@@ -141,11 +141,11 @@ foreach ($items as $key => $despachounico) {
     $cant_anteriores     = Inventario::sqldetallesalida($despachounico);
     $cant_anteriorestemp = Inventario::sqldetallesalidatemporal($despachounico, $fechadia);
 
-    $pendiente = round($cantidad,2) - round($cant_anteriores,2);
+    $pendiente = $cantidad - $cant_anteriores;
     $sumatotal += $cantidad;
     $sumaanteriores += $cant_anteriores;
     $sumaanteriorestemp += $cant_anteriorestemp;
-    $pendientetotal      = $sumatotal - $sumaanteriores-$sumaanteriorestemp;
+    $pendientetotal      = $sumatotal - $sumaanteriores;
     $valorpromedio       = Valorpromedioinsumo($insumo_id_insumo);
     $totalvalorentregado = $valorpromedio * $sumaanteriorestemp;
 
@@ -223,7 +223,7 @@ date_default_timezone_set("America/Bogota");
                                                                                 <?php echo ($nomusuario); ?>
                                                                             </td>
                                                                             <td>
-                                                                                <?php echo (round($cantidaddetalle,2)); ?>
+                                                                                <?php echo ($cantidaddetalle); ?>
                                                                             </td>
                                                                             <td>
                                                                                 <?php echo ($salida_id); ?>
@@ -292,7 +292,7 @@ if ($cant_anteriorestemp == 0) {
     ?>
 
  </td>
-    <td><input id="" class='input input-sm' type="number" step="any" name="cantidad" value="<?php echo (round($pendiente,2)); ?>"></td>
+        <td><input id="" class='input input-sm' type="text" name="cantidad" value="<?php echo ($pendiente); ?>"></td>
         <td><button type="submit" class="btn btn-success fa fa-check"></button></td>
     </form>
 

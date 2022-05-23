@@ -157,7 +157,7 @@ public static function porfechacompracategoria($FechaStart,$FechaEnd){
 public static function todos(){
 	try {
 		$db=Db::getConnect();
-		$sql="SELECT * FROM ordenescompra WHERE estado_orden<>'0' and compra_de='Insumos' and fecha_reporte BETWEEN DATE_SUB(CURDATE(), INTERVAL 8 DAY) AND CURDATE() order by fecha_reporte DESC";
+		$sql="SELECT * FROM ordenescompra WHERE estado_orden<>'0' and id_factura_compra='0' and compra_de='Insumos' and id_factura_compra='0' and fecha_reporte BETWEEN DATE_SUB(CURDATE(), INTERVAL 30 DAY) AND CURDATE() order by fecha_reporte DESC";
 		//echo($sql);
 		$select=$db->query($sql);
     	$camposs=$select->fetchAll();
@@ -176,7 +176,47 @@ public static function todos(){
 public static function todospormes(){
 	try {
 		$db=Db::getConnect();
-		$sql="SELECT * FROM ordenescompra WHERE estado_orden<>'0' order by fecha_reporte DESC";
+		$sql="SELECT * FROM ordenescompra WHERE estado_orden<>'0' and id_factura_compra='0'  order by fecha_reporte DESC";
+		//echo($sql);
+		$select=$db->query($sql);
+    	$camposs=$select->fetchAll();
+    	$campos = new Compras('',$camposs);
+		return $campos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/*******************************************************
+** FUNCION PARA MOSTRAR TODOS LOS CAMPOS DE FECHAS	  **
+********************************************************/
+public static function todosfacturapormes(){
+	try {
+		$db=Db::getConnect();
+		$sql="SELECT * FROM facturas_compras_total WHERE factura_publicada='1'  order by id DESC";
+		//echo($sql);
+		$select=$db->query($sql);
+    	$camposs=$select->fetchAll();
+    	$campos = new Compras('',$camposs);
+		return $campos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
+
+
+
+/*******************************************************
+** FUNCION PARA MOSTRAR TODOS LOS CAMPOS DE FECHAS	  **
+********************************************************/
+public static function detallefacturacompra($id){
+	try {
+		$db=Db::getConnect();
+		$sql="SELECT * FROM facturas_compras_total WHERE id='".$id."' and factura_publicada<>'0'";
 		//echo($sql);
 		$select=$db->query($sql);
     	$camposs=$select->fetchAll();
@@ -194,7 +234,7 @@ public static function todospormes(){
 public static function todosporproveedor($id){
 	try {
 		$db=Db::getConnect();
-		$sql="SELECT * FROM ordenescompra WHERE estado_orden<>'0' and proveedor_id_proveedor='".$id."' order by fecha_reporte DESC";
+		$sql="SELECT * FROM ordenescompra WHERE estado_orden<>'0' and id_factura_compra='0' and proveedor_id_proveedor='".$id."' order by fecha_reporte DESC";
 		//echo($sql);
 		$select=$db->query($sql);
     	$camposs=$select->fetchAll();
@@ -232,7 +272,7 @@ public static function detallepagos($id){
 public static function cxpusuario($id){
 	try {
 		$db=Db::getConnect();
-		$sql="SELECT * FROM ordenescompra WHERE estado_orden<>'0' and compra_de='Cxp' and usuario_creador='".$id."' order by fecha_reporte DESC";
+		$sql="SELECT * FROM ordenescompra WHERE estado_orden<>'0' and id_factura_compra='0' and compra_de='Cxp' and usuario_creador='".$id."' order by fecha_reporte DESC";
 		//echo($sql);
 		$select=$db->query($sql);
     	$camposs=$select->fetchAll();
@@ -268,7 +308,7 @@ public static function todosocservicios(){
 	try {
 		$db=Db::getConnect();
 
-		$select=$db->query("SELECT * FROM ordenescompra WHERE estado_orden<>'0' and compra_de='Servicios' and fecha_reporte BETWEEN DATE_SUB(CURDATE(), INTERVAL 8 DAY) AND CURDATE() order by fecha_reporte DESC");
+		$select=$db->query("SELECT * FROM ordenescompra WHERE estado_orden<>'0' and id_factura_compra='0' and compra_de='Servicios' and fecha_reporte and id_factura_compra='0' BETWEEN DATE_SUB(CURDATE(), INTERVAL 8 DAY) AND CURDATE() order by fecha_reporte DESC");
     	$camposs=$select->fetchAll();
     	$campos = new Compras('',$camposs);
 		return $campos;
@@ -285,7 +325,7 @@ public static function todosoccuentasxpagar(){
 	try {
 		$db=Db::getConnect();
 
-		$select=$db->query("SELECT * FROM ordenescompra WHERE estado_orden<>'0' and compra_de='cxp' and fecha_reporte BETWEEN DATE_SUB(CURDATE(), INTERVAL 8 DAY) AND CURDATE() order by fecha_reporte DESC");
+		$select=$db->query("SELECT * FROM ordenescompra WHERE estado_orden<>'0' and id_factura_compra='0' and compra_de='cxp' and fecha_reporte and id_factura_compra='0' BETWEEN DATE_SUB(CURDATE(), INTERVAL 8 DAY) AND CURDATE() order by fecha_reporte DESC");
     	$camposs=$select->fetchAll();
     	$campos = new Compras('',$camposs);
 		return $campos;
@@ -302,7 +342,7 @@ public static function todosocequipos(){
 	try {
 		$db=Db::getConnect();
 
-		$select=$db->query("SELECT * FROM ordenescompra WHERE estado_orden<>'0' and compra_de='Equipos' and fecha_reporte BETWEEN DATE_SUB(CURDATE(), INTERVAL 8 DAY) AND CURDATE() order by fecha_reporte DESC");
+		$select=$db->query("SELECT * FROM ordenescompra WHERE estado_orden<>'0' and id_factura_compra='0'  and compra_de='Equipos' and fecha_reporte and id_factura_compra='0' BETWEEN DATE_SUB(CURDATE(), INTERVAL 8 DAY) AND CURDATE() order by fecha_reporte DESC");
     	$camposs=$select->fetchAll();
     	$campos = new Compras('',$camposs);
 		return $campos;
@@ -320,7 +360,41 @@ public static function verdetalle($id){
 	try {
 		$db=Db::getConnect();
 
-		$select=$db->query("SELECT A.id, A.proveedor_id_proveedor, A.cotizacion, A.medio_pago, A.item_id, A.valor_cot, A.requisicion_id, A.marca_temporal, A.usuario_creador, A.estado_cotizacion, A.ordencompra_num, B.insumo_id_insumo,B.cantidad,A.cantidadcot,A.vr_unitario,B.servicio_id_servicio FROM cotizaciones_item as A, requisiciones_items as B WHERE A.ordencompra_num='".$id."' and A.item_id=B.id order by id DESC");
+		$select=$db->query("SELECT A.id, A.proveedor_id_proveedor, A.cotizacion, A.medio_pago, A.item_id, A.valor_cot, A.requisicion_id, A.marca_temporal, A.usuario_creador, A.estado_cotizacion, A.ordencompra_num, B.insumo_id_insumo,B.cantidad,A.cantidadcot,A.vr_unitario,B.servicio_id_servicio, B.fecha_reporte,A.iva,A.valor_iva FROM cotizaciones_item as A, requisiciones_items as B WHERE A.ordencompra_num='".$id."' and A.item_id=B.id order by id DESC");
+    	$camposs=$select->fetchAll();
+    	$campos = new Compras('',$camposs);
+		return $campos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/*******************************************************
+** FUNCION PARA MOSTRAR TODOS LOS CAMPOS DE FECHAS	  **
+********************************************************/
+public static function detalleocfacturacion($id){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT A.id, A.proveedor_id_proveedor, A.cotizacion, A.medio_pago, A.item_id, A.valor_cot, A.requisicion_id, A.marca_temporal, A.usuario_creador, A.estado_cotizacion, A.ordencompra_num, B.insumo_id_insumo,B.cantidad,A.cantidadcot,A.vr_unitario,B.servicio_id_servicio, B.fecha_reporte,A.iva,A.valor_iva,A.imagen FROM cotizaciones_item as A, requisiciones_items as B WHERE A.ordencompra_num='".$id."' and A.item_id=B.id and estado_cotizacion='2' order by id DESC");
+    	$camposs=$select->fetchAll();
+    	$campos = new Compras('',$camposs);
+		return $campos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/*******************************************************
+** FUNCION PARA MOSTRAR TODOS LOS CAMPOS DE FECHAS	  **
+********************************************************/
+public static function detalleocfacturaciondescartada($id){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT A.id, A.proveedor_id_proveedor, A.cotizacion, A.medio_pago, A.item_id, A.valor_cot, A.requisicion_id, A.marca_temporal, A.usuario_creador, A.estado_cotizacion, A.ordencompra_num, B.insumo_id_insumo,B.cantidad,A.cantidadcot,A.vr_unitario,B.servicio_id_servicio, B.fecha_reporte,A.iva,A.valor_iva FROM cotizaciones_item as A, requisiciones_items as B WHERE A.ordencompra_num='".$id."' and A.item_id=B.id and estado_cotizacion='3' order by id DESC");
     	$camposs=$select->fetchAll();
     	$campos = new Compras('',$camposs);
 		return $campos;
@@ -340,7 +414,7 @@ public static function porfecha($FechaStart,$FechaEnd){
 	try {
 		$db=Db::getConnect();
 
-		$select=$db->query("SELECT * FROM ordenescompra WHERE estado_orden<>'0' and fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' and compra_de='insumos' order by fecha_reporte DESC");
+		$select=$db->query("SELECT * FROM ordenescompra WHERE estado_orden<>'0'and id_factura_compra='0' and fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' and compra_de='insumos' order by fecha_reporte DESC");
     	$camposs=$select->fetchAll();
     	$campos = new Compras('',$camposs);
 		return $campos;
@@ -357,7 +431,25 @@ public static function porfechaall($FechaStart,$FechaEnd){
 	try {
 		$db=Db::getConnect();
 
-		$select=$db->query("SELECT * FROM ordenescompra WHERE estado_orden<>'0' and fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' order by fecha_reporte DESC");
+		$select=$db->query("SELECT * FROM ordenescompra WHERE estado_orden<>'0' and id_factura_compra='0' and fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' order by fecha_reporte DESC");
+    	$camposs=$select->fetchAll();
+    	$campos = new Compras('',$camposs);
+		return $campos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
+/*******************************************************
+** FUNCION PARA MOSTRAR TODOS LOS CAMPOS POR RANGO DE FECHA	  **
+********************************************************/
+public static function porfechafacturaall($FechaStart,$FechaEnd){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT * FROM facturas_compras_total WHERE factura_publicada='1' and fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' order by fecha_reporte DESC");
     	$camposs=$select->fetchAll();
     	$campos = new Compras('',$camposs);
 		return $campos;
@@ -375,7 +467,7 @@ public static function porfechaall($FechaStart,$FechaEnd){
 public static function porfechaservicios($FechaStart,$FechaEnd){
 	try {
 		$db=Db::getConnect();
-		$sql="SELECT * FROM ordenescompra WHERE estado_orden<>'0' and fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' and compra_de='servicios'  order by fecha_reporte DESC";
+		$sql="SELECT * FROM ordenescompra WHERE estado_orden<>'0' and id_factura_compra='0' and fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' and compra_de='servicios'  order by fecha_reporte DESC";
 		$select=$db->query($sql);
 		//echo($sql);
     	$camposs=$select->fetchAll();
@@ -394,7 +486,7 @@ public static function porfechaequipos($FechaStart,$FechaEnd){
 	try {
 		$db=Db::getConnect();
 
-		$select=$db->query("SELECT * FROM ordenescompra WHERE estado_orden<>'0' and fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' and compra_de='Equipos'  order by fecha_reporte DESC");
+		$select=$db->query("SELECT * FROM ordenescompra WHERE estado_orden<>'0' and id_factura_compra='0' and fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' and compra_de='Equipos'  order by fecha_reporte DESC");
     	$camposs=$select->fetchAll();
     	$campos = new Compras('',$camposs);
 		return $campos;
@@ -412,7 +504,7 @@ public static function porfechacuentasporpagar($FechaStart,$FechaEnd){
 	try {
 		$db=Db::getConnect();
 
-		$select=$db->query("SELECT * FROM ordenescompra WHERE estado_orden<>'0' and fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' and compra_de='CxP'  order by fecha_reporte DESC");
+		$select=$db->query("SELECT * FROM ordenescompra WHERE estado_orden<>'0' and id_factura_compra='0' and fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' and compra_de='CxP'  order by fecha_reporte DESC");
     	$camposs=$select->fetchAll();
     	$campos = new Compras('',$camposs);
 		return $campos;
@@ -482,6 +574,38 @@ public static function eliminarpor($id){
 	try {
 		$db=Db::getConnect();
 		$select=$db->query("UPDATE ordenescompra SET estado_orden='0' WHERE id='".$id."'");
+		if ($select){
+			return true;
+			}else{return false;}
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/***************************************************************
+** FUNCION PARA ELIINAR POR ID  **
+***************************************************************/
+public static function descartarpor($id){
+	try {
+		$db=Db::getConnect();
+		$select=$db->query("UPDATE cotizaciones_item SET estado_cotizacion='3' WHERE id='".$id."'");
+		if ($select){
+			return true;
+			}else{return false;}
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/***************************************************************
+** FUNCION PARA ELIINAR POR ID  **
+***************************************************************/
+public static function descartarinversapor($id){
+	try {
+		$db=Db::getConnect();
+		$select=$db->query("UPDATE cotizaciones_item SET estado_cotizacion='2' WHERE id='".$id."'");
 		if ($select){
 			return true;
 			}else{return false;}
@@ -748,6 +872,49 @@ public static function actualizarpagocredito($ordenid,$imagen,$estado_orden,$rub
 /***************************************************************
 *** FUNCION PARA GUARDAR INGRESO DE PAGO DE ORDEN DE COMPRA CREDITO**** 
 ***************************************************************/
+public static function actualizarivaitem($ordenid,$ivasel,$valorivafinal){
+	try {
+		$db=Db::getConnect();
+			$sql="UPDATE cotizaciones_item SET iva='".$ivasel."',valor_iva='".$valorivafinal."' WHERE id='".$ordenid."'";
+			$select=$db->query($sql);
+			//echo($sql);
+		if ($select){
+			return true;
+			}else{return false;}
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
+/*******************************************************
+** FUNCION PARA MOSTRAR  **
+********************************************************/
+public static function consultarsubtotalpor($id){
+	try {
+		$db=Db::getConnect();
+		$sql="SELECT valor_cot FROM cotizaciones_item WHERE id='".$id."'";
+		//echo($sql);
+		$select=$db->query($sql);
+    	$camposs=$select->fetchAll();
+    	$campos = new Compras('',$camposs);
+    	$marcas = $campos->getCampos();
+		foreach($marcas as $marca){
+			$mar = $marca['valor_cot'];
+		}
+		return $mar;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
+
+/***************************************************************
+*** FUNCION PARA GUARDAR INGRESO DE PAGO DE ORDEN DE COMPRA CREDITO**** 
+***************************************************************/
 public static function actualizarpagoabonos($ordenunica,$fecha_reporte,$estado_egreso,$ultimoegreso){
 	try {
 		$db=Db::getConnect();
@@ -830,6 +997,98 @@ public static function guardaregresoOrdenCompra($cuenta_id_cuenta,$imagen,$tipo_
 	}
 }
 
+
+/***************************************************************
+*** FUNCION PARA GUARDAR FACTURA COMPRAS **** 
+* id, imagen, proveedor_id_proveedor, facturanum, fecha_reporte, valor_subtotal, porcentaje_ret, valor_ret, porcentaje_ret2, valor_ret2, valor_iva, valor_descuentos, observaciones, rubro_id, subrubro_id, marca_temporal, creado_por, estado_factura, factura_publicada
+***************************************************************/
+public static function guardardatosfacturacompra($imagen, $proveedor_id_proveedor, $facturanum, $fecha_reporte, $valor_subtotal, $base_uno,$idretencion1,$porcentaje_ret, $retefuente1, $base_dos,$idretencion2,$porcentaje_ret2, $retefuente2, $valor_iva, $valor_descuentos, $observaciones, $rubro_id, $subrubro_id, $marca_temporal, $creado_por, $estado_factura, $factura_publicada){
+
+	$V1=str_replace(".","",$valor_descuentos);
+		$V2=str_replace(" ", "", $V1);
+		$valor_final=str_replace("$", "", $V2);
+		$valornumero=(int) $valor_final;
+
+	$R1=str_replace(".","",$retefuente1);
+		$R2=str_replace(" ", "", $R1);
+		$valor_final=str_replace("$", "", $R2);
+		$valornumeroR=(int) $valor_final;
+
+
+	$RA1=str_replace(".","",$retefuente2);
+		$RA2=str_replace(" ", "", $RA1);
+		$valor_final=str_replace("$", "", $RA2);
+		$valornumeroRA=(int) $valor_final;
+
+	$IVA1=str_replace(".","",$valor_iva);
+		$IVA2=str_replace(" ", "", $IVA1);
+		$valor_final=str_replace("$", "", $IVA2);
+		$valornumeroIVA=(int) $valor_final;
+
+	 $totalpago = ($valor_subtotal+$valornumeroIVA)-$valornumeroR-$valornumeroRA-$valornumero;
+
+
+	try {
+		$db=Db::getConnect();
+		
+	$select=$db->query("INSERT INTO facturas_compras_total(imagen, proveedor_id_proveedor, facturanum, fecha_reporte, valor_subtotal,base_uno,retefuente_id_retefuente1, porcentaje_ret, valor_ret,base_dos,retefuente_id_retefuente2, porcentaje_ret2, valor_ret2, valor_iva, valor_descuentos,total_pago, observaciones, rubro_id, subrubro_id, marca_temporal, creado_por, estado_factura, factura_publicada) VALUES ('".utf8_decode($imagen)."','".utf8_decode($proveedor_id_proveedor)."','".utf8_decode($facturanum)."','".$fecha_reporte."','".utf8_decode($valor_subtotal)."',".utf8_decode($base_uno).",".utf8_decode($idretencion1).",'".utf8_decode($porcentaje_ret)."','".$valornumeroR."',".utf8_decode($base_dos).",".utf8_decode($idretencion2).",'".utf8_decode($porcentaje_ret2)."','".utf8_decode($valornumeroRA)."','".utf8_decode($valornumeroIVA)."','".utf8_decode($valornumero)."','".utf8_decode($totalpago)."','".utf8_decode($observaciones)."','".utf8_decode($rubro_id)."','".utf8_decode($subrubro_id)."','".utf8_decode($marca_temporal)."','".$creado_por."','".$estado_factura."','".$factura_publicada."')");
+		if ($select){
+			return true;
+			}else{return false;}
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
+/***************************************************************
+ *** FUNCION PARA GUARDAR **
+ ***************************************************************/
+    public static function actualizarocfacturacompra($items,$ultimafactura)
+    {
+        try {
+            $db       = Db::getConnect();
+            $dbselect = Db::getConnect();
+            //$campostraidos = $campos->getCampos();
+            $items = explode(",", $items);
+            foreach ($items as $key => $despachounico) {
+                $update = $db->prepare('UPDATE ordenescompra SET
+                                id_factura_compra=:id_factura_compra
+                                WHERE id=:despachounico');
+                $update->bindValue('id_factura_compra', utf8_decode($ultimafactura));
+                $update->bindValue('despachounico', utf8_decode($despachounico));
+                $update->execute();
+            }
+            return $ultimafactura;
+        } catch (PDOException $e) {
+            echo '{"error al guardar la configuraciónes ":{"text":' . $e->getMessage() . '}}';
+        }
+    }
+
+/***************************************************************
+ *** FUNCION PARA GUARDAR **
+ ***************************************************************/
+    public static function actualizaritemfacturacompra($items,$ultimafactura)
+    {
+        try {
+            $db       = Db::getConnect();
+            $dbselect = Db::getConnect();
+            //$campostraidos = $campos->getCampos();
+            $items = explode(",", $items);
+            foreach ($items as $key => $despachounico) {
+                $update = $db->prepare('UPDATE cotizaciones_item SET
+                                id_factura=:id_factura
+                                WHERE id=:despachounico');
+                $update->bindValue('id_factura', utf8_decode($ultimafactura));
+                $update->bindValue('despachounico', utf8_decode($despachounico));
+                $update->execute();
+            }
+            return $ultimafactura;
+        } catch (PDOException $e) {
+            echo '{"error al guardar la configuraciónes ":{"text":' . $e->getMessage() . '}}';
+        }
+    }
 /***************************************************************
 *** FUNCION PARA GUARDAR INGRESO DE PAGO DE ORDEN DE COMPRA **** 
 ***************************************************************/
@@ -1038,6 +1297,27 @@ public static function obtenerUltimosEgreso($id){
     	$marcas = $campos->getCampos();
 		foreach($marcas as $marca){
 			$mar = $marca['id_egreso_cuenta'];
+		}
+		return $mar;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/*******************************************************
+** FUNCION PARA MOSTRAR EL NOMBRE DEL PRODUCTO **
+********************************************************/
+public static function obtenerUltimafacturacompra($id){
+	try {
+		$db=Db::getConnect();
+		$sql = "SELECT id FROM facturas_compras_total WHERE proveedor_id_proveedor='".$id."' and factura_publicada='1' order by id desc limit 1";
+		$select=$db->query($sql);
+    	$camposs=$select->fetchAll();
+    	$campos = new Compras('',$camposs);
+    	$marcas = $campos->getCampos();
+		foreach($marcas as $marca){
+			$mar = $marca['id'];
 		}
 		return $mar;
 	}

@@ -150,6 +150,27 @@ public static function obtenerEntradasporcuenta($id){
 }
 
 /*******************************************************
+** FUNCION PARA MOSTRAR LAS ENTRDAS EN CAJA POR CUENTAS **
+********************************************************/
+public static function obtenerEntradaslegalizadas($id){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT IFNULL(sum(valor_ingreso),0) as Total FROM ingresos_caja WHERE caja_ppal='".$id."' and estado_ingreso='2'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Cajas('',$camposs);
+    	$marcas = $campos->getCampos();
+		foreach($marcas as $marca){
+			$mar = $marca['Total'];
+		}
+		return $mar;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/*******************************************************
 ** FUNCION PARA MOSTRAR LAS ENTRDAS EN CAJA **
 ********************************************************/
 public static function obtenerSalidaspor($id){
@@ -157,6 +178,27 @@ public static function obtenerSalidaspor($id){
 		$db=Db::getConnect();
 
 		$select=$db->query("SELECT IFNULL(sum(valor_egreso),0) as TotalSalidas FROM egresos_caja WHERE caja_ppal='".$id."'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Cajas('',$camposs);
+    	$marcas = $campos->getCampos();
+		foreach($marcas as $marca){
+			$mar = $marca['TotalSalidas'];
+		}
+		return $mar;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/*******************************************************
+** FUNCION PARA MOSTRAR LAS ENTRDAS EN CAJA **
+********************************************************/
+public static function obtenerSalidascontabilizadaspor($id){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT IFNULL(sum(valor_egreso),0) as TotalSalidas FROM egresos_caja WHERE caja_ppal='".$id."' and estado_egreso='2'");
     	$camposs=$select->fetchAll();
     	$campos = new Cajas('',$camposs);
     	$marcas = $campos->getCampos();

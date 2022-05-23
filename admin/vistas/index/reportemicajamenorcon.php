@@ -131,97 +131,12 @@ $FechaFinal30dias=$anoactual."-".$mesactual."-".$hoy." 23:59:0000";
 
 
 
-    <div class="col-md-6">
-          <!--<div class="box box-primary collapsed-box">-->
-         <div class="box box-primary">
-            <div class="box-header with-border">
-              <h3 class="box-title">Histórico Caja Menor <small> Actualizado al <?php 
-              date_default_timezone_set("America/Bogota");
-              $TiempoActual = date('Y-m-d');
-              echo(fechalarga($TiempoActual)); 
-              ?></small></h3>
-               
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
-                </button>
-                 
-              </div>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body" id="InformeVentas">
-              
-             
-       <table id="tablatrituradora" class="table  table-responsive table-striped table-bordered table-hover dataTables_borderWrap" style="width: 100%;font-size: 12px;">
-             
-          <thead>
-           
-               <tr style="background-color: #4f5962;color: white;">
-                <th>Movimientos caja <?php echo($anoactual); ?></th>
-                <?php 
-                
-                 for ($i=$ultimos3meses; $i <$tope ; $i++) { 
-                  setlocale(LC_ALL, 'es_ES');
-          $monthNum  = $i;
-$dateObj   = DateTime::createFromFormat('!m', $monthNum);
-$monthName = strftime('%B', $dateObj->getTimestamp());
-echo ("<th>".ucfirst($monthName."")."</th>");
-                }
-                 ?>
-              </tr>
-            </thead>
-            <tbody>
-
-            </tbody>
-              <tfoot>
-               <tr  class="success">
-                <td><strong>Total Ingresos </strong></td>
-                <?php 
-                for ($i=$ultimos3meses; $i <$tope ; $i++) { 
-                  $ventames1=Ingresosmesgeneral($i,$anoactual,$IdSesionCaja);
-                  $sumaventas1+=$ventames1;
-                  echo("<td><strong> $".number_format($ventames1,0)."</strong></td>");
-                }
-                 ?> 
-              </tr>
-               <tr  class="danger">
-                 <td><strong>Total Legalizado </strong></td>
-                <?php 
-                for ($i=$ultimos3meses; $i <$tope ; $i++) { 
-                  $ventames2=Egresosmesgeneral($i,$anoactual,$IdSesionCaja);
-                  $sumaventas2+=$ventames2;
-                  echo("<td><strong> $".number_format($ventames2,0)."</strong></td>");
-                }
-                 ?>
-              </tr>
-              <tr>
-                 <td><strong>Pendiente por Legalizar</strong></td>
-                <?php 
-                for ($i=$ultimos3meses; $i <$tope ; $i++) { 
-                  $ventames2=Egresosmesgeneral($i,$anoactual,$IdSesionCaja);
-                  $sumaventas2+=$ventames2;
-                  $ventames1=Ingresosmesgeneral($i,$anoactual,$IdSesionCaja);
-                  $sumaventas1+=$ventames1;
-                  $saldo=$ventames1-$ventames2;
-                  echo("<td><strong> $".number_format($saldo,0)."</strong></td>");
-                }
-                 ?>
-              </tr>
-             
-             
-            </tfoot>
-            </table>
-            </div>
-            <!-- /.box-footer -->
-          </div>
-          <!-- /.box -->
-        </div>
-        <!-- /.col -->
 
          <div class="col-md-6">
           <!--<div class="box box-primary collapsed-box">-->
          <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title"> <a href="?controller=gastos&&action=nuevo&&id_caja=<?php echo($IdSesionCaja) ?>" class="btn btn-success" style="float: right;"><i class="fa fa-file-text-o bigger-110 "></i> Subir Gasto</a></h3>
+              <h3 class="box-title"> Totales</h3>
                
               <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
@@ -263,7 +178,7 @@ echo ("<th>".ucfirst($monthName."")."</th>");
               <tr>
                 <td><strong>Saldo en Caja </strong></td>
                 <td><strong><?php echo ("$ ".number_format($saldofinal,0)) ?></strong></td>
-                <td colspan="2"><a href="?controller=index&&action=micajamenorcon&&id_caja=<?php echo($IdSesionCaja) ?>">Vista Ingresos/Egresos contabilizado</a></td>
+                <td colspan="2"><a href="?controller=index&&action=micajamenor&&id_caja=<?php echo($IdSesionCaja) ?>">Vista Ingresos/Egresos Pendientes Contabilidad</a></td>
               </tr>
              
              
@@ -280,7 +195,7 @@ echo ("<th>".ucfirst($monthName."")."</th>");
 
         <div class="col-md-12">
           
-              <div class="col-lg-12">
+              <div class="col-lg-5">
     <div class="card card-default">
       <div class="card-body">
         
@@ -323,7 +238,7 @@ echo ("<th>".ucfirst($monthName."")."</th>");
           <tbody>
             <?php
 
-$res=Ingresos::obtenerPagina($IdSesionCaja);
+$res=Ingresos::obtenerPaginacon($IdSesionCaja);
           $campos = $res->getCampos();
             foreach ($campos as $campo){
             $id_ingreso_caja = $campo['id_ingreso_caja'];
@@ -364,13 +279,8 @@ $res=Ingresos::obtenerPagina($IdSesionCaja);
             ?>
             <tr>
                <td id="listadoingresos"> 
-                  <?php if ($RolSesion != 4) {
-        ?>
-           <input type="checkbox" id="<?php echo $id_ingreso_caja; ?>" name="inputdespachos2" onclick="marcardespacho2(<?php echo ($IdSesionCaja) ?>)" style="cursor: pointer;">
-
-        <?php
-        echo($id_ingreso_caja);
-}?>
+                 
+                 <?php echo($id_ingreso_caja); ?>
                 </td>
              
                 <td><?php echo utf8_encode($fecha_ingreso) ?></td>
@@ -409,10 +319,8 @@ $res=Ingresos::obtenerPagina($IdSesionCaja);
     </div>
     </div>
 
-        </div>
-
-        <div class="col-md-12">
-              <div class="col-lg-12">
+        
+              <div class="col-lg-7">
     <div class="card card-default">
       <div class="card-body">
           <!-- <a href="?controller=gastos&&action=nuevo" class="btn btn-success" style="float: right;"><i class="fa fa-file-text-o bigger-110 "></i> Crear Egreso</a> -->
@@ -466,7 +374,7 @@ $res=Ingresos::obtenerPagina($IdSesionCaja);
           <tbody>
             <?php
 
-          $res=Gastos::obtenerPagina($IdSesionCaja);
+          $res=Gastos::obtenerPaginacon($IdSesionCaja);
           $campos = $res->getCampos();
             foreach ($campos as $campo){
             $id_egreso_caja = $campo['id_egreso_caja'];
@@ -524,11 +432,6 @@ $res=Ingresos::obtenerPagina($IdSesionCaja);
             <tr>
                  <td id="listadoegresos"> 
                   <?php echo($id_egreso_caja);?>
-                  <?php if ($RolSesion != 4) {
-        ?>
-           <input type="checkbox" id="<?php echo $id_egreso_caja; ?>" name="inputdespachos" onclick="marcardespacho(<?php echo ($IdSesionCaja) ?>)" style="cursor: pointer;">
-        <?php
-}?>
                 </td>
                 <td><?php echo utf8_encode($fecha_egreso) ?></td>
                  <td><?php Echo utf8_encode("$ ".number_format($valor_egreso));  ?></td>

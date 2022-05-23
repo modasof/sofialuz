@@ -51,6 +51,54 @@ class ComprasController
         require_once 'vistas/compras/todospormes.php';
     }
 
+    public function todosporproveedorespera()
+    {
+        if (isset($_POST['daterange'])) {
+            $fechaform = $_POST['daterange'];
+        } elseif (isset($_GET['daterange'])) {
+            $fechaform = $_GET['daterange'];
+        }
+        $id = $_GET['idproveedor'];
+
+        $campos = Compras::todosporproveedor($id);
+        require_once 'vistas/compras/todosporproveedor.php';
+    }
+
+    public function facturascompraspormes()
+    {
+        if (isset($_POST['daterange'])) {
+            $fechaform = $_POST['daterange'];
+        } elseif (isset($_GET['daterange'])) {
+            $fechaform = $_GET['daterange'];
+        }
+        $campos = Compras::todosfacturapormes();
+        require_once 'vistas/compras/todosfacturaspormes.php';
+    }
+
+    public function detallefacturacompra()
+    {
+        if (isset($_POST['factura'])) {
+            $id = $_POST['factura'];
+        } elseif (isset($_GET['factura'])) {
+            $id = $_GET['factura'];
+        }
+
+        $campos = Compras::detallefacturacompra($id);
+        require_once 'vistas/compras/detallefacturacompra.php';
+    }
+
+    public function pagofacturacompra()
+    {
+        if (isset($_POST['factura'])) {
+            $id = $_POST['factura'];
+        } elseif (isset($_GET['factura'])) {
+            $id = $_GET['factura'];
+        }
+
+        $campos = Compras::detallefacturacompra($id);
+        require_once 'vistas/compras/pagofacturacompra.php';
+    }
+
     public function cxpusuario()
     {
         $id     = $_GET['id'];
@@ -105,6 +153,62 @@ class ComprasController
         (isset($_GET['des'])) ? $getdespacho = $_GET['des'] : $getdespacho = '';
 
         require_once 'vistas/compras/gestioncomprascredito.php';
+    }
+
+/*************************************************************/
+/* FUNCION PARA MOSTRAR EL LISTADO DE ID A CAMBIAR DE ESTADO*/
+/*************************************************************/
+
+    public function cargarfactura()
+    {
+
+        (isset($_GET['id'])) ? $getid = $_GET['id'] : $getid = '';
+
+        (isset($_GET['des'])) ? $getdespacho = $_GET['des'] : $getdespacho = '';
+
+        require_once 'vistas/compras/relacionarfactura.php';
+    }
+
+    /*************************************************************/
+/* FUNCION PARA MOSTRAR EL LISTADO DE ID A CAMBIAR DE ESTADO*/
+/*************************************************************/
+
+    public function editarfacturacompra()
+    {
+
+        (isset($_GET['id'])) ? $getid           = $_GET['id'] : $getid           = '';
+        (isset($_GET['des'])) ? $getdespacho    = $_GET['des'] : $getdespacho    = '';
+        (isset($_GET['factura'])) ? $Selfactura = $_GET['factura'] : $Selfactura = '';
+
+        require_once 'vistas/compras/editarfacturacompra.php';
+    }
+
+    /*************************************************************/
+/* FUNCION PARA MOSTRAR EL LISTADO DE ID A CAMBIAR DE ESTADO*/
+/*************************************************************/
+
+    public function editarfacturacompracp()
+    {
+
+        (isset($_GET['id'])) ? $getid           = $_GET['id'] : $getid           = '';
+        (isset($_GET['des'])) ? $getdespacho    = $_GET['des'] : $getdespacho    = '';
+        (isset($_GET['factura'])) ? $Selfactura = $_GET['factura'] : $Selfactura = '';
+
+        require_once 'vistas/compras/editarfacturacompracp.php';
+    }
+
+/*************************************************************/
+/* FUNCION PARA MOSTRAR EL LISTADO DE ID A CAMBIAR DE ESTADO*/
+/*************************************************************/
+
+    public function cargarfacturacp()
+    {
+
+        (isset($_GET['id'])) ? $getid = $_GET['id'] : $getid = '';
+
+        (isset($_GET['des'])) ? $getdespacho = $_GET['des'] : $getdespacho = '';
+
+        require_once 'vistas/compras/relacionarfacturacp.php';
     }
 
 /*************************************************************/
@@ -409,6 +513,296 @@ class ComprasController
 
     }
 
+    /*************************************************************/
+/* FUNCION PARA GUARDADO PAGO TEMPORAL */
+/*************************************************************/
+    public function ivamultiple()
+    {
+
+        $ivasel  = $_GET['ivasel'];
+        $listaid = $_GET['listaid'];
+
+        (isset($_GET['des'])) ? $getdespacho = $_GET['des'] : $getdespacho = '';
+
+        $items = explode(",", $listaid);
+
+        foreach ($items as $key => $ordenid) {
+
+            if ($ivasel == "NA") {
+                $valuecero = 0;
+                $res       = Compras::actualizarivaitem($ordenid, $valuecero, $valuecero);
+            } else {
+
+                $consultasubtotal = Compras::consultarsubtotalpor($ordenid);
+                $iva_porcentual   = $ivasel / 100;
+                $valorivafinal    = $consultasubtotal * $iva_porcentual;
+                $res              = Compras::actualizarivaitem($ordenid, $ivasel, $valorivafinal);
+
+            }
+
+        }
+
+        if ($res) {
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\");});</script>";
+        } else {
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+        }
+        $this->cargarfactura();
+
+    }
+
+/*************************************************************/
+/* FUNCION PARA ELIMINAR  LLAMADO DESDE ROUTING.PHP*/
+/*************************************************************/
+    public function descartar()
+    {
+        $id                                  = $_GET['id'];
+        (isset($_GET['des'])) ? $getdespacho = $_GET['des'] : $getdespacho = '';
+
+        $res = Compras::descartarpor($id);
+        if ($res) {
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos descartados!\", \"Se han descartado correctamente los datos\", \"success\");});</script>";
+        } else {
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al descartar!\", \"No se han descartado correctamente los datos\", \"error\");});</script>";
+        }
+        $this->cargarfactura();
+    }
+
+    /*************************************************************/
+/* FUNCION PARA ELIMINAR  LLAMADO DESDE ROUTING.PHP*/
+/*************************************************************/
+    public function descartarinversa()
+    {
+        $id                                  = $_GET['id'];
+        (isset($_GET['des'])) ? $getdespacho = $_GET['des'] : $getdespacho = '';
+
+        $res = Compras::descartarinversapor($id);
+        if ($res) {
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos Agregados!\", \"Se han agregado correctamente los datos\", \"success\");});</script>";
+        } else {
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al agregar!\", \"No se han agregado correctamente los datos\", \"error\");});</script>";
+        }
+        $this->cargarfactura();
+    }
+
+/*************************************************************/
+/* FUNCION PARA ACTUALIZAR*/
+/*************************************************************/
+    public function guardarfacturacompras()
+    {
+
+/*=============================================================
+=            Guardado de Datos Factura Compra           =
+=============================================================*/
+
+        $id                                  = $_GET['id'];
+        (isset($_GET['des'])) ? $getdespacho = $_GET['des'] : $getdespacho = '';
+
+        if (empty($_FILES['imagen']['name'])) {
+            $ruta_imagen = $_POST['ruta1'];
+        } else {
+            $ruta_imagen = $this->subir_fichero('images/facturascompras', 'imagen');
+        }
+
+        $proveedor_id_proveedor = $_POST['proveedor_id_proveedor'];
+        $fecha_reporte          = $_POST['fecha_reporte'];
+        $marca_temporal         = $_POST['marca_temporal'];
+        $creado_por             = $_POST['creado_por'];
+        $estado_factura         = $_POST['estado_factura'];
+        $factura_publicada      = $_POST['factura_publicada'];
+        $rubro_id               = $_POST['rubro_id'];
+        $subrubro_id            = $_POST['subrubro_id'];
+        $observaciones          = $_POST['observaciones'];
+        $facturanum             = $_POST['facturanum'];
+        $valor_subtotal         = $_POST['valor_subtotal_txt'];
+        $valor_iva              = $_POST['valor_iva_txt'];
+        $porcentaje_ret         = $_POST['porcentaje_ret'];
+        $base_uno               = $_POST['base_uno'];
+        $valor_ret              = $_POST['valor_ret'];
+        $porcentaje_ret2        = $_POST['porcentaje_ret2'];
+        $valor_ret2             = $_POST['valor_ret2'];
+        $base_dos               = $_POST['base_dos'];
+        $valor_descuentos       = $_POST['valor_descuentos'];
+        $listacotizaciones      = $_POST['listacotizaciones'];
+        $listaordenescompra     = $_POST['listaordenescompra'];
+        $factura_de             = $_POST['factura_de'];
+
+        $arreglo1 = explode("-", $porcentaje_ret);
+        $arreglo2 = explode("-", $porcentaje_ret2);
+
+        $idretencion1    = $arreglo1[0];
+        $valorretencion1 = $arreglo1[1];
+
+        $idretencion2    = $arreglo2[0];
+        $valorretencion2 = $arreglo2[1];
+
+        $S1           = str_replace(".", "", $valor_subtotal);
+        $S2           = str_replace(" ", "", $S1);
+        $valor_finalS = str_replace("$", "", $S2);
+        $valornumeroS = (int) $valor_finalS;
+
+        $B1                = str_replace(".", "", $base_uno);
+        $B2                = str_replace(" ", "", $B1);
+        $valor_final_base1 = str_replace("$", "", $B2);
+        $valornumerobase1  = (int) $valor_final_base1;
+
+        $BB1               = str_replace(".", "", $base_dos);
+        $BB2               = str_replace(" ", "", $BB1);
+        $valor_final_base2 = str_replace("$", "", $BB2);
+        $valornumerobase2  = (int) $valor_final_base2;
+
+         $retefuente1 = $valorretencion1 * $valornumerobase1;
+         $redondearrtf1= round($retefuente1,0);
+        $retefuente2 = $valorretencion2 * $valornumerobase2;
+        $redondearrtf2= round($retefuente2,0);
+
+        $res = Compras::guardardatosfacturacompra($ruta_imagen, $proveedor_id_proveedor, $facturanum, $fecha_reporte, $valornumeroS, $valornumerobase1, $idretencion1, $valorretencion1, $redondearrtf1, $valornumerobase2, $idretencion2, $valorretencion2, $redondearrtf2, $valor_iva, $valor_descuentos, $observaciones, $rubro_id, $subrubro_id, $marca_temporal, $creado_por, $estado_factura, $factura_publicada, $factura_de);
+
+        $ultimafactura = Compras::obtenerUltimafacturacompra($proveedor_id_proveedor);
+
+        // Actualizamos las ordenes de compra con el id_factura_compra
+        $res = Compras::actualizarocfacturacompra($listaordenescompra, $ultimafactura);
+
+        // Actualizamos los pagos realizados con el id_factura_compra
+        $res = Compras::actualizarocfacturacomprapagos($listaordenescompra, $ultimafactura);
+
+        // Actualizamos los item con el id_factura_compra
+
+        if ($listacotizaciones != "no-aplica") {
+            $res = Compras::actualizaritemfacturacompra($listacotizaciones, $ultimafactura);
+        }
+
+        if ($res) {
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina\", \"success\").then(function(){window.location='?controller=compras&&action=detallefacturacompra&&factura=" . $ultimafactura . "&&des=" . $getdespacho . "&&id=" . $id . "';});});</script>";
+        } else {
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+        }
+        //$this->detallefacturacompra($ultimafactura);
+    }
+
+/*************************************************************/
+/* FUNCION PARA ACTUALIZAR*/
+/*************************************************************/
+    public function actualizarfacturacompras()
+    {
+
+/*=============================================================
+=            Guardado de Datos Factura Compra           =
+=============================================================*/
+
+        $id                                  = $_GET['id'];
+        (isset($_GET['des'])) ? $getdespacho = $_GET['des'] : $getdespacho = '';
+        $factura                             = $_GET['factura'];
+
+        if (empty($_FILES['imagen']['name'])) {
+            $ruta_imagen = $_POST['ruta1'];
+        } else {
+            $ruta_imagen = $this->subir_fichero('images/facturascompras', 'imagen');
+        }
+
+        $proveedor_id_proveedor = $_POST['proveedor_id_proveedor'];
+        $fecha_reporte          = $_POST['fecha_reporte'];
+        $marca_temporal         = $_POST['marca_temporal'];
+        $creado_por             = $_POST['creado_por'];
+        $estado_factura         = $_POST['estado_factura'];
+        $factura_publicada      = $_POST['factura_publicada'];
+        $rubro_id               = $_POST['rubro_id'];
+        $subrubro_id            = $_POST['subrubro_id'];
+        $observaciones          = $_POST['observaciones'];
+        $facturanum             = $_POST['facturanum'];
+        $valor_subtotal         = $_POST['valor_subtotal_txt'];
+        $valor_iva              = $_POST['valor_iva_txt'];
+        $porcentaje_ret         = $_POST['porcentaje_ret'];
+        $base_uno               = $_POST['base_uno'];
+        $valor_ret              = $_POST['valor_ret'];
+        $porcentaje_ret2        = $_POST['porcentaje_ret2'];
+        $valor_ret2             = $_POST['valor_ret2'];
+        $base_dos               = $_POST['base_dos'];
+        $valor_descuentos       = $_POST['valor_descuentos'];
+        $listacotizaciones      = $_POST['listacotizaciones'];
+        $listaordenescompra     = $_POST['listaordenescompra'];
+
+        $arreglo1 = explode("-", $porcentaje_ret);
+        $arreglo2 = explode("-", $porcentaje_ret2);
+
+        $idretencion1    = $arreglo1[0];
+        $valorretencion1 = $arreglo1[1];
+
+        $idretencion2    = $arreglo2[0];
+        $valorretencion2 = $arreglo2[1];
+
+        $S1           = str_replace(".", "", $valor_subtotal);
+        $S2           = str_replace(" ", "", $S1);
+        $valor_finalS = str_replace("$", "", $S2);
+        $valornumeroS = (int) $valor_finalS;
+
+        $B1                = str_replace(".", "", $base_uno);
+        $B2                = str_replace(" ", "", $B1);
+        $valor_final_base1 = str_replace("$", "", $B2);
+        $valornumerobase1  = (int) $valor_final_base1;
+
+        $BB1               = str_replace(".", "", $base_dos);
+        $BB2               = str_replace(" ", "", $BB1);
+        $valor_final_base2 = str_replace("$", "", $BB2);
+        $valornumerobase2  = (int) $valor_final_base2;
+
+        $retefuente1 = $valorretencion1 * $valornumerobase1;
+         $redondearrtf1= round($retefuente1,0);
+        $retefuente2 = $valorretencion2 * $valornumerobase2;
+        $redondearrtf2= round($retefuente2,0);
+
+        $res = Compras::actualizardatosfacturacompra($ruta_imagen, $proveedor_id_proveedor, $facturanum, $fecha_reporte, $valornumeroS, $valornumerobase1, $idretencion1, $valorretencion1, $redondearrtf1, $valornumerobase2, $idretencion2, $valorretencion2, $redondearrtf2, $valor_iva, $valor_descuentos, $observaciones, $rubro_id, $subrubro_id, $marca_temporal, $creado_por, $estado_factura, $factura_publicada, $factura);
+
+        // Actualizamos las ordenes de compra con el id_factura_compra
+        $res = Compras::actualizarocfacturacompra($listaordenescompra, $factura);
+
+        // Actualizamos los pagos realizados con el id_factura_compra
+        $res = Compras::actualizarocfacturacomprapagos($listaordenescompra, $factura);
+
+        // Actualizamos los item con el id_factura_compra
+
+        if ($listacotizaciones != "no-aplica") {
+            $res = Compras::actualizaritemfacturacompra($listacotizaciones, $factura);
+        }
+
+        if ($res) {
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina\", \"success\").then(function(){window.location='?controller=compras&&action=detallefacturacompra&&factura=" . $factura . "&&des=" . $getdespacho . "&&id=" . $id . "';});});</script>";
+        } else {
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+        }
+        //$this->detallefacturacompra($ultimafactura);
+    }
+
+/*************************************************************/
+/* FUNCION PARA ACTUALIZAR*/
+/*************************************************************/
+    public function guardarpagoanticipo()
+    {
+
+/*=============================================================
+=            Guardado de Datos Factura Compra           =
+=============================================================*/
+
+        $factura = $_GET['factura'];
+
+        $valor              = $_POST['valor'];
+        $egreso_id          = $_POST['egreso_id'];
+        $fecha_registro     = $_POST['fecha_registro'];
+        $estado_pago        = $_POST['estado_pago'];
+        $creado_por         = $_POST['creado_por'];
+        $marca_temporal     = $_POST['marca_temporal'];
+        $factura_id_factura = $_POST['factura_id_factura'];
+
+        $res = Compras::guardarpagoanticipo($valor, $egreso_id, $fecha_registro, $estado_pago, $creado_por, $marca_temporal, $factura_id_factura);
+
+        if ($res) {
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina\", \"success\").then(function(){window.location='?controller=compras&&action=pagofacturacompra&&factura=" . $factura . "';});});</script>";
+        } else {
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+        }
+        //$this->detallefacturacompra($ultimafactura);
+    }
+
 /*************************************************************/
 /* FUNCION PARA ACTUALIZAR*/
 /*************************************************************/
@@ -462,6 +856,67 @@ class ComprasController
 
         if ($res) {
             echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\");});</script>";
+        } else {
+            echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
+        }
+        $this->showtodos();
+    }
+
+/*************************************************************/
+/* FUNCION PARA ACTUALIZAR*/
+/*************************************************************/
+    public function guardarpagofactura()
+    {
+        $factura = $_GET['factura'];
+
+/*=============================================================
+=            Registro Pago de Factura           =
+=============================================================*/
+
+        $cuenta_id_cuenta       = $_POST['cuenta_id_cuenta'];
+        $tipo_egreso            = $_POST['tipo_egreso'];
+        $cuenta_beneficiada     = $_POST['cuenta_beneficiada'];
+        $proveedor_id_proveedor = $_POST['proveedor_id_proveedor'];
+        $beneficiario           = $_POST['beneficiario'];
+        $id_rubro               = $_POST['id_rubro'];
+        $id_subrubro            = $_POST['id_subrubro'];
+        $caja_beneficiada       = $_POST['caja_beneficiada'];
+        $egreso_en              = $_POST['egreso_en'];
+        $cheque_id_cheque       = $_POST['cheque_id_cheque'];
+        $valor_egreso           = $_POST['valor_egreso'];
+        $observaciones          = $_POST['observaciones'];
+        $estado_egreso          = $_POST['estado_egreso'];
+        $egreso_publicado       = $_POST['egreso_publicado'];
+        $marca_temporal         = $_POST['marca_temporal'];
+        $fecha_egreso           = $_POST['fecha_egreso'];
+        $creado_por             = $_POST['creado_por'];
+        $relacion_id_relacion   = $_POST['relacion_id_relacion'];
+
+        $V1=str_replace(".","",$valor_egreso);
+        $V2=str_replace(" ", "", $V1);
+        $valor_final=str_replace("$", "", $V2);
+        $valornumero=(int) $valor_final;
+
+/*=============================================================
+=            Guardado de pago Otros -  Orden de compra            =
+=============================================================*/
+        if (empty($_FILES['imagen']['name'])) {
+            $ruta_imagen = $_POST['ruta2'];
+        } else {
+            $ruta_imagen = $this->subir_ficherodos('images/egresoscuenta', 'imagen');
+        }
+
+        $res = Compras::guardarpagofactura($cuenta_id_cuenta, $ruta_imagen, $tipo_egreso, $cuenta_beneficiada, $proveedor_id_proveedor, $beneficiario, $id_rubro, $id_subrubro, $caja_beneficiada, $egreso_en, $cheque_id_cheque, $valornumero, $observaciones, $estado_egreso, $egreso_publicado, $marca_temporal, $fecha_egreso, $creado_por, $relacion_id_relacion);
+
+/*=============================================================
+=           Actualiza detalle Pagos actura           =
+=============================================================*/
+        $ultimoegreso = Compras::obtenerUltimosEgreso($cuenta_id_cuenta);
+
+     $res = Compras::guardarpagoanticipo($valornumero, $ultimoegreso, $fecha_egreso, $estado_egreso, $creado_por, $marca_temporal, $factura);
+
+        if ($res) {
+            echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina\", \"success\").then(function(){window.location='?controller=compras&&action=pagofacturacompra&&factura=" . $factura . "';});});</script>";
         } else {
             echo "<script>jQuery(function(){Swal.fire(\"¡Error al actualizar!\", \"Hubo un error al actualizar, comunique con el administrador del sistema\", \"error\");});</script>";
         }
@@ -525,8 +980,7 @@ class ComprasController
 
         $sumapagos = Compras::sumavaloresrelacion($relacion_id_relacion);
 
-        $res = Compras::Actualizarlopagado($sumapagos,$relacion_id_relacion);
-
+        $res = Compras::Actualizarlopagado($sumapagos, $relacion_id_relacion);
 
 /*=============================================================
 =            Guardado Valores de factura           =

@@ -94,6 +94,8 @@ date_default_timezone_set("America/Bogota");
           <input type="hidden" name="estado_cotizacion" value="1">
           <input type="hidden" name="ordencompra_num" value="0">
           <input type="hidden" name="cantidadcot" value="0">
+          <input type="hidden" name="valor_iva" value="0">
+           <input type="hidden" name="iva" value="0">
           <input type="hidden" name="insumo_id_insumo" value="0">
           <input type="hidden" name="servicio_id_servicio" value="0">
           <input type="hidden" name="equipo_id_equipo" value="0">
