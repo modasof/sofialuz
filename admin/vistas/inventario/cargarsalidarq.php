@@ -141,12 +141,14 @@ foreach ($items as $key => $despachounico) {
     $cant_anteriores     = Inventario::sqldetallesalida($despachounico);
     $cant_anteriorestemp = Inventario::sqldetallesalidatemporal($despachounico, $fechadia);
 
-    $pendiente = $cantidad - $cant_anteriores;
+
+
+    $pendiente = $cantidad - $cant_anteriores - $cant_anteriorestemp;
     $sumatotal += $cantidad;
     $sumaanteriores += $cant_anteriores;
     $sumaanteriorestemp += $cant_anteriorestemp;
-    $pendientetotal      = $sumatotal - $sumaanteriores;
-    $valorpromedio       = Valorpromedioinsumo($insumo_id_insumo);
+    $pendientetotal      = $sumatotal - $sumaanteriores-$sumaanteriorestemp;
+    $valorpromedio       = Valorpromedioinsumo($insumo_id_insumo,$rqprincipal,$despachounico);
     $totalvalorentregado = $valorpromedio * $sumaanteriorestemp;
 
     ?>
@@ -265,7 +267,7 @@ if ($sumaanteriorestemp == 0) {
     $contadorsumainsumo += $valorinsumos;
 
     ?>
-    <input type="hidden" value="<?php echo (round($valorpromedio, 0)); ?>" name="valor_entregado">
+<input type="hidden" value="<?php echo (round($valorpromedio, 0)); ?>" name="valor_entregado">
 
 <input disabled="" id="campocarga<?php echo ($despachounico); ?>" class='input input-group-sm' type="text" value="<?php echo ($cant_anteriorestemp); ?>">
  <a href="?controller=inventario&action=deletedellsalidatemp&&id=<?php echo ($idreq); ?>&&iddelete=<?php echo ($despachounico); ?>&&des=<?php echo ($itemsget); ?>"><i class="fa fa-close text-danger"></i></a>
@@ -282,11 +284,9 @@ if ($cant_anteriorestemp == 0) {
             </script>
 
             <?php
-} elseif ($cant_anteriorestemp < $pendiente) {
+} elseif ($cant_anteriorestemp<$pendiente) {
         echo ("<span><small class='text-success'  id='<?php echo($despachounico); ?>msjporitem1'>Entrega Parcial</small></span>");
-    } elseif ($cant_anteriorestemp > $pendiente) {
-        echo ("<span><small class='text-danger' id='<?php echo($despachounico); ?>msjporitem1'>Supera el Valor</small></span>");
-    } elseif ($cant_anteriorestemp == $pendiente) {
+    } elseif ($pendiente==0) {
         echo ("<span><small class='text-success' id='<?php echo($despachounico); ?>msjporitem1'>Entrega Completa</small></span>");
     }
     ?>
@@ -515,8 +515,11 @@ foreach ($rubros as $campo) {
 <script type="text/javascript">
 $(document).ready(function(){
 
-
+        //2
         var recibido = $("#inputcantidadrecibida").val();
+
+
+        //10
         var pendiente = $("#inputcantidacomprada").val();
 
        // Verificar que las cantidades recibidas no superen las compradas.
@@ -532,7 +535,7 @@ $(document).ready(function(){
             addOption2(mySelect,"Entrega Parcial","Entrega Parcial");
 
         }
-        else if(recibido==pendiente){
+        else if(pendiente==0){
              $("#botonguardar").slideToggle(100);
             var mySelect = document.getElementById("estadoOC");
         var addOption2 = function(select,txt,value){

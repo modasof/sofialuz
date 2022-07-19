@@ -2384,7 +2384,7 @@ public static function Consultavalorm3recorrido($id_destino_origen,$id_destino_d
 	try {
 		$db=Db::getConnect();
 
-		$select=$db->query("SELECT  IFNULL(sum(valor_m3km),0) as valor FROM clientes_precios WHERE origen_id='".$id_destino_origen."' and destino_id='".$id_destino_destino."' and cliente_id='".$cliente_id_cliente."' and canal_venta='fletes'");
+		$select=$db->query("SELECT  IFNULL(sum(valor_m3km),0) as valor FROM clientes_precios WHERE origen_id='".$id_destino_origen."' and destino_id='".$id_destino_destino."' and cliente_id='".$cliente_id_cliente."' and canal_venta='fletes' and precio_publicado='1'");
     	$camposs=$select->fetchAll();
     	$campos = new Reportes('',$camposs);
     	$marcas = $campos->getCampos();
@@ -2408,7 +2408,7 @@ public static function Consultakmrecorrido($id_destino_origen,$id_destino_destin
 	try {
 		$db=Db::getConnect();
 
-		$select=$db->query("SELECT  IFNULL(sum(km_ruta),0) as valor FROM clientes_precios WHERE origen_id='".$id_destino_origen."' and destino_id='".$id_destino_destino."' and cliente_id='".$cliente_id_cliente."' and canal_venta='fletes'");
+		$select=$db->query("SELECT  IFNULL(sum(km_ruta),0) as valor FROM clientes_precios WHERE origen_id='".$id_destino_origen."' and destino_id='".$id_destino_destino."' and cliente_id='".$cliente_id_cliente."' and canal_venta='fletes' and precio_publicado='1'");
     	$camposs=$select->fetchAll();
     	$campos = new Reportes('',$camposs);
     	$marcas = $campos->getCampos();

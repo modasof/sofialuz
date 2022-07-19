@@ -221,7 +221,7 @@ $mediopago = ObtenerMediopago($idproveedor, "1");
       <div class="row">
         <div class="col-xs-12 table-responsive">
           <form action="?controller=requisicionesitems&action=guardarocompra" method="post" id="formularioppal">
-  <button id="btncrearorden" style="display:none;"  onclick="submitform(); return false;" type="submit" class="btn btn-success btn-xs pull-right"><i class="fa fa-check"></i> Autorizar Orden
+  <button id="btncrearorden"   onclick="submitform(); return false;" type="submit" class="btn btn-success btn-xs pull-right"><i class="fa fa-check"></i> Autorizar Orden
   </button>
 <?php
 date_default_timezone_set("America/Bogota");
@@ -730,15 +730,15 @@ echo ($mediopago);
 <script>
   $(document).ready(function(){
    
-        var totalcotizaco = $("#sumatotalcotizado1").val();
-        var totaloriginal = $("#sumarcantidadfinal").val();
+       // var totalcotizaco = $("#sumatotalcotizado1").val();
+       // var totaloriginal = $("#sumarcantidadfinal").val();
 
-       if (totalcotizaco==0 && totaloriginal==0) {
-              $("#btncrearorden").hide("slow");
-        }
-        else if (totalcotizaco==totaloriginal){
-                $("#btncrearorden").slideToggle(100); 
-        }
+      // if (totalcotizaco==0 && totaloriginal==0) {
+             // $("#btncrearorden").hide("slow");
+        //}
+        //else if (totalcotizaco==totaloriginal){
+        //        $("#btncrearorden").slideToggle(100); 
+       // }
 });
 </script>
 <script>

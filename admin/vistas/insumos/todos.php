@@ -50,7 +50,7 @@ include_once 'modelos/categoriainsumos.php';
               <tr style="background-color: #4f5962;color: white;">
               <th>Insumo</th>
               <th>Categoría</th>
-              <th>Vr. Promedio</th>
+              <th>Vr. Máximo</th>
               <th>Entradas</th>
               <th>Salidas</th>
               <th>Saldo</th>
@@ -62,7 +62,7 @@ include_once 'modelos/categoriainsumos.php';
             <tr>
               <th>Insumo</th>
               <th>Categoría</th>
-               <th>Vr. Promedio</th>
+                <th>Vr. Máximo</th>
               <th>Entradas</th>
               <th>Salidas</th>
               <th>Saldo</th>
@@ -86,7 +86,7 @@ foreach ($campos as $campo) {
     $SalidasIns         = SalidasInsumo($id);
     $SaldoInsumo        = $EntradasIns - $SalidasIns;
     $Unidad             = Unidadesmed::obtenerNombre($unidadmedida_id);
-    $valorpromedio      = Valorpromedioinsumo($id);
+    $valorpromedio      = Valormaximoinsumo($id);
     if ($categoriainsumo_id == 0) {
         $nombrecategoria = "";
     } else {

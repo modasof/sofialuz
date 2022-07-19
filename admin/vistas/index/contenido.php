@@ -175,7 +175,7 @@ else
 
             <script>
     $(function() {
-Command: toastr["success"]("<?php echo($detalle."<br/>Fecha:".$marca_temporal); ?><br /><br /><button type='button' onclick='myFunction<?php echo($id); ?>(<?php echo($id); ?>,<?php echo($IdSesion); ?>)' class='btn btn-danger'>Ok</button>", "<?php echo($nomusuariocreador); ?>")
+Command: toastr["success"]("<?php echo($detalle."<br/>Fecha:".$marca_temporal); ?><br /><br /><button type='button' onclick='myFunction<?php echo($id); ?>(<?php echo($id); ?>,<?php echo($IdSesion); ?>)' class='btn btn-danger'>Ok</button><button type='button' onclick='myFunctioncerrar<?php echo($id); ?>(<?php echo($IdSesion); ?>)' class='btn btn-danger'>Cerrar todas</button>", "<?php echo($nomusuariocreador); ?>")
 
 toastr.options = {
   "closeButton": true,
@@ -202,6 +202,12 @@ toastr.options = {
 <script>
 function myFunction<?php echo($id); ?>(id,usuario) {
   window.location.href="?controller=usuarios&&action=notificacionleida&&id="+id+"&&marcadopor="+usuario;
+  //alert("Notificación Marcada como leída");
+}
+</script>
+<script>
+function myFunctioncerrar<?php echo($id); ?>(usuario) {
+  window.location.href="?controller=usuarios&&action=notificacionleidatodas&&marcadopor="+usuario;
   //alert("Notificación Marcada como leída");
 }
 </script>

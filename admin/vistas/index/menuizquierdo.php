@@ -69,6 +69,7 @@ foreach($campos as $campo){
   $m_salidasdetalleinv=$campo['m_salidasdetalleinv'];
   $m_inventario=$campo['m_inventario'];
   $m_cuentasxpagarusuario=$campo['m_cuentasxpagarusuario'];
+  $m_retenciones = $campo['m_retenciones'];
 
  
 }
@@ -111,6 +112,10 @@ foreach($campos as $campo){
 
               <?php if ($m_documentos=="Si") { ?>
                 <li class=""><a href="?controller=documentos&&action=todos"><i class="fa fa-circle-o"></i> Tipo documentos</a></li>
+           <?php } ?>
+
+            <?php if ($m_retenciones=="Si") { ?>
+          <li><a href="?controller=retefuente&&action=todos"><i class="fa fa-circle-o"></i> Retefuente</a></li>
            <?php } ?>
 
              <?php if ($m_proyectos=="Si") { ?>

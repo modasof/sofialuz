@@ -58,6 +58,16 @@ class UsuariosController {
 	}
 
 
+/*************************************************************/
+/* FUNCION PARA MODIFICAR  LLAMADO DESDE ROUTING.PHP*/
+/*************************************************************/
+	function notificacionleidatodas() {
+		
+		$marcadopor = $_GET['marcadopor'];
+		$campos = Usuarios::notificacionleidatodas($marcadopor);
+		require_once 'vistas/index/contenido.php';
+	}
+
 
 /*************************************************************/
 /* FUNCION PARA MODIFICAR  LLAMADO DESDE ROUTING.PHP*/

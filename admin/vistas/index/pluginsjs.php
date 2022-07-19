@@ -1,3 +1,7 @@
+<?php 
+
+ $RolSesion = $_SESSION['IdRol'];
+ ?>
 <!-- jQuery 2.2.3 -->
 <script src="plugins/jquery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
@@ -56,15 +60,25 @@
 
 
 
-
+<?php 
+   if ($RolSesion==10) {
+      ?> 
  <script>
-    $(function() {
-//Swal.fire(
- // 'Good job!',
- // 'You clicked the button!',
- // 'success'
-//)
-
-});
+   var str = "21 de Julio del 2022";
+   var result = str.bold();
+   var str2 = "NO ESTARÁN";
+   var result2 = str2.bold();
+ Swal.fire(
+  'Alerta Informativa Jefe Logística',
+  'A partir del '+ result +' los reportes que no se hagan en el mismo día '+result2+' contemplados en la liquidación de horas del mes.',
+  'info'
+)
 </script>
+
+
+      <?php
+   }
+ ?>
+
+
 

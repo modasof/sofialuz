@@ -79,14 +79,26 @@ function Cotizacionesporcantdeequipos($item,$requisicion,$equipo,$estado){
 	}
 
 
-function Valorpromedioinsumo($insumo){
+function Valorpromedioinsumo($insumo_id_insumo,$rqprincipal,$despachounico){
 	$db = Db::getConnect();
 	//$mesactual = date("n");
-	$select = $db->prepare("SELECT AVG(vr_unitario) as valorpromedio FROM cotizaciones_item WHERE insumo_id_insumo='".$insumo."'");
+	$select = $db->prepare("SELECT vr_unitario FROM cotizaciones_item WHERE insumo_id_insumo='".$insumo_id_insumo."' and requisicion_id='".$rqprincipal."' and item_id='".$despachounico."'");
 	$select->execute();
 	$valor = $select->fetchAll(); 
 	foreach($valor as $campo){
-		$valorpromedio = $campo['valorpromedio'];
+		$valorpromedio = $campo['vr_unitario'];
+		}
+	return $valorpromedio;
+	}
+
+function Valormaximoinsumo($insumo_id_insumo){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$select = $db->prepare("SELECT MAX(vr_unitario) as resultado FROM cotizaciones_item WHERE insumo_id_insumo='".$insumo_id_insumo."'");
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$valorpromedio = $campo['resultado'];
 		}
 	return $valorpromedio;
 	}

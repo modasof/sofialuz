@@ -6,8 +6,10 @@ include_once 'modelos/proyectos.php';
 include_once 'controladores/proyectosController.php';
 include_once 'modelos/proveedores.php';
 include_once 'controladores/proveedoresController.php';
+
 include_once 'modelos/rubros.php';
 include_once 'controladores/rubrosController.php';
+
 include_once 'modelos/subrubros.php';
 include_once 'controladores/subrubrosController.php';
 
@@ -694,25 +696,27 @@ Iva <span class="caret"></span>
      <input type="text" class="input-sm" placeholder="Base" id="rf1" name="base_uno" value="<?php echo($fac_base_uno); ?>">
 <select name="porcentaje_ret" id="textretencion">
 
-<?php 
-    $valueretencionseleccionada = $fac_retefuente_id_retefuente1."-".$fac_valor_ret;
-    $valueretencionseleccionada2 = $fac_retefuente_id_retefuente2."-".$fac_valor_ret2;
+ <?php 
+    $valueretencionseleccionada = $fac_retefuente_id_retefuente1."-".$fac_porcentaje_ret;
+    $valueretencionseleccionada2 = $fac_retefuente_id_retefuente2."-".$fac_porcentaje_ret2;
 
     if ($fac_retefuente_id_retefuente1==0) {
         $nomretencion1= "0% No aplica";
     }else{
         $nomretencion1= Retefuente::obtenerNombre($fac_retefuente_id_retefuente1);
+        $porcent1= $fac_porcentaje_ret*100;
     }
 
     if ($fac_retefuente_id_retefuente2==0) {
         $nomretencion2= "0% No aplica";
     }else{
         $nomretencion2= Retefuente::obtenerNombre($fac_retefuente_id_retefuente2);
+        $porcent2= $fac_porcentaje_ret2*100;
     } 
 
  ?>
 
-    <option value="<?php echo($valueretencionseleccionada); ?>"><?php echo($nomretencion1) ;?></option>
+    <option value="<?php echo($valueretencionseleccionada); ?>"><?php echo($nomretencion1."[".$porcent1."%]") ;?></option>
      <option value="0-0">0% No aplica</option>
 
 <?php
@@ -772,7 +776,7 @@ $( "#btnretencion" ).click(function() {
      <input type="text" class="input-sm" placeholder="Base" id="rf2" name="base_dos" value="<?php echo($fac_base_dos) ?>">
 
 <select name="porcentaje_ret2" id="textretencion2">
-     <option value="<?php echo($valueretencionseleccionada2); ?>"><?php echo($nomretencion2) ;?></option>
+     <option value="<?php echo($valueretencionseleccionada2); ?>"><?php echo($nomretencion2."[".$porcent2."%]") ;?></option>
      <option value="0-0">0% No aplica</option>
     <?php
 $resultado = Retefuente::obtenerListado();

@@ -28,6 +28,7 @@
 									  <label for="sel1">Seleccione el valor de la retención:</label>
 									  <select class="form-control" id="valor_retefuente" name="valor_retefuente" required>
 										<option value="" selected>Seleccionar</option>
+										<option value="0.001">0.1%</option>
 										<?php 
 											 for ($i=1; $i <41 ; $i++) { 
 

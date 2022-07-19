@@ -97,7 +97,7 @@ $TiempoActual = date('Y-m-d H:i:s');
 															<option value="Apoyo Logistico">Apoyo Logístico</option>
 															<option value="Equipos Menores">Equipos Menores</option>	
 															<option value="Maquinaria Pesada">Maquinaria Pesada</option>
-															<option value="Volquetas">Volqueta</option>
+															<option value="Volqueta">Volqueta</option>
 															<option value="Tractocamnion">Tractocamión</option>
 															<option value="Vehículos">Vehículos</option>
 															

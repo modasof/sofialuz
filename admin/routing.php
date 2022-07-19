@@ -179,7 +179,7 @@ $controllers = array(
 	'unidadesmed' => ['todos','nuevo','guardar','eliminar','editar','actualizar'],
 
 	// Funcionalidad Gestión Usuarios
-	'usuarios' => ['editar','guardar','actualizar','todos','nuevo','eliminar','editarpermisos','activarmenuPor','desactivarmenuPor','activartodo','desactivartodo','activarrubros','notificacionleida','notificaciones'],
+	'usuarios' => ['editar','guardar','actualizar','todos','nuevo','eliminar','editarpermisos','activarmenuPor','desactivarmenuPor','activartodo','desactivartodo','activarrubros','notificacionleida','notificaciones','notificacionleidatodas'],
 
 	// Funcionalidad Activar Rubros por Usuario
 	'usuariosrubros' => ['todospor','activarrubroPor','desactivarrubroPor','activartodo','activarporRol'],

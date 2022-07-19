@@ -85,8 +85,8 @@ $IdSesion = $_SESSION['IdUser'];
 													 <select class="form-control select2" id="tipo_equipo" name="tipo_equipo" required="">
 															<option value="" selected="">Seleccione una opción....</option>
 															<option value="Maquinaria Pesada">Maquinaria Pesada</option>
-															<option value="Volquetas">Volquetas</option>
-															<option value="Vehículos">Vehículos</option>
+															<option value="Volqueta">Volquetas</option>
+															<option value="Vehiculos">Vehículos</option>
 															<option value="Equipos Menores">Equipos Menores</option>
 															<option value="Herramientas">Herramientas</option>
 													</select>
