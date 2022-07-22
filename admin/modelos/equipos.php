@@ -334,6 +334,28 @@ public static function obtenerNombreEquipo($id){
 	}
 }
 
+
+/*******************************************************
+** FUNCION PARA MOSTRAR EL NOMBRE DEL EQUIPO **
+********************************************************/
+public static function validarpor($nombre){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT COUNT(nombre_equipo) as totales FROM equipos WHERE  nombre_equipo LIKE '%".$nombre."%' and equipo_publicado='1'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Equipos('',$camposs);
+    	$marcas = $campos->getCampos();
+		foreach($marcas as $marca){
+			$mar = $marca['totales'];
+		}
+		return $mar;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
 public static function obtenerPropietarioEquipo($id){
 	try {
 		$db=Db::getConnect();
@@ -556,7 +578,8 @@ public static function actualizar($id_equipo,$campos,$imagen){
 								peso=:peso,
 								fecha_adquisicion=:fecha_adquisicion,
 								observaciones=:observaciones,
-								comision=:comision
+								comision=:comision,
+								inicial=:inicial
 								WHERE id_equipo=:id_equipo');
 		
 		$V1=str_replace(".","",$valor_activo);
@@ -579,6 +602,7 @@ public static function actualizar($id_equipo,$campos,$imagen){
 		$update->bindValue('fecha_adquisicion',utf8_decode($fecha_adquisicion));
 		$update->bindValue('observaciones',utf8_decode($observaciones));
 		$update->bindValue('comision',utf8_decode($comision));
+		$update->bindValue('inicial',utf8_decode($inicial));
 		$update->bindValue('id_equipo',utf8_decode($id_equipo));
 		$update->execute();
 		return true;
@@ -709,7 +733,7 @@ public static function guardar($campos,$imagen){
 		$campostraidos = $campos->getCampos();
 		extract($campostraidos);
 
-		$insert=$db->prepare('INSERT INTO equipos VALUES (NULL,:imagen,:nombre_equipo, :marca_equipo, :serial_equipo, :modelo, :unidad_trabajo, :tipo_equipo, :placa, :propietario,:valor_activo,:motor,:peso,:fecha_adquisicion, :estado_equipo, :equipo_publicado, :creado_por, :marca_temporal,:modulo, :observaciones,:comision)');//
+		$insert=$db->prepare('INSERT INTO equipos VALUES (NULL,:imagen,:nombre_equipo, :marca_equipo, :serial_equipo, :modelo, :unidad_trabajo, :tipo_equipo, :placa, :propietario,:valor_activo,:motor,:peso,:fecha_adquisicion, :estado_equipo, :equipo_publicado, :creado_por, :marca_temporal,:modulo, :observaciones,:comision,:inicial)');//
 
 		$V1=str_replace(".","",$valor_activo);
 		$V2=str_replace(" ", "", $V1);
@@ -736,6 +760,7 @@ public static function guardar($campos,$imagen){
 		$insert->bindValue('modulo',utf8_decode($modulo));
 		$insert->bindValue('observaciones',utf8_decode($observaciones));
 		$insert->bindValue('comision',utf8_decode($comision));
+		$insert->bindValue('inicial',utf8_decode($inicial));
 
 		$insert->execute();
 

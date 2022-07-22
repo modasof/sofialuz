@@ -52,6 +52,28 @@ public static function obtenerRubros(){
 }
 
 /*******************************************************
+** FUNCION PARA VALIDAR UN REGISTRO DUPLICADO **
+********************************************************/
+public static function validacionpor($nombre_subrubro,$rubro_id_rubro){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT COUNT(nombre_subrubro) AS total FROM subrubros WHERE nombre_subrubro='".$nombre_subrubro."' and rubro_id_rubro='".$rubro_id_rubro."' and estado_subrubro='1'");
+
+    	$camposs=$select->fetchAll();
+    	$campos = new Subrubros('',$camposs);
+    	$marcas = $campos->getCampos();
+		foreach($marcas as $marca){
+			$mar = $marca['total'];
+		}
+		return $mar;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/*******************************************************
 ** FUNCION PARA OBTENER TODAS LAS MARCAS DEL VEHICULO	  **
 ********************************************************/
 public static function obtenerSubRubros(){

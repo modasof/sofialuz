@@ -54,6 +54,28 @@ public static function obtenerPagina(){
 }
 
 
+/*******************************************************
+** FUNCION PARA MOSTRAR EL NOMBRE DEL PRODUCTO **
+********************************************************/
+public static function validacionpor($nombre_estacion){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT COUNT(nombre_estacion) AS total FROM estaciones WHERE nombre_estacion='".$nombre_estacion."' and estado_estacion='1'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Estaciones('',$camposs);
+    	$marcas = $campos->getCampos();
+		foreach($marcas as $marca){
+			$mar = $marca['total'];
+		}
+		return $mar;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
 /***************************************************************
 ** FUNCION PARA MOSTRAR TODOS LOS CAMPOS DE FILTRADOS POR ID  **
 ***************************************************************/

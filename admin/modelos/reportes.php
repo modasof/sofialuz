@@ -2269,10 +2269,6 @@ public static function guardardespachoclientes($campos,$imagen,$valorcalculado){
 
 		$insert=$db->prepare('INSERT INTO reporte_despachosclientes VALUES (NULL,:imagen,:fecha_reporte,:remision,:cliente_id_cliente,:producto_id_producto,:equipo_id_equipo,:despachado_por,:transporte,:kilometraje,:valor_m3,:valor_material,:cantidad,:viajes,:radicada,:fecha_radicada,:factura,:pagado, :creado_por, :estado_reporte, :reporte_publicado,:marca_temporal,:observaciones,:campamento_id_campamento,:id_destino_origen,:id_destino_destino)');
 
-		//$V1=str_replace(".","",$valor_m3);
-		//$V2=str_replace(" ", "", $V1);
-		//$valor_final=str_replace("$", "", $V2);
-		//$valornumero=(int) $valor_final;
 
 		$V11=str_replace(".","",$valor_material);
 		$V21=str_replace(" ", "", $V11);
@@ -2698,24 +2694,11 @@ public static function guardarhoras($campos){
 
 		$insert=$db->prepare('INSERT INTO reporte_horas VALUES (NULL,:fecha_reporte,:equipo_id_equipo,:despachado_por,:punto_despacho,:recibido_por,:valor_m3, :cantidad,:indicador,:hora_inactiva,:creado_por, :estado_reporte, :reporte_publicado,:marca_temporal, :observaciones)');
 
-		//$V1=str_replace(".","",$valor_m3);
-		//$V2=str_replace(" ", "", $V1);
-		//$valor_final=str_replace("$", "", $V2);
-		//$valornumero=(int) $valor_final;
-
-
-		//if ($punto_despacho=="Comercializadora") {
-		//	$valornumero=0;
-		//}
-		//elseif ($punto_despacho=="Cantera 1") {
-		//	$valornumero=0;
-		//}
-
+		
 		$t = strtotime($fecha_reporte);
 		$nuevafecha=date('y-m-d',$t);
 
 		$insert->bindValue('fecha_reporte',utf8_decode($nuevafecha));
-		
 		$insert->bindValue('equipo_id_equipo',utf8_decode($equipo_id_equipo));
 		$insert->bindValue('despachado_por',utf8_decode($despachado_por));
 		$insert->bindValue('punto_despacho',utf8_decode($punto_despacho));
@@ -3091,6 +3074,27 @@ public static function obtenerNombreProveedoralerta($id){
     	$marcas = $campos->getCampos();
 		foreach($marcas as $marca){
 			$mar = $marca['nombre_proveedor'];
+		}
+		return $mar;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
+/*******************************************************
+** FUNCION PARA MOSTRAR EL NOMBRE DEL EQUIPO **
+********************************************************/
+public static function validardespachopor($id){
+	try {
+		$db=Db::getConnect();
+		$select=$db->query("SELECT COUNT(remision) AS total FROM reporte_despachosclientes WHERE remision='".$id."'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Reportes('',$camposs);
+    	$marcas = $campos->getCampos();
+		foreach($marcas as $marca){
+			$mar = $marca['total'];
 		}
 		return $mar;
 	}

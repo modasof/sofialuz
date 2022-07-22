@@ -53,7 +53,7 @@ $IdSesion = $_SESSION['IdUser'];
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0 text-dark">Reporte Despacho Flete</h1>
+          <h1 class="m-0 text-dark">Reportes Despacho Flete</h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
@@ -373,7 +373,7 @@ $IdSesion = $_SESSION['IdUser'];
                           <input type="text" name="valor_m3" placeholder="Valor Flete" class="form-control" id="demo1" value="0">
                         </div>
                       </div>
-                       <div id="valormaterial" class="col-md-4">
+                       <div style="display: none;" id="valormaterial" class="col-md-4">
                         <div class="form-group">
                           <label>Valor Material<span>*</span></label>
                           <input type="text" name="valor_material" placeholder="Valor Material" class="form-control" id="demo2" value="0">

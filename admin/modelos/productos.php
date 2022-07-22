@@ -54,6 +54,27 @@ public static function obtenerPagina(){
 }
 
 /*******************************************************
+** FUNCION PARA VALIDAR UN REGISTRO DUPLICADO **
+********************************************************/
+public static function validacionpor($nombre_producto){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT COUNT(nombre_producto) AS total FROM productos WHERE nombre_producto='".$nombre_producto."' and estado_producto='1'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Productos('',$camposs);
+    	$marcas = $campos->getCampos();
+		foreach($marcas as $marca){
+			$mar = $marca['total'];
+		}
+		return $mar;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/*******************************************************
 ** FUNCION PARA MOSTRAR TODOS LOS CAMPOS	  **
 ********************************************************/
 public static function obtenerPaginaInformeventas(){

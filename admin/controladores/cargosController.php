@@ -66,6 +66,15 @@ function guardar() {
 			$nuevoarreglo[$campo]=$valor;
 		}
 	}
+
+	$nombre_cargo=$_POST['nombre_cargo'];
+	$validarduplicado=Cargos::validacionpor($nombre_cargo);
+
+if ($validarduplicado>0) {
+
+		echo "<script>jQuery(function(){Swal.fire(\"¡Error al guardar!\", \"No se han guardado los datos, el dato ".$nombre_cargo." ya existe\", \"info\");});</script>";
+}else{
+
 	$campo = new Cargos('',$nuevoarreglo);
 	$res = Cargos::guardar($campo);
 	if ($res){
@@ -73,6 +82,7 @@ function guardar() {
 	}else{
 		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
 	}
+}
 	$this->show();
 }
 

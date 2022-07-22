@@ -66,6 +66,16 @@ function guardar() {
 			$nuevoarreglo[$campo]=$valor;
 		}
 	}
+
+	$nombre_campamento=$_POST['nombre_campamento'];
+	$validarduplicado=Campamento::validacionpor($nombre_campamento);
+
+if ($validarduplicado>0) {
+
+		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado los datos, el dato ".$nombre_campamento." ya existe\", \"info\");});</script>";
+}else
+{
+
 	$campo = new Campamento('',$nuevoarreglo);
 	$res = Campamento::guardar($campo);
 	
@@ -76,6 +86,7 @@ function guardar() {
 	}else{
 		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
 	}
+}
 	$this->show();
 }
 

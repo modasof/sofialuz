@@ -53,6 +53,26 @@ public static function obtenerPagina(){
 	}
 }
 
+/*******************************************************
+** FUNCION PARA VALIDAR UN REGISTRO DUPLICADO **
+********************************************************/
+public static function validacionpor($nombre_proyecto){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT COUNT(nombre_proyecto) AS total FROM proyectos WHERE nombre_proyecto='".$nombre_proyecto."' and estado_proyecto='1'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Proyectos('',$camposs);
+    	$marcas = $campos->getCampos();
+		foreach($marcas as $marca){
+			$mar = $marca['total'];
+		}
+		return $mar;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
 
 
 

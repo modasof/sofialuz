@@ -195,7 +195,7 @@ if ($fechaform != "") {
             <tr style="background-color: #4f5962;color: white;">
              <th>RQ-IT</th>
               <th>Fecha</th>
-              <th>Creada por</th>
+              <th>Solicitado Por</th>
 
               <th>OC Número</th>
               <th>Proveedor</th>
@@ -212,7 +212,7 @@ if ($fechaform != "") {
             <tr>
               <th>RQ-IT</th>
               <th>Fecha</th>
-              <th>Creada por</th>
+               <th>Solicitado Por</th>
 
               <th>OC Número</th>
               <th>Proveedor</th>
@@ -238,6 +238,7 @@ if ($fechaform != "") {
     $campos = $campos->getCampos();
 }
 foreach ($campos as $campo) {
+
     $cotizacionid           = $campo['cotizacionid'];
     $ordenid                = $campo['ordenid'];
     $proveedor_id_proveedor = $campo['proveedor_id_proveedor'];
@@ -257,6 +258,9 @@ foreach ($campos as $campo) {
     $vr_unitario            = $campo['vr_unitario'];
     $cantidadcot            = $campo['cantidadcot'];
 
+    $idsolicitanteRQ = Requisicionesitems::obtenerIdusuarioRQ($requisicion_id);
+
+
     if ($insumo_id_insumo != "0") {
         $nominsumo         = Insumos::obtenerNombreInsumo($insumo_id_insumo);
         $labelinsumo       = "OcInsumo:";
@@ -275,7 +279,7 @@ foreach ($campos as $campo) {
         $valorpendiente    = $cantidadrecibida * $vr_unitario;
     }
 
-    $nomcreador   = Usuarios::obtenerNombreUsuario($usuario_creador);
+    $nomcreador   = Usuarios::obtenerNombreUsuario($idsolicitanteRQ);
     $nomaprobador = Usuarios::obtenerNombreUsuario($usuario_aprobador);
 
     $nomproveedor = Proveedores::obtenerNombreProveedor($proveedor_id_proveedor);
@@ -293,9 +297,9 @@ foreach ($campos as $campo) {
               <td> <?php echo ($cantidadcot); ?></td>
                <?php
 if ($cantidadrecibida == $cantidadcot) {
-        echo ("<td class='success'>" . $cantidadrecibida . "</td>");
+        echo ("<td class='success'>Ok:" . $cantidadrecibida . "</td>");
     } else {
-        echo ("<td class='danger'>" . $cantidadrecibida . "</td>");
+        echo ("<td class='danger'>Pend:" . $cantidadrecibida . "</td>");
     }
 
     ?>

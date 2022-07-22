@@ -66,6 +66,14 @@ function guardar() {
 			$nuevoarreglo[$campo]=$valor;
 		}
 	}
+
+	$nombre=$_POST['nombre'];
+	$validarduplicado=Categoriainsumos::validacionpor($nombre);
+
+if ($validarduplicado>0) {
+
+		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado los datos, el dato ".$nombre." ya existe\", \"info\");});</script>";
+}else{
 	$campo = new Categoriainsumos('',$nuevoarreglo);
 	$res = Categoriainsumos::guardar($campo);
 	if ($res){
@@ -73,6 +81,7 @@ function guardar() {
 	}else{
 		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
 	}
+}
 	$this->show();
 }
 

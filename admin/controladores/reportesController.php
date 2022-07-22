@@ -1767,10 +1767,14 @@ class ReportesController
             }
         }
 
+        
         $id_destino_origen  = $_POST['id_destino_origen'];
         $id_destino_destino = $_POST['id_destino_destino'];
         $cliente_id_cliente = $_POST['cliente_id_cliente'];
         $cantidad           = $_POST['cantidad'];
+        $remision           = $_POST['remision'];
+
+        # -----------  Cálculo valor flete con lista de precios clientes  -----------
 
         $valorm3ruta = Reportes::Consultavalorm3recorrido($id_destino_origen, $id_destino_destino, $cliente_id_cliente);
 
@@ -1778,14 +1782,17 @@ class ReportesController
 
         $valor_calculado = $valorkmruta * $valorm3ruta * $cantidad;
 
-        //array_push($nuevoarreglo,$nuevo);
         $campo = new Reportes('', $nuevoarreglo);
         $res   = Reportes::guardardespachoclientes($campo, $ruta_imagen, $valor_calculado);
         if ($res) {
             echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
-        } else {
+        } else  {
             echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
-        }
+                }
+
+        
+        
+       
         $this->showdespachosclientesf();
     }
 
@@ -1931,7 +1938,7 @@ class ReportesController
         $campo = new Reportes('', $nuevoarreglo);
         $res   = Reportes::guardarhoras($campo);
         if ($res) {
-            echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+           echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>"; 
         } else {
             echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
         }

@@ -52,6 +52,27 @@ public static function obtenerPagina(){
 }
 
 /*******************************************************
+** FUNCION PARA VALIDAR UN REGISTRO DUPLICADO **
+********************************************************/
+public static function validacionpor($documento){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT COUNT(documento) AS total FROM funcionarios WHERE documento='".$documento."' and funcionario_publicado='1'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Funcionarios('',$camposs);
+    	$marcas = $campos->getCampos();
+		foreach($marcas as $marca){
+			$mar = $marca['total'];
+		}
+		return $mar;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/*******************************************************
 ** FUNCION PARA MOSTRAR TODOS LOS CAMPOS DE TESTIMONIOS	  **
 ********************************************************/
 public static function obtenerPaginainactivos(){

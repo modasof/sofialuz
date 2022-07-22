@@ -2,7 +2,7 @@
 /**
 * CLASE PARA TRABAJAR CON LOS MODELOS
 */
-class Documentos
+class Propietarios
 {
     private $id;
     private $campos; //devuelve todos los campos de la tabla
@@ -34,66 +34,6 @@ class Documentos
 		$this->campos = $campos;
 	}
 
-/*******************************************************
-** FUNCION PARA OBTENER TODAS LAS MARCAS DEL VEHICULO	  **
-********************************************************/
-public static function obtenerRubros(){
-	try {
-		$db=Db::getConnect();
-		$select=$db->query("SELECT id_modulo,nombre_modulo FROM modulos");
-    	$campos=$select->fetchAll();
-		$camposs = new Documentos('',$campos);
-		$campostraidos = $camposs->getCampos();
-		return $campostraidos;
-	}
-	catch(PDOException $e) {
-		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
-	}
-}
-
-
-
-/*******************************************************
-** FUNCION PARA VALIDAR UN REGISTRO DUPLICADO **
-********************************************************/
-public static function validacionpor($nombre_documento,$modulo_id_modulo){
-	try {
-		$db=Db::getConnect();
-
-		$select=$db->query("SELECT COUNT(nombre_documento) AS total FROM documentos WHERE nombre_documento='".$nombre_documento."' and modulo_id_modulo='".$modulo_id_modulo."' and estado_documento='1'");
-    	$camposs=$select->fetchAll();
-    	$campos = new Documentos('',$camposs);
-    	$marcas = $campos->getCampos();
-		foreach($marcas as $marca){
-			$mar = $marca['total'];
-		}
-		return $mar;
-	}
-	catch(PDOException $e) {
-		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
-	}
-}
-
-
-
-/*******************************************************
-** FUNCION PARA OBTENER LA MARCA DEL VEHICULO	  **
-********************************************************/
-public static function obtenerRubro($id){
-	try {
-		$db=Db::getConnect();
-		$select=$db->query("SELECT nombre_modulo FROM modulos WHERE id_modulo = '".$id."'");
-    	$campo=$select->fetchAll();
-    	foreach($campo as $campos){
-			$marca = $campos['nombre_modulo'];
-			}
-		return $marca;
-	}
-	catch(PDOException $e) {
-		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
-	}
-}
-
 
 /*******************************************************
 ** FUNCION PARA MOSTRAR TODOS LOS CAMPOS	  **
@@ -101,10 +41,11 @@ public static function obtenerRubro($id){
 public static function obtenerPagina(){
 	try {
 		$db=Db::getConnect();
-
-		$select=$db->query("SELECT * FROM documentos WHERE estado_documento='1' order by modulo_id_modulo asc");
+		$consulta="SELECT * FROM propietarios WHERE estado_propietario='1' order by nombre_propietario asc";
+		$select=$db->query($consulta);
+		//echo($consulta);
     	$camposs=$select->fetchAll();
-    	$campos = new Documentos('',$camposs);
+    	$campos = new Propietarios('',$camposs);
 		return $campos;
 	}
 	catch(PDOException $e) {
@@ -112,15 +53,18 @@ public static function obtenerPagina(){
 	}
 }
 
+
+
+
 /***************************************************************
 ** FUNCION PARA MOSTRAR TODOS LOS CAMPOS DE FILTRADOS POR ID  **
 ***************************************************************/
 public static function obtenerPaginaPor($id){
 	try {
 		$db=Db::getConnect();
-		$select=$db->query("SELECT * FROM documentos WHERE id_documento='".$id."' and estado_documento='1'");
+		$select=$db->query("SELECT * FROM propietarios WHERE id_propietario='".$id."' and estado_propietario='1'");
 		$camposs=$select->fetchAll();
-		$campos = new Documentos('',$camposs);
+		$campos = new Propietarios('',$camposs);
 		return $campos;
 	}
 	catch(PDOException $e) {
@@ -135,7 +79,7 @@ public static function obtenerPaginaPor($id){
 public static function eliminarPor($id){
 	try {
 		$db=Db::getConnect();
-		$select=$db->query("UPDATE documentos SET estado_documento='0' WHERE id_documento='".$id."'");
+		$select=$db->query("UPDATE propietarios SET estado_propietario='0' WHERE id_propietario='".$id."'");
 		if ($select){
 			return true;
 			}else{return false;}
@@ -155,16 +99,13 @@ public static function actualizar($id,$campos){
 		$campostraidos = $campos->getCampos();
 		extract($campostraidos);
 
-		$update=$db->prepare('UPDATE documentos SET
-								modulo_id_modulo=:modulo_id_modulo,
-								nombre_documento=:nombre_documento,
-								estado_documento=:estado_documento
+		$update=$db->prepare('UPDATE propietarios SET
+								nombre_propietario=:nombre_propietario,
+								estado_propietario=:estado_propietario
 								WHERE id=:id');
-
-		$update->bindValue('modulo_id_modulo',$modulo_id_modulo);
-		$update->bindValue('nombre_documento',$nombre_documento);
-		$update->bindValue('estado_documento',$estado_documento);
-		$update->bindValue('id_documento',$id_documento);
+		$update->bindValue('nombre_propietario',$nombre_propietario);
+		$update->bindValue('estado_propietario',$estado_propietario);
+		$update->bindValue('id_propietario',$id_propietario);
 		$update->execute();
 		return true;
 	}
@@ -173,14 +114,13 @@ public static function actualizar($id,$campos){
 	}
 }
 
-
 /***************************************************************
 ** FUNCION PARA ACTUALIZAR NONBRE  **
 ***************************************************************/
-public static function actualizarNombre($campo,$rubro,$id){
+public static function actualizarNombre($campo,$id){
 	try {
 		$db=Db::getConnect();
-		$select=$db->query("UPDATE documentos SET nombre_documento='".utf8_decode($campo)."',modulo_id_modulo='".$rubro."' WHERE id_documento='".$id."'");
+		$select=$db->query("UPDATE propietarios SET nombre_propietario='".utf8_encode($campo)."' WHERE id_propietario='".$id."'");
 		if ($select){
 			return true;
 			}else{return false;}
@@ -190,6 +130,27 @@ public static function actualizarNombre($campo,$rubro,$id){
 	}
 }
 
+
+ /*******************************************************
+** FUNCION PARA MOSTRAR EL NOMBRE DEL PRODUCTO **
+********************************************************/
+public static function validapor($nombre){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT count(nombre_propietario) as totales FROM propietarios WHERE nombre_propietario='".$nombre."'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Propietarios('',$camposs);
+    	$marcas = $campos->getCampos();
+		foreach($marcas as $marca){
+			$mar = $marca['totales'];
+		}
+		return $mar;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
 /***************************************************************
 *** FUNCION PARA GUARDAR **
 ***************************************************************/
@@ -199,11 +160,11 @@ public static function guardar($campos){
 		$campostraidos = $campos->getCampos();
 		extract($campostraidos);
 
-		$insert=$db->prepare('INSERT INTO documentos VALUES (NULL,:modulo_id_modulo,:nombre_documento,:estado_documento)');
+		$insert=$db->prepare('INSERT INTO propietarios VALUES (NULL,:nombre_propietario,:estado_propietario)');
 
-		$insert->bindValue('modulo_id_modulo',utf8_decode($modulo_id_modulo));
-		$insert->bindValue('nombre_documento',utf8_decode($nombre_documento));
-		$insert->bindValue('estado_documento',utf8_decode($estado_documento));
+		
+		$insert->bindValue('nombre_propietario',utf8_encode($nombre_propietario));
+		$insert->bindValue('estado_propietario',utf8_encode($estado_propietario));
 		$insert->execute();
 
 		return true;
@@ -212,6 +173,47 @@ public static function guardar($campos){
 	echo '{"error":{"text":'. $e->getMessage() .'}}';
 	}
 }
+
+
+
+/*******************************************************
+** FUNCION PARA OBTENER LA LISTA DE CLIENTES	  **
+********************************************************/
+public static function obtenerListaPropietarios(){
+	try {
+		$db=Db::getConnect();
+		$select=$db->query("SELECT * FROM propietarios WHERE estado_propietario='1' order by nombre_propietario");
+    	$campos=$select->fetchAll();
+		$camposs = new Propietarios('',$campos);
+		$campostraidos = $camposs->getCampos();
+		return $campostraidos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/*******************************************************
+** FUNCION PARA MOSTRAR EL NOMBRE DEL PRODUCTO **
+********************************************************/
+public static function obtenerNombre($id){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT nombre_propietario FROM propietarios WHERE id_propietario='".$id."'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Propietarios('',$camposs);
+    	$marcas = $campos->getCampos();
+		foreach($marcas as $marca){
+			$mar = $marca['nombre_propietario'];
+		}
+		return $mar;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
 
 }
 

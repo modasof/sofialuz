@@ -1,5 +1,5 @@
 <?php
-class ClientesController {
+class PropietariosController {
 	function __construct() {}
 
 /*************************************************************/
@@ -7,15 +7,15 @@ class ClientesController {
 /*************************************************************/
 
 	function todos() {
-		$campos=Clientes::obtenerPagina();;
-		require_once 'vistas/clientes/todos.php';
+		$campos=Propietarios::obtenerPagina();;
+		require_once 'vistas/propietarios/todos.php';
 	}
 
 /*************************************************************/
 /* FUNCION PARA AGREGAR NUEVO LLAMADO DESDE ROUTING.PHP */
 /*************************************************************/
 	function nuevo() {
-		require_once 'vistas/clientes/nuevo.php';
+		require_once 'vistas/propietarios/nuevo.php';
 	}
 
 /*************************************************************/
@@ -23,8 +23,8 @@ class ClientesController {
 /*************************************************************/
 	function editar() {
 		$id = $_GET['id'];
-		$campos = Clientes::obtenerPaginaPor($id);
-		require_once 'vistas/clientes/editar.php';
+		$campos = Propietarios::obtenerPaginaPor($id);
+		require_once 'vistas/propietarios/editar.php';
 	}
 
 /*************************************************************/
@@ -32,14 +32,14 @@ class ClientesController {
 /*************************************************************/
 	function eliminar() {
 		$id = $_GET['id'];
-		$res = Clientes::eliminarPor($id);
+		$res = Propietarios::eliminarPor($id);
 		if ($res){
 			echo "<script>jQuery(function(){Swal.fire(\"¡Datos eliminados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
 		}else{
 				echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
 		}
-		$campos = Clientes::obtenerPagina();
-		require_once 'vistas/clientes/todos.php';
+		$campos = Propietarios::obtenerPagina();
+		require_once 'vistas/propietarios/todos.php';
 	}
 
 
@@ -66,22 +66,22 @@ function guardar() {
 		}
 	}
 
-	$nombre_cliente=$_POST['nombre_cliente'];
+	$nombre_propietario =$_POST['nombre_propietario'];
 
-	$validarduplicado=Clientes::validacionpor($nombre_cliente);
+	$validacion=Propietarios::validapor($nombre_propietario);
 
-	if ($validarduplicado>0) {
+	if ($validacion>0) {
+		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"Verificar la información, ya se encuentran registrados los datos\", \"warning\");});</script>";
+	}
+	else{
 
-		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado los datos, el cliente ".$nombre_cliente." ya existe\", \"info\");});</script>";
-	}else{
-
-		$campo = new Clientes('',$nuevoarreglo);
-	$res = Clientes::guardar($campo);
+		$campo = new Propietarios('',$nuevoarreglo);
+	$res = Propietarios::guardar($campo);
 	if ($res){
 		echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
-	}else{
+		}else{
 		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
-	}
+		}
 
 	}
 
@@ -89,13 +89,16 @@ function guardar() {
 	$this->show();
 }
 
+
+
+
 /*************************************************************/
 /* FUNCION PARA ACTUALIZAR*/
 /*************************************************************/
 function actualizar(){
 	$id=$_GET['id'];
-	$campo=$_POST['nombre_cliente'];
-	$res = Clientes::actualizarNombre($campo,$id);
+	$campo=$_POST['nombre_propietario'];
+	$res = Propietarios::actualizarNombre($campo,$id);
 	if ($res){
 		echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
 	}else{
@@ -108,7 +111,7 @@ function actualizar(){
 /* FUNCION PARA MOSTRAR LA PAGINA*/
 /*************************************************************/
 	function show(){
-		$campos=Clientes::obtenerPagina();
-		require_once 'vistas/clientes/todos.php';
+		$campos=Propietarios::obtenerPagina();
+		require_once 'vistas/propietarios/todos.php';
 	}
 }

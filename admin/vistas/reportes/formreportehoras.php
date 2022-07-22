@@ -91,12 +91,12 @@
 												</div>
 											</div>
 
-											<div  id="" class="col-md-12">
+											<div style="display: none;"  id="" class="col-md-12">
 												<div class="form-group">
 													<label> Reportado por: <span>*</span></label>
 								
-									<select class="form-control mi-selector2" id="despachado_por" name="despachado_por" required>
-										<option value="" selected >Seleccionar...</option>
+									<select  class="form-control mi-selector2" id="despachado_por" name="despachado_por" required>
+										<option value="0" selected >Seleccionar...</option>
 										<?php
 										$rubros = Funcionarios::obtenerListaFuncionarios();
 										foreach ($rubros as $campo){
@@ -126,17 +126,17 @@
 												</div>
 											</div>
 											
-											<div class="col-md-12">
+											<div style="display: none;" class="col-md-12">
 												<div class="form-group">
 													<label>Kilometraje Inicial<span>*</span></label>
-													<input type="number" step="any" name="indicador" placeholder="Reporte Hr/Km Externo" class="form-control" required value="">
+													<input type="number" step="any" name="indicador" placeholder="Reporte Hr/Km Externo" class="form-control" required value="0">
 													<small>Decimales separados con punto</small>
 												</div>
 											</div>
-										<div class="col-md-12">
+										<div style="display: none;" class="col-md-12">
 												<div class="form-group">
 													<label>Kilometraje Final<span>*</span></label>
-													<input type="number" step="any" name="cantidad" placeholder="Total Kilometros" class="form-control" required value="">
+													<input type="number" step="any" name="cantidad" placeholder="Total Kilometros" class="form-control" required value="0">
 													<small>Decimales separados con punto</small>
 												</div>
 										</div>

@@ -53,6 +53,27 @@ public static function obtenerPagina(){
 }
 
 /*******************************************************
+** FUNCION PARA VALIDAR UN REGISTRO DUPLICADO **
+********************************************************/
+public static function validacionpor($nombre){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT COUNT(nombre) AS total FROM categoriainsumos WHERE nombre='".$nombre."' and publicado='1'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Categoriainsumos('',$camposs);
+    	$marcas = $campos->getCampos();
+		foreach($marcas as $marca){
+			$mar = $marca['total'];
+		}
+		return $mar;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/*******************************************************
 ** FUNCION PARA OBTENER LAS CATEGORIAS **
 ********************************************************/
 public static function obtenerListaInsumos(){

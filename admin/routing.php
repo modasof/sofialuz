@@ -92,7 +92,7 @@ $controllers = array(
 	'gestiondocumentalprov' => ['editar','guardar','actualizar','todos','nuevo','eliminar','listaequipos','configuracion','cargartodos','desactivarDocumento','varios','guardarvarios','eliminarvarios','editarvarios','actualizarvarios','activar'],
 
 	// Funcionalidad Horas Máquinaria 
-	'horasmq' => ['horas','guardarhoras','eliminarhoras','editarhoras','actualizarhoras','horasporfecha'],
+	'horasmq' => ['horas','horaspor','guardarhoras','eliminarhoras','editarhoras','actualizarhoras','horasporfecha'],
 
 
 	// Redireccionamiento Inicial  
@@ -141,6 +141,9 @@ $controllers = array(
 
 	// Funcionalidad Productos Insumos
 	'productosinsumos' => ['todos','nuevo','guardar','eliminar'],
+
+	// Funcionalidad Propietariis
+	'propietarios' => ['editar','guardar','actualizar','todos','nuevo','eliminar'],
 
 	// Funcionalidad Proyectos
 	'proyectos' => ['editar','guardar','actualizar','todos','nuevo','eliminar','proyectoextra'],
@@ -434,6 +437,11 @@ function call($controller, $action) {
 	case 'proyectos':
 		require_once 'modelos/proyectos.php';
 		$controller = new proyectosController();
+		break;
+
+	case 'propietarios':
+		require_once 'modelos/propietarios.php';
+		$controller = new PropietariosController();
 		break;
 
 	case 'proveedores':

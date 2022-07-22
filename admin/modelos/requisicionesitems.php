@@ -77,6 +77,26 @@ public static function obtenerNombreProveedor($id){
     }
 }
 
+/*******************************************************
+** FUNCION PARA MOSTRAR EL NOMBRE DEL EQUIPO **
+********************************************************/
+public static function obtenerIdusuarioRQ($id){
+    try {
+        $db=Db::getConnect();
+        $select=$db->query("SELECT solicitado_por FROM requisiciones WHERE id='".$id."'");
+        $camposs=$select->fetchAll();
+        $campos = new Requisicionesitems('',$camposs);
+        $marcas = $campos->getCampos();
+        foreach($marcas as $marca){
+            $mar = $marca['solicitado_por'];
+        }
+        return $mar;
+    }
+    catch(PDOException $e) {
+        echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+    }
+}
+
 
 /*******************************************************
  ** FUNCION PARA MOSTRAR TODOS LOS CAMPOS DE FECHAS      **

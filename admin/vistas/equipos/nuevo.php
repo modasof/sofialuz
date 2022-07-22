@@ -1,5 +1,9 @@
 <?php 
 ini_set('display_errors', '0'); 
+
+include_once 'modelos/propietarios.php';
+include_once 'controladores/propietariosController.php';
+
 $RolSesion = $_SESSION['IdRol'];
 $IdSesion = $_SESSION['IdUser'];
  ?>
@@ -96,10 +100,21 @@ $IdSesion = $_SESSION['IdUser'];
 												<div class="col-md-4 col-xs-12">
 												<div class="form-group">
 													<label>Propietario<span>*</span></label>
-													<input type="text" name="propietario" placeholder="Indique el propietario" class="form-control" required>
+													 <select style="width:300px;" class="form-control mi-selector2" id="propietario" name="propietario" required>
+                            <option value="" >Seleccionar...</option>
+                           
+                            <?php                     
+                        $campamentos = Propietarios::obtenerListaPropietarios(); 
+                            foreach ($campamentos as $campamento ){
+                              $id_propietario  = $campamento['id_propietario'];
+                              $nombre_propietario = $campamento['nombre_propietario'];
+                            ?>
+                       <option value="<?php echo $id_propietario ; ?>"><?php echo utf8_encode($nombre_propietario); ?></option>
+                            <?php } ?>
+                          </select>
 												</div>
 											</div>
-
+												
 											<div class="col-md-4 col-xs-12">
 												<div class="form-group">
 													<label>Indicar marca<span>*</span></label>
@@ -140,6 +155,12 @@ $IdSesion = $_SESSION['IdUser'];
 												<div class="form-group">
 													<label>Capacidad Carga<span>* (Kg)</span></label>
 													<input type="text" name="peso" placeholder="Indique el peso" class="form-control" value="">
+												</div>
+											</div>
+											<div id="divplaca"  class="col-md-4">
+												<div class="form-group">
+													<label>Hr/Km Inicial<span></span></label>
+													<input type="number" step="any"  name="inicial" placeholder="Hr/Km Inicial" class="form-control" value="">
 												</div>
 											</div>
 						

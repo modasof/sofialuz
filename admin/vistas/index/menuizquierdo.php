@@ -35,6 +35,7 @@ foreach($campos as $campo){
   $m_subrubro = $campo['m_subrubro'];
   $m_destinos = $campo['m_destinos'];
   $m_proyectos = $campo['m_proyectos'];
+  $m_propietarios =$campo['m_propietarios'];
   $m_estaciones = $campo['m_estaciones'];
   $m_empleados = $campo['m_empleados'];
   $m_gdocempleados = $campo['m_gdocempleados'];
@@ -120,6 +121,10 @@ foreach($campos as $campo){
 
              <?php if ($m_proyectos=="Si") { ?>
             <li class=""><a href="?controller=proyectos&&action=todos"><i class="fa fa-circle-o"></i>Proyectos</a></li>
+             <?php } ?>
+
+              <?php if ($m_propietarios=="Si") { ?>
+            <li class=""><a href="?controller=propietarios&&action=todos"><i class="fa fa-circle-o"></i>Propietarios</a></li>
              <?php } ?>
 
                 <?php if ($m_estaciones=="Si") { ?>

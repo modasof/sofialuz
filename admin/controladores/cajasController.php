@@ -71,6 +71,15 @@ function guardar() {
 			$nuevoarreglo[$campo]=$valor;
 		}
 	}
+
+$nombre_caja=$_POST['nombre_caja'];
+$validarduplicado=Cajas::validacionpor($nombre_caja);
+
+if ($validarduplicado>0) {
+
+		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado los datos, el dato ".$nombre_caja." ya existe\", \"info\");});</script>";
+}else{
+
 	//array_push($nuevoarreglo,$nuevo);
 	$campo = new Cajas('',$nuevoarreglo);
 	$res = Cajas::guardar($campo);
@@ -79,6 +88,7 @@ function guardar() {
 	}else{
 		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
 	}
+}
 	$this->show();
 }
 

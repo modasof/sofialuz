@@ -66,6 +66,16 @@ function guardar() {
 			$nuevoarreglo[$campo]=$valor;
 		}
 	}
+
+	$nombre_estacion=$_POST['nombre_estacion'];
+
+	$validarduplicado=Estaciones::validacionpor($nombre_estacion);
+
+if ($validarduplicado>0) {
+
+		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado los datos, el dato ".$nombre_estacion." ya existe\", \"info\");});</script>";
+}else{
+
 	//array_push($nuevoarreglo,$nuevo);
 	$campo = new Estaciones('',$nuevoarreglo);
 	$res = Estaciones::guardar($campo);
@@ -74,6 +84,7 @@ function guardar() {
 	}else{
 		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
 	}
+}
 	$this->show();
 }
 

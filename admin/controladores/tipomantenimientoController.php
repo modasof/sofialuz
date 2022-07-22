@@ -66,6 +66,14 @@ function guardar() {
 			$nuevoarreglo[$campo]=$valor;
 		}
 	}
+	$nombre_tipomantenimiento=$_POST['nombre_tipomantenimiento'];
+	$validarduplicado=TipoMantenimiento::validacionpor($nombre_tipomantenimiento);
+
+if ($validarduplicado>0) {
+
+		echo "<script>jQuery(function(){Swal.fire(\"¡Error al guardar!\", \"No se han guardado los datos, el dato ".$nombre_tipomantenimiento." ya existe\", \"info\");});</script>";
+}else{
+
 	$campo = new TipoMantenimiento('',$nuevoarreglo);
 	$res = TipoMantenimiento::guardar($campo);
 		
@@ -74,6 +82,7 @@ function guardar() {
 	}else{
 		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
 	}
+}
 	$this->show();
 }
 

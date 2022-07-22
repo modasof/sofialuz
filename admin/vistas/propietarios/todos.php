@@ -1,70 +1,3 @@
-<?php 
-ini_set('display_errors', '0');
-
-include_once 'modelos/propietarios.php';
-include_once 'controladores/propietariosController.php';
-
-include 'vistas/index/estadisticas.php';
-
-if (isset($_POST['daterange'])) {
-  $fechaform=$_POST['daterange'];
-}
-elseif (isset($_GET['daterange'])) {
-  $fechaform=$_GET['daterange'];
-}
-
-
-date_default_timezone_set("America/Bogota");
-$MarcaTemporal = date('Y-m-d');
-$FechaInicioDia=($MarcaTemporal." 00:00:000");
-$FechaFinalDia=($MarcaTemporal." 23:59:000");
-//echo("FECHA QUE LLEGA:".$fechaform."<br>");
-
-if ($fechaform!="") {
-      $arreglo=explode("-", $fechaform);
-      $FechaIn=$arreglo[0];
-      $FechaFn=$arreglo[1];
-      $vectorfechaIn=explode("/", $FechaIn);
-      $vectorfechaFn=explode("/", $FechaFn);
-      $arreglofechauno=$vectorfechaIn[2]."-".$vectorfechaIn[0]."-".$vectorfechaIn[1];
-      $arreglofechados=$vectorfechaFn[2]."-".$vectorfechaFn[0]."-".$vectorfechaFn[1];
-
-      $FechaUno=str_replace(" ", "", $arreglofechauno);
-      $FechaDos=str_replace(" ", "", $arreglofechados);
-}
-
-// Validación de la fecha en que inicia el Día
-
-if ($FechaUno=="") {
-  $FechaStart=$FechaInicioDia;
-  $datofechain=$MarcaTemporal;
-          }
-else
-  {
-    $FechaStart=($FechaUno." 00:00:000");
-    $datofechain=$FechaUno;
-  }
-// Validación de la fecha en que Termina el Día
-if ($FechaDos=="") {
-    $FechaEnd=$FechaFinalDia;
-    $datofechafinal=$MarcaTemporal;
-  }
-else
-  {
-    $FechaEnd=($FechaDos." 23:59:000");
-    $limpiarvariable=str_replace(" ", "", $FechaDos);
-    $datofechafinal=$limpiarvariable;
-  }
-
- ?>
- <!-- CCS Y JS PARA LA CARGA DE IMAGEN -->
-<script src="plugins/dropify/dropify.min.js"></script>
-<link rel="stylesheet" href="plugins/dropify/dropify.min.css">
- <!-- CCS Y JS DATERANGE -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-<!-- Content Wrapper. Contains page content -->
 <!-- DataTables -->
   <!-- <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap4.css"> -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
@@ -76,111 +9,30 @@ else
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0 text-dark">Configuración de Equipos</h1>
+          <h1 class="m-0 text-dark">Propietarios</h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="?controller=index&&action=index">Inicio</a></li>
-            <li class="breadcrumb-item active">Equipos</li>
+            <li class="breadcrumb-item active">Propietarios</li>
           </ol>
         </div><!-- /.col -->
       </div><!-- /.row -->
     </div><!-- /.container-fluid -->
   </div>
     <!-- /.content-header -->
+
   <!-- Main content -->
   <div class="content">
     <div class="container-fluid">
-                          <div class="row">
-        <form action="?controller=reportes&&action=horasporfecha" method="post" id="FormFechas" autocomplete="off">
-         <div class="col-md-8">
-                        <div class="form-group">
-                          <label>Seleccione el Rango de Fecha<span>*</span></label>
-                          <input type="text"  name="daterange" class="form-control" required value="">
-                        </div>
-                      </div>
-          <div class="form-group">
-            <div class="col-xs-12 col-sm-6">
-              <button class="btn btn-primary btn-sm" type="Submit">Realizar Consulta</button>           
-          </div>    
-          </div>
-        </form>
-        <script type="text/javascript">
-  $('input[name="daterange"]').daterangepicker({
-    ranges: {
-        'Hoy': [moment(), moment()],
-        'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-        'Últimos 7 días': [moment().subtract(6, 'days'), moment()],
-        'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
-        'Este Mes': [moment().startOf('month'), moment().endOf('month')],
-        'Mes Anterior': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-    },
-    "locale": {
-        "format": "MM/DD/YYYY",
-        "separator": " - ",
-        "applyLabel": "Aplicar",
-        "cancelLabel": "Cancelar",
-        "fromLabel": "desde",
-        "toLabel": "hasta",
-        "customRangeLabel": "Personalizado",
-        "weekLabel": "W",
-        "daysOfWeek": [
-            "Do",
-            "Lu",
-            "Ma",
-            "Mi",
-            "Ju",
-            "Vi",
-            "Sa"
-        ],
-        "monthNames": [
-            "Enero",
-            "Febrero",
-            "Marzo",
-            "Abril",
-            "Mayo",
-            "Junio",
-            "Julio",
-            "Agosto",
-            "Septiembre",
-            "Octubre",
-            "Noviembre",
-            "Diciembre"
-        ],
-        "firstDay": 1
-    },
-    //"startDate": "03/24/2019",
-    //"endDate": "03/30/2019",
-    "opens": "left"
-}, function(start, end, label) {
-  console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
-});
-</script>
-      </div>
-       <div class="col-sm-12">
-        <?php 
-        if ($fechaform!="") {
-          ?>
-           <h3 class="m-0 text-dark">Reporte Equipos del <?php echo(fechalarga($datofechain)) ?> al <?php echo (fechalarga($datofechafinal)) ?></h3>
-          <?php
-        }
-        else
-        {
-          ?>
-           <h3 class="m-0 text-dark">Reporte Total Equipos </h3>
-          <?php
-        }
-
-         ?>
-         
-        </div><!-- /.col -->
-      <hr>
       <div class="row">
-		<div class="col-lg-12">
-		<div class="card card-default">
-			<div class="card-body">
-				  <a href="?controller=equipos&&action=nuevo" class="btn btn-success" style="float: right;"><i class="fa fa-file-text-o bigger-110 "></i> Nuevo Equipo</a>
-				  <!--  <div class="card-header">
+    <div class="col-lg-12">
+    <div class="card card-primary">
+      <div class="card-body">
+          <a href="?controller=propietarios&&action=nuevo" class="btn btn-success" style="float: right;"><i class="fa fa-plus-square bigger-110 "></i> Crear Proyecto</a>
+          <br><br>
+
+    <!--  <div class="card-header">
         <h3 class="card-title">Vehiculos</h3>
       </div> -->
       <div class="clearfix">
@@ -188,140 +40,66 @@ else
                     </div>
               <div class="table-responsive mailbox-messages">
           <table id="cotizaciones" class="table  table-responsive table-striped table-bordered table-hover" style="width: 100%">
-              <tfoot style="display: table-header-group;">
-                                   
-                                      <th style="background-color: #fcf8e3" class="success"></th>
-                                      <th style="background-color: #fcf8e3" class="success"></th>
-                                       <th style="background-color: #fcf8e3" class="success"></th>
-                                       <th style="background-color: #fcf8e3" class="success"></th>
-                                        <th style="background-color: #fcf8e3" class="success"></th>
-                                        <th style="background-color: #fcf8e3" class="success"></th>
-                                      
-                                        
-                            </tfoot>
           <thead>
-            <tr style="background-color: #4f5962;color: white;">
+              <tr style="background-color: #4f5962;color: white;">
               
-              <th style="width: 20%;">Equipo</th>
-              <th>Propietario</th>
-              <th>Comisión</th>
-              <th>Tipo Equipo</th>
-              <th>Marca</th>
              
-              <th style="width: 20%;">Acción</th>
+              <th>Propietario</th>
+              <th>Nombre</th>
+             
+              <th>Acción</th>
             </tr>
             <tr>
-             <th style="width: 20%;">Equipo</th>
               <th>Propietario</th>
-              <th>Comisión</th>
-              <th>Tipo Equipo</th>
-              <th>Marca</th>
-             
-              <th style="width: 20%;">Acción</th>
+              <th>Nombre</th>
+              
+              <th>Acción</th>
             </tr>
           </thead>
-				  <tbody>
-					  <?php
-					  $campos = $campos->getCampos();
-					  foreach ($campos as $campo){
-						$id_equipo = $campo['id_equipo'];
-            $nombre_equipo = $campo['nombre_equipo'];
-            $modulo = $campo['modulo'];
-            $marca_equipo = $campo['marca_equipo'];
-            $tipo_equipo = $campo['tipo_equipo'];
-            $placa = $campo['placa'];
-						$serial_equipo = $campo['serial_equipo'];
-            $propietario = $campo['propietario'];
-            $comision = $campo['comision'];
-            $modelo = $campo['modelo'];
-            $unidad_trabajo = $campo['unidad_trabajo'];
-            $estado_equipo = $campo['estado_equipo'];
-            $rend_interno = $campo['rend_interno'];
-            $unidad_interna = $campo['unidad_interna'];
-            $rend_externo = $campo['rend_externo'];
-            $unidad_externa = $campo['unidad_externa'];
-            //$unidad_reportada=Equipos::obtenerNombreTipoUnidad($id_equipo);
-
-            $nompropietario = Propietarios::obtenerNombre($propietario);
-
-            $totalgalones=round(ConsumoGalonespor($id_equipo),1);
-            $totalhoraskm=round(ReporteHorasKmpor($id_equipo),1);
-
-            if ($totalgalones==0) {
-              $consumointernoreportado=0;
-            }
-            else
-            {
-              $consumointernoreportado=$totalhoraskm/$totalgalones;
-            }
-				?>
-						<tr>
-              <td><?php echo utf8_encode($nombre_equipo); ?></td>
-              <td><?php echo utf8_encode($nompropietario); ?></td>
-              <td><?php echo utf8_encode($comision); ?> %</td>
-              <td><?php echo utf8_encode($tipo_equipo); ?></td>
-               <td><?php echo utf8_encode($marca_equipo); ?></td>
-             
-             
+       <tbody>
+            <?php
+            $campos = $campos->getCampos();
+            foreach ($campos as $campo){
+            $id = $campo['id_propietario'];
+            $nombre_propietario = $campo['nombre_propietario'];
+            //$totalcomprado= TotalComprasInsumo($id);
+            
+            ?>
+            <tr>
+              <td><?php echo utf8_encode($nombre_propietario); ?></td>
+              <td>x</td>
+              
               <td>
-                <div class="btn-group">
-                        <button data-toggle="dropdown" class="btn btn-info btn-sm dropdown-toggle">
-                          Acción
-                          <span class="ace-icon fa fa-caret-down icon-on-right"></span>
-                        </button>
-
-                        <ul class="dropdown-menu dropdown-info dropdown-menu-right">
-                          <li>
-                             <a href="?controller=equipos&&action=editar&&id=<?php echo $id_equipo; ?>" class="tooltip-primary text-success" title="Editar Equipo">
-                <i class="fa fa-edit bigger-110 ">  Editar Datos</i>
+              <a href="?controller=propietarios&&action=editar&&id=<?php echo $id; ?>" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Editar">
+                <i class="fa fa-edit bigger-110 "></i>
               </a>
-                          </li>
-                      
-                          <li>
-                             <a  href="#" onclick="eliminar(<?php echo $id_equipo; ?>);" class="tooltip-primary text-danger" title="Despublicar Equipo">
-                <i class="fa fa-trash bigger-110 ">  Despublicar Equipo</i>
+              <a href="#" onclick="eliminar(<?php echo $id; ?>);" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Eliminar">
+                <i class="fa fa-trash bigger-110 "></i>
               </a>
-                          </li>
-                          <li>
-                             <a href="?controller=equipos&&action=reportediario&&id=<?php echo $id_equipo; ?>" class="tooltip-primary text-primary" title="Repuestos">
-                <i class="fa fa-wrench bigger-110 ">  Registrar Repuestos</i>
-              </a>
-                          </li>
-                          <li>
-                            <a href="?controller=gestiondocumentaleq&&action=todos&&id=<?php echo $id_equipo; ?>&&id_modulo=2" class="tooltip-primary text-primary" title="Repuestos">
-                <i class="fa fa-file bigger-110 ">  Ver Documentos</i>
-              </a>
-                          </li>
-                                              
-                                                    
-                        </ul>
-                      </div>
               </td>
-						
-						</tr>
-						<?php
-
-						  }
-					  ?>
-					</tbody>
-					</table>
-			  </div> <!-- Fin Row -->
-		  </div> <!-- Fin card -->
-		</div>
-		</div>
+            </tr>
+            <?php
+              }
+            ?>
+          </tbody>
+          </table>
+        </div> <!-- Fin Row -->
+      </div> <!-- Fin card -->
+    </div>
+    </div>
 
 
 
       </div> <!-- Fin Row -->
     </div> <!-- Fin Container -->
-  </div> <!-- Fin Content -->
+  </div> <!-- Fin Content-->
 </div> <!-- Fin Content-Wrapper -->
 
 <script>
 function eliminar(id){
    eliminar=confirm("¿Deseas eliminar este registro?");
    if (eliminar)
-     window.location.href="?controller=equipos&&action=eliminar&&id="+id;
+     window.location.href="?controller=propietarios&&action=eliminar&&id="+id;
 else
   //Y aquí pon cualquier cosa que quieras que salga si le diste al boton de cancelar
     alert('No se ha podido eliminar el registro...')
@@ -336,13 +114,14 @@ else
 <!-- FastClick -->
 <script src="plugins/fastclick/fastclick.js"></script>
 
+
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
       <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
        <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
          <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
           <script src="https://cdn.datatables.net/buttons/1.5.2/js/buttons.html5.min.js"></script>
-         <script src="dist/js/buttons.colVis.min.js"></script>
+          <script src="dist/js/buttons.colVis.min.js"></script>
           <script src="dist/js/buttons.print.min.js"></script>
            <script src="dist/js/dataTables.select.min.js"></script>
            <script src="dist/js/buttons.flash.min.js"></script>
@@ -397,8 +176,8 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
     } ); 
   
     var table = $('#cotizaciones').DataTable({
-      responsive:true,
-      "order": true,
+     "ordering": true,
+        "order": [[ 1, "desc" ]],
         orderCellsTop: true,
         "language": {
             "lengthMenu": "Mostrar _MENU_ registros por página",

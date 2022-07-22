@@ -83,7 +83,7 @@ else
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0 text-dark">Reporte Horas</h1>
+          <h1 class="m-0 text-dark">Reporte Kilometraje</h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
@@ -126,7 +126,7 @@ else
           <!-- TABLE: LATEST ORDERS -->
           <div class="box box-success">
             <div class="box-header with-border">
-              <h3 class="box-title">Reportes Horas </h3>
+              <h3 class="box-title">Reportes Kilometraje </h3>
 
         
 
@@ -208,13 +208,13 @@ else
         <?php 
         if ($fechaform!="") {
           ?>
-           <h3 class="m-0 text-dark">Reporte Despachos del <?php echo(fechalarga($datofechain)) ?> al <?php echo (fechalarga($datofechafinal)) ?></h3>
+           <h3 class="m-0 text-dark">Reporte Kilometraje del <?php echo(fechalarga($datofechain)) ?> al <?php echo (fechalarga($datofechafinal)) ?></h3>
           <?php
         }
         else
         {
           ?>
-           <h3 class="m-0 text-dark">Reporte Total Despachos </h3>
+           <h3 class="m-0 text-dark">Reporte Total Kilometraje </h3>
           <?php
         }
 
@@ -294,8 +294,9 @@ else
             $observaciones = $campo['observaciones'];
             $equipo_id_equipo = $campo['equipo_id_equipo'];
             $nomequipo=Equipos::obtenerNombreEquipo($equipo_id_equipo);
-            $nomdespachador=Funcionarios::obtenerNombreFuncionario($despachado_por);
+            $nomdespachador=Usuarios::obtenerNombreUsuario($creado_por);
             $nomreportador=Funcionarios::obtenerNombreFuncionario($recibido_por);
+
             $ventatotal=$cantidad*$valor_m3;
             ?>
             <tr>

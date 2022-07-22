@@ -41,7 +41,7 @@ $gastoporconductor=GastoCombustiblediaUsuario($FechaInicio30dias,$FechaFinal30di
      <div class="row">
 
     <div class="col-sm-12 col-xs-12">
-     <a href="?controller=horasmq&&action=horas">
+     <a href="?controller=horasmq&&action=horaspor&&operador=<?php echo($IdSesion); ?>">
         <div class="col-md-3  col-xs-12">
           <div class="info-box">
             <span class="info-box-icon bg-default"><i class="fa fa-clock-o"></i></span>

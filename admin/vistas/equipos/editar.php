@@ -1,6 +1,11 @@
 <?php
 include_once 'modelos/gestiondocumentaleq.php';
 include_once 'controladores/gestiondocumentaleqController.php';
+
+
+include_once 'modelos/propietarios.php';
+include_once 'controladores/propietariosController.php';
+
 include 'vistas/index/estadisticas.php';
 $campos = $campos->getCampos();
 foreach ($campos as $campo) {
@@ -21,6 +26,18 @@ foreach ($campos as $campo) {
     $motor             = $campo['motor'];
     $peso              = $campo['peso'];
     $fecha_adquisicion = $campo['fecha_adquisicion'];
+    $inicial            = $campo['inicial'];
+
+    if ($propietario==0) {
+    	$idpropietario = 0;
+    	$nompropietario = "Seleccionar ...";
+    }else
+    {
+    	$idpropietario = $propietario;
+    	$nompropietario = Propietarios::obtenerNombre($propietario);
+    }
+
+    
 
 }
 ?>
@@ -74,8 +91,8 @@ $TiempoActual = date('Y-m-d H:i:s');
 										<div class="form-group">
 										  <label for="fila2_columna1">Actualizar Imagen <br><small>Peso máximo 5MB, </small></label>
 												<div class="">
-													 <input name="imagen" type="file" id="input-file-now" class="dropify" data-default-file="<?php echo $imagen;?>" data-allowed-file-extensions="png jpg jpeg mp4 webm" data-show-errors="true" data-max-file-size="5M" data-errors-position="outside" accept="image/png, .jpeg, .jpg, image/gif"/ >
-													 <input type="hidden" name="ruta1" value="<?php echo $imagen;?>" >
+													 <input name="imagen" type="file" id="input-file-now" class="dropify" data-default-file="<?php echo $imagen; ?>" data-allowed-file-extensions="png jpg jpeg mp4 webm" data-show-errors="true" data-max-file-size="5M" data-errors-position="outside" accept="image/png, .jpeg, .jpg, image/gif"/ >
+													 <input type="hidden" name="ruta1" value="<?php echo $imagen; ?>" >
 												</div>
 										</div>
 									   </div>
@@ -84,7 +101,7 @@ $TiempoActual = date('Y-m-d H:i:s');
 									<div class="col-md-4 col-xs-12">
 												<div class="form-group">
 													<label>Indique el nombre del equipo: <span>*</span></label>
-													<input type="text" name="nombre_equipo" placeholder="Nombre del equipo" class="form-control" value="<?php echo($nombre_equipo); ?>" required>
+													<input type="text" name="nombre_equipo" placeholder="Nombre del equipo" class="form-control" value="<?php echo ($nombre_equipo); ?>" required>
 												</div>
 											</div>
 
@@ -93,14 +110,14 @@ $TiempoActual = date('Y-m-d H:i:s');
 													<label>Tipo Equipo: <span>*</span></label>
 
 													 <select class="form-control select2" id="tipo_equipo" name="tipo_equipo" required="">
-															<option value="<?php echo($tipo_equipo); ?>" selected="true"><?php echo($tipo_equipo); ?></option>
+															<option value="<?php echo ($tipo_equipo); ?>" selected="true"><?php echo ($tipo_equipo); ?></option>
 															<option value="Apoyo Logistico">Apoyo Logístico</option>
-															<option value="Equipos Menores">Equipos Menores</option>	
+															<option value="Equipos Menores">Equipos Menores</option>
 															<option value="Maquinaria Pesada">Maquinaria Pesada</option>
 															<option value="Volqueta">Volqueta</option>
 															<option value="Tractocamnion">Tractocamión</option>
 															<option value="Vehículos">Vehículos</option>
-															
+
 															<option value="Herramientas">Herramientas</option>
 													</select>
 												</div>
@@ -109,35 +126,54 @@ $TiempoActual = date('Y-m-d H:i:s');
 												<div class="col-md-4 col-xs-12">
 												<div class="form-group">
 													<label>Propietario<span>*</span></label>
-													<input type="text" name="propietario" placeholder="Indique el propietario" class="form-control" required value="<?php echo($propietario); ?>">
+													 <select style="width:300px;" class="form-control mi-selector2" id="propietario" name="propietario" required>
+                            <option value="<?php echo($idpropietario) ?>" ><?php echo utf8_encode($nompropietario); ?></option>
+                           
+                            <?php                     
+                        $campamentos = Propietarios::obtenerListaPropietarios(); 
+                            foreach ($campamentos as $campamento ){
+                              $id_propietario  = $campamento['id_propietario'];
+                              $nombre_propietario = $campamento['nombre_propietario'];
+                            ?>
+                       <option value="<?php echo $id_propietario ; ?>"><?php echo utf8_encode($nombre_propietario); ?></option>
+                            <?php } ?>
+                          </select>
+												</div>
+											</div>
+												
+
+												<div class="col-md-4 col-xs-12">
+												<div class="form-group">
+													<label>Propietario<span>*</span></label>
+													<input type="text" name="propietario" placeholder="Indique el propietario" class="form-control" required value="<?php echo ($propietario); ?>">
 												</div>
 											</div>
 
 											<div class="col-md-4 col-xs-12">
 												<div class="form-group">
 													<label>Indicar marca<span>*</span></label>
-													<input type="text" name="marca_equipo" placeholder="Indique la marca" class="form-control " required value="<?php echo($marca_equipo); ?>">
+													<input type="text" name="marca_equipo" placeholder="Indique la marca" class="form-control " required value="<?php echo ($marca_equipo); ?>">
 												</div>
 											</div>
 
 												<div class="col-md-4 col-xs-12">
 												<div class="form-group">
 													<label>Modelo<span>*</span></label>
-													<input type="text" name="modelo" placeholder="WORKSTAR  7600 SBA / 2014" class="form-control" required value="<?php echo($modelo); ?>">
+													<input type="text" name="modelo" placeholder="WORKSTAR  7600 SBA / 2014" class="form-control" required value="<?php echo ($modelo); ?>">
 												</div>
 											</div>
 
 											<div class="col-md-4">
 												<div class="form-group">
 													<label>Motor<span>*</span></label>
-													<input type="text" name="motor" placeholder="Motor" class="form-control" required value="<?php echo($motor); ?>">
+													<input type="text" name="motor" placeholder="Motor" class="form-control" required value="<?php echo ($motor); ?>">
 												</div>
 											</div>
 
 												<div class="col-md-4">
 												<div class="form-group">
 													<label>Serie<span>*</span></label>
-													<input type="text" name="serial_equipo" placeholder="Indique el Serial" class="form-control" value="<?php echo($serial_equipo); ?>">
+													<input type="text" name="serial_equipo" placeholder="Indique el Serial" class="form-control" value="<?php echo ($serial_equipo); ?>">
 												</div>
 											</div>
 
@@ -145,14 +181,21 @@ $TiempoActual = date('Y-m-d H:i:s');
 											<div id="divplaca"  class="col-md-4">
 												<div class="form-group">
 													<label>Número de Placa<span>* AAA-123</span></label>
-													<input type="text" name="placa" placeholder="Indique la placa O N/A" class="form-control" value="<?php echo($placa); ?>">
+													<input type="text" name="placa" placeholder="Indique la placa O N/A" class="form-control" value="<?php echo ($placa); ?>">
 												</div>
 											</div>
 
 												<div id="divplaca"  class="col-md-4">
 												<div class="form-group">
 													<label>Capacidad Carga<span>* (Kg)</span></label>
-													<input type="text" name="peso" placeholder="Indique el peso" class="form-control" value="<?php echo($peso); ?>">
+													<input type="text" name="peso" placeholder="Indique el peso" class="form-control" value="<?php echo ($peso); ?>">
+												</div>
+											</div>
+
+												<div id="divplaca"  class="col-md-4">
+												<div class="form-group">
+													<label>Hr/Km Inicial<span></span></label>
+													<input type="number" name="inicial" placeholder="Hr/Km Inicial" class="form-control" value="<?php echo($inicial); ?>">
 												</div>
 											</div>
 
@@ -163,7 +206,7 @@ $TiempoActual = date('Y-m-d H:i:s');
 													<label>Unidad de Trabajo: <span>*</span></label>
 
 													 <select class="form-control select2"  name="unidad_trabajo" required="">
-															<option value="<?php echo($unidad_trabajo); ?>" selected="true"><?php echo($unidad_trabajo); ?></option>
+															<option value="<?php echo ($unidad_trabajo); ?>" selected="true"><?php echo ($unidad_trabajo); ?></option>
 															<option value="HR">Horas</option>
 															<option value="DIA">Días</option>
 															<option value="MES">Mes</option>
@@ -174,21 +217,21 @@ $TiempoActual = date('Y-m-d H:i:s');
 											<div  class="col-md-4">
 												<div class="form-group">
 													<label>Fecha Adquisición: <span>*</span></label>
-													<input type="date" name="fecha_adquisicion" id="fecha_adquisicion" placeholder="Fecha" class="form-control required" required id="beneficiario" value="<?php echo($fecha_adquisicion); ?>">
+													<input type="date" name="fecha_adquisicion" id="fecha_adquisicion" placeholder="Fecha" class="form-control required" required id="beneficiario" value="<?php echo ($fecha_adquisicion); ?>">
 												</div>
 											</div>
 
 											<div  class="col-md-2">
 												<div class="form-group">
 													<label>Valor Activo: <span>*</span></label>
-													<input type="text" name="valor_activo" id="demo1" placeholder="Valor" class="form-control required" required value="<?php echo($valor_activo); ?>">
+													<input type="text" name="valor_activo" id="demo1" placeholder="Valor" class="form-control required" required value="<?php echo ($valor_activo); ?>">
 												</div>
 											</div>
 												<div class="col-md-2">
 												<div class="form-group">
 													<label>Indique el % de comisión: <span>*</span></label>
 													<select class="form-control"  name="comision" required="">
-															<option value="<?php echo($comision); ?>" selected=""><?php echo($comision); ?></option>
+															<option value="<?php echo ($comision); ?>" selected=""><?php echo ($comision); ?></option>
 															<?php
 for ($i = 0; $i < 21; $i++) {
     echo ("<option value='" . $i . "'>" . $i . " %</option>");
@@ -200,7 +243,7 @@ for ($i = 0; $i < 21; $i++) {
 											<div class="col-md-12">
 												<div class="form-group">
 													<label>Peso - Medidas - Características<span>*</span></label>
-													  <textarea class="form-control" rows="2" id="descripcion" name="observaciones"><?php echo($observaciones); ?></textarea>
+													  <textarea class="form-control" rows="2" id="descripcion" name="observaciones"><?php echo ($observaciones); ?></textarea>
 												</div>
 											</div>
 

@@ -65,6 +65,18 @@ function guardar() {
 			$nuevoarreglo[$campo]=$valor;
 		}
 	}
+
+	$nombre_documento=$_POST['nombre_documento'];
+	$modulo_id_modulo=$_POST['modulo_id_modulo'];
+
+	$validarduplicado=Documentos::validacionpor($nombre_documento,$modulo_id_modulo);
+
+if ($validarduplicado>0) {
+
+		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado los datos, el dato ".$nombre_documento." ya existe.\", \"info\");});</script>";
+}else
+{
+
 	$campo = new Documentos('',$nuevoarreglo);
 	$res = Documentos::guardar($campo);
 	if ($res){
@@ -72,6 +84,7 @@ function guardar() {
 	}else{
 		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
 	}
+}
 	$this->show();
 }
 

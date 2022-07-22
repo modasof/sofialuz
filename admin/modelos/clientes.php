@@ -54,6 +54,27 @@ public static function obtenerPagina(){
 }
 
 /*******************************************************
+** FUNCION PARA MOSTRAR EL NOMBRE DEL PRODUCTO **
+********************************************************/
+public static function validacionpor($nombre_cliente){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT COUNT(nombre_cliente) AS total FROM clientes WHERE nombre_cliente='".$nombre_cliente."' and estado_cliente='1'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Clientes('',$camposs);
+    	$marcas = $campos->getCampos();
+		foreach($marcas as $marca){
+			$mar = $marca['total'];
+		}
+		return $mar;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/*******************************************************
 ** FUNCION PARA MOSTRAR TODOS LOS CAMPOS	  **
 ********************************************************/
 public static function CuentasxcobrarClientes($anoactual){

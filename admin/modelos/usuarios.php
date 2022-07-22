@@ -51,6 +51,26 @@ public static function obtenerPagina(){
 	}
 }
 
+/*******************************************************
+** FUNCION PARA VALIDAR UN REGISTRO DUPLICADO **
+********************************************************/
+public static function validacionpor($documento){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT COUNT(documento) AS total FROM usuarios WHERE documento='".$documento."' and estado_usuario<>'0'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Usuarios('',$camposs);
+    	$marcas = $campos->getCampos();
+		foreach($marcas as $marca){
+			$mar = $marca['total'];
+		}
+		return $mar;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
 
 /*******************************************************
 ** FUNCION PARA MOSTRAR TODOS LOS CAMPOS DE TESTIMONIOS	  **
@@ -525,8 +545,9 @@ public static function perfilsuper($rol_id_rol,$ultimoid,$Si){
 	try {
 		$db=Db::getConnect();
 	
-	$select=$db->query("INSERT INTO menu (id_rol,id_usuario, m_clientes, m_productos, m_insumos, m_proveedores, m_carpetas, m_usuarios, m_funcionarios, m_documentos, m_rubros, m_subrubro, m_destinos, m_proyectos, m_estaciones, m_empleados, m_gdocempleados, m_novedades, m_cuentas, m_gdoccuentas, m_cajas, m_consolidadocajas, m_equipos, m_gdocequipos, m_campamentos, m_mantenimientos, m_ventas, m_ventasalquiler, m_cuentasxpagar, m_compras, m_comprainsumos, m_despachos, m_combustible, m_horas, m_horasmq, m_informe1, m_concreto, m_categoriains, m_cargos, m_crucecuentas, m_egresoscajacontador, m_ingresoscajacontador, m_cotizaciones, m_rq, m_rqentrada, m_rqsalida, m_entradasinv, m_entradasdetalleinv, m_salidasinv, m_salidasdetalleinv, m_inventario,m_cuentasxpagarusuario,m_retenciones) VALUES ('".utf8_decode($rol_id_rol)."',
+	$select=$db->query("INSERT INTO menu (id_rol,id_usuario, m_clientes, m_productos, m_insumos, m_proveedores, m_carpetas, m_usuarios, m_funcionarios, m_documentos, m_rubros, m_subrubro, m_destinos, m_proyectos,m_propietarios m_estaciones, m_empleados, m_gdocempleados, m_novedades, m_cuentas, m_gdoccuentas, m_cajas, m_consolidadocajas, m_equipos, m_gdocequipos, m_campamentos, m_mantenimientos, m_ventas, m_ventasalquiler, m_cuentasxpagar, m_compras, m_comprainsumos, m_despachos, m_combustible, m_horas, m_horasmq, m_informe1, m_concreto, m_categoriains, m_cargos, m_crucecuentas, m_egresoscajacontador, m_ingresoscajacontador, m_cotizaciones, m_rq, m_rqentrada, m_rqsalida, m_entradasinv, m_entradasdetalleinv, m_salidasinv, m_salidasdetalleinv, m_inventario,m_cuentasxpagarusuario,m_retenciones) VALUES ('".utf8_decode($rol_id_rol)."',
 		'".utf8_decode($ultimoid)."',
+		'".utf8_decode($Si)."',
 		'".utf8_decode($Si)."',
 		'".utf8_decode($Si)."',
 		'".utf8_decode($Si)."',
@@ -594,8 +615,9 @@ public static function otroperfil($rol_id_rol,$ultimoid,$No){
 	try {
 		$db=Db::getConnect();
 	
-	$select=$db->query("INSERT INTO menu (id_rol,id_usuario, m_clientes, m_productos, m_insumos, m_proveedores, m_carpetas, m_usuarios, m_funcionarios, m_documentos, m_rubros, m_subrubro, m_destinos, m_proyectos, m_estaciones, m_empleados, m_gdocempleados, m_novedades, m_cuentas, m_gdoccuentas, m_cajas, m_consolidadocajas, m_equipos, m_gdocequipos, m_campamentos, m_mantenimientos, m_ventas, m_ventasalquiler, m_cuentasxpagar, m_compras, m_comprainsumos, m_despachos, m_combustible, m_horas, m_horasmq, m_informe1,m_concreto,m_categoriains,m_retenciones) VALUES ('".utf8_decode($rol_id_rol)."',
+	$select=$db->query("INSERT INTO menu (id_rol,id_usuario, m_clientes, m_productos, m_insumos, m_proveedores, m_carpetas, m_usuarios, m_funcionarios, m_documentos, m_rubros, m_subrubro, m_destinos, m_proyectos,m_propietarios, m_estaciones, m_empleados, m_gdocempleados, m_novedades, m_cuentas, m_gdoccuentas, m_cajas, m_consolidadocajas, m_equipos, m_gdocequipos, m_campamentos, m_mantenimientos, m_ventas, m_ventasalquiler, m_cuentasxpagar, m_compras, m_comprainsumos, m_despachos, m_combustible, m_horas, m_horasmq, m_informe1,m_concreto,m_categoriains,m_retenciones) VALUES ('".utf8_decode($rol_id_rol)."',
 		'".utf8_decode($ultimoid)."',
+		'".utf8_decode($No)."',
 		'".utf8_decode($No)."',
 		'".utf8_decode($No)."',
 		'".utf8_decode($No)."',

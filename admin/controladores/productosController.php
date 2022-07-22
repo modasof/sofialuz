@@ -65,6 +65,14 @@ function guardar() {
 			$nuevoarreglo[$campo]=$valor;
 		}
 	}
+
+$nombre_cargo=$_POST['nombre_producto'];
+	$validarduplicado=Productos::validacionpor($nombre_producto);
+
+if ($validarduplicado>0) {
+
+		echo "<script>jQuery(function(){Swal.fire(\"¡Error al guardar!\", \"No se han guardado los datos, el dato ".$nombre_producto." ya existe\", \"info\");});</script>";
+}else{
 	$campo = new Productos('',$nuevoarreglo);
 	$res = Productos::guardar($campo);
 	if ($res){
@@ -72,6 +80,7 @@ function guardar() {
 	}else{
 		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
 	}
+}
 	$this->show();
 }
 

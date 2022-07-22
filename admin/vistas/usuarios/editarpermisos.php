@@ -67,6 +67,7 @@
   $m_subrubro = $campo['m_subrubro'];
   $m_destinos = $campo['m_destinos'];
   $m_proyectos = $campo['m_proyectos'];
+  $m_propietarios = $campo['m_propietarios'];
   $m_estaciones = $campo['m_estaciones'];
   $m_empleados = $campo['m_empleados'];
   $m_gdocempleados = $campo['m_gdocempleados'];
@@ -212,6 +213,29 @@
               {
                 ?>
                 <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_proyectos');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
+                <i class="fa fa-close bigger-110 "></i>
+                </a>
+                <?php
+              }
+
+               ?></td>
+            </tr>
+
+             <tr>
+             <td><i class="fa fa-th-list"></i></td>
+              <td class=""><strong>Propietarios:</strong> Crea,edita,elimina propietarios de equipos</td>
+              <td><?php 
+              if ($m_propietarios=="Si") {
+               ?>
+                <a href="#" onclick="desactivarpermiso(<?php echo $id_usuario; ?>,'m_propietarios');" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Permisos">
+                <i class="fa fa-check bigger-110 "></i>
+               </a>
+               <?php
+              }
+              else
+              {
+                ?>
+                <a href="#" onclick="activarpermiso(<?php echo $id_usuario; ?>,'m_propietarios');" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Permisos">
                 <i class="fa fa-close bigger-110 "></i>
                 </a>
                 <?php

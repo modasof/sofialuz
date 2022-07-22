@@ -11,6 +11,12 @@ class HorasmqController {
 		require_once 'vistas/horasmq/reportehoras.php';
 	}
 
+	function horaspor() {
+		$id=$_GET['operador'];
+		$campos=Horasmq::ReporteHoraspor($id);;
+		require_once 'vistas/horasmq/reportehorasoperador.php';
+	}
+
 /*************************************************************/
 /* FUNCION PARA MOSTRAR REPORTE POR RANGO DE FECHAS*/
 /*************************************************************/
@@ -33,12 +39,10 @@ elseif (isset($_GET['daterange'])) {
 function guardarhoras() {
 
 	
-
-
-	//(id, imagen, fecha_reporte, equipo_id_equipo, despachado_por, punto_despacho, recibido_por, valor_m3, valor_hora_operador, cantidad, indicador, hora_inactiva, creado_por, estado_reporte, reporte_publicado, marca_temporal, observaciones, proyecto_id_proyecto, cliente_id_cliente, equipo_adicional, nombre_equipo_adicional)
-
 	//$imagen=$_POST['imagen'];
 	$fecha_reporte=$_POST['fecha_reporte'];
+	$t = strtotime($fecha_reporte);
+	$nuevafecha=date('y-m-d',$t);
 	$equipo_id_equipo=$_POST['equipo_id_equipo'];
 	$despachado_por=$_POST['despachado_por'];
 	$punto_despacho=$_POST['punto_despacho'];
@@ -57,6 +61,15 @@ function guardarhoras() {
 	$cliente_id_cliente=$_POST['cliente_id_cliente'];
 	$equipo_adicional=$_POST['equipo_adicional'];
 	$nombre_equipo_adicional=$_POST['nombre_equipo_adicional'];
+	$DiaActual = date('Y-m-d');
+        
+  # -----------  Validación del registro en la fecha actual  -----------
+        $diferenciadia = abs((strtotime($DiaActual) - strtotime($nuevafecha))/86400);
+        if ($diferenciadia==0) {
+            $campoproduccion=1; // Aplica para pago de producción
+        }else{
+            $campoproduccion=0; // No aplica para pago de producción
+  }
 
 	$ruta_imagen=$this->subir_fichero('images/horasmq','imagen');
 
@@ -91,12 +104,16 @@ function guardarhoras() {
 		$valor_finalhora=$valor_hora;
 	}
 
-	$res = Horasmq::guardarhoras($ruta_imagen,$fecha_reporte, $equipo_id_equipo, $despachado_por, $punto_despacho, $recibido_por, $valor_finalhora, $valor_hora_operador, $cantidad, $indicador, $hora_inactiva, $creado_por, $estado_reporte, $reporte_publicado, $marca_temporal, $observaciones, $proyecto_id_proyecto, $cliente_id_cliente, $equipo_adicional, $nombre_equipo_adicional);
-
-
+	$res = Horasmq::guardarhoras($ruta_imagen,$fecha_reporte, $equipo_id_equipo, $despachado_por, $punto_despacho, $recibido_por, $valor_finalhora, $valor_hora_operador, $cantidad, $indicador, $hora_inactiva, $creado_por, $estado_reporte, $reporte_publicado, $marca_temporal, $observaciones, $proyecto_id_proyecto, $cliente_id_cliente, $equipo_adicional, $nombre_equipo_adicional,$campoproduccion);
 
 	if ($res){
-		echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+		 if ($campoproduccion==0) {
+                echo "<script>jQuery(function(){Swal.fire(\"¡Datos Guardados!\", \"RECUERDE: Si la fecha del despacho no corresponde al día actual, no aplicará para producción.\", \"info\");});</script>";
+
+                 //echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+            }else{
+                 echo "<script>jQuery(function(){Swal.fire(\"¡Datos guardados!\", \"Se han guardado correctamente los datos\", \"success\");});</script>";
+            }   
 	}else{
 		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
 	}

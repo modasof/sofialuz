@@ -195,6 +195,15 @@ function guardar() {
 			$nuevoarreglo[$campo]=$valor;
 		}
 	}
+
+$nit=$_POST['nit'];
+	$validarduplicado=Proveedores::validacionpor($nit);
+
+if ($validarduplicado>0) {
+
+		echo "<script>jQuery(function(){Swal.fire(\"¡Error al guardar!\", \"No se han guardado los datos, el dato ".$nit." ya existe\", \"info\");});</script>";
+}else{
+
 	$campo = new Proveedores('',$nuevoarreglo);
 	$res = Proveedores::guardar($campo);
 	if ($res){
@@ -202,6 +211,7 @@ function guardar() {
 	}else{
 		echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
 	}
+}
 	$this->show();
 }
 

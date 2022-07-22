@@ -95,3 +95,18 @@
 - Cruce con anticipos
 - Realizar Abonos / pagos 
 
+# Actualización 19 de Julio 2022
+
+- Campo en tabla recepción de OC (Usuario que solicita la RQ)
+- Actualizacion de formulario reporte de kilometraje.  
+
+# Actualización 22 de Julio 2022
+
+- Validación de campos duplicados en parametrización 
+- Optimización de formulario Km, se agrega el campo km inicial en equipos. 
+- Módulo de propietarios
+- Módulo horas máquina campo adicional para verificar fecha de reporte versus fecha de creación del registro. 
+- Mensaje informativo con reporte fuera del rango de la fecha actual 
+- Solución de Bug en rutas de cliente
+
+
