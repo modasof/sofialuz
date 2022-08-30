@@ -1,3 +1,12 @@
+<?php 
+ini_set('display_errors', '0');
+include_once 'modelos/propietariostarifas.php';
+include_once 'controladores/propietariostarifasController.php';
+
+
+$RolSesion = $_SESSION['IdRol'];
+$IdSesion = $_SESSION['IdUser'];
+ ?>
 <!-- DataTables -->
   <!-- <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap4.css"> -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
@@ -45,13 +54,13 @@
               
              
               <th>Propietario</th>
-              <th>Nombre</th>
+              <th>Tarifas</th>
              
               <th>Acción</th>
             </tr>
             <tr>
               <th>Propietario</th>
-              <th>Nombre</th>
+              <th>Tarifas</th>
               
               <th>Acción</th>
             </tr>
@@ -67,7 +76,16 @@
             ?>
             <tr>
               <td><?php echo utf8_encode($nombre_propietario); ?></td>
-              <td>x</td>
+              
+               <td>
+                 <a href="?controller=propietariostarifas&&action=todos&&id_propietario=<?php echo $id; ?>" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Agregar Tarifas">
+                <i class="fa  fa-map-signs bigger-110 "> </i>
+                <?php 
+                  $totalrutas=Propietariostarifas::cantidadporcanal($id);
+                 ?>
+                 Tarifas propietario (<?php echo($totalrutas); ?>)
+              </a>
+              </td>
               
               <td>
               <a href="?controller=propietarios&&action=editar&&id=<?php echo $id; ?>" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Editar">

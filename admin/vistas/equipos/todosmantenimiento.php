@@ -1,84 +1,26 @@
 <?php
-  ini_set('display_errors', '0'); 
-include_once 'modelos/cuentas.php';
-include_once 'controladores/cuentasController.php';
-include 'vistas/index/estadisticas.php';
+ini_set('display_errors', '0');
+include_once 'modelos/usuarios.php';
+include_once 'controladores/usuariosController.php';
 
-  $RolSesion = $_SESSION['IdRol'];
-$IdSesion = $_SESSION['IdUser'];
+include_once 'modelos/equipos.php';
+include_once 'controladores/equiposController.php';
 
-if (isset($_POST['daterange'])) {
-  $fechaform=$_POST['daterange'];
-}
-elseif (isset($_GET['daterange'])) {
-  $fechaform=$_GET['daterange'];
-}
+include_once 'modelos/tipomantenimiento.php';
+include_once 'controladores/tipomantenimientoController.php';
 
+include_once 'modelos/propietarios.php';
+include_once 'controladores/propietariosController.php';
 
-//date_default_timezone_set("America/Bogota");
-//$MarcaTemporal = date('Y-m-d');
+$IdSesion  = $_SESSION['IdUser'];
+$id_equipo = $_GET['id_equipo'];
 
-date_default_timezone_set("America/Bogota");
-$totaldiasmes= date('t');
-$anoactual= date('Y');
-$mesactual= date('n');
-$mesanterior=$mesactual-1;
-
-  $primerdiames=$anoactual."-".$mesactual."-"."01 00:00:000";
-  $ultimodiames=$anoactual."-".$mesactual."/".$totaldiasmes." 00:00:000";
-
-
-
-$FechaInicioDia=($MarcaTemporal." 00:00:000");
-$FechaFinalDia=($MarcaTemporal." 23:59:000");
-//echo("FECHA QUE LLEGA:".$fechaform."<br>");
-
-if ($fechaform!="") {
-      $arreglo=explode("-", $fechaform);
-      $FechaIn=$arreglo[0];
-      $FechaFn=$arreglo[1];
-      $vectorfechaIn=explode("/", $FechaIn);
-      $vectorfechaFn=explode("/", $FechaFn);
-      $arreglofechauno=$vectorfechaIn[2]."-".$vectorfechaIn[0]."-".$vectorfechaIn[1];
-      $arreglofechados=$vectorfechaFn[2]."-".$vectorfechaFn[0]."-".$vectorfechaFn[1];
-
-      $FechaUno=str_replace(" ", "", $arreglofechauno);
-      $FechaDos=str_replace(" ", "", $arreglofechados);
-}
-
-// Validación de la fecha en que inicia el Día
-
-if ($FechaUno=="") {
-  $FechaStart=$primerdiames;
-  $datofechain=$primerdiames;
-          }
-else
-  {
-    $FechaStart=($FechaUno." 00:00:000");
-    $datofechain=$FechaUno;
-  }
-// Validación de la fecha en que Termina el Día
-if ($FechaDos=="") {
-    $FechaEnd=$ultimodiames;
-    $datofechafinal=$ultimodiames;
-  }
-else
-  {
-    $FechaEnd=($FechaDos." 23:59:000");
-    $limpiarvariable=str_replace(" ", "", $FechaDos);
-    $datofechafinal=$limpiarvariable;
-  }
-
- ?>
+?>
 <!-- DataTables -->
   <!-- <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap4.css"> -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.5.2/css/buttons.dataTables.min.css">
-    <!-- CCS Y JS DATERANGE -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-<!-- Content Wrapper. Contains page content -->
+
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
@@ -86,189 +28,174 @@ else
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0 text-dark">Configuración de Equipos</h1>
+          <h1 class="m-0 text-dark">Reporte Ordenes de Trabajo </h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="?controller=index&&action=index">Inicio</a></li>
-            <li class="breadcrumb-item active">Equipos</li>
+            <li class="breadcrumb-item"><a href="?controller=equipos&&action=todos">Equipos</a></li>
+
+            <li class="breadcrumb-item active">Reporte</li>
           </ol>
         </div><!-- /.col -->
       </div><!-- /.row -->
     </div><!-- /.container-fluid -->
   </div>
     <!-- /.content-header -->
+
   <!-- Main content -->
   <div class="content">
     <div class="container-fluid">
+
       <div class="row">
-          <div class="row">
-        <form action="?controller=equipos&&action=gastosmantenimientoporfecha" method="post" id="FormFechas" autocomplete="off">
-         <div class="col-md-8">
-                        <div class="form-group">
-                          <label>Seleccione el Rango de Fecha<span>*</span></label>
-                          <input type="text"  name="daterange" class="form-control" required value="">
-                        </div>
-                      </div>
-          <div class="form-group">
-            <div class="col-xs-12 col-sm-6">
-              <button class="btn btn-primary btn-sm" type="Submit">Realizar Consulta</button>           
-          </div>    
-          </div>
-        </form>
-        <script type="text/javascript">
-  $('input[name="daterange"]').daterangepicker({
-    ranges: {
-        'Hoy': [moment(), moment()],
-        'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-        'Últimos 7 días': [moment().subtract(6, 'days'), moment()],
-        'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
-        'Este Mes': [moment().startOf('month'), moment().endOf('month')],
-        'Mes Anterior': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-    },
-    "locale": {
-        "format": "MM/DD/YYYY",
-        "separator": " - ",
-        "applyLabel": "Aplicar",
-        "cancelLabel": "Cancelar",
-        "fromLabel": "desde",
-        "toLabel": "hasta",
-        "customRangeLabel": "Personalizado",
-        "weekLabel": "W",
-        "daysOfWeek": [
-            "Do",
-            "Lu",
-            "Ma",
-            "Mi",
-            "Ju",
-            "Vi",
-            "Sa"
-        ],
-        "monthNames": [
-            "Enero",
-            "Febrero",
-            "Marzo",
-            "Abril",
-            "Mayo",
-            "Junio",
-            "Julio",
-            "Agosto",
-            "Septiembre",
-            "Octubre",
-            "Noviembre",
-            "Diciembre"
-        ],
-        "firstDay": 1
-    },
-    //"startDate": "03/24/2019",
-    //"endDate": "03/30/2019",
-    "opens": "left"
-}, function(start, end, label) {
-  console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')');
-});
-</script>
-      </div>
-       <div class="col-sm-12">
-        <?php 
-        if ($fechaform!="") {
-          ?>
-           <h3 class="m-0 text-dark">Reporte Despachos del <?php echo(fechalarga($datofechain)) ?> al <?php echo (fechalarga($datofechafinal)) ?></h3>
-          <?php
-        }
-        else
-        {
-          ?>
-           <h3 class="m-0 text-dark">Reporte Total Despachos </h3>
-          <?php
-        }
 
-
-         ?>
-         
-        </div><!-- /.col -->
-            
-		<div class="col-lg-12">
-		<div class="card card-default">
-			<div class="card-body">
-				 
+    <div class="col-lg-12">
+    <div class="card card-default">
+      <div class="card-body">
       <div class="clearfix">
                       <div class="pull-left tableTools-container"></div>
                     </div>
               <div class="table-responsive mailbox-messages">
-          <table id="cotizaciones" class="table  table-responsive table-striped table-bordered table-hover" style="width: 100%">
-            <tfoot style="display: table-header-group;">
-                                    <th style="background-color: #fcf8e3" class="success"></th>
-                                    <th style="background-color: #fcf8e3" class="success"></th>
-                                    <th style="background-color: #fcf8e3" class="success"></th>
-                                    <th style="background-color: #fcf8e3" class="success"></th>  
+         <table id="cotizaciones" class="table  table-responsive table-striped table-bordered table-hover" style="width: 100%;font-size: 12px;">
+           <tfoot style="display: table-header-group;">
+                                    <th style="background-color: #dff0d8" class="success"></th>
+                                    <th style="background-color: #dff0d8" class="success"></th>
+                                    <th style="background-color: #dff0d8" class="success"></th>
+                                     <th style="background-color: #dff0d8" class="success"></th>
+                                    <th style="background-color: #dff0d8" class="success"></th>
+                                    <th style="background-color: #dff0d8" class="success"></th>
+                                    <th style="background-color: #dff0d8" class="success"></th>
+                                    <th style="background-color: #dff0d8" class="success"></th>
+                                    <th style="background-color: #dff0d8" class="success"></th>
+                                   <th style="background-color: #dff0d8" class="success"></th>
+                                   <th style="background-color: #dff0d8" class="success"></th>
+                                   <th style="background-color: #dff0d8" class="success"></th>
+                                   <th style="background-color: #dff0d8" class="success"></th>
+                                   <th style="background-color: #dff0d8" class="success"></th>
+
+
                             </tfoot>
           <thead>
             <tr style="background-color: #4f5962;color: white;">
-              
-              <th style="width: 20%;">Equipo</th>
+              <th>Orden</th>
+              <th>Estado</th>
+              <th>Valor</th>
+              <th>Fecha Reporte</th>
+              <th>Estimado Reparación</th>
+              <th>Equipo</th>
               <th>Propietario</th>
-              <th>Gastos en Repuestos</th>
-              <th style="width: 20%;">Acción</th>
+              <th>Reportado por</th>
+              <th>Mecánico</th>
+               <th>Mantenimiento</th>
+              <th>Problema Presentado</th>
+               <th>Repuestos</th>
+              <th>Solución</th>
+
+              <th style="width: 10%;">Acción</th>
             </tr>
             <tr>
-              <th style="width: 20%;">Equipo</th>
+               <th>Orden</th>
+               <th>Estado</th>
+                <th>Valor</th>
+             <th>Fecha Reporte</th>
+             <th>Estimado Reparación</th>
+              <th>Equipo</th>
               <th>Propietario</th>
-              <th>Gastos en Repuestos</th>
-              <th style="width: 20%;">Acción</th>
+              <th>Reportado por</th>
+               <th>Mecánico</th>
+               <th>Mantenimiento</th>
+              <th>Problema Presentado</th>
+               <th>Repuestos</th>
+              <th>Solución</th>
+
+              <th style="width: 10%;">Acción</th>
             </tr>
           </thead>
-				  <tbody>
-					  <?php
-					  $campos = $campos->getCampos();
-					  foreach ($campos as $campo){
-						$id_equipo = $campo['id_equipo'];
-            $nombre_equipo = $campo['nombre_equipo'];
-            $modulo = $campo['modulo'];
-            $marca_equipo = $campo['marca_equipo'];
-            $placa = $campo['placa'];
-						$serial_equipo = $campo['serial_equipo'];
-            $propietario = $campo['propietario'];
-            $valor_unidad = $campo['valor_unidad'];
-            $modelo = $campo['modelo'];
-            $unidad_trabajo = $campo['unidad_trabajo'];
-            $estado_equipo = $campo['estado_equipo'];
-            
-            $gastoporequipo=gastomantenimientoporequipo($datofechain,$datofechafinal,$id_equipo);
-            //$unidad_reportada=Equipos::obtenerNombreTipoUnidad($id_equipo);
-            
-						?>
-          
-						<tr>
-							
-              <td><?php echo utf8_encode($nombre_equipo); ?></td>
-             
-              <td><?php echo utf8_encode($propietario); ?></td>
-               <td><?php echo utf8_encode("$".number_format($gastoporequipo,0)); ?></td> 
-							<td>
+          <tbody>
+            <?php
+$res         = Equipos::obtenertodosreportes();
+$movimientos = $res->getCampos();
+foreach ($movimientos as $mov) {
+    $id_reporte       = $mov['id_reporte'];
+    $equipo_id_equipo = $mov['equipo_id_equipo'];
+    $creado_por       = $mov['creado_por'];
+    $fecha_reporte    = $mov['fecha_reporte'];
+    $fecha_reparado   = $mov['fecha_reparado'];
+    $estado_reporte   = $mov['estado_reporte'];
+    $problema         = $mov['problema'];
+    $num_salida_inv   = $mov['num_salida_inv'];
+    $actividad        = $mov['actividad'];
+    $repuesto         = $mov['repuesto'];
+    $valor_reporte    = $mov['valor_reporte'];
+    $mecanico_id      = $mov['mecanico_id'];
+    $mantenimiento_id = $mov['mantenimiento_id'];
+
+    $nombreq             = Equipos::obtenerNombreEquipo($equipo_id_equipo);
+    $idpropietario       = Equipos::obtenerPropietarioEquipo($equipo_id_equipo);
+    $nompropietario      = Propietarios::obtenerNombre($idpropietario);
+    $nombrereporta       = Usuarios::obtenerNombreUsuario($creado_por);
+    $nombremecanico      = Usuarios::obtenerNombreUsuario($mecanico_id);
+    $nombremantemimiento = Tipomantenimiento::obtenerNombre($mantenimiento_id);
+    ?>
+            <tr>
+            <td><?php echo utf8_decode("OT-00" . $id_reporte); ?></td>
+            <td>
+                <?php
+if ($estado_reporte == '1') {
+        echo ("<span class='label label-danger'>Asignado</span>");
+    }elseif ($estado_reporte == '2') {
+      echo ("<span class='label label-danger'>Acualizado por Mecanico</span>");
+    } 
+    elseif ($estado_reporte == '3') {
+        echo ("<span class='label label-success'>Terminado</span>");
+    }
+
+    ?>
+            </td>
+            <td><?php echo utf8_decode("$".number_format($valor_reporte,0)); ?></td>
+            <td><?php echo utf8_decode($fecha_reporte); ?></td>
+             <td><?php echo utf8_decode($fecha_reparado); ?></td>
+            <td><?php echo utf8_decode($nombreq); ?></td>
+            <td><?php echo utf8_decode($nompropietario); ?></td>
+            <td><?php echo utf8_decode($nombrereporta); ?></td>
+            <td><?php echo utf8_decode($nombremecanico); ?></td>
+            <td><?php
+if ($mantenimiento_id != 0) {
+        echo htmlspecialchars_decode($nombremantemimiento);
+    } else {
+        echo ("Falla Reportada");
+    }
+
+    ?></td>
+            <td><?php echo utf8_decode($problema); ?></td>
+            <td><?php echo utf8_decode($repuesto); ?></td>
+            <td><?php echo utf8_decode($actividad); ?></td>
+
+              <td>
                 <div class="btn-group">
                       <button type="button" class="btn btn-default btn-flat">
-                         <a href="?controller=equipos&&action=editar&&id=<?php echo $id_equipo; ?>" class="tooltip-primary text-success" title="Editar Equipo">
-                <i class="fa fa-info-circle bigger-110 "></i>
+                         <a href="?controller=equipos&&action=editareporte&&id=<?php echo $id_reporte; ?>&&id_equipo=<?php echo ($id_equipo) ?>&&usermecanico=1" class="tooltip-primary text-success" title="Editar Reporte">
+                <i class="fa fa-edit bigger-110 "></i>
               </a>
                       </button>
-                      
-                        <button type="button" class="btn btn-default btn-flat">
-                         <a href="?controller=equipos&&action=reportediario&&id=<?php echo $id_equipo; ?>" class="tooltip-primary text-primary" title="Reporte Diario">
-                <i class="fa fa-calendar bigger-110 "></i>
+                       <button type="button" class="btn btn-default btn-flat">
+                        <a  href="#" onclick="eliminar(<?php echo $id_reporte; ?>,<?php echo ($id_equipo); ?>);" class="tooltip-primary text-danger" title="Eliminar Reporte">
+                <i class="fa fa-trash bigger-110 "></i>
               </a>
-                      </button>
+                       </button>
+
                     </div>
-							</td>
-						</tr>
-						<?php
-						  }
-					  ?>
-					</tbody>
-					</table>
-			  </div> <!-- Fin Row -->
-		  </div> <!-- Fin card -->
-		</div>
-		</div>
+              </td>
+            </tr>
+            <?php
+}
+?>
+          </tbody>
+          </table>
+        </div> <!-- Fin Row -->
+      </div> <!-- Fin card -->
+    </div>
+    </div>
 
 
 
@@ -278,10 +205,10 @@ else
 </div> <!-- Fin Content-Wrapper -->
 
 <script>
-function eliminar(id){
+function eliminar($id,$equipo){
    eliminar=confirm("¿Deseas eliminar este registro?");
    if (eliminar)
-     window.location.href="?controller=equipos&&action=eliminar&&id="+id;
+     window.location.href="?controller=equipos&&action=eliminareporte&&id="+$id+"&&id_equipo="+$equipo+"&&usermecanico=1";
 else
   //Y aquí pon cualquier cosa que quieras que salga si le diste al boton de cancelar
     alert('No se ha podido eliminar el registro...')
@@ -307,6 +234,8 @@ else
            <script src="dist/js/dataTables.select.min.js"></script>
            <script src="dist/js/buttons.flash.min.js"></script>
 
+
+
 <script>
    function format2(n, currency) {
     return currency + " " + n.toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
@@ -322,11 +251,12 @@ function formatmoneda(n, currency) {
         "info":     true,
         "aLengthMenu": [[100, 200, 300, -1], [100, 200, 300, "Todas"]],
     "pageLength": 100,
-       
-       
+
+
     } );
 } );
     </script>
+
 <!-- page script -->
 <script>
   $(function () {
@@ -369,12 +299,12 @@ function formatmoneda(n, currency) {
 </script>
 <script type="text/javascript">
       jQuery(function($) {
-      
+
 $('#cotizaciones thead tr:eq(1) th').each( function () {
         var title = $('#cotizaciones thead tr:eq(0) th').eq( $(this).index() ).text();
         $(this).html( '<input style="width:100%;border:black solid 1px;" type="text" placeholder="Buscar '+title+'" />' );
-    } ); 
-  
+    } );
+
     var table = $('#cotizaciones').DataTable({
       responsive:true,
       "order": true,
@@ -385,7 +315,7 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
             "info": "Mostrar página _PAGE_ de _PAGES_",
             "infoEmpty": "No hay registros disponibles",
            },
-      
+
     "lengthMenu": [[5000, 7000, 10000, -1], [5000, 7000, 10000, "All"]],
 
           select: {
@@ -393,7 +323,7 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
           },
           "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
- 
+
             // Remove the formatting to get integer data for summation
             var intVal = function ( i ) {
                 return typeof i === 'string' ?
@@ -403,40 +333,43 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
             };
 
 
-            pageTotal2 = api
+            // Total over all pages
+
+
+            pageTotal6 = api
                 .column( 2, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
-           
-             // Update footer
-           
-               $( api.column( 2 ).footer() ).html(
-                '$'+formatmoneda(pageTotal2,'' )
+
+
+
+             $( api.column( 2 ).footer() ).html(
+                '$'+formatmoneda(pageTotal6,'' )
             );
-            
+
         },
 
 
     });
-  
+
     // Apply the search
     table.columns().every(function (index) {
         $('#cotizaciones thead tr:eq(1) th:eq(' + index + ') input').on('keyup change', function () {
             table.column($(this).parent().index() + ':visible')
                 .search(this.value)
-                .draw();    
+                .draw();
         });
     });
 
-        var myTable = 
+        var myTable =
         $('#cotizaciones')
         //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
         .DataTable( {
 retrieve: true,
 
-          
+
           "aoColumns": [
             { "bSortable": false },
             null, null,null, null,null,null,null,null, null,null, null,null,null,null,null, null,null, null,null,null,null,
@@ -444,33 +377,33 @@ retrieve: true,
           ],
           "aaSorting": [],
           "scrollX": true,
-          
+
           //"bProcessing": true,
               //"bServerSide": true,
               //"sAjaxSource": "http://127.0.0.1/table.php" ,
-      
+
           //,
-          
+
           //"sScrollXInner": "120%",
           //"bScrollCollapse": true,
           //Note: if you are applying horizontal scrolling (sScrollX) on a ".table-bordered"
           //you may want to wrap the table inside a "div.dataTables_borderWrap" element
-      
+
           //"iDisplayLength": 50
 
-      
-          } );
-      
-        
-    
 
-        
+          } );
+
+
+
+
+
         $.fn.dataTable.Buttons.defaults.dom.container.className = 'dt-buttons btn-overlap btn-group btn-overlap';
-        
+
         new $.fn.dataTable.Buttons( myTable, {
          buttons: [
-           
-           
+
+
             {
             "extend": "csv",
             "text": "<i class='fa fa-database bigger-110 orange'></i> <span class='hidden'></span>",
@@ -497,27 +430,27 @@ retrieve: true,
             "className": "btn btn-white btn-primary btn-bold",
             autoPrint: true,
             message: 'Está impresión se produjo desde la App'
-            }     
+            }
           ]
         } );
         myTable.buttons().container().appendTo( $('.tableTools-container') );
-        
+
         // style the message box
         // var defaultCopyAction = myTable.button(1).action();
         // myTable.button(1).action(function (e, dt, button, config) {
         //   defaultCopyAction(e, dt, button, config);
         //   $('.dt-button-info').addClass('gritter-item-wrapper gritter-info gritter-center white');
         // });
-        
 
 
-        
+
+
         // var defaultColvisAction = myTable.button(0).action();
         // myTable.button(0).action(function (e, dt, button, config) {
-          
+
         //   defaultColvisAction(e, dt, button, config);
-          
-          
+
+
         //   if($('.dt-button-collection > .dropdown-menu').length == 0) {
         //     $('.dt-button-collection')
         //     .wrapInner('<ul class="dropdown-menu dropdown-light " />')
@@ -525,9 +458,9 @@ retrieve: true,
         //   }
         //   $('.dt-button-collection').appendTo('.tableTools-container .dt-buttons')
         // });
-      
+
         //
-      
+
         setTimeout(function() {
           $($('.tableTools-container')).find('a.dt-button').each(function() {
             var div = $(this).find(' > div').first();
@@ -535,11 +468,11 @@ retrieve: true,
             else $(this).tooltip({container: 'body', title: $(this).text()});
           });
         }, 500);
-        
-        
-        
-        
-        
+
+
+
+
+
         myTable.on( 'select', function ( e, dt, type, index ) {
           if ( type === 'row' ) {
             $( myTable.row( index ).node() ).find('input:checkbox').prop('checked', true);
@@ -550,57 +483,57 @@ retrieve: true,
             $( myTable.row( index ).node() ).find('input:checkbox').prop('checked', false);
           }
         } );
-      
-      
-      
-      
-      
-      
+
+
+
+
+
+
         /////////////////////////////////
         //table checkboxes
         $('th input[type=checkbox], td input[type=checkbox]').prop('checked', false);
-        
+
         //select/deselect all rows according to table header checkbox
         $('#cotizaciones > thead > tr > th input[type=checkbox], #cotizaciones_wrapper input[type=checkbox]').eq(0).on('click', function(){
           var th_checked = this.checked;//checkbox inside "TH" table header
-          
+
           $('#cotizaciones').find('tbody > tr').each(function(){
             var row = this;
             if(th_checked) myTable.row(row).select();
             else  myTable.row(row).deselect();
           });
         });
-        
+
         //select/deselect a row when the checkbox is checked/unchecked
         $('#cotizaciones').on('click', 'td input[type=checkbox]' , function(){
           var row = $(this).closest('tr').get(0);
           if(this.checked) myTable.row(row).deselect();
           else myTable.row(row).select();
         });
-      
-      
-      
+
+
+
         $(document).on('click', '#cotizaciones .dropdown-toggle', function(e) {
           e.stopImmediatePropagation();
           e.stopPropagation();
           e.preventDefault();
         });
-        
-        
-        
+
+
+
         //And for the first simple table, which doesn't have TableTools or dataTables
         //select/deselect all rows according to table header checkbox
         var active_class = 'active';
         $('#simple-table > thead > tr > th input[type=checkbox]').eq(0).on('click', function(){
           var th_checked = this.checked;//checkbox inside "TH" table header
-          
+
           $(this).closest('table').find('tbody > tr').each(function(){
             var row = this;
             if(th_checked) $(row).addClass(active_class).find('input[type=checkbox]').eq(0).prop('checked', true);
             else $(row).removeClass(active_class).find('input[type=checkbox]').eq(0).prop('checked', false);
           });
         });
-        
+
         //select/deselect a row when the checkbox is checked/unchecked
         $('#simple-table').on('click', 'td input[type=checkbox]' , function(){
           var $row = $(this).closest('tr');
@@ -608,30 +541,30 @@ retrieve: true,
           if(this.checked) $row.addClass(active_class);
           else $row.removeClass(active_class);
         });
-      
-        
-      
+
+
+
         /********************************/
         //add tooltip for small view action buttons in dropdown menu
         $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
-        
+
         //tooltip placement on right or left
         function tooltip_placement(context, source) {
           var $source = $(source);
           var $parent = $source.closest('table')
           var off1 = $parent.offset();
           var w1 = $parent.width();
-      
+
           var off2 = $source.offset();
           //var w2 = $source.width();
-      
+
           if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
           return 'left';
         }
-        
-        
-        
-        
+
+
+
+
         /***************/
         $('.show-details-btn').on('click', function(e) {
           e.preventDefault();
@@ -639,7 +572,58 @@ retrieve: true,
           $(this).find(ace.vars['.icon']).toggleClass('fa-angle-double-down').toggleClass('fa-angle-double-up');
         });
         /***************/
-    
-      
+
+
       })
     </script>
+
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+<script>
+window.onload = function () {
+
+var chart = new CanvasJS.Chart("chartContainer", {
+  exportEnabled: true,
+  animationEnabled: true,
+  title:{
+    text: "Reporte <?php echo ($nombre_equipo); ?>"
+  },
+  axisX:{
+    valueFormatString: "DD MMM"
+  },
+  axisY: {
+    title: "<?php echo ($unidad_reportada); ?> Trabajadas",
+    includeZero: false,
+    scaleBreaks: {
+      autoCalculate: false
+    }
+  },
+  data: [{
+    type: "line",
+    xValueFormatString: "DD MMM",
+    yValueFormatString: "#.### <?php echo ($unidad_reportada); ?>",
+    color: "#F08080",
+    dataPoints: [
+     <?php
+// Consulta por día
+$mesactual = date("n");
+$mesvector = $mesactual - 1;
+
+$res    = Equipos::GraficaReporteDiario($mesactual, $id_equipo);
+$campos = $res->getCampos();
+foreach ($campos as $campo) {
+    $DIA = $campo['DIA'];
+    $TB  = $campo['TB'];
+    ?>
+      { x: new Date(2019, <?php echo ($mesvector) ?>, <?php echo ($DIA) ?>), y: <?php echo ($TB) ?> },
+     <?php
+}
+?>
+
+    ]
+  }]
+});
+chart.render();
+
+}
+</script>

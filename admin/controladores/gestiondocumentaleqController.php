@@ -44,6 +44,14 @@ class GestiondocumentaleqController {
 		require_once 'vistas/gestiondocumentaleq/lista.php';
 	}
 
+	function listaequiposexternos() {
+		$campos=Gestiondocumentaleq::obtenerListaequiposexternos();;
+		require_once 'vistas/gestiondocumentaleq/lista.php';
+	}
+
+
+	
+
 /*************************************************************/
 /* FUNCION PARA AGREGAR NUEVO LLAMADO DESDE ROUTING.PHP */
 /*************************************************************/

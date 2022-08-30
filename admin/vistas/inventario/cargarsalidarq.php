@@ -141,14 +141,12 @@ foreach ($items as $key => $despachounico) {
     $cant_anteriores     = Inventario::sqldetallesalida($despachounico);
     $cant_anteriorestemp = Inventario::sqldetallesalidatemporal($despachounico, $fechadia);
 
-
-
     $pendiente = $cantidad - $cant_anteriores - $cant_anteriorestemp;
     $sumatotal += $cantidad;
     $sumaanteriores += $cant_anteriores;
     $sumaanteriorestemp += $cant_anteriorestemp;
-    $pendientetotal      = $sumatotal - $sumaanteriores-$sumaanteriorestemp;
-    $valorpromedio       = Valorpromedioinsumo($insumo_id_insumo,$rqprincipal,$despachounico);
+    $pendientetotal      = $sumatotal - $sumaanteriores - $sumaanteriorestemp;
+    $valorpromedio       = Valorpromedioinsumo($insumo_id_insumo, $rqprincipal, $despachounico);
     $totalvalorentregado = $valorpromedio * $sumaanteriorestemp;
 
     ?>
@@ -284,9 +282,9 @@ if ($cant_anteriorestemp == 0) {
             </script>
 
             <?php
-} elseif ($cant_anteriorestemp<$pendiente) {
+} elseif ($cant_anteriorestemp < $pendiente) {
         echo ("<span><small class='text-success'  id='<?php echo($despachounico); ?>msjporitem1'>Entrega Parcial</small></span>");
-    } elseif ($pendiente==0) {
+    } elseif ($pendiente == 0) {
         echo ("<span><small class='text-success' id='<?php echo($despachounico); ?>msjporitem1'>Entrega Completa</small></span>");
     }
     ?>
@@ -330,7 +328,7 @@ $TiempoActual = date('Y-m-d H:i:s');
 $campofecha   = date('Y-m-d');
 
 ?>
-                   
+
 
                     <input type="hidden" name="fecha_recepcion" value="<?php echo ($campofecha); ?>">
                     <input type="hidden" name="requisicion_id" value="<?php echo ($idreq); ?>">
@@ -454,7 +452,7 @@ foreach ($rubros as $campo) {
                                    <input type="date" name="fecha_reporte" placeholder="Fecha" class="form-control required" required id="fecha_reporte">
                                                 </div>
                                 </div>
-         
+
 
                                 <div  class="col-md-4">
                                                 <div class="form-group">
@@ -516,15 +514,19 @@ foreach ($rubros as $campo) {
 $(document).ready(function(){
 
         //2
-        var recibido = $("#inputcantidadrecibida").val();
+        var getrecibido = $("#inputcantidadrecibida").val();
+        var recibido = parseInt(getrecibido).toLocaleString('es-ES');
+        //alert (recibido);
 
 
         //10
-        var pendiente = $("#inputcantidacomprada").val();
+        var getpendiente = $("#inputcantidacomprada").val();
+        var pendiente = parseInt(getpendiente).toLocaleString('es-ES');
+         //alert (pendiente);
 
        // Verificar que las cantidades recibidas no superen las compradas.
 
-        if (recibido<pendiente) {
+        if (parseInt(recibido)<=parseInt(pendiente)) {
          $("#botonguardar").slideToggle(100);
         var mySelect = document.getElementById("estadoOC");
         var addOption2 = function(select,txt,value){
@@ -535,7 +537,7 @@ $(document).ready(function(){
             addOption2(mySelect,"Entrega Parcial","Entrega Parcial");
 
         }
-        else if(pendiente==0){
+        else if(parseInt(pendiente)==0){
              $("#botonguardar").slideToggle(100);
             var mySelect = document.getElementById("estadoOC");
         var addOption2 = function(select,txt,value){
@@ -545,9 +547,9 @@ $(document).ready(function(){
             }
             addOption2(mySelect,"Entrega Completa","Entrega Completa");
         }
-        else if(recibido>pendiente){
-             $("#botonguardar").hide(100);
-              $("#mensajealerta2").slideToggle(100);
+        else if(parseInt(recibido) > parseInt(pendiente)){
+            $("#botonguardar").hide(100);
+            $("#mensajealerta2").slideToggle(100);
             var mySelect = document.getElementById("estadoOC");
         var addOption2 = function(select,txt,value){
         var opt = new Option(txt,value);

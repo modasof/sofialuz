@@ -28,6 +28,68 @@ where fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' and 
 	return $total;
 	}
 
+function AcpmmesEquipo($FechaStart,$FechaEnd,$equipo){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$select = $db->prepare("SELECT IFNULL(sum(cantidad),0) as Galones FROM reporte_combustibles
+where fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' and reporte_publicado='1' and equipo_id_equipo='".$equipo."'");
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$total = $campo['Galones'];
+		}
+	return $total;
+	}
+
+function AcpmmesPropietario($FechaStart,$FechaEnd,$id){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$select = $db->prepare("SELECT IFNULL(sum(A.cantidad),0) as Galones FROM reporte_combustibles as A, propietarios as B, equipos as C WHERE A.equipo_id_equipo=C.id_equipo and C.propietario=B.id_propietario and A.fecha_reporte >='".$FechaStart."' and A.fecha_reporte <='".$FechaEnd."' and A.reporte_publicado='1' and A.equipo_id_equipo<>'732' And B.id_propietario='".$id."' GROUP BY C.propietario");
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$total = $campo['Galones'];
+		}
+	return $total;
+	}
+
+
+
+
+
+
+
+function AcpmconteoEquipo($FechaStart,$FechaEnd,$equipo){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$sql="SELECT COUNT(cantidad) as Galones FROM reporte_combustibles
+where fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' and reporte_publicado='1' and equipo_id_equipo='".$equipo."'";
+	$select = $db->prepare($sql);
+	//echo ($sql);
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$total = $campo['Galones'];
+		}
+	return $total;
+	}
+
+
+function AcpmpromediotanqueoEquipo($FechaStart,$FechaEnd,$equipo){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$sql="SELECT AVG(cantidad) as Galones FROM reporte_combustibles
+where fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' and reporte_publicado='1' and equipo_id_equipo='".$equipo."'";
+	$select = $db->prepare($sql);
+	//echo ($sql);
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$total = $campo['Galones'];
+		}
+	return $total;
+	}
+
 function AcpmmesEstaciones($FechaStart,$FechaEnd){
 	$db = Db::getConnect();
 	//$mesactual = date("n");
@@ -88,6 +150,20 @@ function AcpmfechaVolquetavalor($FechaStart,$FechaEnd,$idequipo){
 	//$mesactual = date("n");
 	$select = $db->prepare("SELECT IFNULL(sum(cantidad*valor_m3),0) as Galones FROM reporte_combustibles
 where fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' and reporte_publicado='1' and equipo_id_equipo='".$idequipo."'");
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$total = $campo['Galones'];
+		}
+	return $total;
+	}
+
+
+
+	function AcpmmesValorPropietario($FechaStart,$FechaEnd,$id){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$select = $db->prepare("SELECT IFNULL(sum(A.cantidad*A.valor_m3),0) as Galones FROM reporte_combustibles as A, propietarios as B, equipos as C WHERE A.equipo_id_equipo=C.id_equipo and C.propietario=B.id_propietario and A.fecha_reporte >='".$FechaStart."' and A.fecha_reporte <='".$FechaEnd."' and A.reporte_publicado='1' and A.equipo_id_equipo<>'732' And B.id_propietario='".$id."' GROUP BY C.propietario");
 	$select->execute();
 	$valor = $select->fetchAll(); 
 	foreach($valor as $campo){

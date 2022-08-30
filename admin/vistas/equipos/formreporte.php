@@ -29,17 +29,20 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-	<form role="form" action="?controller=equipos&&action=guardareporte&&id_equipo=<?php echo($id_equipo); ?>" method="POST" enctype="multipart/form-data" autocomplete="off">
+	<form role="form" action="?controller=equipos&&action=guardareporte&&id_equipo=<?php echo($id_equipo); ?>&&usermecanico=1" method="POST" enctype="multipart/form-data" autocomplete="off">
 							<?php  
 								date_default_timezone_set("America/Bogota");
 								$TiempoActual = date('Y-m-d H:i:s');
 								?>
-							<input type="hidden" name="creado_por" value="<?php echo($IdSesion) ?>">
+
+							<input type="hidden" name="valor_reporte" value="0">
+							<input type="hidden" name="num_salida_inv" value="0">
+							
 							<input type="hidden" name="reporte_publicado" value="1">
 							<input type="hidden" name="marca_temporal" value="<?php echo($TiempoActual); ?>">
 							<input type="hidden" name="estado_reporte" value="1">
 							<input type="hidden" name="equipo_id_equipo" value="<?php echo($id_equipo) ?>">
-							<input type="hidden" name="valor_reporte" value="<?php echo($valor_unidad) ?>">
+							
 							  <div class="card-body">
 								
 							<div class="row">
@@ -54,85 +57,35 @@
 											<div id="divplaca" class="col-md-12">
 												<div class="form-group">
 											<label> Seleccione el Responsable: <span>*</span></label>
-							<select style="width: 250px;" class="form-control mi-selector0" id="funcionario_id_funcionario" name="funcionario_id_funcionario" required>
+							<select style="width: 250px;" class="form-control mi-selector0" id="creado_por" name="creado_por" required>
 								
 										<option value="" selected>Seleccione el responsable</option>
 										<?php
-										$rubros = Equipos::obtenerFuncionarios();
+										$rubros = Usuarios::ListaUsuariosMec();
 										foreach ($rubros as $campo){
-											$id_funcionario = $campo['id_funcionario'];
-											$nombre_funcionario = $campo['nombre_funcionario'];
+											$id_usuario = $campo['id_usuario'];
+											$nombre_usuario = $campo['nombre_usuario'];
 										?>
-										<option value="<?php echo $id_funcionario; ?>"><?php echo $nombre_funcionario; ?></option>
+										<option value="<?php echo $id_usuario; ?>"><?php echo $nombre_usuario; ?></option>
 										<?php } ?>
 								</select>
 												</div>
 											</div>		
 								
-											
+											<div class="col-md-12">
+												<div class="form-group">
+													<label>Problemas Presentados<span>*</span></label>
+													  <textarea class="form-control" rows="5" id="problema" name="problema"></textarea>
+												</div>
+											</div>
 										
-											<div style="display: none;"  class="col-md-4">
-												<div class="form-group">
-													<label>Indique el número de Hr/Km trabajadas<span>*</span></label>
-													<input type="number" step="any" name="num_trabajado" placeholder="Indique el número de Hr/Km trabajadas" class="form-control" required value="0">
-													<small>Decimales separados con punto</small>
-												</div>
-											</div>
-											<div style="display: none;" class="col-md-4">
-												<div class="form-group">
-													<label>Unidad de Trabajo: <span>*</span></label>
-													
-													 <select class="form-control"  name="unidad_trabajo" required="">
-															<option value="0">Seleccionar...</option>
-															<option value="DIA">Días</option>
-															<option value="HR">Horas</option>
-															<option value="KM">Kilómetros</option>
-															<option value="MES">Mes</option>
-													</select>
-													<small>Seleccione un item de la lista</small>
-												</div>
-											</div>
-											<div style="display: none;" class="col-md-4">
-												<div class="form-group">
-													<label>Días Trabajados: <span>*</span></label>
-													
-													 <select class="form-control"  name="dias_trabajados" required="">
-															<option value="0" selected="">0</option>
-													</select>
-													<small>Seleccione un item de la lista</small>
-												</div>
-											</div>
-											<div style="display: none;" class="col-md-3">
-												<div class="form-group">
-													<label>Indique el número de Galones<span>* </span></label>
-													<input type="number" step="any" name="num_galones" placeholder="Indique el número de galones" class="form-control" required value="0">
-													<small>Decimales separados con punto</small>
-												</div>
-											</div>
-											<div  class="col-md-3">
-												<div class="form-group">
-													<label>Indique el número de Factura<span>* </span></label>
-													<input type="text"  name="num_factura" placeholder="Indique el número de Factura" class="form-control" required >
-												</div>
-											</div>
-											<div class="col-md-3">
-												<div class="form-group">
-													<label>Valor Reparación: <span>*</span></label>
-													<input type="text" name="valor_combustible" placeholder="Valor Combustible" class="form-control" id="demo1">
-												</div>
-											</div>
 											<div class="col-md-12">
 												<div class="form-group">
 													<label>Actividad Realizada<span>*</span></label>
 													  <textarea class="form-control" rows="5" id="descripcion" name="actividad"></textarea>
 												</div>
 											</div>
-											<div class="col-md-12">
-												<div class="form-group">
-													<label>Problemas Presentados<span>*</span></label>
-													  <textarea class="form-control" rows="5" id="descripcion" name="observaciones"></textarea>
-												</div>
-											</div>
+											
 											
 											<div class="col-md-12">
 												<div class="form-group">

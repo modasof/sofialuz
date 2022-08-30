@@ -234,6 +234,28 @@ $despachosmes = Despachosclmes($FechaInicioDia, $FechaFinalDia);
 
 <a href="?controller=proveedores&&action=showrelacionpagos" class="btn btn-app">
 <i class="fa fa-list"></i> Relaciones de Pago</a>
+
+<?php 
+
+date_default_timezone_set("America/Bogota");
+$totaldiasmes= date('t');
+$anoactual   = date('Y');
+$mesactual= date('n');
+$primerdiamescons=$mesactual."/01/".$anoactual;
+$ultimodiamescons=$mesactual."/".$totaldiasmes."/".$anoactual;
+$daterangeget=($primerdiamescons." - ".$ultimodiamescons);
+
+
+ ?>
+
+<a href="?controller=dashboards&&action=combustible&&daterange=<?php echo($daterangeget); ?>&&conmes=ma" class="btn btn-app">
+<i class="fa fa-dashboard"></i> Combustible</a>
+
+<a href="?controller=historicoeq&&action=listaequipos" class="btn btn-app">
+<i class="fa fa-check"></i> Estado Equipos</a>
+
+
+
               
             </div>
             <!-- /.box-body -->

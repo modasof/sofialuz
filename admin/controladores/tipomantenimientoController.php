@@ -38,8 +38,8 @@ class TipoMantenimientoController {
 		}else{
 				echo "<script>jQuery(function(){Swal.fire(\"¡Error al eliminar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
 		}
-		$campos = Rubros::obtenerPagina();
-		require_once 'vistas/rubros/todos.php';
+		$campos = TipoMantenimiento::obtenerPagina();
+		require_once 'vistas/tipomantenimiento/todos.php';
 	}
 
 

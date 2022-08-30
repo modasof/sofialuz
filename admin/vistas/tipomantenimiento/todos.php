@@ -1,3 +1,14 @@
+<?php 
+
+ini_set('display_errors', '0');
+include_once 'modelos/unidadesmed.php';
+include_once 'controladores/unidadesmedController.php';
+$RolSesion = $_SESSION['IdRol'];
+$IdSesion = $_SESSION['IdUser'];
+
+
+ ?>
+
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
@@ -48,17 +59,19 @@
   						$nombre_tipomantenimiento = $campo['nombre_tipomantenimiento'];
               $tipo_tipomantenimiento = $campo['tipo_tipomantenimiento'];
               $frecuencia_tipomantenimiento = $campo['frecuencia_tipomantenimiento'];
+               $unidad_id_unidad = $campo['unidad_id_unidad'];
+               $nombreunidad = Unidadesmed::obtenerNombre($unidad_id_unidad);
 						?>
 						<tr>
 						
               <td><?php echo $tipo_tipomantenimiento; ?></td>
               <td><?php echo $nombre_tipomantenimiento; ?></td>
-              <td><?php echo $frecuencia_tipomantenimiento; ?></td>
+              <td><?php echo $frecuencia_tipomantenimiento."-".$nombreunidad; ?></td>
 							<td>
   							<a href="?controller=tipomantenimiento&&action=editar&&id=<?php echo $id_tipomantenimiento; ?>" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Editar Tipo Mantenimiento">
   								<i class="fa fa-edit bigger-110 "></i>
   							</a>
-  							<a style="display: none;" href="#" onclick="eliminar(<?php echo $id_tipomantenimiento; ?>);" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Eliminar Tipo Mantenimiento">
+  							<a href="#" onclick="eliminar(<?php echo $id_tipomantenimiento; ?>);" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Eliminar Tipo Mantenimiento">
   								<i class="fa fa-trash bigger-110 "></i>
   							</a>
 							</td>

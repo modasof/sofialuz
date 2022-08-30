@@ -116,7 +116,7 @@ $TiempoActual = date('Y-m-d H:i:s');
 															<option value="Maquinaria Pesada">Maquinaria Pesada</option>
 															<option value="Volqueta">Volqueta</option>
 															<option value="Tractocamnion">Tractocamión</option>
-															<option value="Vehículos">Vehículos</option>
+															<option value="Vehiculos">Vehículos</option>
 
 															<option value="Herramientas">Herramientas</option>
 													</select>
@@ -141,14 +141,6 @@ $TiempoActual = date('Y-m-d H:i:s');
 												</div>
 											</div>
 												
-
-												<div class="col-md-4 col-xs-12">
-												<div class="form-group">
-													<label>Propietario<span>*</span></label>
-													<input type="text" name="propietario" placeholder="Indique el propietario" class="form-control" required value="<?php echo ($propietario); ?>">
-												</div>
-											</div>
-
 											<div class="col-md-4 col-xs-12">
 												<div class="form-group">
 													<label>Indicar marca<span>*</span></label>
@@ -194,8 +186,8 @@ $TiempoActual = date('Y-m-d H:i:s');
 
 												<div id="divplaca"  class="col-md-4">
 												<div class="form-group">
-													<label>Hr/Km Inicial<span></span></label>
-													<input type="number" name="inicial" placeholder="Hr/Km Inicial" class="form-control" value="<?php echo($inicial); ?>">
+													<label>Hr/Km Iniciales<span></span></label>
+													<input type="number" step="any" name="inicial" placeholder="Hr/Km Inicial" class="form-control" value="<?php echo($inicial); ?>">
 												</div>
 											</div>
 

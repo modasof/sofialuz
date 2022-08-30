@@ -27,6 +27,13 @@ class ComprasController
         require_once 'vistas/compras/cargarinsumos.php';
     }
 
+    public function todositempor()
+    {
+        $idproveedor=$_GET['idproveedor'];
+        $campos = Compras::todositemproveedor($idproveedor);
+        require_once 'vistas/compras/cargarinsumosproveedor.php';
+    }
+
     public function porfechainsumos()
     {
 
@@ -37,6 +44,18 @@ class ComprasController
         }
         $campos = Compras::todosrecibirinsumos();
         require_once 'vistas/compras/cargarinsumos.php';
+    }
+
+     public function porfechainsumospro()
+    {
+        $idproveedor=$_GET['idproveedor'];
+        if (isset($_POST['daterange'])) {
+            $fechaform = $_POST['daterange'];
+        } elseif (isset($_GET['daterange'])) {
+            $fechaform = $_GET['daterange'];
+        }
+        $campos = Compras::todositemproveedor($idproveedor);
+        require_once 'vistas/compras/cargarinsumosproveedor.php';
     }
 
     public function todospormes()

@@ -1,3 +1,11 @@
+<?php 
+
+ini_set('display_errors', '0');
+
+$RolSesion = $_SESSION['IdRol'];
+$IdSesion = $_SESSION['IdUser'];
+
+ ?>
 <!-- CCS Y JS PARA LA CARGA DE IMAGEN -->
 <script src="plugins/dropify/dropify.min.js"></script>
 <link rel="stylesheet" href="plugins/dropify/dropify.min.css">
@@ -36,6 +44,14 @@
 							<!-- /.card-header -->
 							<!-- form start -->
 							<form role="form" action="?controller=tipomantenimiento&&action=guardar" method="POST" enctype="multipart/form-data">
+								<?php 
+								$diactual = date('Y-m-d H:m:s');
+								 ?>
+								<input type="hidden" name="creado_por" value="<?php echo($IdSesion) ?>">
+								<input type="hidden" name="marca_temporal" value="<?php echo($diactual) ?>">
+								<input type="hidden" name="reporte_publicado" value="1">
+
+
 							  <div class="card-body">
 								<div class="card-header">
 								  <h3 class="card-title">Agregar nuevo Tipo Mantenimiento</h3>
@@ -47,7 +63,7 @@
 										  <label for="nombres">Nombre Tipo Mantenimiento</label>
 										  <div class="input-group">
 							                <span class="input-group-addon"><i class="fa fa-check"></i></span>
-							                <input type="text" name="nombre_tipomantenimiento" value="" class="form-control" id="nombre_tipomantenimiento" placeholder="Ingrese el nombre del Tipo Mantenimiento" maxlength="150" required>
+							                <input autocomplete="off" type="text" name="nombre_tipomantenimiento" value="" class="form-control" id="nombre_tipomantenimiento" placeholder="Ingrese el nombre del Tipo Mantenimiento" maxlength="150" required>
 							              </div>
 										 
 										</div>
@@ -57,21 +73,44 @@
 										  <label for="nombres">Tipo</label>
 										  <div class="input-group">
 							                <span class="input-group-addon"><i class="fa fa-check"></i></span>
-							                <input type="text" name="tipo_tipomantenimiento" value="" class="form-control" id="tipo_tipomantenimiento" placeholder="Ingrese el Tipo Mantenimiento">
+							                <select class="form-control" name="tipo_tipomantenimiento" id="" required="">
+							                	<option value="">Seleccionar...</option>
+							                	<option value="PREVENTIVO">PREVENTIVO</option>
+							                	<option value="CORRECTIVO">CORRECTIVO</option>
+							                </select>
 							              </div>
 										 
 										</div>
 									  </div>
-									  <div class="col-md-4">
+									  <div class="col-md-2">
 										<div class="form-group">
 										  <label for="nombres">Frecuencia</label>
 										  <div class="input-group">
 							                <span class="input-group-addon"><i class="fa fa-check"></i></span>
-							                <input type="text" name="frecuencia_tipomantenimiento" value="" class="form-control" id="frecuencia_tipomantenimiento" placeholder="Ingrese la Frecuencia del Tipo Mantenimiento">
+							                <input autocomplete="off" type="number" step="any" name="frecuencia_tipomantenimiento" value="" class="form-control" id="frecuencia_tipomantenimiento" placeholder="Ingrese la Frecuencia del Tipo Mantenimiento">
 							              </div>
 										 
 										</div>
 									  </div>
+									  	<div class="col-md-2">
+												<div class="form-group">
+													<label> Unidad Medida: <span>*</span></label>
+								<select  class="form-control mi-selector" id="unidad_id_unidad" name="unidad_id_unidad" required>
+										<option value="" selected>Seleccionar...</option>
+										<?php
+										$rubros = Unidadesmed::obtenerListaUnidades();
+										foreach ($rubros as $campo){
+											$id = $campo['id'];
+											$nombre = $campo['nombre'];
+											$abreviatura = $campo['abreviatura'];
+										?>
+										<option value="<?php echo $id; ?>"><?php echo utf8_encode("[".$nombre."] - [".$abreviatura."]"); ?></option>
+										<?php } ?>
+								</select>
+
+												</div>
+											</div>
+
 									 
 								</div>
 							<div class="card-footer">

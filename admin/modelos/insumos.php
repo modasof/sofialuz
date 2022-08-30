@@ -58,6 +58,27 @@ public static function obtenerPagina(){
 }
 
 /*******************************************************
+ ** FUNCION PARA MOSTRAR EL NOMBRE DEL EQUIPO **
+ ********************************************************/
+    public static function validarpor($nombre)
+    {
+        try {
+            $db = Db::getConnect();
+
+            $select  = $db->query("SELECT COUNT(nombre_insumo) as totales FROM insumos WHERE  nombre_insumo LIKE '%" . $nombre . "%' and estado_insumo='1'");
+            $camposs = $select->fetchAll();
+            $campos  = new Insumos('', $camposs);
+            $marcas  = $campos->getCampos();
+            foreach ($marcas as $marca) {
+                $mar = $marca['totales'];
+            }
+            return $mar;
+        } catch (PDOException $e) {
+            echo '{"error en obtener la pagina":{"text":' . $e->getMessage() . '}}';
+        }
+    }
+
+/*******************************************************
 ** FUNCION PARA MOSTRAR TODOS LOS CAMPOS	  **
 ********************************************************/
 public static function obtenerinsumosparametrizados(){

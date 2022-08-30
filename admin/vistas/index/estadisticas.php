@@ -372,10 +372,22 @@ function ConsumoGalonespor($equipo){
 		}
 	return $total;
 	}
-function ReporteHorasKmpor($equipo){
+function ReporteHoraspor($equipo){
 	$db = Db::getConnect();
 	//$mesactual = date("n");
-	$select = $db->prepare("SELECT IFNULL(sum(hora_inactiva),0) as totales FROM reporte_horas WHERE  equipo_id_equipo='".$equipo."' and reporte_publicado='1'");
+	$select = $db->prepare("SELECT IFNULL(sum(hora_inactiva),0) as totales FROM reporte_horasmq WHERE  equipo_id_equipo='".$equipo."' and reporte_publicado='1' and fecha_reporte>'2022-07-19'");
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$total = $campo['totales'];
+		}
+	return $total;
+	}
+
+function ReporteKilometrospor($equipo){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$select = $db->prepare("SELECT IFNULL(sum(hora_inactiva),0) as totales FROM reporte_horas WHERE  equipo_id_equipo='".$equipo."' and reporte_publicado='1' and fecha_reporte>'2022-07-19'");
 	$select->execute();
 	$valor = $select->fetchAll(); 
 	foreach($valor as $campo){

@@ -490,7 +490,7 @@ foreach ($campos as $campo) {
 
     if ($estadosolicitado==13 || $estadosolicitado==14) {
          $valor_entregado   = Inventario::sqlvalorsalida($iditem);
-          $cantidadentregada = Inventario::sqldetallesalida($iditem);
+        $cantidadentregada = Inventario::sqldetallesalida($iditem);
     }else{
         $valor_entregado=0;
          $cantidadentregada=0;

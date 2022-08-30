@@ -109,4 +109,12 @@
 - Mensaje informativo con reporte fuera del rango de la fecha actual 
 - Solución de Bug en rutas de cliente
 
+# Actualización 30 de Agosto 
+- Informe general de combustible (incluye gráfica diaria, mes a mes e informes con tablas consolidadas por propietario y equipo)
+- Vista de gestión documental por propietarios y externos 
+- Vista de estado de equipos 
+- Módulo de ordenes de trabajo por equipo
+- Vista en modo calendario por equipo con información consolidada (ot, acpm, km, produción, caja menor, facturación diaria).
+- Ajuste en formulario de km 
+- Ajuste en formulario de listado de precios cliente 
 

@@ -41,7 +41,21 @@ public static function obtenerListaequipos(){
 	try {
 		$db=Db::getConnect();
 
-		$select=$db->query("SELECT * FROM equipos WHERE equipo_publicado='1' ");
+		$select=$db->query("SELECT * FROM equipos WHERE equipo_publicado='1' and propietario='2'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Gestiondocumentaleq('',$camposs);
+		return $campos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+public static function obtenerListaequiposexternos(){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT * FROM equipos WHERE equipo_publicado='1' and propietario<>'2'");
     	$camposs=$select->fetchAll();
     	$campos = new Gestiondocumentaleq('',$camposs);
 		return $campos;

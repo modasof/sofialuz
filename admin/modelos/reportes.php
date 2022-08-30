@@ -1840,7 +1840,24 @@ public static function ReporteCombustiblesporfecha($FechaStart,$FechaEnd){
 	try {
 		$db=Db::getConnect();
 
-		$select=$db->query("SELECT * FROM reporte_combustibles WHERE reporte_publicado='1' and punto_despacho<>'3' and fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' order by fecha_reporte DESC");
+		$select=$db->query("SELECT * FROM reporte_combustibles WHERE reporte_publicado='1'  and equipo_id_equipo<>'732' and fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' order by fecha_reporte DESC");
+    	$camposs=$select->fetchAll();
+    	$campos = new Reportes('',$camposs);
+		return $campos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/*******************************************************
+** FUNCION PARA MOSTRAR TODOS LOS CAMPOS POR RANGO DE FECHA	  **
+********************************************************/
+public static function ReporteCombustiblesporfechaEqui($FechaStart,$FechaEnd,$equipo){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT * FROM reporte_combustibles WHERE reporte_publicado='1'  and equipo_id_equipo<>'".$equipo."' and fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' order by fecha_reporte DESC");
     	$camposs=$select->fetchAll();
     	$campos = new Reportes('',$camposs);
 		return $campos;
@@ -3019,6 +3036,11 @@ where creado_por='".$idusuario."' and reporte_publicado='1'");
 }
 
 
+
+
+
+
+
 /*******************************************************
 ** FUNCION PARA OBTENER LA LISTA DE EQUIPOS EN LA ASF	  **
 ********************************************************/
@@ -3040,6 +3062,20 @@ public static function GraficaHistorialConsumoAcpm(){
 	try {
 		$db=Db::getConnect();
 		$select=$db->query("SELECT fecha_reporte,IFNULL(sum(ROUND(cantidad,2)),0) as totales FROM reporte_combustibles WHERE reporte_publicado='1' and equipo_id_equipo<>'732' GROUP BY fecha_reporte ORDER BY fecha_reporte ASC");
+		$camposs=$select->fetchAll();
+		$campos = new Reportes('',$camposs);
+		return $campos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
+public static function GraficaHistorialConsumoAcpmfecha($FechaStart,$FechaEnd){
+	try {
+		$db=Db::getConnect();
+		$select=$db->query("SELECT fecha_reporte,IFNULL(sum(ROUND(cantidad,2)),0) as totales FROM reporte_combustibles WHERE fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' and reporte_publicado='1' and equipo_id_equipo<>'732' GROUP BY fecha_reporte ORDER BY fecha_reporte ASC");
 		$camposs=$select->fetchAll();
 		$campos = new Reportes('',$camposs);
 		return $campos;

@@ -28,7 +28,7 @@ $controllers = array(
     'consolidados' => ['editar','guardar','actualizar','todos','nuevo','eliminar','documentoscuentas','documentosequipos','totalreporteseq'],
 
     // Funcionalidad compras
-	'compras' => ['todos','formulario','guardar','eliminar','editar','actualizar','porfecha','verdetalle','cambiarestado','actualizarpago','cambiarestadocreditos','pagotemporal','deletepagotemporal','actualizarpagocredito','recibiroc','todospormes','cxpusuario','actualizardetallecot','editardetallecot','todosrecibirinsumos','porfechainsumos','cargarinventario','retornar','todosproveedorpagos','cargarfactura','ivamultiple','descartar','descartarinversa','guardarfacturacompras','detallefacturacompra','facturascompraspormes','cargarfacturacp','todosporproveedorespera','pagofacturacompra','editarfacturacompra','actualizarfacturacompras','editarfacturacompracp','guardarpagoanticipo','guardarpagofactura'],
+	'compras' => ['todos','formulario','guardar','eliminar','editar','actualizar','porfecha','verdetalle','cambiarestado','actualizarpago','cambiarestadocreditos','pagotemporal','deletepagotemporal','actualizarpagocredito','recibiroc','todospormes','cxpusuario','actualizardetallecot','editardetallecot','todosrecibirinsumos','porfechainsumos','cargarinventario','retornar','todosproveedorpagos','cargarfactura','ivamultiple','descartar','descartarinversa','guardarfacturacompras','detallefacturacompra','facturascompraspormes','cargarfacturacp','todosporproveedorespera','pagofacturacompra','editarfacturacompra','actualizarfacturacompras','editarfacturacompracp','guardarpagoanticipo','guardarpagofactura','todositempor','porfechainsumospro'],
 
 	// Funcionalidad Cotizaciones
 	'cotizaciones' => ['todos','editar','actualizar','porfecha','todosporinsumo'],
@@ -39,12 +39,11 @@ $controllers = array(
 	// Funcionalidad Clientes Precios
 	'clientesprecios' => ['nuevoValoresRuta','nuevoValoresHora','nuevoValoresProducto','editarValoresRuta','editarValoresHora','editarValoresProducto','guardar','guardarvalorhora','guardarvalorproducto','eliminar','eliminarhora','eliminarproducto','todos','todoshora','todosproducto'],
 
-
 	// Funcionalidad Cuentas
 	'cuentas' => ['editar','guardar','actualizar','todos','nuevo','eliminar','reporteporfecha','crucecuentas','detallecruce'],
 
 	// Módulo de Dashboard 
-	'dashboards' =>['dashboardcompras'],
+	'dashboards' =>['dashboardcompras','combustible'],
 
 	// Funcionalidad Destinos
 	'destinos' => ['editar','guardar','actualizar','todos','nuevo','eliminar','destinoextra'],
@@ -56,7 +55,7 @@ $controllers = array(
 	'egresoscuenta' => ['editar','guardar','actualizarcm','actualizarcu','actualizarot','todos','nuevo','eliminar','egresos','editarcm','editarcu','editarot','eliminarcm','eliminarmvs','eliminarot','egresosporfecha'],
 
 	// Funcionalidad Equipos
-	'equipos' => ['editar','guardar','actualizar','todos','todosmantenimiento','nuevo','eliminar','editarvol','guardarvol','actualizarvol','volquetas','nuevovol','eliminarvol','reporte','guardareporte','reportediario','eliminareporte','editareporte','actualizareporte','formreportedia','reportedia','reporteporfecha','gastosmantenimientoporfecha','cambiarvisualizacion','estado','guardarestado','actualizarestado','todosestados','eliminarestado','timelineestados'],
+	'equipos' => ['editar','guardar','actualizar','todos','todosmantenimiento','nuevo','eliminar','editarvol','guardarvol','actualizarvol','volquetas','nuevovol','eliminarvol','reporte','guardareporte','reportediario','eliminareporte','editareporte','actualizareporte','formreportedia','reportedia','reporteporfecha','gastosmantenimientoporfecha','cambiarvisualizacion','estado','guardarestado','actualizarestado','todosestados','eliminarestado','timelineestados','ordentrabajo','hojavida'],
 
 	// Funcionalidad Equipos Temporales
 	'equipostemporales' => ['todos','nuevo','guardar','eliminar','editar','actualizar'],
@@ -83,7 +82,7 @@ $controllers = array(
 	'gestiondocumental' => ['editar','guardar','actualizar','todos','nuevo','eliminar','listacuentas','configuracion','cargartodos','desactivarDocumento','varios','guardarvarios','eliminarvarios','editarvarios','actualizarvarios','activar','carpetaextra'],
 
 	// Funcionalidad Gestión Documental Equipos
-	'gestiondocumentaleq' => ['editar','guardar','actualizar','todos','nuevo','eliminar','listaequipos','configuracion','cargartodos','desactivarDocumento','varios','guardarvarios','eliminarvarios','editarvarios','actualizarvarios','activar'],
+	'gestiondocumentaleq' => ['editar','guardar','actualizar','todos','nuevo','eliminar','listaequipos','configuracion','cargartodos','desactivarDocumento','varios','guardarvarios','eliminarvarios','editarvarios','actualizarvarios','activar','listaequiposexternos'],
 
 	// Funcionalidad Gestión Documental Empleados
 	'gestiondocumentalemp' => ['editar','guardar','actualizar','todos','nuevo','eliminar','listaequipos','configuracion','cargartodos','desactivarDocumento','varios','guardarvarios','eliminarvarios','editarvarios','actualizarvarios','activar','carpetaextra'],
@@ -93,6 +92,9 @@ $controllers = array(
 
 	// Funcionalidad Horas Máquinaria 
 	'horasmq' => ['horas','horaspor','guardarhoras','eliminarhoras','editarhoras','actualizarhoras','horasporfecha'],
+
+	// Funcionalidad Gestión Documental Equipos
+	'historicoeq' => ['editar','guardar','actualizar','todos','nuevo','eliminar','listaequipos','configuracion','cargartodos','desactivarDocumento','varios','guardarvarios','eliminarvarios','editarvarios','actualizarvarios','activar','listaequiposexternos'],
 
 
 	// Redireccionamiento Inicial  
@@ -144,6 +146,9 @@ $controllers = array(
 
 	// Funcionalidad Propietariis
 	'propietarios' => ['editar','guardar','actualizar','todos','nuevo','eliminar'],
+
+		// Funcionalidad Clientes Precios
+	'propietariostarifas' => ['nuevoValoresRuta','nuevoValoresHora','nuevoValoresProducto','editarValoresRuta','editarValoresHora','editarValoresProducto','guardar','guardarvalorhora','guardarvalorproducto','eliminar','eliminarhora','eliminarproducto','todos','todoshora','todosproducto'],
 
 	// Funcionalidad Proyectos
 	'proyectos' => ['editar','guardar','actualizar','todos','nuevo','eliminar','proyectoextra'],
@@ -339,6 +344,11 @@ function call($controller, $action) {
 		$controller = new gestiondocumentaleqController();
 		break;
 
+	case 'historicoeq':
+		require_once 'modelos/historicoeq.php';
+		$controller = new historicoeqController();
+		break;
+
 	case 'gestiondocumentalemp':
 		require_once 'modelos/gestiondocumentalemp.php';
 		$controller = new gestiondocumentalempController();
@@ -442,6 +452,11 @@ function call($controller, $action) {
 	case 'propietarios':
 		require_once 'modelos/propietarios.php';
 		$controller = new PropietariosController();
+		break;
+
+	case 'propietariostarifas':
+		require_once 'modelos/propietariostarifas.php';
+		$controller = new PropietariostarifasController();
 		break;
 
 	case 'proveedores':

@@ -233,6 +233,7 @@ if ($fechaform != "") {
                                     <th style="background-color: #fcf8e3" class="success"></th>
                                     <th style="background-color: #fcf8e3" class="success"></th>
                                     <th style="background-color: #fcf8e3" class="success"></th>
+                                    <th style="background-color: #fcf8e3" class="success"></th>
                                    
 
 
@@ -255,6 +256,7 @@ if ($fechaform != "") {
               <th >Abonos</th>
               <th >Saldo</th>
               <th>Observaciones</th>
+              <th>Acción</th>
              
             </tr>
             <tr>
@@ -273,6 +275,7 @@ if ($fechaform != "") {
               <th >Abonos</th>
               <th >Saldo</th>
               <th>Observaciones</th>
+               <th>Acción</th>
               
             </tr>
           </thead>
@@ -285,8 +288,6 @@ if ($fechaform != "") {
     $campos = $campos->getCampos();
 }
 foreach ($campos as $campo) {
-
-    //`id`, `imagen`, `proveedor_id_proveedor`, `facturanum`, `fecha_reporte`, `valor_subtotal`, `base_uno`, `retefuente_id_retefuente1`, `porcentaje_ret`, `valor_ret`, `base_dos`, `retefuente_id_retefuente2`, `porcentaje_ret2`, `valor_ret2`, `valor_iva`, `valor_descuentos`, `total_pago`, `observaciones`, `rubro_id`, `subrubro_id`, `marca_temporal`, `creado_por`, `estado_factura`, `factura_publicada`
 
     $id                        = $campo['id'];
     $imagen                    = $campo['imagen'];
@@ -312,12 +313,33 @@ foreach ($campos as $campo) {
     $creado_por                = $campo['creado_por'];
     $estado_factura            = $campo['estado_factura'];
     $factura_publicada         = $campo['factura_publicada'];
+    $factura_de=$campo['factura_de'];
     $mascaraporcentaje = $porcentaje_ret*100;
     $mascaraporcentaje2 = $porcentaje_ret2*100;
     $nomproveedor   = Proveedores::obtenerNombreProveedor($proveedor_id_proveedor);
     $nomreportador  = usuarios::obtenerNombreUsuario($creado_por);
-    $nomretefuente1 = Retefuente::obtenerNombre($retefuente_id_retefuente1);
-    $nomretefuente2 = Retefuente::obtenerNombre($retefuente_id_retefuente2);
+
+    if ($retefuente_id_retefuente1!=0) {
+        $nomretefuente1 = Retefuente::obtenerNombre($retefuente_id_retefuente1);
+    }else{
+        $nomretefuente1 =0;
+    }
+
+  if ($retefuente_id_retefuente2!=0) {
+         $nomretefuente2 = Retefuente::obtenerNombre($retefuente_id_retefuente2);
+    }else{
+        $nomretefuente2 =0;
+    }
+
+    
+   
+
+    //$des = Compras::ordenesasociadasafactura($id);
+   // $cadenalista = trim($des, ',');
+
+    $abonosanteriores = Compras::sqlabonosfactura($id);
+
+    $saldo = $total_pago-$abonosanteriores;
 
    
     # ========================================================
@@ -342,7 +364,7 @@ foreach ($campos as $campo) {
 
     ?>
             <tr>
-                <td><?php echo ($facturanum);?>
+                <td><?php echo ("Id:".$id."-".$facturanum);?>
                 <br>
             <a target="_blank" href="<?php echo ($imagen); ?>"  class="tooltip-primary text-primary" title="Ver Soporte">
             <i class="fa fa-eye bigger-110 "> Factura</i>
@@ -362,9 +384,56 @@ foreach ($campos as $campo) {
                 <td><?php echo ("$" . number_format($valor_iva)); ?></td>
                 <td><?php echo ("$" . number_format($valor_descuentos)); ?></td>
                 <td><?php echo ("$" . number_format($total_pago)); ?></td>
-                <td><?php echo ("$" . number_format(0)); ?></td>
-                <td><?php echo ("$" . number_format(0)); ?></td>
+                <td><?php echo ("$" . number_format($abonosanteriores)); ?></td>
+                 <td><?php echo ("$" . number_format($saldo)); ?></td>
                 <td><?php echo ($observaciones); ?></td>
+                <td>
+                     
+                 <div class="btn-group">
+                        <button data-toggle="dropdown" class="btn btn-info btn-sm dropdown-toggle">
+                          Acción
+                          <span class="ace-icon fa fa-caret-down icon-on-right"></span>
+                        </button>
+
+                        <ul class="dropdown-menu dropdown-info dropdown-menu-right">
+
+            <li>
+            <?php 
+
+            if ($factura_de=="insumos-servicios") {
+                ?>
+                 <a href="?controller=compras&&action=editarfacturacompra&&id=<?php echo $proveedor_id_proveedor; ?>&&des=<?php echo($cadenalista); ?>&&factura=<?php echo($id) ?>" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Editar">
+                <i class="fa fa-edit bigger-110 "> Editar</i>
+            </a>
+
+                <?php
+            }else{
+                ?>
+                 <a href="?controller=compras&&action=editarfacturacompracp&&id=<?php echo $proveedor_id_proveedor; ?>&&des=<?php echo($cadenalista); ?>&&factura=<?php echo($id) ?>" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Editar">
+                <i class="fa fa-edit bigger-110 "> Editar</i>
+            </a>
+                <?php
+            }
+
+             ?>
+
+               
+                          </li>
+                          <li>
+                             <a href="?controller=compras&&action=pagofacturacompra&&factura=<?php echo($id); ?>" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Pagar/Abonar">
+                <i class="fa fa-edit bigger-110 "> Pagar/Abonar</i>
+            </a>
+                          </li>
+                          <li>
+                            <a href="#" onclick="eliminar(<?php echo $id; ?>);" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Anular Oc">
+                <i class="fa fa-trash bigger-110 "> Anular OC</i>
+              </a>
+                          </li>
+            
+
+                        </ul>
+                      </div>
+                </td>
                 
             </tr>
             <?php

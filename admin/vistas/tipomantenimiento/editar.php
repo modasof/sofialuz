@@ -5,6 +5,8 @@ foreach ($campos as $campo){
 	$nombre_tipomantenimiento = $campo['nombre_tipomantenimiento'];
 	$tipo_tipomantenimiento = $campo['tipo_tipomantenimiento'];
 	$frecuencia_tipomantenimiento = $campo['frecuencia_tipomantenimiento'];
+	$unidad_id_unidad = $campo['unidad_id_unidad'];
+	 $nombreunidad = Unidadesmed::obtenerNombre($unidad_id_unidad);
 }
 ?>
 
@@ -46,6 +48,15 @@ foreach ($campos as $campo){
 							<!-- /.card-header -->
 							<!-- form start -->
 							<form role="form" action="?controller=tipomantenimiento&&action=actualizar&&id=<?php echo $id_tipomantenimiento; ?>" method="POST" enctype="multipart/form-data">
+
+
+								<?php 
+								$diactual = date('Y-m-d H:m:s');
+								 ?>
+								<input type="hidden" name="creado_por" value="<?php echo($IdSesion) ?>">
+								<input type="hidden" name="marca_temporal" value="<?php echo($diactual) ?>">
+								<input type="hidden" name="reporte_publicado" value="1">
+
 							  <div class="card-body">
 								<div class="card-header">
 								  <h3 class="card-title">Editar Tipo Mantenimiento</h3>
@@ -72,16 +83,34 @@ foreach ($campos as $campo){
 										 
 										</div>
 									  </div>
-									  <div class="col-md-4">
+									  <div class="col-md-2">
 										<div class="form-group">
 										  <label for="nombres">Frecuencia</label>
 										  <div class="input-group">
 							                <span class="input-group-addon"><i class="fa fa-check"></i></span>
-							                <input type="text" name="frecuencia_tipomantenimiento" value="<?php echo utf8_encode($frecuencia_tipomantenimiento);?>" class="form-control" id="frecuencia_tipomantenimiento" placeholder="Ingrese la Frecuencia del Tipo Mantenimiento">
+							                <input type="number" step="any" name="frecuencia_tipomantenimiento" value="<?php echo utf8_encode($frecuencia_tipomantenimiento);?>" class="form-control" id="frecuencia_tipomantenimiento" placeholder="Ingrese la Frecuencia del Tipo Mantenimiento">
 							              </div>
 										 
 										</div>
 									  </div>
+									  <div class="col-md-2">
+												<div class="form-group">
+													<label> Unidad Medida: <span>*</span></label>
+								<select  class="form-control mi-selector" id="unidad_id_unidad" name="unidad_id_unidad" required>
+										<option value="<?php echo($unidad_id_unidad) ?>" selected><?php echo($nombreunidad); ?></option>
+										<?php
+										$rubros = Unidadesmed::obtenerListaUnidades();
+										foreach ($rubros as $campo){
+											$id = $campo['id'];
+											$nombre = $campo['nombre'];
+											$abreviatura = $campo['abreviatura'];
+										?>
+										<option value="<?php echo $id; ?>"><?php echo utf8_encode("[".$nombre."] - [".$abreviatura."]"); ?></option>
+										<?php } ?>
+								</select>
+
+												</div>
+											</div>
 
 								</div>
 						

@@ -39,6 +39,7 @@ include 'vistas/index/estadisticas_index.php';
 include 'vistas/index/estadisticas_indexequipos.php';
 include 'vistas/index/estadisticasinforme1.php';
 
+
 $RolSesion = $_SESSION['IdRol'];
 $IdSesion = $_SESSION['IdUser'];
 $elcliente = $_SESSION['CodigoCliente'];
@@ -275,6 +276,9 @@ function myFunctioncerrar<?php echo($id); ?>(usuario) {
     }
      elseif ($RolSesion==16) {  // Conductor Tractomula
         require_once "homeconductor.php";
+    }
+      elseif ($RolSesion==17) {  // Conductor Tractomula
+        require_once "homemecanico.php";
     }
   
  ?>

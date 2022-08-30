@@ -226,12 +226,18 @@ foreach($campos as $campo){
           <ul class="treeview-menu">
           <?php if ($m_equipos=="Si") { ?>
         <li><a href="?controller=equipos&&action=todos"><i class="fa fa-circle-o"></i> Ver Equipos</a></li>
+         <li><a href="?controller=historicoeq&&action=listaequipos"><i class="fa fa-circle-o"></i> Estado Equipos</a></li>
+
+        
           <?php } ?>
         <?php if ($m_gdocequipos=="Si") { ?>
       <li><a href="?controller=gestiondocumentaleq&&action=listaequipos"><i class="fa fa-circle-o"></i> Gestión Documental</a></li>
         <?php } ?>
+
+        
        
          <?php if ($m_mantenimientos=="Si") { ?>
+             <li class=""><a href="?controller=equipos&&action=todosmantenimiento"><i class="fa fa-circle-o"></i>Ordenes de Trabajo</a></li>
              <li class=""><a href="?controller=tipomantenimiento&&action=todos"><i class="fa fa-circle-o"></i>Tipo Mantenimiento</a></li>
         <?php } ?>
           </ul>

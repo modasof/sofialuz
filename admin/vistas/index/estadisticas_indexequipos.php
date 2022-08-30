@@ -210,7 +210,9 @@ function UltimoEstadoEquipo($equipo){
 function UltimoFechaEstadoEquipo($equipo){
 	$db = Db::getConnect();
 	//$mesactual = date("n");
-	$select = $db->prepare("SELECT fecha_reporte FROM reporte_estado_equipos WHERE equipo_id_equipo='".$equipo."' ORDER BY id DESC LIMIT 1");
+	$sql="SELECT fecha_reporte FROM reporte_estado_equipos WHERE equipo_id_equipo='".$equipo."' ORDER BY id DESC LIMIT 1";
+	$select = $db->prepare($sql);
+	//echo ($sql);
 	$select->execute();
 	$valor = $select->fetchAll(); 
 	foreach($valor as $campo){
@@ -218,6 +220,78 @@ function UltimoFechaEstadoEquipo($equipo){
 		}
 	return $total;
 	}
+
+function UltimoMarcaEstadoEquipo($equipo){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$sql="SELECT marca_temporal FROM reporte_estado_equipos WHERE equipo_id_equipo='".$equipo."' ORDER BY id DESC LIMIT 1";
+	$select = $db->prepare($sql);
+	//echo ($sql);
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$total = $campo['marca_temporal'];
+		}
+	return $total;
+	}
+
+function Ultimoproyectovolqueta($equipo){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$sql="SELECT id_destino_destino FROM reporte_despachosclientes WHERE equipo_id_equipo='".$equipo."' ORDER BY id DESC LIMIT 1";
+	$select = $db->prepare($sql);
+	//echo ($sql);
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$total = $campo['id_destino_destino'];
+		}
+	return $total;
+	}
+
+function Ultimoproyectomaq($equipo){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$sql="SELECT proyecto_id_proyecto FROM reporte_horasmq WHERE equipo_id_equipo='".$equipo."' ORDER BY id DESC LIMIT 1";
+	$select = $db->prepare($sql);
+	//echo ($sql);
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$total = $campo['proyecto_id_proyecto'];
+		}
+	return $total;
+	}
+
+function Ultimoclientevolqueta($equipo){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$sql="SELECT cliente_id_cliente FROM reporte_despachosclientes WHERE equipo_id_equipo='".$equipo."' ORDER BY id DESC LIMIT 1";
+	$select = $db->prepare($sql);
+	//echo ($sql);
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$total = $campo['cliente_id_cliente'];
+		}
+	return $total;
+	}
+
+function Ultimoclientemaq($equipo){
+	$db = Db::getConnect();
+	//$mesactual = date("n");
+	$sql="SELECT cliente_id_cliente FROM reporte_horasmq WHERE equipo_id_equipo='".$equipo."' ORDER BY id DESC LIMIT 1";
+	$select = $db->prepare($sql);
+	//echo ($sql);
+	$select->execute();
+	$valor = $select->fetchAll(); 
+	foreach($valor as $campo){
+		$total = $campo['cliente_id_cliente'];
+		}
+	return $total;
+	}
+
+
 
 	
 

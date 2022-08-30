@@ -3,11 +3,18 @@ ini_set('display_errors', '0');
 
 include_once 'controladores/equiposController.php';
 include_once 'modelos/equipos.php';
+
+include_once 'controladores/tipomantenimientoController.php';
+include_once 'modelos/tipomantenimiento.php';
+
 include_once 'controladores/usuariosController.php';
 include_once 'modelos/usuarios.php';
 
 $RolSesion = $_SESSION['IdRol'];
 $IdSesion = $_SESSION['IdUser'];
+
+$get_equipo=$_GET['id'];
+$nomequipo=Equipos::obtenerNombreEquipo($get_equipo);
 
 ?>
 <!-- CCS Y JS PARA LA CARGA DE IMAGEN -->
@@ -38,7 +45,9 @@ $IdSesion = $_SESSION['IdUser'];
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="?controller=index&&action=index">Inicio</a></li>
-            <li class="breadcrumb-item active"><a href="?controller=equipos&&action=todos">Equipos</a></li>
+            <li class="breadcrumb-item active"><a href="?controller=historicoeq&&action=listaequipos">Equipos</a></li>
+            <li class="breadcrumb-item active"><a href="?controller=historicoeq&&action=listaequipos">Estado Equipos</a></li>
+            
           </ol>
         </div><!-- /.col -->
       </div><!-- /.row -->
@@ -63,7 +72,8 @@ $IdSesion = $_SESSION['IdUser'];
 								<?php  
 								date_default_timezone_set("America/Bogota");
 								$TiempoActual = date('Y-m-d H:i:s');
-								// nombre_equipo, marca_equipo, serial_equipo, modelo, unidad_trabajo, tipo_equipo, placa, propietario, estado_equipo, equipo_publicado, creado_por, marca_temporal, observaciones
+								$DiaActual = date('Y-m-d');
+								
 								?>
 							
 			
@@ -73,7 +83,7 @@ $IdSesion = $_SESSION['IdUser'];
 
 							  <div class="card-body">
 								<div class="card-header">
-								  <h3 class="card-title">Estado Equipo</h3>
+								  <h3 class="card-title">Crear Orden de Trabajo <strong>Equipo: <?php echo utf8_decode($nomequipo) ?></strong></h3>
 								</div>
 
 								
@@ -81,17 +91,17 @@ $IdSesion = $_SESSION['IdUser'];
 								  <div class="col-md-3">
                         <div class="form-group">
                           <label>Fecha del Reporte: <span>*</span></label>
-                          <input type="date" name="fecha_reporte" placeholder="Fecha" class="form-control required" required id="fecha_reporte">
+                          <input type="date" name="fecha_reporte" placeholder="Fecha" class="form-control required" value="<?php echo($DiaActual); ?>" required id="fecha_reporte">
                         </div>
                       </div>	
-											  <div id="divplaca" class="col-md-3">
+											  <div style="display: none;" id="divplaca" class="col-md-3">
                         <div class="form-group">
             <label> 
 
              
               Seleccione el Equipo: <span>*</span></label><br>
                 <select  class="form-control mi-selector" id="equipo_id_equipo" name="equipo_id_equipo" required>
-                    <option value="" selected>Seleccionar...</option>
+                    <option value="<?php echo($get_equipo); ?>" selected>Seleccionar...</option>
                     <?php
 
                     $rubros = Equipos::obtenerListaEquiposAsf();
@@ -109,35 +119,60 @@ $IdSesion = $_SESSION['IdUser'];
 													<label>Estado del Equipo: <span>*</span></label>
 													
 													 <select class="form-control mi-selector" id="estado_sel" name="estado_sel" required="">
-															<option value="" selected="">Seleccione una opción....</option>
-															<option value="Operativo">Operativo</option>
-															<option value="En Mantenimiento">En Mantenimiento</option>
-															<option value="Fuera de Servicio">Fuera de Servicio</option>
+															<option value="">Seleccione una opción....</option>
+															<option value="Mantenimiento">Mantenimiento</option>
+															<option value="Fuera de Servicio" selected="">Fuera de Servicio</option>
 													</select>
 												</div>
 											</div>
-											<div class="col-md-3">
+
+											<div style="display: none;" id="divmto" class="col-md-3">
 												<div class="form-group">
-													<label>Tiempo de Reparación: <span>*</span></label>
-													
-													 <select class="form-control mi-selector" id="tiempo" name="tiempo" required="">
-															<option value="" selected="">Seleccione una opción....</option>
-															<option value="No Aplica">No Aplica</option>
-															<option value="Medio dia">Medio Día</option>
-															<option value="Un dia">Un día</option>
-															<option value="Dos dias">Dos días</option>
-															<option value="Tres dias">Tres días</option>
-															<option value="Cuatro dias">Cuatro días</option>
-															<option value="Cinco dias">Cindo días</option>
-															<option value="Mas de una semana">Más de una semana</option>
-													</select>
+											<label> Seleccionar Tipo Mantenimiento: <span>*</span></label>
+	<select style="width: 300px;" class="form-control mi-selector" id="mantenimiento_id" name="mantenimiento_id">
+								
+										<option value="0" selected>Seleccionar</option>
+										<?php
+										$rubros = Tipomantenimiento::obtenerListaMantenimientos();
+										foreach ($rubros as $campo){
+											$id_usuario = $campo['id_tipomantenimiento'];
+											$nombre_usuario = $campo['nombre_tipomantenimiento'];
+										?>
+										<option value="<?php echo $id_usuario; ?>"><?php echo $nombre_usuario; ?></option>
+										<?php } ?>
+								</select>
+												</div>
+											</div>
+										
+
+											  <div class="col-md-3">
+                        <div class="form-group">
+                          <label>Fecha Estimada de Reparación: <span>*</span></label>
+                          <input type="date" name="tiempo" placeholder="Fecha" class="form-control required" value="<?php echo($DiaActual); ?>" required id="tiempo">
+                        </div>
+                      </div>	
+												<div id="divplaca" class="col-md-3">
+												<div class="form-group">
+											<label> Asignar Mécanico: <span>*</span></label>
+							<select class="form-control mi-selector" id="mecanico_id" name="mecanico_id" required>
+								
+										<option value="" selected>Seleccione el responsable</option>
+										<?php
+										$rubros = Usuarios::ListaUsuariosMec();
+										foreach ($rubros as $campo){
+											$id_usuario = $campo['id_usuario'];
+											$nombre_usuario = $campo['nombre_usuario'];
+										?>
+										<option value="<?php echo $id_usuario; ?>"><?php echo $nombre_usuario; ?></option>
+										<?php } ?>
+								</select>
 												</div>
 											</div>
 										
 											<div class="col-md-12">
 												<div class="form-group">
-													<label>Detalle del Estado: <span>*</span></label>
-													  <textarea class="form-control" rows="5" id="descripcion" name="observaciones"></textarea>
+													<label>Describa la actividad a realizar: <span>*</span></label>
+													  <textarea class="form-control" rows="5" id="descripcion" name="observaciones" required></textarea>
 												</div>
 											</div>
 										</div>						
@@ -162,6 +197,23 @@ $IdSesion = $_SESSION['IdUser'];
 
 
 </div> <!-- Fin Content-Wrapper -->
+
+<script type="text/javascript">
+ $('#estado_sel').change(function() {
+    var el = $(this);
+    if(el.val() === "Mantenimiento") {
+      //alert("Has seleccionado transporte con Flete");
+       
+          $('#divmto').show();
+         
+    } else {
+      //alert("Has seleccionado transporte con Flete y Material");
+        
+          //$('#campocampamento').show();
+           $('#divmto').hide();  
+    }      
+});
+</script>
 
 <!-- Inicio Libreria formato moneda -->
 <script src="dist/js/jquery.maskMoney.js" type="text/javascript"></script>

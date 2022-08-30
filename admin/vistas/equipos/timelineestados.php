@@ -1,5 +1,6 @@
 
 <?php
+ini_set('display_errors', '0');
 include_once 'modelos/funcionarios.php';
 include_once 'controladores/funcionariosController.php';
 include_once 'modelos/equipos.php';
@@ -16,7 +17,7 @@ $IdSesion = $_SESSION['IdUser'];
 foreach ($campos as $campo){
     $id = $campo['id'];
     $equipo_id_equipo = $campo['equipo_id_equipo'];
-     $estado_sel = $campo['estado_sel'];
+    $estado_sel = $campo['estado_sel'];
     $nombreequipo=Equipos::ObtenerNombreEquipo($equipo_id_equipo);
 }
 

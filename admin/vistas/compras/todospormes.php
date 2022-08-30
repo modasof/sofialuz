@@ -387,7 +387,7 @@ echo ("OC00" . $id);
                 </td>
                 <td><?php echo ($fecha_reporte); ?></td>
                 <td><?php echo ($compra_de); ?></td>
-                <td><a href="?controller=compras&&action=todosporproveedorespera&&idproveedor=<?php echo ($proveedor_id_proveedor); ?>"><?php echo ($nomproveedor); ?></a></td>
+                <td><a href="?controller=compras&&action=todositempor&&idproveedor=<?php echo ($proveedor_id_proveedor); ?>"><?php echo ($nomproveedor); ?></a></td>
                 <td><?php echo ($medio_pago); ?>
                       <br>
                   <i data-toggle="tooltip" data-placement="left" title="Creada por  por <?php echo($nomreportador." Fecha : ".$marca_temporal); ?>" class="fa fa-question-circle"></i>

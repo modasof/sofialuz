@@ -160,6 +160,7 @@ $IdSesion = $_SESSION['IdUser'];
 											<div id="divplaca"  class="col-md-4">
 												<div class="form-group">
 													<label>Hr/Km Inicial<span></span></label>
+												
 													<input type="number" step="any"  name="inicial" placeholder="Hr/Km Inicial" class="form-control" value="">
 												</div>
 											</div>

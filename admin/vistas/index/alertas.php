@@ -24,19 +24,6 @@ function CuentaEquiposReporte($FechaStart,$FechaEnd){
 	return $total;
 }
 
-function ReporteEqDiasAlerta($equipo,$FechaStart,$FechaEnd){
-	$db = Db::getConnect();
-	//$mesactual = date("n");
-	$select = $db->prepare("SELECT IFNULL(sum(dias_trabajados),0) as totales FROM reporte_equipos WHERE  equipo_id_equipo='".$equipo."' and fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."'");
-	$select->execute();
-	$valor = $select->fetchAll(); 
-	foreach($valor as $campo){
-		$total = $campo['totales'];
-		}
-	return $total;
-	}
-
-
 ?>
 	
 

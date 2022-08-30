@@ -1,6 +1,6 @@
 <?php 
 	error_reporting(E_ALL ^ E_NOTICE);
-ini_set('display_errors', '1');
+ini_set('display_errors', '0');
  ?>
 <!-- CCS Y JS PARA LA CARGA DE IMAGEN -->
 <script src="plugins/dropify/dropify.min.js"></script>

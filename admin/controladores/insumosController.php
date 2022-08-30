@@ -70,6 +70,14 @@ class InsumosController
         $parametrizado        = "No";
         $cantidadminima       = 0;
 
+        
+        $validacionduplicado = Insumos::validarpor($nombre_insumo);
+
+        if ($validacionduplicado > 0) {
+            echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado los datos, el nombre de insumo " . $nombre_insumo . " ya existe\", \"info\");});</script>";
+        } else {
+
+
         // Guardamos el insumo
         $res = Insumos::guardar($nombre_insumo, $estado_insumo, $unidadmedida_id, $categoriainsumo_id, $parametrizado, $cantidadminima);
 
@@ -92,6 +100,7 @@ class InsumosController
         } else {
             echo "<script>jQuery(function(){Swal.fire(\"¡Erro al actualizar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
         }
+    }
         $this->show();
     }
 

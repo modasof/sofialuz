@@ -65,7 +65,7 @@ function guardarhoras() {
         
   # -----------  Validación del registro en la fecha actual  -----------
         $diferenciadia = abs((strtotime($DiaActual) - strtotime($nuevafecha))/86400);
-        if ($diferenciadia==0) {
+        if ($diferenciadia==1) {
             $campoproduccion=1; // Aplica para pago de producción
         }else{
             $campoproduccion=0; // No aplica para pago de producción
