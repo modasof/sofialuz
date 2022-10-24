@@ -1,7 +1,7 @@
 <!-- Content Wrapper. Contains page content -->
 <?php 
 //include '../vistas/index/estadisticas_indexequipos.php';
-//include '../vistas/index/estadisticasinforme1.php';
+include '../vistas/index/estadisticasinforme1.php';
 
 error_reporting(E_ALL);
 ini_set('display_errors', '0');
@@ -190,9 +190,39 @@ $gastoporconductor=GastoCombustiblediaUsuario($FechaInicio30dias,$FechaFinal30di
                 <!-- /.col -->
                 <div class="col-sm-4">
                   <div class="description-block">
+
+
                     <h5 class="description-header">
-                      <?php $totalproduccion=ProduccionConductorpormes($mesactual,$anoactual,$IdSesion); 
-                      echo("$ ".number_format($totalproduccion));
+                      <?php 
+                      $ventamespro=ProduccionConductorpormes2022($mesactual,$anoactual,$IdSesion);
+                      $totalpro=ProduccionMesConductor2022($i,$anoactual,$id_usuario);
+
+                      if ($ventamespro>0) {
+
+                    if ($ventamespro>=1 && $ventamespro<=15000000) {
+                        
+                        $comision=$ventamespro*2/100;
+
+                       echo("<td style='font-weight:-50;font-size:14px;background-color:#dff0d8;'>$".number_format($ventamespro,0)." <span class='badge bg-red'>  2 %   </span><strong> $".number_format($comision,0)."</strong></a></td>");
+
+                    }elseif ($ventamespro>=15000001 && $ventamespro<=20000000) {
+                      
+                         $comision=$ventamespro*2.5/100;
+                       echo("<td style='font-weight:-50;font-size:14px;background-color:#dff0d8;'>$".number_format($ventamespro,0)." <span class='badge bg-yellow'>  2.5 %   </span><strong> $".number_format($comision,0)."</strong></a></td>");
+
+                    }elseif ($ventamespro>=20000001 && $ventamespro<=100000000) {
+                            
+                           $comision=$ventamespro*3/100;
+                       echo("<td style='font-weight:-50;font-size:14px;background-color:#dff0d8;'>$".number_format($ventamespro,0)." <span class='badge bg-green'>  3 %   </span><strong> $".number_format($comision,0)."</strong></a></td>"); 
+                    }
+
+                    
+                  }
+                  else
+                  {
+                    echo("<td style='font-weight:-50;font-size:14px;background-color:#f2dede;'><a href='#' style='color:black;'><small style='color:#F08080;'><strong>0%</strong></small>$".number_format(0,0)."</a></td>");
+                  } 
+                  
                       ?>
                     </h5>
                     <span class="description-text">Producción Mes</span>

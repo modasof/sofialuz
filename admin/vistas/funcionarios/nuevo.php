@@ -5,6 +5,18 @@
 <script src="plugins/dropify/dropify.min.js"></script>
 <link rel="stylesheet" href="plugins/dropify/dropify.min.css">
 
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
+<script type="text/javascript">
+  jQuery(document).ready(function($){
+    $(document).ready(function() {
+        $('.mi-selector').select2();
+    });
+});
+</script>
+
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
@@ -74,7 +86,7 @@
 									 
 									</div>
 								  </div>
-								 <div class="col-sm-6 col-xs-12">
+								 <div class="col-sm-4 col-xs-12">
 									<div class="form-group">
 									  <label for="documento">Documento</label>
 									  <div class="input-group">
@@ -85,10 +97,10 @@
 									</div>
 								  </div>
 								  
-								   <div class="col-sm-6 col-xs-12">
+								   <div class="col-sm-4 col-xs-12">
 									<div class="form-group">
 									  <label for="sel1">Cargo del Funcionario:</label>
-									  <select class="form-control" id="cargo_id_cargo" name="cargo_id_cargo" required>
+									  <select class="form-control mi-selector" id="cargo_id_cargo" name="cargo_id_cargo" required>
 										<option value="" selected>Seleccione un cargo</option>
 										<?php
 										$rubros = Funcionarios::obtenerCargos();
@@ -101,10 +113,10 @@
 									  </select>
 									</div>
 								</div>
-								  <div class="col-sm-6 col-xs-12">
+								  <div class="col-sm-4 col-xs-12">
 									<div class="form-group">
 									  <label for="sel1">Tipo de Contrato:</label>
-									  <select class="form-control" id="tipo_contrato" name="tipo_contrato" required>
+									  <select class="form-control mi-selector" id="tipo_contrato" name="tipo_contrato" required>
 										<option value="" selected>Seleccionar...</option>
 										<option value="Indefinido">Indefinido</option>
 										<option value="Prestacion de Servicios">Prestación de Servicios</option>
@@ -113,18 +125,18 @@
 									  </select>
 									</div>
 								</div>
-								 <div class="col-sm-6 col-xs-12">
+								 <div class="col-sm-4 col-xs-12">
 												<div class="form-group">
 													<label>Fecha Ingreso: <span>*</span></label>
 													<input type="date" name="fecha_ingreso" placeholder="Fecha" class="form-control required" required id="fecha_ingreso">
 												</div>
 								</div>
-								 <div class="col-sm-4 col-xs-12">
+								 <div style="display: none;" class="col-sm-4 col-xs-12">
 									<div class="form-group">
 									  <label for="documento">Empresa</label>
 									  <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-industry"></i></span>
-                <input type="text" name="empresa" value="" class="form-control" id="empresa" placeholder="Ingrese Empresa" required>
+                <input type="text" name="empresa" value="SOLUCIONES DE INGENIERIA NOMADAS SAS" class="form-control" id="empresa" placeholder="Ingrese Empresa" required>
              				 </div>
 									 
 									</div>
@@ -151,21 +163,111 @@
 								  </div>
 								   <div class="col-sm-4 col-xs-12">
 									<div class="form-group">
-									  <label for="documento">Salario Acordado</label>
+									  <label for="documento">Salario Base</label>
 									  <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
                 <input type="text" name="salario" placeholder="Salario acordado" class="form-control" id="demo1">
              				 </div>
 									 
 									</div>
 								  </div>
-								 <div class="col-12">
+								   <div class="col-sm-4 col-xs-12">
+									<div class="form-group">
+									  <label for="documento">Otros pagos no constitutivos de salario</label>
+									  <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                <input type="text" name="no_constitutivo" placeholder="Otros pagos no constitutivos de salario" class="form-control" id="demo2">
+             				 </div>
+									 
+									</div>
+								  </div>
+								   <div class="col-sm-4 col-xs-12">
+									<div class="form-group">
+									  <label for="sel1">Tipo Bono movilidad:</label>
+									 <select class="form-control mi-selector" id="bono_movilidad" name="bono_movilidad" required>
+										<option value="" selected>Seleccionar...</option>
+										<option value="Produccion">Producción</option>
+										<option value="Nomina">Nómina</option>
+									  </select>
+									</div>
+								</div>
+
+								 <div class="col-sm-4 col-xs-12">
+									<div class="form-group">
+									  <label for="sel1">Tipo cuenta Bancaria:</label>
+									 <select class="form-control mi-selector" id="tipo_cuenta" name="tipo_cuenta" required>
+										<option value="" selected>Seleccionar...</option>
+										<option value="Ahorros">Ahorros</option>
+										<option value="Corriente">Corriente</option>
+									  </select>
+									</div>
+								</div>
+
+								 <div class="col-sm-4 col-xs-12">
+									<div class="form-group">
+									  <label for="sel1">Seleccione el Banco:</label>
+									 <select class="form-control mi-selector" id="banco" name="banco" required>
+										<option value="" selected>Seleccionar...</option>
+										<option value="BANCAMIA S.A.">BANCAMIA S.A.</option>
+										<option value="BANCO AGRARIO">BANCO AGRARIO</option>
+										<option value="BANCO AV VILLAS">BANCO AV VILLAS</option>
+										<option value="BANCO BBVA COLOMBIA S.A.">BANCO BBVA COLOMBIA S.A.</option>
+										<option value="BANCO CAJA SOCIAL">BANCO CAJA SOCIAL</option>
+					<option value="BANCO COOPERATIVO COOPCENTRAL">BANCO COOPERATIVO COOPCENTRAL</option>
+										<option value="BANCO CREDIFINANCIERA">BANCO CREDIFINANCIERA</option>
+										<option value="BANCO DAVIVIENDA">BANCO DAVIVIENDA</option>
+										<option value="BANCO DE BOGOTA">BANCO DE BOGOTA</option>
+										<option value="BANCO DE OCCIDENTE">BANCO DE OCCIDENTE</option>
+										<option value="BANCO FALABELLA">BANCO FALABELLA</option>
+										<option value="BANCO GNB SUDAMERIS">BANCO GNB SUDAMERIS</option>
+										<option value="BANCO ITAU">BANCO ITAU</option>
+										<option value="BANCO PICHINCHA S.A.">BANCO PICHINCHA S.A.</option>
+										<option value="BANCO POPULAR">BANCO POPULAR</option>
+										<option value="BANCO SANTANDER COLOMBIA">BANCO SANTANDER COLOMBIA</option>
+										<option value="BANCO SERFINANZA">BANCO SERFINANZA</option>
+										<option value="BANCO UNION antes GIROS">BANCO UNION antes GIROS</option>
+										<option value="BANCOLOMBIA">BANCOLOMBIA</option>
+										<option value="BANCOOMEVA S.A.">BANCOOMEVA S.A.</option>
+										<option value="CFA COOPERATIVA FINANCIERA">CFA COOPERATIVA FINANCIERA</option>
+										<option value="CITIBANK">CITIBANK</option>
+										<option value="COLTEFINANCIERA">COLTEFINANCIERA</option>
+					<option value="CONFIAR COOPERATIVA FINANCIERA">CONFIAR COOPERATIVA FINANCIERA</option>
+					<option value="COOFINEP COOPERATIVA FINANCIERA">COOFINEP COOPERATIVA FINANCIERA</option>
+										<option value="COTRAFA">COTRAFA</option>
+										<option value="DALE">DALE</option>
+										<option value="DAVIPLATA">DAVIPLATA</option>
+										<option value="IRIS">IRIS</option>
+										<option value="LULO BANK">LULO BANK</option>
+										<option value="MOVII S.A.">MOVII S.A.</option>
+										<option value="NEQUI">NEQUI</option>
+										<option value="RAPPIPAY DAVIPLATA">RAPPIPAY DAVIPLATA</option>
+										<option value="SCOTIABANK COLPATRIA">SCOTIABANK COLPATRIA</option>
+									  </select>
+									</div>
+								</div>
+
+								 <div class="col-sm-4 col-xs-12">
+									<div class="form-group">
+									  <label for="documento">Nº de Cuenta</label>
+									  <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-bank"></i></span>
+                <input type="text" name="cuenta_bancaria" value="" class="form-control" id="cuenta_bancaria" placeholder="Nº de cuenta" required>
+             				 </div>
+									 
+									</div>
+								  </div>
+
+
+						
+								 
+								 <div class="col-md-12">
 												<div class="form-group">
 												  <label for="nombres">Funciones del Cargo (Máx 1000 Carácteres)</label>
 													  <textarea class="form-control" rows="6" name="observaciones" id="descripcion" placeholder="Ingrese las funciones del cargo asignado" maxlength="1000" required></textarea></div>
-											  </div>
+									</div>
 							<hr>
-							<h3>Datos Personales</h3>
+
+							
 							 <div class="col-sm-4 col-xs-12">
 									<div class="form-group">
 									  <label for="documento">Ciudad</label>
@@ -202,7 +304,7 @@
 									  <label for="documento">E-mail</label>
 									  <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                <input type="text" name="correo" value="" class="form-control" id="correo" placeholder="Correo electrónico" >
+                <input type="email" name="correo" value="" class="form-control" id="correo" placeholder="Correo electrónico" >
              				 </div>
 									 
 									</div>
@@ -242,6 +344,20 @@ affixesStay : true, // set if the symbol will stay in the field after the user e
 symbolPosition : 'left' // use this setting to position the symbol at the left or right side of the value. default 'left'
 }); //
 		</script>
+<script type="text/javascript">			
+$("#demo2").maskMoney({
+prefix:'$ ', // The symbol to be displayed before the value entered by the user
+allowZero:true, // Prevent users from inputing zero
+allowNegative:true, // Prevent users from inputing negative values
+defaultZero:false, // when the user enters the field, it sets a default mask using zero
+thousands: '.', // The thousands separator
+decimal: '.' , // The decimal separator
+precision: 0, // How many decimal places are allowed
+affixesStay : true, // set if the symbol will stay in the field after the user exits the field. 
+symbolPosition : 'left' // use this setting to position the symbol at the left or right side of the value. default 'left'
+}); //
+		</script>
+
 <script type="text/javascript">
 	var datefield = document.createElement("input")
 

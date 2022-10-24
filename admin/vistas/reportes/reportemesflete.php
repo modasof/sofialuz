@@ -22,59 +22,55 @@ include 'vistas/index/estadisticas_cajas.php';
 include 'vistas/index/estadisticas_indexequipos.php';
 
 $RolSesion = $_SESSION['IdRol'];
-$IdSesion = $_SESSION['IdUser'];
+$IdSesion  = $_SESSION['IdUser'];
+
+$getpro = $_GET['getpro'];
 
 //id, fecha_reporte, cliente_id_cliente, producto_id_producto, valor_m3, cantidad, creado_por, estado_reporte, reporte_publicado, marca_temporal, observaciones.
 
 if (isset($_POST['daterange'])) {
-  $fechaform=$_POST['daterange'];
+    $fechaform = $_POST['daterange'];
+} elseif (isset($_GET['daterange'])) {
+    $fechaform = $_GET['daterange'];
 }
-elseif (isset($_GET['daterange'])) {
-  $fechaform=$_GET['daterange'];
-}
-
 
 date_default_timezone_set("America/Bogota");
-$MarcaTemporal = date('Y-m-d');
-$FechaInicioDia=($MarcaTemporal." 00:00:000");
-$FechaFinalDia=($MarcaTemporal." 23:59:000");
+$MarcaTemporal  = date('Y-m-d');
+$FechaInicioDia = ($MarcaTemporal . " 00:00:000");
+$FechaFinalDia  = ($MarcaTemporal . " 23:59:000");
 //echo("FECHA QUE LLEGA:".$fechaform."<br>");
 
-if ($fechaform!="") {
-      $arreglo=explode("-", $fechaform);
-      $FechaIn=$arreglo[0];
-      $FechaFn=$arreglo[1];
-      $vectorfechaIn=explode("/", $FechaIn);
-      $vectorfechaFn=explode("/", $FechaFn);
-      $arreglofechauno=$vectorfechaIn[2]."-".$vectorfechaIn[0]."-".$vectorfechaIn[1];
-      $arreglofechados=$vectorfechaFn[2]."-".$vectorfechaFn[0]."-".$vectorfechaFn[1];
+if ($fechaform != "") {
+    $arreglo         = explode("-", $fechaform);
+    $FechaIn         = $arreglo[0];
+    $FechaFn         = $arreglo[1];
+    $vectorfechaIn   = explode("/", $FechaIn);
+    $vectorfechaFn   = explode("/", $FechaFn);
+    $arreglofechauno = $vectorfechaIn[2] . "-" . $vectorfechaIn[0] . "-" . $vectorfechaIn[1];
+    $arreglofechados = $vectorfechaFn[2] . "-" . $vectorfechaFn[0] . "-" . $vectorfechaFn[1];
 
-      $FechaUno=str_replace(" ", "", $arreglofechauno);
-      $FechaDos=str_replace(" ", "", $arreglofechados);
+    $FechaUno = str_replace(" ", "", $arreglofechauno);
+    $FechaDos = str_replace(" ", "", $arreglofechados);
 }
 
 // Validación de la fecha en que inicia el Día
 
-if ($FechaUno=="") {
-  $FechaStart=$FechaInicioDia;
-  $datofechain=$MarcaTemporal;
-          }
-else
-  {
-    $FechaStart=($FechaUno." 00:00:000");
-    $datofechain=$FechaUno;
-  }
+if ($FechaUno == "") {
+    $FechaStart  = $FechaInicioDia;
+    $datofechain = $MarcaTemporal;
+} else {
+    $FechaStart  = ($FechaUno . " 00:00:000");
+    $datofechain = $FechaUno;
+}
 // Validación de la fecha en que Termina el Día
-if ($FechaDos=="") {
-    $FechaEnd=$FechaFinalDia;
-    $datofechafinal=$MarcaTemporal;
-  }
-else
-  {
-    $FechaEnd=($FechaDos." 23:59:000");
-    $limpiarvariable=str_replace(" ", "", $FechaDos);
-    $datofechafinal=$limpiarvariable;
-  }
+if ($FechaDos == "") {
+    $FechaEnd       = $FechaFinalDia;
+    $datofechafinal = $MarcaTemporal;
+} else {
+    $FechaEnd        = ($FechaDos . " 23:59:000");
+    $limpiarvariable = str_replace(" ", "", $FechaDos);
+    $datofechafinal  = $limpiarvariable;
+}
 
 ?>
 
@@ -88,7 +84,6 @@ else
 <!-- Content Wrapper. Contains page content -->
 
 
-
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
@@ -96,12 +91,13 @@ else
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0 text-dark">Informe Fletes</h1>
+          <h1 class="m-0 text-dark">Informe Fletes Equipos Propios</h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="?controller=index&&action=index">Inicio</a></li>
-            <!--<li class="breadcrumb-item active"><a href="?controller=equipos&&action=todos">Equipos</a></li>-->
+            <li class="breadcrumb-item active"><a href="?controller=reportes&&action=mesfletes&daterange=<?php echo ($fechaform); ?>&&getpro=">Equipos Propios</a></li>
+             <li class="breadcrumb-item active"><a href="?controller=reportes&&action=mesfletesexternos&daterange=<?php echo ($fechaform); ?>&&getpro=externos">Equipos Externos</a></li>
           </ol>
         </div><!-- /.col -->
       </div><!-- /.row -->
@@ -109,26 +105,26 @@ else
   </div>
     <!-- /.content-header -->
 
-	<!-- Main content -->
-	<div class="content">
-		<div class="container-fluid">
-			<div class="row">
-				
-					
-						<!-- ESTE DIV LO USO PARA CENTRAR EL FORMULARIO -->
-						<!-- left column -->
-					
-					 <div class="col-md-12">
+  <!-- Main content -->
+  <div class="content">
+    <div class="container-fluid">
+      <div class="row">
 
-					 
-					  	 <div class="row">
+
+            <!-- ESTE DIV LO USO PARA CENTRAR EL FORMULARIO -->
+            <!-- left column -->
+
+           <div class="col-md-12">
+
+
+               <div class="row">
           <!-- MAP & BOX PANE -->
           <!-- TABLE: LATEST ORDERS -->
           <div class="box box-success ">
             <div class="box-header with-border">
-              <h3 class="box-title">Fletes  del <?php echo(fechalarga($datofechain)) ?> al <?php echo (fechalarga($datofechafinal)) ?></h3>
+              <h3 class="box-title">Fletes  del <?php echo (fechalarga($datofechain)) ?> al <?php echo (fechalarga($datofechafinal)) ?></h3>
 
-        
+
 
               <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
@@ -138,10 +134,10 @@ else
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-            	            <div class="row">
-      <?php 
-      if ($RolSesion!=4) {
-       ?>
+                          <div class="row">
+      <?php
+if ($RolSesion != 4) {
+    ?>
         <form action="?controller=reportes&&action=mesfletes" method="post" id="FormFechas" autocomplete="off">
          <div class="col-md-8">
                         <div class="form-group">
@@ -151,14 +147,14 @@ else
                       </div>
           <div class="form-group">
             <div class="col-xs-12 col-sm-6">
-              <button class="btn btn-primary btn-sm" type="Submit">Realizar Consulta</button>           
-          </div>    
+              <button class="btn btn-primary btn-sm" type="Submit">Realizar Consulta</button>
+          </div>
           </div>
         </form>
 
-        <?php 
-      }
-         ?>
+        <?php
+}
+?>
         <script type="text/javascript">
   $('input[name="daterange"]').daterangepicker({
     ranges: {
@@ -220,7 +216,7 @@ else
                     </div>
       <div class="table-responsive mailbox-messages">
           <table id="cotizaciones" class="table  table-responsive table-striped table-bordered table-hover" style="width: 100%;font-size: 12px;">
-           
+
            <tfoot style="display: table-header-group;">
                                 <th style="background-color: #fcf8e3" class="success"></th>
                                 <th style="background-color: #fcf8e3" class="success"></th>
@@ -236,9 +232,9 @@ else
                                 <th style="background-color: #fcf8e3" class="success"></th>
                                  <th style="background-color: #fcf8e3" class="success"></th>
                                   <th style="background-color: #fcf8e3" class="success"></th>
-                               
 
-                                
+
+
                             </tfoot>
           <thead>
   <tr style="background-color: #4f5962;color: white;">
@@ -258,80 +254,99 @@ else
            <th>Utilidad</th>
 
  </tr>
+  <tr>
+           <th>Equipo</th>
+           <th>Facturado</th>
+           <th>Gastos</th>
+           <th>Días Laborados</th>
+           <th>Número Fletes</th>
+           <th>ACPM (Gl)</th>
+          <th>Km</th>
+           <th>Rend.</th>
+           <th>Costo Acpm</th>
+           <th>Comisión</th>
+           <th>Gastos Caja</th>
+           <th>Insumos Rq</th>
+           <th>Fact. Promedio</th>
+           <th>Utilidad</th>
+
+ </tr>
           </thead>
        <tbody>
-        
-           
-         
+
+
+
         <?php
-            if ($fechaform!="") {
-              $res=Reportes::ReporteVolquetasporfechameseq($FechaStart,$FechaEnd);
-              $campos = $res->getCampos();
-            }
-            foreach ($campos as $campo){
-          
-            $equipo_id_equipo = $campo['equipo_id_equipo'];
-            $nomequipo     = Equipos::obtenerNombreEquipo($equipo_id_equipo);
-            $diaslaborados = Diaslaboradosvolquetaporfecha($equipo_id_equipo,$FechaStart,$FechaEnd);
-            $totalfacturado= Facturacionvolquetasporfecha($equipo_id_equipo,$FechaStart,$FechaEnd);
-            $totalfletes=Viajesvolquetadetallemes($equipo_id_equipo,$FechaStart,$FechaEnd);
-            $totalconsumogalones=AcpmfechaVolqueta($FechaStart,$FechaEnd,$equipo_id_equipo);
-            $totalkmvolqueta=KilometrajeDiariosVolqueta($FechaStart,$FechaEnd,$equipo_id_equipo);
-            $valorconsumogalones=AcpmfechaVolquetavalor($FechaStart,$FechaEnd,$equipo_id_equipo);
-            $comision=Pagocomisionvolquetaporfecha($equipo_id_equipo,$FechaStart,$FechaEnd);
-            $gastoscajamenor=GastosVolquetaporfecha($equipo_id_equipo,$FechaStart,$FechaEnd);
-            $salidasporrq= SalidasInsumoporvolqueta($equipo_id_equipo,$FechaStart,$FechaEnd);
-            $facturapromedio= Facturacionpromediovolquetasporfecha($equipo_id_equipo,$FechaStart,$FechaEnd);
-            $totalgastos=$gastoscajamenor+$salidasporrq+$comision+$valorconsumogalones;
-            $utilidadbruta=$totalfacturado-$totalgastos;
+if ($fechaform != "") {
 
-          
+    # -----------  Validación de Equipos Propios   -----------
+    $res    = Reportes::ReporteVolquetasporfechameseq($FechaStart, $FechaEnd);
+    $campos = $res->getCampos();
 
-            ?>
+    # -----------  Validación de Equipos Propios  -----------
+
+}
+foreach ($campos as $campo) {
+
+    $equipo_id_equipo    = $campo['equipo_id_equipo'];
+    $nomequipo           = Equipos::obtenerNombreEquipo($equipo_id_equipo);
+    $diaslaborados       = Diaslaboradosvolquetaporfecha($equipo_id_equipo, $FechaStart, $FechaEnd);
+    $totalfacturado      = Facturacionvolquetasporfecha($equipo_id_equipo, $FechaStart, $FechaEnd);
+    $totalfletes         = Viajesvolquetadetallemes($equipo_id_equipo, $FechaStart, $FechaEnd);
+    $totalconsumogalones = AcpmfechaVolqueta($FechaStart, $FechaEnd, $equipo_id_equipo);
+    $totalkmvolqueta     = KilometrajeDiariosVolqueta($FechaStart, $FechaEnd, $equipo_id_equipo);
+    $valorconsumogalones = AcpmfechaVolquetavalor($FechaStart, $FechaEnd, $equipo_id_equipo);
+    $comision            = Pagocomisionvolquetaporfecha($equipo_id_equipo, $FechaStart, $FechaEnd);
+    $gastoscajamenor     = GastosVolquetaporfecha($equipo_id_equipo, $FechaStart, $FechaEnd);
+    $salidasporrq        = SalidasInsumoporvolqueta($equipo_id_equipo, $FechaStart, $FechaEnd);
+    $facturapromedio     = Facturacionpromediovolquetasporfecha($equipo_id_equipo, $FechaStart, $FechaEnd);
+    $totalgastos         = $gastoscajamenor + $salidasporrq + $comision + $valorconsumogalones;
+    $utilidadbruta       = $totalfacturado - $totalgastos;
+
+    $mesactual = date('m');
+
+    ?>
             <tr>
-            <td><?php echo($nomequipo) ?></td>
-            <td class="success"><?php echo(number_format($totalfacturado,0)); ?></td>
-            <td><?php echo(number_format($totalgastos,0)); ?></td>
-            <td><?php echo($diaslaborados); ?></td>
-            <td><?php echo($totalfletes); ?></td>
-            <td><?php echo(round($totalconsumogalones,2)); ?></td>
-            <td><?php echo(round($totalkmvolqueta,2)); ?></td>
-             
-              <?php 
-                if ($totalkmvolqueta==0) {
-              echo("<td class='danger'>0</td>");
-            }else
-            {
+            <td><a target="_blank" href="?controller=equipos&&action=hojavida&&id=<?php echo ($equipo_id_equipo) ?>&&get_mesactual=<?php echo ($mesactual) ?>"><?php echo ($nomequipo) ?></a></td>
+            <td class="success"><?php echo (number_format($totalfacturado, 0)); ?></td>
+            <td><?php echo (number_format($totalgastos, 0)); ?></td>
+            <td><?php echo ($diaslaborados); ?></td>
+            <td><?php echo ($totalfletes); ?></td>
+            <td><?php echo (round($totalconsumogalones, 2)); ?></td>
+            <td><?php echo (round($totalkmvolqueta, 2)); ?></td>
 
-                $rendimiento=$totalkmvolqueta/$totalconsumogalones;
-              echo("<td>".round($rendimiento,1)."</td>");
-            }
+              <?php
+if ($totalkmvolqueta == 0) {
+        echo ("<td class='danger'>0</td>");
+    } else {
+
+        $rendimiento = $totalkmvolqueta / $totalconsumogalones;
+        echo ("<td>" . round($rendimiento, 1) . "</td>");
+    }
+
+    ?>
 
 
+            <td>$<?php echo (number_format($valorconsumogalones, 0)) ?></td>
+            <td>$<?php echo (number_format($comision, 0)) ?></td>
+            <td>$<?php echo (number_format($gastoscajamenor, 0)); ?></td>
+            <td>$<?php echo (number_format($salidasporrq, 0)); ?></td>
+            <td><strong>$<?php echo (number_format($facturapromedio, 0)) ?></strong></td>
+            <?php
+if ($utilidadbruta <= 0) {
+        echo ("<td class='text-red' style='border: double brown;'>");
+    } else {
+        echo ("<td class='text-green'>");
+    }
+    ?>
+                  $<?php echo (number_format($utilidadbruta, 0)); ?>
 
-               ?>
-                
-              
-            <td>$<?php echo(number_format($valorconsumogalones,0)) ?></td>
-            <td>$<?php echo(number_format($comision,0)) ?></td>
-            <td>$<?php echo(number_format($gastoscajamenor,0)); ?></td> 
-            <td>$<?php echo(number_format($salidasporrq,0));?></td>
-            <td><strong>$<?php echo(number_format($facturapromedio,0)) ?></strong></td>
-            <?php 
-               if ($utilidadbruta<=0) {
-                 echo("<td class='text-red' style='border: double brown;'>");
-               }else{
-                  echo("<td class='text-green'>");
-               }
-                ?>
-                  $<?php echo(number_format($utilidadbruta,0)); ?>
-                    
                   </td>
 
              </tr>
             <?php
-              }
-            ?>
+}
+?>
 
           </tbody>
           </table>
@@ -339,23 +354,23 @@ else
             </div>
             <!-- /.box-body -->
             <div class="box-footer clearfix">
-             
+
             </div>
             <!-- /.box-footer -->
           </div>
           <!-- /.box -->
         </div>
         <!-- /.col -->
-					 </div>
+           </div>
 
 
 
 
-					</div> <!-- FIN DE ROW-->
-				</div><!-- FIN DE CONTAINER FORMULARIO-->
-			</div> <!-- Fin Row -->
-		</div> <!-- Fin Container -->
-	</div> <!-- Fin Content -->
+          </div> <!-- FIN DE ROW-->
+        </div><!-- FIN DE CONTAINER FORMULARIO-->
+      </div> <!-- Fin Row -->
+    </div> <!-- Fin Container -->
+  </div> <!-- Fin Content -->
 
 
 </div> <!-- Fin Content-Wrapper -->
@@ -400,19 +415,19 @@ function formatmoneda(n, currency) {
         "info":     true,
         "aLengthMenu": [[100, 200, 300, -1], [100, 200, 300, "Todas"]],
     "pageLength": 100,
-       
-       
+
+
     } );
 } );
     </script>
 <script type="text/javascript">
       jQuery(function($) {
-      
+
 $('#cotizaciones thead tr:eq(1) th').each( function () {
         var title = $('#cotizaciones thead tr:eq(0) th').eq( $(this).index() ).text();
         $(this).html( '<input style="width:100%;border:black solid 1px;" type="text" placeholder=" '+title+'" />' );
-    } ); 
-  
+    } );
+
     var table = $('#cotizaciones').DataTable({
       responsive:true,
       "ordering": true,
@@ -425,7 +440,7 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
             "info": "Mostrar página _PAGE_ de _PAGES_",
             "infoEmpty": "No hay registros disponibles",
            },
-      
+
     "lengthMenu": [[5000, 7000, 10000, -1], [5000, 7000, 10000, "All"]],
 
           select: {
@@ -433,7 +448,7 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
           },
            "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
- 
+
             // Remove the formatting to get integer data for summation
             var intVal = function ( i ) {
                 return typeof i === 'string' ?
@@ -442,7 +457,7 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
                         i : 0;
             };
 
- 
+
             // Total over all pages
               pageTotal1 = api
                 .column( 1, { page: 'current'} )
@@ -450,7 +465,7 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
-            
+
 
              pageTotal2 = api
                 .column( 2, { page: 'current'} )
@@ -466,7 +481,7 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
                     return intVal(a) + intVal(b);
                 }, 0 );
 
-               
+
 
                  pageTotal5 = api
                 .column( 5, { page: 'current'} )
@@ -483,7 +498,7 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
                 }, 0 );
 
 
-               
+
 
                  pageTotal8 = api
                 .column( 8, { page: 'current'} )
@@ -511,14 +526,14 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
-            
+
                  pageTotal13 = api
                 .column( 13, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
-            
+
 
           // Update footer
               $( api.column( 1 ).footer() ).html(
@@ -535,7 +550,7 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
                 ''+formatmoneda(pageTotal3,'' )
             );
 
-              
+
 
                // Update footer
               $( api.column( 5 ).footer() ).html(
@@ -547,7 +562,7 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
                 ''+formatmoneda(pageTotal6,'Km' )
             );
 
-             
+
 
                 // Update footer
               $( api.column( 8 ).footer() ).html(
@@ -577,23 +592,23 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
         },
 
     });
-  
+
     // Apply the search
     table.columns().every(function (index) {
         $('#cotizaciones thead tr:eq(1) th:eq(' + index + ') input').on('keyup change', function () {
             table.column($(this).parent().index() + ':visible')
                 .search(this.value)
-                .draw();    
+                .draw();
         });
     });
 
-        var myTable = 
+        var myTable =
         $('#cotizaciones')
         //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
         .DataTable( {
 retrieve: true,
 
-          
+
           "aoColumns": [
             { "bSortable": false },
             null, null,null, null,null,null,null,null, null,null, null,null,null,null,null, null,null, null,null,null,null,
@@ -601,31 +616,31 @@ retrieve: true,
           ],
           "aaSorting": [],
           "scrollX": true,
-          
+
           //"bProcessing": true,
               //"bServerSide": true,
               //"sAjaxSource": "http://127.0.0.1/table.php" ,
-      
+
           //,
-          
+
           //"sScrollXInner": "120%",
           //"bScrollCollapse": true,
           //Note: if you are applying horizontal scrolling (sScrollX) on a ".table-bordered"
           //you may want to wrap the table inside a "div.dataTables_borderWrap" element
-      
+
           //"iDisplayLength": 50
 
-      
+
           } );
-      
-        
-        
+
+
+
         $.fn.dataTable.Buttons.defaults.dom.container.className = 'dt-buttons btn-overlap btn-group btn-overlap';
-        
+
         new $.fn.dataTable.Buttons( myTable, {
          buttons: [
-           
-           
+
+
 
             {
 
@@ -648,13 +663,13 @@ retrieve: true,
             "className": "btn btn-white btn-primary btn-bold",
             autoPrint: true,
             message: 'Está impresión se produjo desde la App'
-            }     
+            }
           ]
         } );
         myTable.buttons().container().appendTo( $('.tableTools-container') );
-        
-    
-      
+
+
+
       })
     </script>
 

@@ -251,6 +251,9 @@ $daterangeget=($primerdiamescons." - ".$ultimodiamescons);
 <a href="?controller=dashboards&&action=combustible&&daterange=<?php echo($daterangeget); ?>&&conmes=ma" class="btn btn-app">
 <i class="fa fa-dashboard"></i> Combustible</a>
 
+<a href="?controller=dashboards&&action=despacho&&daterange=<?php echo($daterangeget); ?>&&conmes=ma" class="btn btn-app">
+<i class="fa fa-dashboard"></i> Fletes</a>
+
 <a href="?controller=historicoeq&&action=listaequipos" class="btn btn-app">
 <i class="fa fa-check"></i> Estado Equipos</a>
 
@@ -430,7 +433,7 @@ for ($i = 1; $i < $tope; $i++) {
 
     ?>
                 <tr>
-                  <td><strong><a href="?controller=reportes&&action=mesfletes&daterange=<?php echo ($fechaconsulta); ?>"><i class="fa fa-line-chart"> </i> <?php echo (ucfirst($monthName)); ?></a></strong></td>
+                  <td><strong><a href="?controller=reportes&&action=mesfletes&daterange=<?php echo ($fechaconsulta); ?>&&getpro="><i class="fa fa-line-chart"> </i> <?php echo (ucfirst($monthName)); ?></a></strong></td>
                   <td>
                     <?php
 $ventames1 = Despachosmesgeneral($i, $anoactual);

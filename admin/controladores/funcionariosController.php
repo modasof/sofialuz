@@ -17,6 +17,38 @@ class FuncionariosController {
 	}
 
 /*************************************************************/
+/* FUNCION PARA ELIMINAR  LLAMADO DESDE ROUTING.PHP*/
+/*************************************************************/
+	function desactivarempleadoPor() {
+		$id = $_GET['id'];
+		$res = Funcionarios::desactivarempleadoPor($id);
+		if ($res){
+			echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+		}else{
+				echo "<script>jQuery(function(){Swal.fire(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+		}
+		$campos=Funcionarios::obtenerPagina();;
+		require_once 'vistas/funcionarios/todos.php';
+	}
+
+
+/*************************************************************/
+/* FUNCION PARA ELIMINAR  LLAMADO DESDE ROUTING.PHP*/
+/*************************************************************/
+	function activarempleadoPor() {
+		$id = $_GET['id'];
+		$res = Funcionarios::activarempleadoPor($id);
+		if ($res){
+			echo "<script>jQuery(function(){Swal.fire(\"¡Datos Actualizados!\", \"Se han eliminado correctamente los datos\", \"success\");});</script>";
+		}else{
+				echo "<script>jQuery(function(){Swal.fire(\"¡Error al Actualizar!\", \"No se han eliminado correctamente los datos\", \"error\");});</script>";
+		}
+		$campos=Funcionarios::obtenerPaginainactivos();
+		require_once 'vistas/funcionarios/todosinactivos.php';
+	}
+
+
+/*************************************************************/
 /* FUNCION PARA AGREGAR NUEVO LLAMADO DESDE ROUTING.PHP */
 /*************************************************************/
 	function nuevo() {

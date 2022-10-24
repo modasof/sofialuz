@@ -40,7 +40,8 @@ public static function todos(){
 	try {
 		$db=Db::getConnect();
 
-		$select=$db->query("SELECT * FROM cotizaciones_item as A, ordenescompra as B WHERE A.estado_cotizacion='2' and A.ordencompra_num=B.id  and B.estado_orden<>'0' order by A.id DESC");
+
+		$select=$db->query("SELECT * FROM cotizaciones_item as A, ordenescompra as B WHERE A.estado_cotizacion='2' and A.ordencompra_num=B.id  and B.estado_orden<>'0' and A.fecha_reporte BETWEEN DATE_SUB(CURDATE(), INTERVAL 8 DAY) AND CURDATE()  order by A.fecha_reporte ");
     	$camposs=$select->fetchAll();
     	$campos = new Cotizaciones('',$camposs);
 		return $campos;

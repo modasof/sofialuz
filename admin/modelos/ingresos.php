@@ -41,7 +41,7 @@ public static function obtenerIdcajaporUser($id){
 	try {
 		$db=Db::getConnect();
 
-		$select=$db->query("SELECT id_caja FROM cajas WHERE usuario_id_usuario='".$id."'");
+		$select=$db->query("SELECT id_caja FROM cajas WHERE usuario_id_usuario='".$id."' and caja_publicada='1'");
     	$camposs=$select->fetchAll();
     	$campos = new Ingresos('',$camposs);
     	$rubros = $campos->getCampos();

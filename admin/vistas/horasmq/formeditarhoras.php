@@ -28,6 +28,7 @@ foreach ($campos as $campo) {
     $valor_hora_operador     = $campo['valor_hora_operador'];
     $cantidad                = $campo['cantidad'];
     $hora_inactiva           = $campo['hora_inactiva'];
+    $registro_gps            = $campo['registro_gps'];
     $indicador               = $campo['indicador'];
     $creado_por              = $campo['creado_por'];
     $estado_reporte          = $campo['estado_reporte'];
@@ -123,6 +124,7 @@ $TiempoActual = date('Y-m-d H:i:s');
 					<input type="hidden" name="creado_por" value="<?php echo ($IdSesion); ?>">
 					<input type="hidden" name="estado_reporte" value="1">
 					<input type="hidden" name="reporte_publicado" value="1">
+					<input type="hidden" name="registro_gps" value="<?php echo ($registro_gps); ?>">
 					<input type="hidden" name="aplica_pago" value="<?php echo ($aplica_pago); ?>">
 					<input type="hidden" name="marca_temporal" value="<?php echo ($TiempoActual); ?>">
 

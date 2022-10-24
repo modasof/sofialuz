@@ -61,7 +61,7 @@ require_once 'formreportem.php';
                       <div class="pull-left tableTools-container"></div>
                     </div>
               <div class="table-responsive mailbox-messages">
-          <table id="cotizaciones" class="table  table-responsive table-striped table-bordered table-hover" style="width: 100%">
+          <table id="cotizaciones" class="table  table-responsive table-striped table-bordered table-hover" style="width: 100%;font-size: 12px;">
            <tfoot style="display: table-header-group;">
                                     <th style="background-color: #dff0d8" class="success"></th>
                                     <th style="background-color: #dff0d8" class="success"></th>
@@ -72,12 +72,14 @@ require_once 'formreportem.php';
                                     <th style="background-color: #dff0d8" class="success"></th>
                                     <th style="background-color: #dff0d8" class="success"></th>
                                    <th style="background-color: #dff0d8" class="success"></th>
+                                    <th style="background-color: #dff0d8" class="success"></th>
 
 
                             </tfoot>
           <thead>
             <tr style="background-color: #4f5962;color: white;">
               <th>Orden</th>
+              <th>Estado</th>
               <th>Fecha Reporte</th>
               <th>Equipo</th>
               <th>Propietario</th>
@@ -90,6 +92,7 @@ require_once 'formreportem.php';
             </tr>
             <tr>
                <th>Orden</th>
+               <th>Estado</th>
              <th>Fecha Reporte</th>
               <th>Equipo</th>
               <th>Propietario</th>
@@ -109,6 +112,7 @@ foreach ($movimientos as $mov) {
     $id_reporte       = $mov['id_reporte'];
     $equipo_id_equipo = $mov['equipo_id_equipo'];
     $creado_por       = $mov['creado_por'];
+    $estado_reporte   = $mov['estado_reporte'];
     $fecha_reporte    = $mov['fecha_reporte'];
     $problema         = $mov['problema'];
     $num_salida_inv   = $mov['num_salida_inv'];
@@ -121,7 +125,20 @@ foreach ($movimientos as $mov) {
     ?>
             <tr>
             <td><?php echo utf8_decode("OT-00".$id_reporte); ?></td>
-            <td><?php echo utf8_decode(fechalarga($fecha_reporte)); ?></td>
+            <td>
+                <?php
+if ($estado_reporte == '1') {
+        echo ("<span class='label label-danger'>Asignado</span>");
+    }elseif ($estado_reporte == '2') {
+      echo ("<span class='label label-warning'>Acualizado por Mecanico</span>");
+    } 
+    elseif ($estado_reporte == '3') {
+        echo ("<span class='label label-success'>Terminado</span>");
+    }
+
+    ?>
+            </td>
+            <td><?php echo utf8_decode($fecha_reporte); ?></td>
             <td><?php echo utf8_decode($nombreq); ?></td>
             <td><?php echo utf8_decode($nompropietario); ?></td>
             <td><?php echo utf8_decode($nombrereporta); ?></td>
@@ -133,14 +150,10 @@ foreach ($movimientos as $mov) {
                 <div class="btn-group">
                       <button type="button" class="btn btn-default btn-flat">
                          <a href="?controller=equipos&&action=editareporte&&id=<?php echo $id_reporte; ?>&&id_equipo=<?php echo ($id_equipo) ?>&&usermecanico=0" class="tooltip-primary text-success" title="Editar Reporte">
-                <i class="fa fa-edit bigger-110 "></i>
+                <i class="fa fa-edit bigger-110 ">Actualizar</i>
               </a>
                       </button>
-                       <button type="button" class="btn btn-default btn-flat">
-                        <a  href="#" onclick="eliminar(<?php echo $id_reporte; ?>,<?php echo ($id_equipo); ?>);" class="tooltip-primary text-danger" title="Eliminar Reporte">
-                <i class="fa fa-trash bigger-110 "></i>
-              </a>
-                       </button>
+                      
 
                     </div>
               </td>

@@ -102,11 +102,11 @@ public static function ReporteHorasporfecha($FechaStart,$FechaEnd){
 *** FUNCION PARA GUARDAR **
 id, fecha_reporte, cliente_id_cliente, producto_id_producto, valor_m3, cantidad, creado_por, estado_reporte, reporte_publicado, marca_temporal, observaciones
 ***************************************************************/
-public static function guardarhoras($imagen,$fecha_reporte, $equipo_id_equipo, $despachado_por, $punto_despacho, $recibido_por, $valor_finalhora, $valor_hora_operador, $cantidad, $indicador, $hora_inactiva, $creado_por, $estado_reporte, $reporte_publicado, $marca_temporal, $observaciones, $proyecto_id_proyecto, $cliente_id_cliente, $equipo_adicional, $nombre_equipo_adicional,$aplica_pago){
+public static function guardarhoras($imagen,$fecha_reporte, $equipo_id_equipo, $despachado_por, $punto_despacho, $recibido_por, $valor_finalhora, $valor_hora_operador, $cantidad, $indicador, $hora_inactiva,$registro_gps, $creado_por, $estado_reporte, $reporte_publicado, $marca_temporal, $observaciones, $proyecto_id_proyecto, $cliente_id_cliente, $equipo_adicional, $nombre_equipo_adicional,$aplica_pago){
 	try {
 		$db=Db::getConnect();
 		
-		$insert=$db->prepare('INSERT INTO reporte_horasmq VALUES (NULL,:imagen,:fecha_reporte,:equipo_id_equipo,:despachado_por,:punto_despacho,:recibido_por,:valor_m3,:valor_hora_operador,:cantidad,:indicador,:hora_inactiva,:creado_por, :estado_reporte, :reporte_publicado,:marca_temporal, :observaciones,:proyecto_id_proyecto,:cliente_id_cliente,:equipo_adicional,:nombre_equipo_adicional,:aplica_pago )');
+		$insert=$db->prepare('INSERT INTO reporte_horasmq VALUES (NULL,:imagen,:fecha_reporte,:equipo_id_equipo,:despachado_por,:punto_despacho,:recibido_por,:valor_m3,:valor_hora_operador,:cantidad,:indicador,:hora_inactiva,:registro_gps,:creado_por, :estado_reporte, :reporte_publicado,:marca_temporal, :observaciones,:proyecto_id_proyecto,:cliente_id_cliente,:equipo_adicional,:nombre_equipo_adicional,:aplica_pago )');
 
 	
 
@@ -129,6 +129,7 @@ public static function guardarhoras($imagen,$fecha_reporte, $equipo_id_equipo, $
 		$insert->bindValue('cantidad',utf8_decode($cantidad));
 		$insert->bindValue('indicador',utf8_decode($indicador));
 		$insert->bindValue('hora_inactiva',utf8_decode($hora_inactiva));
+		$insert->bindValue('registro_gps',utf8_decode($registro_gps));
 		$insert->bindValue('creado_por',utf8_decode($creado_por));
 		$insert->bindValue('estado_reporte',utf8_decode($estado_reporte));
 		$insert->bindValue('reporte_publicado',utf8_decode($reporte_publicado));
@@ -203,6 +204,7 @@ public static function actualizarhoras($id,$campos,$imagen){
 								cantidad=:cantidad,
 								indicador=:indicador,
 								hora_inactiva=:hora_inactiva,
+								registro_gps=:registro_gps,
 								creado_por=:creado_por,
 								estado_reporte=:estado_reporte,
 								reporte_publicado=:reporte_publicado,
@@ -239,6 +241,7 @@ public static function actualizarhoras($id,$campos,$imagen){
 		$update->bindValue('cantidad',utf8_decode($cantidad));
 		$update->bindValue('indicador',utf8_decode($indicador));
 		$update->bindValue('hora_inactiva',utf8_decode($hora_inactiva));
+		$update->bindValue('registro_gps',utf8_decode($registro_gps));
 		$update->bindValue('creado_por',utf8_decode($creado_por));
 		$update->bindValue('estado_reporte',utf8_decode($estado_reporte));
 		$update->bindValue('reporte_publicado',utf8_decode($reporte_publicado));

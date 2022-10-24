@@ -88,7 +88,7 @@ if ($FechaDos == "") {
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="?controller=index&&action=index">Inicio</a></li>
-            <!--<li class="breadcrumb-item active"><a href="?controller=equipos&&action=todos">Equipos</a></li>-->
+            <li class="breadcrumb-item active"><a href="?controller=cargamasiva&&action=horasequipo">Carga Masiva</a></li>
           </ol>
         </div><!-- /.col -->
       </div><!-- /.row -->
@@ -239,8 +239,8 @@ if ($fechaform != "") {
                                         <th style="background-color: #fcf8e3" class="success"></th>
                                         <th style="background-color: #fcf8e3" class="success"></th>
                                         <th style="background-color: #fcf8e3" class="success"></th>
-
-
+                                        <th style="background-color: #fcf8e3" class="success"></th>
+                                        <th style="background-color: #fcf8e3" class="success"></th>
                                         <th style="background-color: #fcf8e3" class="success"></th>
                             </tfoot>
           <thead>
@@ -248,33 +248,36 @@ if ($fechaform != "") {
               <th style="width: 8%;"><i class="fa fa-edit"></i></th>
               <th>Fecha</th>
               <th >Equipo</th>
-             <th >Vr. Hora</th>
-             <th >Vr. Operador</th>
-             <th >Total Horas</th>
-
-               <th >Total Venta</th>
-             <th >Total Operador</th>
+              <th >Vr. Hora</th>
+              <th >Vr. Operador</th>
+              <th >Horas Reportadas</th>
+              <th >Horas Gps</th>
+              <th >Diferencia</th>
+              <th >Total Venta</th>
+              <th >Total Operador</th>
               <th >Adicional</th>
               <th >Equipo</th>
-             <th>Operado por</th>
-            <th>Cliente</th>
-               <th>Proyecto</th>
+              <th>Operado por</th>
+              <th>Cliente</th>
+              <th>Proyecto</th>
               <th>Observaciones</th>
             </tr>
             <tr>
               <th style="width: 8%;"><i class="fa fa-edit"></i></th>
-             <th>Fecha</th>
+               <th>Fecha</th>
               <th >Equipo</th>
-             <th >Vr. Hora</th>
-             <th >Vr. Operador</th>
-             <th >Total Horas</th>
-               <th >Total Venta</th>
-             <th >Total Operador</th>
+              <th >Vr. Hora</th>
+              <th >Vr. Operador</th>
+              <th >Horas Reportadas</th>
+              <th >Horas Gps</th>
+              <th >Diferencia</th>
+              <th >Total Venta</th>
+              <th >Total Operador</th>
               <th >Adicional</th>
               <th >Equipo</th>
-             <th>Operado por</th>
-            <th>Cliente</th>
-               <th>Proyecto</th>
+              <th>Operado por</th>
+              <th>Cliente</th>
+              <th>Proyecto</th>
               <th>Observaciones</th>
             </tr>
           </thead>
@@ -295,6 +298,7 @@ foreach ($campos as $campo) {
     $cantidad                = $campo['cantidad'];
     $indicador               = $campo['indicador'];
     $hora_inactiva           = $campo['hora_inactiva'];
+    $registro_gps            = $campo['registro_gps'];
     $creado_por              = $campo['creado_por'];
     $despachado_por          = $campo['despachado_por'];
     $recibido_por            = $campo['recibido_por'];
@@ -320,6 +324,8 @@ foreach ($campos as $campo) {
     $totaloperador = $hora_inactiva * $valor_hora_operador;
     $ventatotal    = $hora_inactiva * $valor_m3;
 
+    $diferenciahoras = $registro_gps-$hora_inactiva;
+
     if ($aplica_pago==0) {
       $pago="<span data-toggle='tooltip' title='' class='badge bg-red' data-original-title='".$marca_temporal."'>N/A</span>";
     }else{
@@ -344,23 +350,22 @@ foreach ($campos as $campo) {
               </a>
               
               <?php echo ($pago); ?>
-
               </td>
               <td><?php echo ($fecha_reporte) ?></td>
-               <td><?php echo ($nomequipo) ?></td>
-               <td><?php echo ("$" . number_format($valor_m3)) ?></td>
-             <td><?php echo ("$" . number_format($valor_hora_operador)) ?></td>
+              <td><?php echo ($nomequipo) ?></td>
+              <td><?php echo ("$" . number_format($valor_m3)) ?></td>
+              <td><?php echo ("$" . number_format($valor_hora_operador)) ?></td>
               <td><?php echo ($hora_inactiva) ?></td>
-               <td><?php echo ("$" . number_format($ventatotal)) ?></td>
-                <td><?php echo ("$" . number_format($totaloperador)) ?></td>
-                <td><?php echo utf8_encode($equipo_adicional); ?></td>
-                <td><?php echo utf8_encode($nombre_equipo_adicional); ?></td>
-                <td><?php echo utf8_encode($nomreportador); ?></td>
-                 <td><?php echo utf8_encode($nombrecliente); ?></td>
-                <td><?php echo utf8_encode($nombreproyecto); ?></td>
-               <td><?php echo utf8_encode($observaciones); ?></td>
-
-
+              <td><?php echo (round($registro_gps,2)) ?></td>
+              <td><?php echo (round($diferenciahoras,2)) ?></td>
+              <td><?php echo ("$" . number_format($ventatotal)) ?></td>
+              <td><?php echo ("$" . number_format($totaloperador)) ?></td>
+              <td><?php echo utf8_encode($equipo_adicional); ?></td>
+              <td><?php echo utf8_encode($nombre_equipo_adicional); ?></td>
+              <td><?php echo utf8_encode($nomreportador); ?></td>
+              <td><?php echo utf8_encode($nombrecliente); ?></td>
+              <td><?php echo utf8_encode($nombreproyecto); ?></td>
+              <td><?php echo utf8_encode($observaciones); ?></td>
             </tr>
             <?php
 }

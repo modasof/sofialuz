@@ -88,12 +88,22 @@ $IdSesion = $_SESSION['IdUser'];
               </td>
               
               <td>
-              <a href="?controller=propietarios&&action=editar&&id=<?php echo $id; ?>" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Editar">
+             
+
+            <?php 
+            if ($id!=2) {
+              ?>
+               <a href="?controller=propietarios&&action=editar&&id=<?php echo $id; ?>" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Editar">
                 <i class="fa fa-edit bigger-110 "></i>
               </a>
-              <a href="#" onclick="eliminar(<?php echo $id; ?>);" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Eliminar">
+                <a href="#" onclick="eliminar(<?php echo $id; ?>);" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Eliminar">
                 <i class="fa fa-trash bigger-110 "></i>
               </a>
+
+              <?php
+            }
+             ?>
+            
               </td>
             </tr>
             <?php

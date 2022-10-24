@@ -118,3 +118,9 @@
 - Ajuste en formulario de km 
 - Ajuste en formulario de listado de precios cliente 
 
+# Actualización 24 de Octubre
+- Carga masiva de horas máquina - Kilometraje en Excel 
+- Actualización de comisiones por rango en perfil conductor. 
+- Actualización de módulo empleados (se parámetriza para gestión de nómina).
+- Módulo de mecánicos, ordenes de trabajo
+- Vista calendario hoja de vida equipo, trazabilidad de viajes.  

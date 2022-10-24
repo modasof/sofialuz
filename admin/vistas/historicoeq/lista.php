@@ -82,6 +82,7 @@ function tiempoTranscurridoFechas($fechaInicio, $fechaFin)
 
 ?>
 ?>
+
 <!-- DataTables -->
   <!-- <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap4.css"> -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
@@ -110,6 +111,7 @@ function tiempoTranscurridoFechas($fechaInicio, $fechaFin)
   <!-- Main content -->
   <div class="content">
     <div class="container-fluid">
+        
       <div class="row">
     <div class="col-lg-12">
     <div class="card card-default">

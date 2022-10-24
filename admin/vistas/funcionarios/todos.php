@@ -1,7 +1,7 @@
-<?php 
-  include_once 'modelos/gestiondocumentalemp.php';
+<?php
+include_once 'modelos/gestiondocumentalemp.php';
 include_once 'controladores/gestiondocumentalempController.php';
- ?>
+?>
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
@@ -9,7 +9,7 @@ include_once 'controladores/gestiondocumentalempController.php';
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0 text-dark">Empleados</h1>
+          <h1 class="m-0 text-dark">Empleados Activos</h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
@@ -28,13 +28,13 @@ include_once 'controladores/gestiondocumentalempController.php';
   <div class="content">
     <div class="container-fluid">
       <div class="row">
-		<div class="col-lg-12">
-		<div class="card card-primary">
-			<div class="card-body">
-				  <a href="?controller=funcionarios&&action=nuevo" class="btn btn-success" style="float: right;"><i class="fa fa-file-text-o bigger-110 "></i> Nuevo Empleado</a>
+    <div class="col-lg-12">
+    <div class="card card-primary">
+      <div class="card-body">
+          <a href="?controller=funcionarios&&action=nuevo" class="btn btn-success" style="float: right;"><i class="fa fa-file-text-o bigger-110 "></i> Nuevo Empleado</a>
           <br>
           <br>
-				  <div class="clearfix">
+          <div class="clearfix">
                       <div class="pull-left tableTools-container"></div>
                     </div>
               <div class="table-responsive mailbox-messages">
@@ -54,149 +54,142 @@ include_once 'controladores/gestiondocumentalempController.php';
                                     <th style="background-color: #fcf8e3" class="success"></th>
                                     <th style="background-color: #fcf8e3" class="success"></th>
                                     <th style="background-color: #fcf8e3" class="success"></th>
-                                   
+                                    <th style="background-color: #fcf8e3" class="success"></th>  
+
                             </tfoot>
           <thead>
             <tr style="background-color: #4f5962;color: white;">
-            
-               <th>Foto</th>
-               <th>Documento</th>
+
+             <th>Foto</th>
+              <th>Documento</th>
               <th>Nombres</th>
-               <th>Cargo</th>
-                <th>C <i class="fa fa-check"> </i> </th>
-                <th>A<i class="fa fa-check"> </i></th>
-                 <th>E <i class="fa fa-check"> </i></th>
-               <th>Fecha Ingreso</th>
-                <th>Retiro</th>
-               <th>Empresa</th>
-               <th>ARL</th>
-               <th>EPS</th>
-                <th>Contacto</th>
-               
+              <th>Cargo</th>
+              <th>C <i class="fa fa-check"> </i> </th>
+              <th>A<i class="fa fa-check"> </i></th>
+              <th>E <i class="fa fa-check"> </i></th>
+              <th>Fecha Ingreso</th>
+             
+              <th>Salario</th>
+              <th>No constitutivo</th>
+              <th>ARL</th>
+              <th>EPS</th>
+              <th>Contacto</th>
+              <th>Estado</th>
               <th>Acción</th>
             </tr>
             <tr>
-            
+
               <th>Foto</th>
-               <th>Documento</th>
+              <th>Documento</th>
               <th>Nombres</th>
+              <th>Cargo</th>
+              <th>C <i class="fa fa-check"> </i> </th>
+              <th>A<i class="fa fa-check"> </i></th>
+              <th>E <i class="fa fa-check"> </i></th>
+              <th>Fecha Ingreso</th>
              
-               <th>Cargo</th>
-               <th>C <i class="fa fa-check"> </i> </th>
-                <th>A<i class="fa fa-check"> </i></th>
-                 <th>E <i class="fa fa-check"> </i></th>
-               <th>Fecha Ingreso</th>
-                <th>Retiro</th>
-               <th>Empresa</th>
-               <th>ARL</th>
-               <th>EPS</th>
-                <th>Contacto</th>
-                
+              <th>Salario</th>
+              <th>No constitutivo</th>
+              <th>ARL</th>
+              <th>EPS</th>
+              <th>Contacto</th>
+              <th>Estado</th>
               <th>Acción</th>
             </tr>
           </thead>
           <tbody>
             <?php
-            $campos = $campos->getCampos();
-            foreach ($campos as $campo){
-            $imagen = $campo['imagen'];
-            $id_funcionario = $campo['id_funcionario'];
-            $nombre_funcionario = $campo['nombre_funcionario'];
-            $cargo_id_cargo = $campo['cargo_id_cargo'];
-            $fecha_ingreso = $campo['fecha_ingreso'];
-            $fecha_salida = $campo['fecha_salida'];
-            $empresa = $campo['empresa'];
-            $arl = $campo['arl'];
-            $documento = $campo['documento'];
-            $eps = $campo['eps'];
-            $salario = $campo['salario'];
-            $celular = $campo['celular'];
-            $correo = $campo['correo'];
-            $imagencontrato=gestiondocumentalemp::DocumentoExiste(28,$id_funcionario,3);
-            $imagenarl=gestiondocumentalemp::DocumentoExiste(30,$id_funcionario,3);
-             $imageneps=gestiondocumentalemp::DocumentoExiste(31,$id_funcionario,3);
-            $nombrecargo=Funcionarios::ObtenerNombreCargo($cargo_id_cargo);
-            if ($fecha_ingreso=="0000-00-00") {
-              $fecha="";
-            }
-            else
-            {
-              $fecha=fechalarga($fecha_ingreso);
-            }
+$campos = $campos->getCampos();
+foreach ($campos as $campo) {
+    $imagen                = $campo['imagen'];
+    $id_funcionario        = $campo['id_funcionario'];
+    $nombre_funcionario    = $campo['nombre_funcionario'];
+    $cargo_id_cargo        = $campo['cargo_id_cargo'];
+    $fecha_ingreso         = $campo['fecha_ingreso'];
+    $fecha_salida          = $campo['fecha_salida'];
+    $empresa               = $campo['empresa'];
+    $arl                   = $campo['arl'];
+    $documento             = $campo['documento'];
+    $eps                   = $campo['eps'];
+    $salario               = $campo['salario'];
+    $no_constitutivo       = $campo['no_constitutivo'];
+    $celular               = $campo['celular'];
+    $correo                = $campo['correo'];
+    $funcionario_publicado = $campo['funcionario_publicado'];
+    $imagencontrato        = gestiondocumentalemp::DocumentoExiste(28, $id_funcionario, 3);
+    $imagenarl             = gestiondocumentalemp::DocumentoExiste(30, $id_funcionario, 3);
+    $imageneps             = gestiondocumentalemp::DocumentoExiste(31, $id_funcionario, 3);
+    $nombrecargo           = Funcionarios::ObtenerNombreCargo($cargo_id_cargo);
+    if ($fecha_ingreso == "0000-00-00") {
+        $fecha = "";
+    } else {
+        $fecha = fechalarga($fecha_ingreso);
+    }
 
-             if ($fecha_salida=="0000-00-00") {
-              $estado="Activo";
-            }
-            else
-            {
-              $estado=fechalarga($fecha_salida);
-            }
-            ?>
+    if ($fecha_salida == "0000-00-00") {
+        $estado = "Activo";
+    } else {
+        $estado = fechalarga($fecha_salida);
+    }
+    ?>
 
             <tr>
-              
-              
+
+
               <td><a href="?controller=funcionarios&&action=editar&&id=<?php echo $id_funcionario; ?>" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Editar Funcionario"><img src="<?php echo $imagen; ?>" height="50" width="50"></a></td>
-              <td><?php echo utf8_encode($documento); ?></td>  
+              <td><?php echo utf8_encode($documento); ?></td>
               <td><?php echo utf8_encode($nombre_funcionario); ?></td>
               <td><?php echo utf8_encode($nombrecargo); ?></td>
-              <?php 
-              if ($imagencontrato!="") {
-                echo(" <td class='success'>Si</td>");
-              }
-              else
-              {
-                echo(" <td class='danger'>No</td>");
-              }
+              <?php
+if ($imagencontrato != "") {
+        echo (" <td class='success'>Si</td>");
+    } else {
+        echo (" <td class='danger'>No</td>");
+    }
 
-               if ($imagenarl!="") {
-                echo(" <td class='success'>Si</td>");
-              }
-              else
-              {
-                echo(" <td class='danger'>No</td>");
-              }
+    if ($imagenarl != "") {
+        echo (" <td class='success'>Si</td>");
+    } else {
+        echo (" <td class='danger'>No</td>");
+    }
 
-               if ($imageneps!="") {
-                echo(" <td class='success'>Si</td>");
-              }
-              else
-              {
-                echo(" <td class='danger'>No</td>");
-              }
+    if ($imageneps != "") {
+        echo (" <td class='success'>Si</td>");
+    } else {
+        echo (" <td class='danger'>No</td>");
+    }
 
-               ?>
-             
-              
+    ?>
+
+
                <td><?php echo utf8_encode($fecha); ?></td>
-               <td><?php 
-               if ($estado=='Activo') {
-                 echo utf8_encode("<span class='text-success'>".$estado."<span>");
-               }
-               else
-               {
-                echo utf8_encode("<span class='text-danger'>".$estado."<span>");
-               }
                
-
-               ?></td>
-                <td>
-                <?php 
-                echo utf8_encode($empresa);
-                //if ($estado=='Activo') {
-                  // echo utf8_encode("$ ".number_format($salario));
-                //}
-                //else
-                //{
-                  //echo utf8_encode("$ ".number_format(0));
-                //}
-
-                ?></td>
+    <td>
+        <?php echo utf8_encode("$ " . number_format($salario));?>
+    </td>
+      <td>
+        <?php echo utf8_encode("$ " . number_format($no_constitutivo));?>
+    </td>
                  <td><?php echo utf8_encode($arl); ?></td>
                  <td><?php echo utf8_encode($eps); ?></td>
                  <td><?php echo utf8_encode($celular); ?><br>
                  <?php echo utf8_encode($correo); ?></td>
-                  
+                <td><?php
+if ($funcionario_publicado == 1) {
+        ?>
+                <a href="#" onclick="desactivarpermiso(<?php echo $id_funcionario; ?>);" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Empleado">
+                <i class="fa fa-check bigger-110 "></i>
+               </a>
+               <?php
+} else {
+        ?>
+                <a href="#" onclick="activarpermiso(<?php echo $id_funcionario; ?>);" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Empleado">
+                <i class="fa fa-close bigger-110 "></i>
+                </a>
+                <?php
+}
+
+    ?></td>
               <td>
               <a href="?controller=funcionarios&&action=editar&&id=<?php echo $id_funcionario; ?>" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Editar Funcionario">
                 <i class="fa fa-edit bigger-110 "></i>
@@ -207,14 +200,14 @@ include_once 'controladores/gestiondocumentalempController.php';
               </td>
             </tr>
             <?php
-              }
-            ?>
+}
+?>
           </tbody>
           </table>
         </div> <!-- Fin Row -->
-		  </div> <!-- Fin card -->
-		</div>
-		</div>
+      </div> <!-- Fin card -->
+    </div>
+    </div>
 
 
 
@@ -222,6 +215,28 @@ include_once 'controladores/gestiondocumentalempController.php';
     </div> <!-- Fin Container -->
   </div> <!-- Fin Content -->
 </div> <!-- Fin Content-Wrapper -->
+
+<script>
+function desactivarpermiso(id){
+   desactivarpermiso=confirm("¿Deseas desactivar este empleado?");
+   if (desactivarpermiso)
+     window.location.href="?controller=funcionarios&&action=desactivarempleadoPor&&id="+id;
+else
+  //Y aquí pon cualquier cosa que quieras que salga si le diste al boton de cancelar
+    alert('No se ha podido desactivar este permiso...')
+}
+</script>
+
+<script>
+function activarpermiso(id,menu){
+   activarpermiso=confirm("¿Deseas activar este empleado?");
+   if (activarpermiso)
+     window.location.href="?controller=funcionarios&&action=activarempleadoPor&&id="+id;
+else
+  //Y aquí pon cualquier cosa que quieras que salga si le diste al boton de cancelar
+    alert('No se ha podido activar este permiso...')
+}
+</script>
 
 <script>
 function eliminar(id){
@@ -267,8 +282,8 @@ function formatmoneda(n, currency) {
         "info":     true,
         "aLengthMenu": [[100, 200, 300, -1], [100, 200, 300, "Todas"]],
     "pageLength": 100,
-       
-       
+
+
     } );
 } );
     </script>
@@ -315,12 +330,12 @@ function formatmoneda(n, currency) {
 </script>
 <script type="text/javascript">
       jQuery(function($) {
-      
+
 $('#cotizaciones thead tr:eq(1) th').each( function () {
         var title = $('#cotizaciones thead tr:eq(0) th').eq( $(this).index() ).text();
         $(this).html( '<input style="width:100%;border:black solid 1px;" type="text" placeholder="Buscar '+title+'" />' );
-    } ); 
-  
+    } );
+
     var table = $('#cotizaciones').DataTable({
       responsive:true,
       "order": true,
@@ -331,7 +346,7 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
             "info": "Mostrar página _PAGE_ de _PAGES_",
             "infoEmpty": "No hay registros disponibles",
            },
-      
+
     "lengthMenu": [[5000, 7000, 10000, -1], [5000, 7000, 10000, "All"]],
 
           select: {
@@ -339,7 +354,7 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
           },
            "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
- 
+
             // Remove the formatting to get integer data for summation
             var intVal = function ( i ) {
                 return typeof i === 'string' ?
@@ -348,42 +363,52 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
                         i : 0;
             };
 
- 
+
             // Total over all pages
-           
-            pageTotal8 = api
+
+            pageTotal9 = api
                 .column( 9, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
-           
+
+             pageTotal8 = api
+                .column( 8, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );
+
              // Update footer
-           
+
              $( api.column( 9 ).footer() ).html(
-                '$'+formatmoneda(pageTotal8,'' )
-            );  
-            
+                ''+formatmoneda(pageTotal9,'' )
+            );
+              $( api.column( 8 ).footer() ).html(
+                ''+formatmoneda(pageTotal8,'' )
+            );
+
         },
 
     });
-  
+
     // Apply the search
     table.columns().every(function (index) {
         $('#cotizaciones thead tr:eq(1) th:eq(' + index + ') input').on('keyup change', function () {
             table.column($(this).parent().index() + ':visible')
                 .search(this.value)
-                .draw();    
+                .draw();
         });
     });
 
-        var myTable = 
+        var myTable =
         $('#cotizaciones')
         //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
         .DataTable( {
 retrieve: true,
 
-          
+
           "aoColumns": [
             { "bSortable": false },
             null, null,null, null,null,null,null,null, null,null, null,null,null,null,null, null,null, null,null,null,null,
@@ -391,33 +416,33 @@ retrieve: true,
           ],
           "aaSorting": [],
           "scrollX": true,
-          
+
           //"bProcessing": true,
               //"bServerSide": true,
               //"sAjaxSource": "http://127.0.0.1/table.php" ,
-      
+
           //,
-          
+
           //"sScrollXInner": "120%",
           //"bScrollCollapse": true,
           //Note: if you are applying horizontal scrolling (sScrollX) on a ".table-bordered"
           //you may want to wrap the table inside a "div.dataTables_borderWrap" element
-      
+
           //"iDisplayLength": 50
 
-      
-          } );
-      
-        
-    
 
-        
+          } );
+
+
+
+
+
         $.fn.dataTable.Buttons.defaults.dom.container.className = 'dt-buttons btn-overlap btn-group btn-overlap';
-        
+
         new $.fn.dataTable.Buttons( myTable, {
          buttons: [
-           
-           
+
+
             {
             "extend": "csv",
             "text": "<i class='fa fa-database bigger-110 orange'></i> <span class='hidden'></span>",
@@ -444,27 +469,27 @@ retrieve: true,
             "className": "btn btn-white btn-primary btn-bold",
             autoPrint: true,
             message: 'Está impresión se produjo desde la App'
-            }     
+            }
           ]
         } );
         myTable.buttons().container().appendTo( $('.tableTools-container') );
-        
+
         // style the message box
         // var defaultCopyAction = myTable.button(1).action();
         // myTable.button(1).action(function (e, dt, button, config) {
         //   defaultCopyAction(e, dt, button, config);
         //   $('.dt-button-info').addClass('gritter-item-wrapper gritter-info gritter-center white');
         // });
-        
 
 
-        
+
+
         // var defaultColvisAction = myTable.button(0).action();
         // myTable.button(0).action(function (e, dt, button, config) {
-          
+
         //   defaultColvisAction(e, dt, button, config);
-          
-          
+
+
         //   if($('.dt-button-collection > .dropdown-menu').length == 0) {
         //     $('.dt-button-collection')
         //     .wrapInner('<ul class="dropdown-menu dropdown-light " />')
@@ -472,9 +497,9 @@ retrieve: true,
         //   }
         //   $('.dt-button-collection').appendTo('.tableTools-container .dt-buttons')
         // });
-      
+
         //
-      
+
         setTimeout(function() {
           $($('.tableTools-container')).find('a.dt-button').each(function() {
             var div = $(this).find(' > div').first();
@@ -482,11 +507,11 @@ retrieve: true,
             else $(this).tooltip({container: 'body', title: $(this).text()});
           });
         }, 500);
-        
-        
-        
-        
-        
+
+
+
+
+
         myTable.on( 'select', function ( e, dt, type, index ) {
           if ( type === 'row' ) {
             $( myTable.row( index ).node() ).find('input:checkbox').prop('checked', true);
@@ -497,57 +522,57 @@ retrieve: true,
             $( myTable.row( index ).node() ).find('input:checkbox').prop('checked', false);
           }
         } );
-      
-      
-      
-      
-      
-      
+
+
+
+
+
+
         /////////////////////////////////
         //table checkboxes
         $('th input[type=checkbox], td input[type=checkbox]').prop('checked', false);
-        
+
         //select/deselect all rows according to table header checkbox
         $('#cotizaciones > thead > tr > th input[type=checkbox], #cotizaciones_wrapper input[type=checkbox]').eq(0).on('click', function(){
           var th_checked = this.checked;//checkbox inside "TH" table header
-          
+
           $('#cotizaciones').find('tbody > tr').each(function(){
             var row = this;
             if(th_checked) myTable.row(row).select();
             else  myTable.row(row).deselect();
           });
         });
-        
+
         //select/deselect a row when the checkbox is checked/unchecked
         $('#cotizaciones').on('click', 'td input[type=checkbox]' , function(){
           var row = $(this).closest('tr').get(0);
           if(this.checked) myTable.row(row).deselect();
           else myTable.row(row).select();
         });
-      
-      
-      
+
+
+
         $(document).on('click', '#cotizaciones .dropdown-toggle', function(e) {
           e.stopImmediatePropagation();
           e.stopPropagation();
           e.preventDefault();
         });
-        
-        
-        
+
+
+
         //And for the first simple table, which doesn't have TableTools or dataTables
         //select/deselect all rows according to table header checkbox
         var active_class = 'active';
         $('#simple-table > thead > tr > th input[type=checkbox]').eq(0).on('click', function(){
           var th_checked = this.checked;//checkbox inside "TH" table header
-          
+
           $(this).closest('table').find('tbody > tr').each(function(){
             var row = this;
             if(th_checked) $(row).addClass(active_class).find('input[type=checkbox]').eq(0).prop('checked', true);
             else $(row).removeClass(active_class).find('input[type=checkbox]').eq(0).prop('checked', false);
           });
         });
-        
+
         //select/deselect a row when the checkbox is checked/unchecked
         $('#simple-table').on('click', 'td input[type=checkbox]' , function(){
           var $row = $(this).closest('tr');
@@ -555,30 +580,30 @@ retrieve: true,
           if(this.checked) $row.addClass(active_class);
           else $row.removeClass(active_class);
         });
-      
-        
-      
+
+
+
         /********************************/
         //add tooltip for small view action buttons in dropdown menu
         $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
-        
+
         //tooltip placement on right or left
         function tooltip_placement(context, source) {
           var $source = $(source);
           var $parent = $source.closest('table')
           var off1 = $parent.offset();
           var w1 = $parent.width();
-      
+
           var off2 = $source.offset();
           //var w2 = $source.width();
-      
+
           if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
           return 'left';
         }
-        
-        
-        
-        
+
+
+
+
         /***************/
         $('.show-details-btn').on('click', function(e) {
           e.preventDefault();
@@ -586,7 +611,7 @@ retrieve: true,
           $(this).find(ace.vars['.icon']).toggleClass('fa-angle-double-down').toggleClass('fa-angle-double-up');
         });
         /***************/
-    
-      
+
+
       })
     </script>

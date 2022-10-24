@@ -33,4 +33,24 @@ elseif (isset($_GET['fechafinalinforme'])) {
 	}
 
 
+function despacho() {
+		if (isset($_POST['daterange'])) {
+  $fechaform=$_POST['daterange'];
+}
+elseif (isset($_GET['daterange'])) {
+  $fechaform=$_GET['daterange'];
+}
+
+elseif (isset($_GET['fechainicioinforme'])) {
+  $fechainicioinforme=$_GET['fechainicioinforme'];
+}
+
+elseif (isset($_GET['fechafinalinforme'])) {
+  $fechafinalinforme=$_GET['fechafinalinforme'];
+}
+
+		require_once 'vistas/dashboard_despacho/informe.php';
+	}
+
+
  }

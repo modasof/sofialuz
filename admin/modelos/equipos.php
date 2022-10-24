@@ -204,6 +204,44 @@ class Equipos
         }
     }
 
+    /*******************************************************
+ ** FUNCION PARA MOSTRAR EL NOMBRE DEL EQUIPO **
+ ********************************************************/
+    public static function obtenerestadoordentrabajo($id)
+    {
+        try {
+            $db = Db::getConnect();
+
+            $select  = $db->query("SELECT estado_reporte FROM reporte_equipos WHERE id_reporte='" . $id . "'");
+            $camposs = $select->fetchAll();
+            $campos  = new Equipos('', $camposs);
+            $marcas  = $campos->getCampos();
+            foreach ($marcas as $marca) {
+                $mar = $marca['estado_reporte'];
+            }
+            return $mar;
+        } catch (PDOException $e) {
+            echo '{"error en obtener la pagina":{"text":' . $e->getMessage() . '}}';
+        }
+    }
+
+/*******************************************************
+ ** FUNCION PARA MOSTRAR TODOS LOS CAMPOS       **
+ ********************************************************/
+    public static function obtenerEquiposestadofecha($FechaStart,$FechaEnd,$estadosel)
+    {
+        try {
+            $db = Db::getConnect();
+
+            $select  = $db->query("SELECT COUNT(DISTINCT(equipo_id_equipo))as total FROM reporte_estado_equipos WHERE fecha_reporte >='" . $FechaStart . "' and fecha_reporte <='" . $FechaEnd . "' and  estado_publicado='1' and estado_sel='".$estadosel."' order by fecha_reporte desc");
+            $camposs = $select->fetchAll();
+            $campos  = new Equipos('', $camposs);
+            return $campos;
+        } catch (PDOException $e) {
+            echo '{"error en obtener la pagina":{"text":' . $e->getMessage() . '}}';
+        }
+    }
+
 /*******************************************************
  ** FUNCION PARA MOSTRAR TODOS LOS CAMPOS       **
  ********************************************************/
@@ -229,7 +267,24 @@ class Equipos
         try {
             $db = Db::getConnect();
 
-            $select  = $db->query("SELECT * FROM reporte_equipos WHERE reporte_publicado='1' and creado_por='" . $usuario . "' order by id_reporte desc");
+            $select  = $db->query("SELECT * FROM reporte_equipos WHERE reporte_publicado='1' and mecanico_id='" . $usuario . "' and estado_reporte<>'3' order by id_reporte desc");
+            $camposs = $select->fetchAll();
+            $campos  = new Equipos('', $camposs);
+            return $campos;
+        } catch (PDOException $e) {
+            echo '{"error en obtener la pagina":{"text":' . $e->getMessage() . '}}';
+        }
+    }
+
+    /*******************************************************
+ ** FUNCION PARA MOSTRAR TODOS LOS CAMPOS       **
+ ********************************************************/
+    public static function obtenerPaginareportesusuarioter($usuario)
+    {
+        try {
+            $db = Db::getConnect();
+
+            $select  = $db->query("SELECT * FROM reporte_equipos WHERE reporte_publicado='1' and mecanico_id='" . $usuario . "' and estado_reporte='3' order by id_reporte desc");
             $camposs = $select->fetchAll();
             $campos  = new Equipos('', $camposs);
             return $campos;
@@ -516,6 +571,8 @@ Group by equipo_id_equipo order by Galones DESC");
             echo '{"error en obtener la pagina":{"text":' . $e->getMessage() . '}}';
         }
     }
+
+
 
     public static function obtenerNombreTipoUnidad($id)
     {
@@ -978,6 +1035,7 @@ Group by equipo_id_equipo order by Galones DESC");
 
 /***************************************************************
  *** FUNCION PARA GUARDAR REPORTE**
+ * (`id_reporte`, `equipo_id_equipo`, `fecha_reporte`, `fecha_reparado`, `valor_reporte`, `problema`, `actividad`, `repuesto`, `marca_temporal`, `creado_por`, `mecanico_id`, `mantenimiento_id`, `reporte_publicado`, `estado_reporte`, `num_salida_inv`)
  ***************************************************************/
     public static function guardareporte($campos)
     {

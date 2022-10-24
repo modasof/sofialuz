@@ -1426,10 +1426,22 @@ class ReportesController
         require_once 'vistas/reportes/reportemesflete.php';
     }
 
+     public function mesfletesexternos()
+    {
+        //$campos=Reportes::ReporteCombustibles();;
+        require_once 'vistas/reportes/reportemesflete_ext.php';
+    }
+
     public function meshorasmq()
     {
         //$campos=Reportes::ReporteCombustibles();;
         require_once 'vistas/reportes/reportemeshorasmq.php';
+    }
+
+     public function meshorasmqexternos()
+    {
+        //$campos=Reportes::ReporteCombustibles();;
+        require_once 'vistas/reportes/reportemeshorasmq_ext.php';
     }
 
     public function infovolqueta()

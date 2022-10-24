@@ -35,6 +35,20 @@ class Dashboards
 	}
 
 
+	public static function GraficaHistorialDespachofecha($FechaStart,$FechaEnd){
+	try {
+		$db=Db::getConnect();
+		$select=$db->query("SELECT fecha_reporte,IFNULL(sum(ROUND(valor_m3,1)),0) as totales FROM reporte_despachosclientes WHERE fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."' and reporte_publicado='1' GROUP BY fecha_reporte ORDER BY fecha_reporte ASC");
+		$camposs=$select->fetchAll();
+		$campos = new Dashboards('',$camposs);
+		return $campos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+
 }
 
 ?>

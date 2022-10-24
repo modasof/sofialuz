@@ -94,7 +94,10 @@ if ($FechaDos == "") {
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="?controller=index&&action=index">Inicio</a></li>
-            <!--<li class="breadcrumb-item active"><a href="?controller=equipos&&action=todos">Equipos</a></li>-->
+            <li class="breadcrumb-item active"><a href="?controller=reportes&&action=meshorasmq&daterange=<?php echo ($fechaform); ?>">Equipos Propios</a></li>
+
+              <li class="breadcrumb-item active"><a href="?controller=reportes&&action=meshorasmqexternos&daterange=<?php echo ($fechaform); ?>">Equipos Externos</a></li>
+
           </ol>
         </div><!-- /.col -->
       </div><!-- /.row -->
@@ -224,8 +227,8 @@ if ($RolSesion != 4) {
                                 <th style="background-color: #fcf8e3" class="success"></th>
                                 <th style="background-color: #fcf8e3" class="success"></th>
                                 <th style="background-color: #fcf8e3" class="success"></th>
-                               
-                                
+
+
                             </tfoot>
           <thead>
   <tr style="background-color: #4f5962;color: white;">
@@ -239,7 +242,22 @@ if ($RolSesion != 4) {
            <th>Operador</th>
            <th>Gastos Caja</th>
            <th>Insumos Rq</th>
-          
+
+           <th>Utilidad</th>
+
+ </tr>
+ <tr>
+           <th>Equipo</th>
+          <th>Facturado</th>
+           <th>Gastos</th>
+           <th>Días Laborados</th>
+           <th>Total Horas</th>
+           <th>ACPM (Gl)</th>
+           <th>Costo Acpm</th>
+           <th>Operador</th>
+           <th>Gastos Caja</th>
+           <th>Insumos Rq</th>
+
            <th>Utilidad</th>
 
  </tr>
@@ -253,46 +271,44 @@ if ($fechaform != "") {
 }
 foreach ($campos as $campo) {
 
-    $equipo        = $campo['equipo_id_equipo'];
-    $nomequipo     = Equipos::obtenerNombreEquipo($equipo);
-    $diaslaborados = Diaslaboradoshorasmqporfecha($equipo, $FechaStart, $FechaEnd);
-    $totalhoras    = Totalhorasmqporfecha($equipo, $FechaStart, $FechaEnd);
-    $totalconsumogalones=AcpmfechaVolqueta($FechaStart,$FechaEnd,$equipo);
-    $valorconsumogalones=AcpmfechaVolquetavalor($FechaStart,$FechaEnd,$equipo);
-    $valoroperador=Operadorhorasmqporfecha($equipo,$FechaStart,$FechaEnd);
-    $gastoscajamenor=GastosHorasmqporfecha($equipo,$FechaStart,$FechaEnd);
-     $salidasporrq= SalidasInsumoporvolqueta($equipo,$FechaStart,$FechaEnd);
-     $facturado=Facturacionhorasmqporfecha($equipo,$FechaStart,$FechaEnd);
-     $totalgastos= $valorconsumogalones+$valoroperador+$gastoscajamenor+$salidasporrq;
-     $utilidad=$facturado-$totalgastos;
-
+    $equipo              = $campo['equipo_id_equipo'];
+    $nomequipo           = Equipos::obtenerNombreEquipo($equipo);
+    $diaslaborados       = Diaslaboradoshorasmqporfecha($equipo, $FechaStart, $FechaEnd);
+    $totalhoras          = Totalhorasmqporfecha($equipo, $FechaStart, $FechaEnd);
+    $totalconsumogalones = AcpmfechaVolqueta($FechaStart, $FechaEnd, $equipo);
+    $valorconsumogalones = AcpmfechaVolquetavalor($FechaStart, $FechaEnd, $equipo);
+    $valoroperador       = Operadorhorasmqporfecha($equipo, $FechaStart, $FechaEnd);
+    $gastoscajamenor     = GastosHorasmqporfecha($equipo, $FechaStart, $FechaEnd);
+    $salidasporrq        = SalidasInsumoporvolqueta($equipo, $FechaStart, $FechaEnd);
+    $facturado           = Facturacionhorasmqporfecha($equipo, $FechaStart, $FechaEnd);
+    $totalgastos         = $valorconsumogalones + $valoroperador + $gastoscajamenor + $salidasporrq;
+    $utilidad            = $facturado - $totalgastos;
+    $mesactual = date('m');
     ?>
               <tr>
-            <td><?php echo ($nomequipo); ?></td>
-             <td class="success">$<?php echo(number_format($facturado,0)); ?></td>
-              <td>$<?php echo(number_format($totalgastos,0)); ?></td>
+            <td><a target="_blank" href="?controller=equipos&&action=hojavida&&id=<?php echo ($equipo_id_equipo) ?>&&get_mesactual=<?php echo ($mesactual) ?>"><?php echo ($nomequipo) ?></a></td>
+             <td class="success">$<?php echo (number_format($facturado, 0)); ?></td>
+              <td>$<?php echo (number_format($totalgastos, 0)); ?></td>
             <td><?php echo ($diaslaborados); ?></td>
             <td><?php echo (round($totalhoras, 2)); ?></td>
             <td><?php echo (round($totalconsumogalones, 2)); ?></td>
-            <td>$<?php echo(number_format($valorconsumogalones,0)); ?></td>
-             <td>$<?php echo(number_format($valoroperador,0)); ?></td>
-            <td>$<?php echo(number_format($gastoscajamenor,0)); ?></td>
-            <td>$<?php echo(number_format($salidasporrq,0)); ?></td>
-           
-             
-               <?php 
-               if ($utilidad<=0) {
-                 echo("<td class='text-red' style='border: double brown;'>");
-               }else{
-                  echo("<td class='text-green'>");
-               }
+            <td>$<?php echo (number_format($valorconsumogalones, 0)); ?></td>
+             <td>$<?php echo (number_format($valoroperador, 0)); ?></td>
+            <td>$<?php echo (number_format($gastoscajamenor, 0)); ?></td>
+            <td>$<?php echo (number_format($salidasporrq, 0)); ?></td>
 
 
+               <?php
+if ($utilidad <= 0) {
+        echo ("<td class='text-red' style='border: double brown;'>");
+    } else {
+        echo ("<td class='text-green'>");
+    }
 
-                ?>
-               
-                  $<?php echo(number_format($utilidad,0)); ?>
-                    
+    ?>
+
+                  $<?php echo (number_format($utilidad, 0)); ?>
+
                   </td>
 
              </tr>
@@ -419,7 +435,7 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
-            
+
 
              pageTotal2 = api
                 .column( 2, { page: 'current'} )
@@ -484,7 +500,7 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
-            
+
           // Update footer
               $( api.column( 1 ).footer() ).html(
                 '$'+formatmoneda(pageTotal1,'' )

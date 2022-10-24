@@ -52,6 +52,7 @@
 					<input type="hidden" name="creado_por" value="<?php echo($IdSesion);?>">
 					<input type="hidden" name="estado_reporte" value="1">
 					<input type="hidden" name="reporte_publicado" value="1">
+					<input type="hidden" name="registro_gps" value="0">
 					<input type="hidden" name="marca_temporal" value="<?php echo($TiempoActual);?>">
 					<div class="card-body">
 							<div class="row">

@@ -1,6 +1,7 @@
 <?php
 $IdSesion = $_SESSION['IdUser'];
 $getusermecanico = $_GET['usermecanico'];
+$getordentrabajo = $_GET['id'];
 
 $campos   = $campos->getCampos();
 foreach ($campos as $campo) {
@@ -10,12 +11,14 @@ foreach ($campos as $campo) {
     $fecha_reporte    = $campo['fecha_reporte'];
     $estado_reporte    = $campo['estado_reporte'];
     $valor_reporte    = $campo['valor_reporte'];
+    $mecanico_id    = $campo['mecanico_id'];
     $problema         = $campo['problema'];
     $marca_temporal   = $campo['marca_temporal'];
     $actividad        = $campo['actividad'];
     $repuesto         = $campo['repuesto'];
     $num_salida_inv   = $campo['num_salida_inv'];
     $nombreq          = Equipos::obtenerNombreEquipo($equipo_id_equipo);
+    $nombremecanico = Usuarios::obtenerNombreUsuario($mecanico_id);
 
     if ($estado_reporte==1) {
     	$labelreporte="Asignado";
@@ -50,7 +53,12 @@ foreach ($campos as $campo) {
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0 text-dark">Editar Orden Trabajo Equipo:<?php echo utf8_decode($nombreq); ?></h1>
+          <h1 class="m-0 text-dark">Editar Orden Trabajo:<?php echo utf8_decode($getordentrabajo); ?>
+          	<br>
+          	Equipo: <?php echo utf8_decode($nombreq); ?>
+          </h1>
+          <br>
+          	<strong>Mécanico Asignado: <?php echo utf8_decode($nombremecanico); ?></strong>
         </div><!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
@@ -95,7 +103,7 @@ foreach ($campos as $campo) {
 													<input disabled="" type="date" name="fecha_reportedis" placeholder="Fecha" class="form-control required" required id="fecha_reportedis" value="<?php echo utf8_encode($fecha_reporte); ?>">
 												</div>
 											</div>
-											<div class="col-md-3">
+											<div style="display: none;" class="col-md-3">
 												<div class="form-group">
 													<label>Valor Reparación: <span>*</span></label>
 													<input type="text" name="valor_reporte" placeholder="Valor Reparación" class="form-control" id="demo1" value="<?php echo utf8_encode($valor_reporte); ?>">
@@ -132,12 +140,35 @@ foreach ($rubros as $campo) {
 								</select>
 												</div>
 								</div>
-									<div class="col-md-12">
+
+		<?php 
+		if ($getusermecanico==0) {
+			?>
+
+			<div class="col-md-12">
+												<div class="form-group">
+													<label>Problemas Presentados<span>*</span></label>
+						<textarea disabled class="form-control" rows="5" id="descripcion" name="problemadisabled"><?php echo utf8_decode($problema); ?></textarea>
+
+							<textarea style="display: none;" class="form-control" rows="5" id="descripcion" name="problema"><?php echo utf8_decode($problema); ?></textarea>
+												</div>
+											</div>
+			<?php
+		}else{
+			?>
+			<div class="col-md-12">
 												<div class="form-group">
 													<label>Problemas Presentados<span>*</span></label>
 						<textarea class="form-control" rows="5" id="descripcion" name="problema"><?php echo utf8_decode($problema); ?></textarea>
 												</div>
 											</div>
+			<?php
+		}
+
+
+		 ?>
+
+								
 											<div class="col-md-12">
 												<div class="form-group">
 													<label>Actividad Realizada<span>*</span></label>

@@ -22,6 +22,7 @@ foreach($campos as $campo){
             $despachado_por = $campo['despachado_por'];
             $recibido_por = $campo['recibido_por'];
            	$punto_despacho= $campo['punto_despacho'];
+           	$registro_gps = $campo['registro_gps'];
             $valor_m3 = $campo['valor_m3'];
             $cantidad = $campo['cantidad'];
             $hora_inactiva = $campo['hora_inactiva'];
@@ -113,6 +114,7 @@ foreach($campos as $campo){
 					<input type="hidden" name="creado_por" value="<?php echo($IdSesion);?>">
 					<input type="hidden" name="estado_reporte" value="1">
 					<input type="hidden" name="reporte_publicado" value="1">
+					<input type="hidden" name="registro_gps" value="<?php echo($registro_gps); ?>">
 					<input type="hidden" name="marca_temporal" value="<?php echo($TiempoActual);?>">
 
 					<div class="card-body">

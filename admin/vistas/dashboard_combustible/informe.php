@@ -738,7 +738,7 @@ foreach ($rubros as $rubro) {
     $totalgalones = AcpmmesEquipo($FechaStart, $FechaEnd, $id_rubro);
 
     ?>
-                <li id="equipolista<?php echo ($id_rubro); ?>"><?php echo ($nombre_rubro); ?> <span class="pull-right badge bg-blue"><?php echo (number_format($totalgalones, 0) . " Gl."); ?></span></li>
+                <a style="cursor: pointer;"><li id="equipolista<?php echo ($id_rubro); ?>"><?php echo ($nombre_rubro); ?> <span class="pull-right badge bg-blue"><?php echo (number_format($totalgalones, 0) . " Gl."); ?></span></li></a>
 
             <input type="hidden" value="<?php echo ($id_rubro); ?>" id="campoidequipo<?php echo ($id_rubro); ?>">
 
@@ -746,6 +746,8 @@ foreach ($rubros as $rubro) {
 
             <script type="text/javascript">
       $('#equipolista<?php echo ($id_rubro); ?>').click(function () {
+
+
        var campoid = $('#campoidequipo<?php echo ($id_rubro); ?>').val();
        var datafecha = '<?php echo ($fechaform); ?>';
 
@@ -795,7 +797,7 @@ foreach ($rubros as $rubro) {
     <div id="divrubro" class="col-md-3">
                           <div class="form-group">
                               <label for="sel1">Listado:<span>*</span></label>
-                              <select style="width: 300px;" class="form-control mi-select" id="id_rubro" name="id_rubro" >
+                              <select style="width: 300px;" class="form-control mi-select" id="id_propietario" name="id_propietario" >
                                   <option value="" selected>Seleccione...</option>
                                 <?php
 $rubros = Equipos::obtenerListaPropietariosunicosdespacho($FechaStart, $FechaEnd);
@@ -821,7 +823,7 @@ foreach ($rubros as $rubro) {
     $totalgalones = AcpmmesPropietario($FechaStart, $FechaEnd, $id_rubro);
 
     ?>
-                <li id="propietariolista<?php echo ($id_rubro); ?>"><?php echo ($nombre_rubro); ?> <span class="pull-right badge bg-blue"><?php echo (number_format($totalgalones, 0) . " Gl."); ?></span></li>
+                <a style="cursor: pointer;"><li id="propietariolista<?php echo ($id_rubro); ?>"><?php echo ($nombre_rubro); ?> <span class="pull-right badge bg-blue"><?php echo (number_format($totalgalones, 0) . " Gl."); ?></span></li></a>
 
             <input type="hidden" value="<?php echo ($id_rubro); ?>" id="campoidpropietario<?php echo ($id_rubro); ?>">
 
@@ -922,6 +924,30 @@ $(document).ready(function(){
             });
         }else{
             $('#tablaporequipo').html('<h1>Seleccione un item de la lista<h1>');
+
+        }
+
+    });
+});
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('#id_propietario').on('change',function(){
+        var rubroID = $(this).val();
+        var datafecha = '<?php echo ($fechaform); ?>';
+        //alert (datafecha);
+
+        if(rubroID){
+            $.ajax({
+                type:'POST',
+                url:'vistas/dashboard_combustible/ajax_propietarios.php',
+                data:'id='+rubroID+'&&daterange='+datafecha,
+                success:function(html){
+                    $('#tablaporpropietario').html(html);
+                }
+            });
+        }else{
+            $('#tablaporpropietario').html('<h1>Seleccione un item de la lista<h1>');
 
         }
 

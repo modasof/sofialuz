@@ -14,6 +14,9 @@ $controllers = array(
 	// Funcionalidad Campamentos
 	'campamento' => ['editar','guardar','actualizar','todos','nuevo','eliminar'],
 
+	// Módulo de Cargas por Excel 
+	'cargamasiva' =>['kilometraje','horasequipo'],
+
 	// Funcionalidad Cargos
 	'cargos' => ['todos','nuevo','guardar','eliminar','editar','actualizar'],
 
@@ -43,7 +46,7 @@ $controllers = array(
 	'cuentas' => ['editar','guardar','actualizar','todos','nuevo','eliminar','reporteporfecha','crucecuentas','detallecruce'],
 
 	// Módulo de Dashboard 
-	'dashboards' =>['dashboardcompras','combustible'],
+	'dashboards' =>['dashboardcompras','combustible','despacho'],
 
 	// Funcionalidad Destinos
 	'destinos' => ['editar','guardar','actualizar','todos','nuevo','eliminar','destinoextra'],
@@ -55,7 +58,7 @@ $controllers = array(
 	'egresoscuenta' => ['editar','guardar','actualizarcm','actualizarcu','actualizarot','todos','nuevo','eliminar','egresos','editarcm','editarcu','editarot','eliminarcm','eliminarmvs','eliminarot','egresosporfecha'],
 
 	// Funcionalidad Equipos
-	'equipos' => ['editar','guardar','actualizar','todos','todosmantenimiento','nuevo','eliminar','editarvol','guardarvol','actualizarvol','volquetas','nuevovol','eliminarvol','reporte','guardareporte','reportediario','eliminareporte','editareporte','actualizareporte','formreportedia','reportedia','reporteporfecha','gastosmantenimientoporfecha','cambiarvisualizacion','estado','guardarestado','actualizarestado','todosestados','eliminarestado','timelineestados','ordentrabajo','hojavida'],
+	'equipos' => ['editar','guardar','actualizar','todos','todosmantenimiento','nuevo','eliminar','editarvol','guardarvol','actualizarvol','volquetas','nuevovol','eliminarvol','reporte','guardareporte','reportediario','eliminareporte','editareporte','actualizareporte','formreportedia','reportedia','reporteporfecha','gastosmantenimientoporfecha','cambiarvisualizacion','estado','guardarestado','actualizarestado','todosestados','eliminarestado','timelineestados','ordentrabajo','ordentrabajoter','hojavida','calendarioestados'],
 
 	// Funcionalidad Equipos Temporales
 	'equipostemporales' => ['todos','nuevo','guardar','eliminar','editar','actualizar'],
@@ -73,7 +76,7 @@ $controllers = array(
 	'folders' => ['editar','guardar','actualizar','todos','nuevo','eliminar'],
 
 	// Funcionalidad Empleados
-	'funcionarios' => ['editar','guardar','actualizar','todos','todosinactivos','nuevo','eliminar','reportarnovedad','eliminarnovedad','reportarsoporte','eliminarsoporte'],
+	'funcionarios' => ['editar','guardar','actualizar','todos','todosinactivos','nuevo','eliminar','reportarnovedad','eliminarnovedad','reportarsoporte','eliminarsoporte','activarempleadoPor','desactivarempleadoPor'],
 
 	// Funcionalidad Gastos Caja Menor
 	'gastos' => ['editar','guardar','actualizarex','todos','nuevo','eliminar','egresos','totalegresos','totalegresoslegal','eliminarcajasistema','porfecha','porfechalegal','eliminargastopor','eliminarcajasistemapor','cambiarestado','actualizarestado'],
@@ -157,7 +160,7 @@ $controllers = array(
 	'proveedores' => ['editar','guardar','actualizar','todos','nuevo','eliminar','cxpproveedor','estadocuenta','listadoproveedorespago','proyecciontemporal','deleteproyecciontemporal','actualizarrelacionpagos','showrelacionpagos','eliminarrelacion'],
 
 	// Funcionalidad de reportes diarios
-	'reportes' => ['ventas','clienteextra','productoextra','guardarventa','eliminarventa','cambiarestadoventa','editarventa','actualizarventa','ventasporfecha','compras','insumoextra','guardarcompra','eliminarcompra','editarcompra','actualizarcompra','comprasporfecha','despachos','guardardespacho','eliminardespacho','editardespacho','actualizardespacho','despachosporfecha','despachosclientes','despachosclientesf','despachosclientesunico','despachosproveedorunico','despachospropietario','guardardespachoclientes','eliminardespachoclientes','editardespachoclientes','actualizardespachoclientes','despachosporfechaclientes','despachosporfechaclientesunico','despachosporfechaproveedorunico','despachosporfechapropietario','facturas','guardarfactura','eliminarfactura','editarfactura','actualizarfactura','facturasporfecha','guardarabono','eliminarabono','cuentasxpagar','cuentasxpagarconsolidado','cuentasxpagardetalle','guardarcuentaxpagar','eliminarcuentaxpagar','cancelarcuentaxpagar','editarcuentaxpagar','actualizarcuentaxpagar','cuentasxpagarporfecha','cuentasxpagarporfechaconsolidado','cuentasxpagarporfechadetalle','prestamos','guardarprestamo','eliminarprestamo','cambiarestadoprestamo','editarprestamo','actualizarprestamo','prestamosporfecha','combustibles','combustiblescisterna','combustiblesporfechacisterna','mescombustibleseq','mesfletes','meshorasmq','infovolqueta','guardarcombustible','eliminarcombustible','editarcombustible','actualizarcombustible','combustiblesporfecha','proveedorextra','horas','guardarhoras','eliminarhoras','editarhoras','actualizarhoras','horasporfecha','despachostrituradora','guardardespachotrituradora','eliminardespachotrituradora','editardespachotrituradora','actualizardespachotrituradora','despachosporfechatrituradora','insumosxpagar','guardarinsumoxpagar','eliminarinsumoxpagar','cancelarinsumoxpagar','editarinsumoxpagar','actualizarinsumoxpagar','insumosxpagarporfecha'],
+	'reportes' => ['ventas','clienteextra','productoextra','guardarventa','eliminarventa','cambiarestadoventa','editarventa','actualizarventa','ventasporfecha','compras','insumoextra','guardarcompra','eliminarcompra','editarcompra','actualizarcompra','comprasporfecha','despachos','guardardespacho','eliminardespacho','editardespacho','actualizardespacho','despachosporfecha','despachosclientes','despachosclientesf','despachosclientesunico','despachosproveedorunico','despachospropietario','guardardespachoclientes','eliminardespachoclientes','editardespachoclientes','actualizardespachoclientes','despachosporfechaclientes','despachosporfechaclientesunico','despachosporfechaproveedorunico','despachosporfechapropietario','facturas','guardarfactura','eliminarfactura','editarfactura','actualizarfactura','facturasporfecha','guardarabono','eliminarabono','cuentasxpagar','cuentasxpagarconsolidado','cuentasxpagardetalle','guardarcuentaxpagar','eliminarcuentaxpagar','cancelarcuentaxpagar','editarcuentaxpagar','actualizarcuentaxpagar','cuentasxpagarporfecha','cuentasxpagarporfechaconsolidado','cuentasxpagarporfechadetalle','prestamos','guardarprestamo','eliminarprestamo','cambiarestadoprestamo','editarprestamo','actualizarprestamo','prestamosporfecha','combustibles','combustiblescisterna','combustiblesporfechacisterna','mescombustibleseq','mesfletes','mesfletesexternos','meshorasmq','meshorasmqexternos','infovolqueta','guardarcombustible','eliminarcombustible','editarcombustible','actualizarcombustible','combustiblesporfecha','proveedorextra','horas','guardarhoras','eliminarhoras','editarhoras','actualizarhoras','horasporfecha','despachostrituradora','guardardespachotrituradora','eliminardespachotrituradora','editardespachotrituradora','actualizardespachotrituradora','despachosporfechatrituradora','insumosxpagar','guardarinsumoxpagar','eliminarinsumoxpagar','cancelarinsumoxpagar','editarinsumoxpagar','actualizarinsumoxpagar','insumosxpagarporfecha'],
 
 	// Funcionalidad Producción
 	'reportesproduccion' => ['reportesproduccion','guardarreporteproduccion','eliminarreporteproduccion','editarreporteproduccion','actualizarreporteproduccion','reportesporfechaproduccion'],
@@ -227,6 +230,11 @@ function call($controller, $action) {
 	case 'campamento':
 		require_once 'modelos/campamento.php';
 		$controller = new CampamentoController();
+		break;
+
+	case 'cargamasiva':
+		require_once 'modelos/cargamasiva.php';
+		$controller = new CargamasivaController();
 		break;
 
 	case 'cargos':

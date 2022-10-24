@@ -82,6 +82,13 @@ class EquiposController
         require_once 'vistas/historicoeq/hojavida.php';
     }
 
+
+      public function calendarioestados()
+    {
+        $get_mesactual = $_GET['get_mesactual'];
+        require_once 'vistas/historicoeq/calendarioestados.php';
+    }
+
     public function nuevovol()
     {
         require_once 'vistas/equipos/nuevo_volqueta.php';
@@ -160,6 +167,16 @@ class EquiposController
         $id = $_GET['operador'];
         require_once 'vistas/equipos/reporteordentrabajo.php';
     }
+
+
+    /* FUNCION PARA REPORTAR LLAMADO DESDE ROUTING.PHP*/
+/*************************************************************/
+    public function ordentrabajoter()
+    {
+        $id = $_GET['operador'];
+        require_once 'vistas/equipos/reporteordentrabajoter.php';
+    }
+
 
 /*************************************************************/
 /* FUNCION PARA ELIMINAR  LLAMADO DESDE ROUTING.PHP*/
@@ -254,6 +271,8 @@ class EquiposController
     public function guardarestado()
     {
 
+        $usermecanico=$_GET['usermecanico'];
+
         $variable = $_POST;
 
         $nuevoarreglo = array();
@@ -271,6 +290,7 @@ class EquiposController
                 $nuevoarreglo[$campo] = $valor;
             }
         }
+
 
         $equipo_id_equipo = $_POST['equipo_id_equipo'];
         $fecha_reporte    = $_POST['fecha_reporte'];
@@ -295,7 +315,15 @@ class EquiposController
         } else {
             echo "<script>jQuery(function(){Swal.fire(\"¡Erro al guardar!\", \"No se han guardado correctamente los datos\", \"error\");});</script>";
         }
-        $this->showreporteestados();
+
+         if ($usermecanico == 0) {
+            $this->formreportemecanico();
+        } else {
+            $this->showreporteestados();
+        }
+
+
+       
     }
 
 /*************************************************************/
@@ -565,10 +593,10 @@ class EquiposController
         $datosguardar = new Equipos($id, $nuevoarreglo);
         $res          = Equipos::actualizareporte($id, $datosguardar);
 
-        if ($estado_reporte == 3) {
-            $estado_sel = "Operativo";
-            $res = Equipos::guardarestado($equipo_id_equipo, $fecha_actual, $estado_sel, $estado_publicado, $creado_por, $marca_temporal);
-        }
+       // if ($estado_reporte == 3) {
+       //     $estado_sel = "Operativo";
+    //    $res = Equipos::guardarestado($equipo_id_equipo, $fecha_actual, $estado_sel, $estado_publicado, $creado_por, $marca_temporal);
+        //}
 
         if ($res) {
             echo "<script>jQuery(function(){Swal.fire(\"¡Datos actualizados!\", \"Se ha actualizado correctamente la pagina \", \"success\");});</script>";

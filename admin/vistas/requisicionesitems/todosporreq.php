@@ -118,6 +118,7 @@ if ($FechaDos == "") {
 if ($RolSesion == 1 or $RolSesion == 13) {
     ?>
     <li class="breadcrumb-item active"><a href="?controller=requisiciones&&action=todosalmacen&&estadosolicitado=1&&cargo=<?php echo ($RolSesion); ?>">Ver Requisiciones</a></li>
+     <a class="dropdown-item btn btn-success" href="#" onclick="aprobarrq(<?php echo $idreq; ?>)">Aprobar RQ </a>
                 <?php
 } 
     ?>
@@ -126,6 +127,10 @@ if ($RolSesion == 1 or $RolSesion == 13) {
           </ol>
         </div><!-- /.col -->
         <div>
+
+
+        
+
              <a  href="#" onclick="eliminarRQ(<?php echo $idreq; ?>);" class="btn btn-danger" style="float: right;"><i class="fa  fa-trash bigger-110 "></i> Eliminar</a>
             <?php if ($estadopublicada == 0) {?>
              <a  href="#" onclick="finalizarrq(<?php echo $idreq; ?>);" class="btn btn-success" style="float: right;"><i class="fa  fa-comments bigger-110 "></i> Finalizar y Notificar</a>
@@ -385,6 +390,21 @@ foreach ($campos as $campo) {
 
 
 </div> <!-- Fin Content-Wrapper -->
+
+  <script>
+function aprobarrq(idrq){
+   autorizar=confirm("¿Deseas Autorizar este registro?");
+   if (autorizar)
+     window.location.href="?controller=requisicionesitems&&action=aprobarrq&&userautoriza="+<?php echo $IdSesion; ?>+"&&idrq="+idrq
+   //alert("Val:"+<?php echo($arregloitems); ?>)
+   
+else
+  //Y aquí pon cualquier cosa que quieras que salga si le diste al boton de cancelar
+    alert('No se ha podido Autorizar el registro...')
+}
+</script>
+
+
 <script>
 function eliminaritem(ideliminar,id){
    eliminar=confirm("¿Deseas eliminar este registro?");

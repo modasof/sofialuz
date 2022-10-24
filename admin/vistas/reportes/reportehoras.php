@@ -8,60 +8,58 @@ include_once 'modelos/equipos.php';
 include_once 'controladores/equiposController.php';
 include_once 'modelos/funcionarios.php';
 include_once 'controladores/funcionariosController.php';
+
+include_once 'modelos/cargamasiva.php';
+include_once 'controladores/cargamasivaController.php';
+
 $RolSesion = $_SESSION['IdRol'];
-$IdSesion = $_SESSION['IdUser'];
+$IdSesion  = $_SESSION['IdUser'];
 
 //id, fecha_reporte, cliente_id_cliente, producto_id_producto, valor_m3, cantidad, creado_por, estado_reporte, reporte_publicado, marca_temporal, observaciones.
 
 if (isset($_POST['daterange'])) {
-  $fechaform=$_POST['daterange'];
+    $fechaform = $_POST['daterange'];
+} elseif (isset($_GET['daterange'])) {
+    $fechaform = $_GET['daterange'];
 }
-elseif (isset($_GET['daterange'])) {
-  $fechaform=$_GET['daterange'];
-}
-
 
 date_default_timezone_set("America/Bogota");
-$MarcaTemporal = date('Y-m-d');
-$FechaInicioDia=($MarcaTemporal." 00:00:000");
-$FechaFinalDia=($MarcaTemporal." 23:59:000");
+$MarcaTemporal  = date('Y-m-d');
+$FechaInicioDia = ($MarcaTemporal . " 00:00:000");
+$FechaFinalDia  = ($MarcaTemporal . " 23:59:000");
 //echo("FECHA QUE LLEGA:".$fechaform."<br>");
 
-if ($fechaform!="") {
-      $arreglo=explode("-", $fechaform);
-      $FechaIn=$arreglo[0];
-      $FechaFn=$arreglo[1];
-      $vectorfechaIn=explode("/", $FechaIn);
-      $vectorfechaFn=explode("/", $FechaFn);
-      $arreglofechauno=$vectorfechaIn[2]."-".$vectorfechaIn[0]."-".$vectorfechaIn[1];
-      $arreglofechados=$vectorfechaFn[2]."-".$vectorfechaFn[0]."-".$vectorfechaFn[1];
+if ($fechaform != "") {
+    $arreglo         = explode("-", $fechaform);
+    $FechaIn         = $arreglo[0];
+    $FechaFn         = $arreglo[1];
+    $vectorfechaIn   = explode("/", $FechaIn);
+    $vectorfechaFn   = explode("/", $FechaFn);
+    $arreglofechauno = $vectorfechaIn[2] . "-" . $vectorfechaIn[0] . "-" . $vectorfechaIn[1];
+    $arreglofechados = $vectorfechaFn[2] . "-" . $vectorfechaFn[0] . "-" . $vectorfechaFn[1];
 
-      $FechaUno=str_replace(" ", "", $arreglofechauno);
-      $FechaDos=str_replace(" ", "", $arreglofechados);
+    $FechaUno = str_replace(" ", "", $arreglofechauno);
+    $FechaDos = str_replace(" ", "", $arreglofechados);
 }
 
 // Validación de la fecha en que inicia el Día
 
-if ($FechaUno=="") {
-  $FechaStart=$FechaInicioDia;
-  $datofechain=$MarcaTemporal;
-          }
-else
-  {
-    $FechaStart=($FechaUno." 00:00:000");
-    $datofechain=$FechaUno;
-  }
+if ($FechaUno == "") {
+    $FechaStart  = $FechaInicioDia;
+    $datofechain = $MarcaTemporal;
+} else {
+    $FechaStart  = ($FechaUno . " 00:00:000");
+    $datofechain = $FechaUno;
+}
 // Validación de la fecha en que Termina el Día
-if ($FechaDos=="") {
-    $FechaEnd=$FechaFinalDia;
-    $datofechafinal=$MarcaTemporal;
-  }
-else
-  {
-    $FechaEnd=($FechaDos." 23:59:000");
-    $limpiarvariable=str_replace(" ", "", $FechaDos);
-    $datofechafinal=$limpiarvariable;
-  }
+if ($FechaDos == "") {
+    $FechaEnd       = $FechaFinalDia;
+    $datofechafinal = $MarcaTemporal;
+} else {
+    $FechaEnd        = ($FechaDos . " 23:59:000");
+    $limpiarvariable = str_replace(" ", "", $FechaDos);
+    $datofechafinal  = $limpiarvariable;
+}
 
 ?>
 
@@ -88,7 +86,7 @@ else
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="?controller=index&&action=index">Inicio</a></li>
-            <!--<li class="breadcrumb-item active"><a href="?controller=equipos&&action=todos">Equipos</a></li>-->
+            <li class="breadcrumb-item active"><a href="?controller=cargamasiva&&action=kilometraje">Carga Masiva</a></li>
           </ol>
         </div><!-- /.col -->
       </div><!-- /.row -->
@@ -96,39 +94,37 @@ else
   </div>
     <!-- /.content-header -->
 
-	<!-- Main content -->
-	<div class="content">
-		<div class="container-fluid">
-			<div class="row">
-				
-					
-						<!-- ESTE DIV LO USO PARA CENTRAR EL FORMULARIO -->
-						<!-- left column -->
-						<div class="col-md-3">
-						  <?php
-          
-            	require_once 'formreportehoras.php';
-            
-            ?>
-					  </div>
+  <!-- Main content -->
+  <div class="content">
+    <div class="container-fluid">
+      <div class="row">
 
-					 
-					
 
-					 <div class="col-md-9">
+            <!-- ESTE DIV LO USO PARA CENTRAR EL FORMULARIO -->
+            <!-- left column -->
+            <div class="col-md-3">
+              <?php
+require_once 'formreportehoras.php';
+?>
+            </div>
 
-					 	<div style="display: none;" class="row">
-					 		<div id="chartContainer" style="height: 400px; width: 100%;"></div>
-					 	</div>
-					 	<br>
-					  	 <div class="row">
+
+
+
+           <div class="col-md-9">
+
+            <div style="display: none;" class="row">
+              <div id="chartContainer" style="height: 400px; width: 100%;"></div>
+            </div>
+            <br>
+               <div class="row">
           <!-- MAP & BOX PANE -->
           <!-- TABLE: LATEST ORDERS -->
           <div class="box box-success">
             <div class="box-header with-border">
               <h3 class="box-title">Reportes Kilometraje </h3>
 
-        
+
 
               <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i>
@@ -138,7 +134,7 @@ else
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-            	            <div class="row">
+                          <div class="row">
         <form action="?controller=reportes&&action=horasporfecha" method="post" id="FormFechas" autocomplete="off">
          <div class="col-md-8">
                         <div class="form-group">
@@ -148,8 +144,8 @@ else
                       </div>
           <div class="form-group">
             <div class="col-xs-12 col-sm-6">
-              <button class="btn btn-primary btn-sm" type="Submit">Realizar Consulta</button>           
-          </div>    
+              <button class="btn btn-primary btn-sm" type="Submit">Realizar Consulta</button>
+          </div>
           </div>
         </form>
         <script type="text/javascript">
@@ -205,100 +201,97 @@ else
 </script>
       </div>
        <div class="col-sm-12">
-        <?php 
-        if ($fechaform!="") {
-          ?>
-           <h3 class="m-0 text-dark">Reporte Kilometraje del <?php echo(fechalarga($datofechain)) ?> al <?php echo (fechalarga($datofechafinal)) ?></h3>
+        <?php
+if ($fechaform != "") {
+    ?>
+           <h3 class="m-0 text-dark">Reporte Kilometraje del <?php echo (fechalarga($datofechain)) ?> al <?php echo (fechalarga($datofechafinal)) ?></h3>
           <?php
-        }
-        else
-        {
-          ?>
+} else {
+    ?>
            <h3 class="m-0 text-dark">Reporte Total Kilometraje </h3>
           <?php
-        }
+}
 
+?>
 
-         ?>
-         
         </div><!-- /.col -->
               <div class="clearfix">
                       <div class="pull-left tableTools-container"></div>
                     </div>
               <div class="table-responsive mailbox-messages">
           <table id="cotizaciones" class="table  table-responsive table-striped table-bordered table-hover" style="width: 100%;font-size: 14px;">
-          	<tfoot style="display: table-header-group;">
-                                   
+            <tfoot style="display: table-header-group;">
+
                                       <th style="background-color: #fcf8e3" class="success"></th>
                                       <th style="background-color: #fcf8e3" class="success"></th>
                                        <th style="background-color: #fcf8e3" class="success"></th>
                                        <th style="background-color: #fcf8e3" class="success"></th>
                                        <th style="background-color: #fcf8e3" class="success"></th>
                                        <th style="background-color: #fcf8e3" class="success"></th>
-                                        <th style="background-color: #fcf8e3" class="success"></th>
-                                        <th style="background-color: #fcf8e3" class="success"></th>
+                                       
+                                      
                                         <th style="background-color: #fcf8e3" class="success"></th>
                             </tfoot>
           <thead>
             <tr style="background-color: #4f5962;color: white;">
               <th style="width: 2%;"><i class="fa fa-edit"></i></th>
               <th>Fecha</th>
-               <th >Equipo</th>
-             
-             <th >Kl - Hr (Inicial)</th>
-             <th >Kl - Hr (Final)</th>
-             <th >Hr/Km Total</th>
-             <th>Reportado por</th>
-             <th>Operado por</th>
+              <th >Equipo</th>
+              <th >Km (gps)</th>
+            
+           
+              <th>Reportado por</th>
+              <th>Operado por</th>
               <th>Observaciones</th>
             </tr>
             <tr>
               <th style="width: 2%;"><i class="fa fa-edit"></i></th>
               <th>Fecha</th>
-               <th >Equipo</th>
-              <th >Kl - Hr (Inicial)</th>
-             <th >Kl - Hr (Final)</th>
-             <th >Hr/Km Total</th>
-             <th>Reportado por</th>
-             <th>Operado por</th>
+              <th >Equipo</th>
+              <th >Km (gps)</th>
+            
+             
+              <th>Reportado por</th>
+              <th>Operado por</th>
               <th>Observaciones</th>
             </tr>
           </thead>
        <tbody>
             <?php
-            if ($fechaform!="") {
-              $res=Reportes::ReporteHorasporfecha($FechaStart,$FechaEnd);
-              $campos = $res->getCampos();
-            }
-            else
-            {
-              $campos = $campos->getCampos();
-            }
-            foreach ($campos as $campo){
-            $id = $campo['id'];
-            $fecha_reporte = $campo['fecha_reporte'];
-           
-           
-            $valor_m3 = $campo['valor_m3'];
-            $cantidad = $campo['cantidad'];
-            $indicador = $campo['indicador'];
-            $hora_inactiva = $campo['hora_inactiva'];
-            $creado_por = $campo['creado_por'];
-            $despachado_por = $campo['despachado_por'];
-            $recibido_por = $campo['recibido_por'];
-            $estado_reporte = $campo['estado_reporte'];
-            $reporte_publicado = $campo['reporte_publicado'];
-            $tipo_despacho = $campo['tipo_despacho'];
-            $punto_despacho = $campo['punto_despacho'];
-            $marca_temporal = $campo['marca_temporal'];
-            $observaciones = $campo['observaciones'];
-            $equipo_id_equipo = $campo['equipo_id_equipo'];
-            $nomequipo=Equipos::obtenerNombreEquipo($equipo_id_equipo);
-            $nomdespachador=Usuarios::obtenerNombreUsuario($creado_por);
-            $nomreportador=Funcionarios::obtenerNombreFuncionario($recibido_por);
+if ($fechaform != "") {
+    $res    = Reportes::ReporteHorasporfecha($FechaStart, $FechaEnd);
+    $campos = $res->getCampos();
+} else {
+    $campos = $campos->getCampos();
+}
+foreach ($campos as $campo) {
+    $id                = $campo['id'];
+    $fecha_reporte     = $campo['fecha_reporte'];
+    $registro_gps      = $campo['registro_gps'];
+    $valor_m3          = $campo['valor_m3'];
+    $cantidad          = $campo['cantidad'];
+    $indicador         = $campo['indicador'];
+    $hora_inactiva     = $campo['hora_inactiva'];
+    $creado_por        = $campo['creado_por'];
+    $despachado_por    = $campo['despachado_por'];
+    $recibido_por      = $campo['recibido_por'];
+    $estado_reporte    = $campo['estado_reporte'];
+    $reporte_publicado = $campo['reporte_publicado'];
+    $tipo_despacho     = $campo['tipo_despacho'];
+    $punto_despacho    = $campo['punto_despacho'];
+    $marca_temporal    = $campo['marca_temporal'];
+    $observaciones     = $campo['observaciones'];
+    $equipo_id_equipo  = $campo['equipo_id_equipo'];
+    $nomequipo         = Equipos::obtenerNombreEquipo($equipo_id_equipo);
+    $nomdespachador    = Usuarios::obtenerNombreUsuario($creado_por);
+    $nomreportador     = Funcionarios::obtenerNombreFuncionario($recibido_por);
 
-            $ventatotal=$cantidad*$valor_m3;
-            ?>
+  $ventatotal = $cantidad * $valor_m3;
+   $calculokm = $hora_inactiva-$registro_gps;
+
+
+   
+    ?>
             <tr>
               <td>
               <a href="?controller=reportes&&action=editarhoras&&id=<?php echo $id; ?>&&vereditar=1" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Editar Horas">
@@ -309,46 +302,42 @@ else
               </a>
               </td>
               <td><?php echo ($fecha_reporte) ?></td>
-               <td><?php echo ($nomequipo) ?></td>
-              <td><?php echo ($indicador) ?></td>
-              <td><?php echo ($cantidad) ?></td>
+              <td><?php echo ($nomequipo) ?></td>
               <td><?php echo ($hora_inactiva) ?></td>
-               <td><?php echo utf8_encode($nomdespachador); ?></td>
-                <td><?php echo utf8_encode($nomreportador); ?></td>
-               <td><?php echo utf8_encode($observaciones); ?></td>
-              
-              
+              <td><?php echo utf8_encode($nomdespachador); ?></td>
+              <td><?php echo utf8_encode($nomreportador); ?></td>
+              <td><?php echo utf8_encode($observaciones); ?></td>
             </tr>
             <?php
-              }
-            ?>
+}
+?>
           </tbody>
           </table>
         </div> <!-- Fin Row -->
             </div>
             <!-- /.box-body -->
             <div class="box-footer clearfix">
-             
+
             </div>
             <!-- /.box-footer -->
           </div>
           <!-- /.box -->
         </div>
         <!-- /.col -->
-					 </div>
+           </div>
 
 
-					</div> <!-- FIN DE ROW-->
-				</div><!-- FIN DE CONTAINER FORMULARIO-->
-			</div> <!-- Fin Row -->
-		</div> <!-- Fin Container -->
-	</div> <!-- Fin Content -->
+          </div> <!-- FIN DE ROW-->
+        </div><!-- FIN DE CONTAINER FORMULARIO-->
+      </div> <!-- Fin Row -->
+    </div> <!-- Fin Container -->
+  </div> <!-- Fin Content -->
 
 <!-- Inicio Modal Clientes -->
     <div id="modal-form6" class="modal" tabindex="-1">
                <!-- Inicio Modal -->
     <div>
-    
+
 <form action="?controller=reportes&&action=clienteextra&&tiporeporte=2" method="post" autocomplete="off">
                   <div class="modal-dialog ">
                     <div class="modal-content">
@@ -358,16 +347,16 @@ else
                       </div>
 
                       <div class="col-md-12 col-xs-12">
-                      	  <label>Nombre Cliente<span>*</span></label>
-                      	  <input type="hidden" name="estado_cliente" value="1">
+                          <label>Nombre Cliente<span>*</span></label>
+                          <input type="hidden" name="estado_cliente" value="1">
                            <input type="text" name="nombre_cliente" placeholder="Nombre del Cliente" class="form-control" value="" >
                           <br>
                       <br>
                       </div>
-                         
+
 
                       <div class="modal-footer">
-                        <a href="Clientes-Abonos.php?AbonosFactura=<?php Echo($AbonosFactura) ?>" class="btn btn-sm btn-danger" data-dismiss="modal">
+                        <a href="Clientes-Abonos.php?AbonosFactura=<?php echo ($AbonosFactura) ?>" class="btn btn-sm btn-danger" data-dismiss="modal">
                           <i class="ace-icon fa fa-times"></i>
                           Cancelar
                         </a>
@@ -388,7 +377,7 @@ else
     <div id="modal-form7" class="modal" tabindex="-1">
                <!-- Inicio Modal -->
     <div>
-    
+
 <form action="?controller=reportes&&action=productoextra&&tiporeporte=2" method="post" id="FormArpetura" autocomplete="off">
                   <div class="modal-dialog ">
                     <div class="modal-content">
@@ -398,16 +387,16 @@ else
                       </div>
 
                       <div class="col-md-12 col-xs-12">
-                      	  <label>Nombre Producto<span>*</span></label>
-                      	  <input type="hidden" name="estado_producto" value="1">
+                          <label>Nombre Producto<span>*</span></label>
+                          <input type="hidden" name="estado_producto" value="1">
                            <input type="text" name="nombre_producto" placeholder="Nombre del Producto" class="form-control" value="" >
                           <br>
                       <br>
                       </div>
-                         
+
 
                       <div class="modal-footer">
-                        <a href="Clientes-Abonos.php?AbonosFactura=<?php Echo($AbonosFactura) ?>" class="btn btn-sm btn-danger" data-dismiss="modal">
+                        <a href="Clientes-Abonos.php?AbonosFactura=<?php echo ($AbonosFactura) ?>" class="btn btn-sm btn-danger" data-dismiss="modal">
                           <i class="ace-icon fa fa-times"></i>
                           Cancelar
                         </a>
@@ -423,7 +412,7 @@ else
                 </div><!-- PAGE CONTENT ENDS -->
  </div>
  <!-- FINAL MODAL -->
- 
+
 
 
 </div> <!-- Fin Content-Wrapper -->
@@ -507,19 +496,19 @@ function formatmoneda(n, currency) {
         "info":     true,
         "aLengthMenu": [[100, 200, 300, -1], [100, 200, 300, "Todas"]],
     "pageLength": 100,
-       
-       
+
+
     } );
 } );
     </script>
 <script type="text/javascript">
       jQuery(function($) {
-      
+
 $('#cotizaciones thead tr:eq(1) th').each( function () {
         var title = $('#cotizaciones thead tr:eq(0) th').eq( $(this).index() ).text();
         $(this).html( '<input style="width:100%;border:black solid 1px;" type="text" placeholder=" '+title+'" />' );
-    } ); 
-  
+    } );
+
     var table = $('#cotizaciones').DataTable({
       responsive:true,
       "ordering": true,
@@ -531,7 +520,7 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
             "info": "Mostrar página _PAGE_ de _PAGES_",
             "infoEmpty": "No hay registros disponibles",
            },
-      
+
     "lengthMenu": [[5000, 7000, 10000, -1], [5000, 7000, 10000, "All"]],
 
           select: {
@@ -539,7 +528,7 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
           },
            "footerCallback": function ( row, data, start, end, display ) {
             var api = this.api(), data;
- 
+
             // Remove the formatting to get integer data for summation
             var intVal = function ( i ) {
                 return typeof i === 'string' ?
@@ -548,17 +537,17 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
                         i : 0;
             };
 
- 
+
             // Total over all pages
-           
-            
+
+
               pageTotal3 = api
                 .column( 3, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
-           
+
            pageTotal4 = api
                 .column( 4, { page: 'current'} )
                 .data()
@@ -571,45 +560,45 @@ $('#cotizaciones thead tr:eq(1) th').each( function () {
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
-           
+
              // Update footer
-           
-          
+
+
 
               $( api.column( 3 ).footer() ).html(
                 ''+formatmoneda(pageTotal3,'' )
-            );  
+            );
 
                $( api.column( 4 ).footer() ).html(
                 ''+formatmoneda(pageTotal4,'' )
-            );  
+            );
 
                 $( api.column( 5 ).footer() ).html(
                 ''+formatmoneda(pageTotal5,'' )
-            );  
+            );
 
-              
-            
+
+
         },
 
     });
-  
+
     // Apply the search
     table.columns().every(function (index) {
         $('#cotizaciones thead tr:eq(1) th:eq(' + index + ') input').on('keyup change', function () {
             table.column($(this).parent().index() + ':visible')
                 .search(this.value)
-                .draw();    
+                .draw();
         });
     });
 
-        var myTable = 
+        var myTable =
         $('#cotizaciones')
         //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
         .DataTable( {
 retrieve: true,
 
-          
+
           "aoColumns": [
             { "bSortable": false },
             null, null,null, null,null,null,null,null, null,null, null,null,null,null,null, null,null, null,null,null,null,
@@ -617,33 +606,33 @@ retrieve: true,
           ],
           "aaSorting": [],
           "scrollX": true,
-          
+
           //"bProcessing": true,
               //"bServerSide": true,
               //"sAjaxSource": "http://127.0.0.1/table.php" ,
-      
+
           //,
-          
+
           //"sScrollXInner": "120%",
           //"bScrollCollapse": true,
           //Note: if you are applying horizontal scrolling (sScrollX) on a ".table-bordered"
           //you may want to wrap the table inside a "div.dataTables_borderWrap" element
-      
+
           //"iDisplayLength": 50
 
-      
-          } );
-      
-        
-    
 
-        
+          } );
+
+
+
+
+
         $.fn.dataTable.Buttons.defaults.dom.container.className = 'dt-buttons btn-overlap btn-group btn-overlap';
-        
+
         new $.fn.dataTable.Buttons( myTable, {
          buttons: [
-           
-           
+
+
             {
             "extend": "csv",
             "text": "<i class='fa fa-database bigger-110 orange'></i> <span class='hidden'></span>",
@@ -670,27 +659,27 @@ retrieve: true,
             "className": "btn btn-white btn-primary btn-bold",
             autoPrint: true,
             message: 'Está impresión se produjo desde la App'
-            }     
+            }
           ]
         } );
         myTable.buttons().container().appendTo( $('.tableTools-container') );
-        
+
         // style the message box
         // var defaultCopyAction = myTable.button(1).action();
         // myTable.button(1).action(function (e, dt, button, config) {
         //   defaultCopyAction(e, dt, button, config);
         //   $('.dt-button-info').addClass('gritter-item-wrapper gritter-info gritter-center white');
         // });
-        
 
 
-        
+
+
         // var defaultColvisAction = myTable.button(0).action();
         // myTable.button(0).action(function (e, dt, button, config) {
-          
+
         //   defaultColvisAction(e, dt, button, config);
-          
-          
+
+
         //   if($('.dt-button-collection > .dropdown-menu').length == 0) {
         //     $('.dt-button-collection')
         //     .wrapInner('<ul class="dropdown-menu dropdown-light " />')
@@ -698,9 +687,9 @@ retrieve: true,
         //   }
         //   $('.dt-button-collection').appendTo('.tableTools-container .dt-buttons')
         // });
-      
+
         //
-      
+
         setTimeout(function() {
           $($('.tableTools-container')).find('a.dt-button').each(function() {
             var div = $(this).find(' > div').first();
@@ -708,11 +697,11 @@ retrieve: true,
             else $(this).tooltip({container: 'body', title: $(this).text()});
           });
         }, 500);
-        
-        
-        
-        
-        
+
+
+
+
+
         myTable.on( 'select', function ( e, dt, type, index ) {
           if ( type === 'row' ) {
             $( myTable.row( index ).node() ).find('input:checkbox').prop('checked', true);
@@ -723,57 +712,57 @@ retrieve: true,
             $( myTable.row( index ).node() ).find('input:checkbox').prop('checked', false);
           }
         } );
-      
-      
-      
-      
-      
-      
+
+
+
+
+
+
         /////////////////////////////////
         //table checkboxes
         $('th input[type=checkbox], td input[type=checkbox]').prop('checked', false);
-        
+
         //select/deselect all rows according to table header checkbox
         $('#cotizaciones > thead > tr > th input[type=checkbox], #cotizaciones_wrapper input[type=checkbox]').eq(0).on('click', function(){
           var th_checked = this.checked;//checkbox inside "TH" table header
-          
+
           $('#cotizaciones').find('tbody > tr').each(function(){
             var row = this;
             if(th_checked) myTable.row(row).select();
             else  myTable.row(row).deselect();
           });
         });
-        
+
         //select/deselect a row when the checkbox is checked/unchecked
         $('#cotizaciones').on('click', 'td input[type=checkbox]' , function(){
           var row = $(this).closest('tr').get(0);
           if(this.checked) myTable.row(row).deselect();
           else myTable.row(row).select();
         });
-      
-      
-      
+
+
+
         $(document).on('click', '#cotizaciones .dropdown-toggle', function(e) {
           e.stopImmediatePropagation();
           e.stopPropagation();
           e.preventDefault();
         });
-        
-        
-        
+
+
+
         //And for the first simple table, which doesn't have TableTools or dataTables
         //select/deselect all rows according to table header checkbox
         var active_class = 'active';
         $('#simple-table > thead > tr > th input[type=checkbox]').eq(0).on('click', function(){
           var th_checked = this.checked;//checkbox inside "TH" table header
-          
+
           $(this).closest('table').find('tbody > tr').each(function(){
             var row = this;
             if(th_checked) $(row).addClass(active_class).find('input[type=checkbox]').eq(0).prop('checked', true);
             else $(row).removeClass(active_class).find('input[type=checkbox]').eq(0).prop('checked', false);
           });
         });
-        
+
         //select/deselect a row when the checkbox is checked/unchecked
         $('#simple-table').on('click', 'td input[type=checkbox]' , function(){
           var $row = $(this).closest('tr');
@@ -781,30 +770,30 @@ retrieve: true,
           if(this.checked) $row.addClass(active_class);
           else $row.removeClass(active_class);
         });
-      
-        
-      
+
+
+
         /********************************/
         //add tooltip for small view action buttons in dropdown menu
         $('[data-rel="tooltip"]').tooltip({placement: tooltip_placement});
-        
+
         //tooltip placement on right or left
         function tooltip_placement(context, source) {
           var $source = $(source);
           var $parent = $source.closest('table')
           var off1 = $parent.offset();
           var w1 = $parent.width();
-      
+
           var off2 = $source.offset();
           //var w2 = $source.width();
-      
+
           if( parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2) ) return 'right';
           return 'left';
         }
-        
-        
-        
-        
+
+
+
+
         /***************/
         $('.show-details-btn').on('click', function(e) {
           e.preventDefault();
@@ -812,7 +801,7 @@ retrieve: true,
           $(this).find(ace.vars['.icon']).toggleClass('fa-angle-double-down').toggleClass('fa-angle-double-up');
         });
         /***************/
-    
-      
+
+
       })
     </script>

@@ -68,7 +68,7 @@ $nomequipo=Equipos::obtenerNombreEquipo($get_equipo);
 						  <div class="card card-primary">
 							<!-- /.card-header -->
 							<!-- form start -->
-							<form role="form" action="?controller=equipos&&action=guardarestado" method="POST" enctype="multipart/form-data" autocomplete="off">
+							<form role="form" action="?controller=equipos&&action=guardarestado&&usermecanico=1" method="POST" enctype="multipart/form-data" autocomplete="off">
 								<?php  
 								date_default_timezone_set("America/Bogota");
 								$TiempoActual = date('Y-m-d H:i:s');

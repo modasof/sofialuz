@@ -760,8 +760,9 @@ echo ($contadorfallas);
 $res         = Equipos::obtenerPaginareportesfecha($getequipo, $fechatabla, $fechatabla);
                 $movimientos = $res->getCampos();
                 foreach ($movimientos as $mov) {
-                    $id_reporte = $mov['id_reporte'] . ",";
-                    echo ($id_reporte);
+                    $id_reporte = $mov['id_reporte'] . " | ";
+
+                    echo ("<a target='_blank' href='?controller=equipos&&action=editareporte&&id=".$id_reporte."&&id_equipo=".$getequipo."&&usermecanico=1'>".$id_reporte."</a>");
                 }
                 ?>
         </div>
@@ -917,8 +918,19 @@ echo ($contadorfallas);
 $res         = Equipos::obtenerPaginareportesfecha($getequipo, $fechatabla, $fechatabla);
                 $movimientos = $res->getCampos();
                 foreach ($movimientos as $mov) {
-                    $id_reporte = $mov['id_reporte'] . ",";
-                    echo ($id_reporte);
+                    $id_reporte = $mov['id_reporte'] . "  ";
+                    $estadoreporte=Equipos::obtenerestadoordentrabajo($id_reporte);
+
+                    if ($estadoreporte==1) {
+                         echo ("<a target='_blank' href='?controller=equipos&&action=editareporte&&id=".$id_reporte."&&id_equipo=".$getequipo."&&usermecanico=1'><i class='fa fa-circle text-danger'>".$id_reporte." </i></a>");
+                    }elseif ($estadoreporte==2) {
+                         echo ("<a target='_blank' href='?controller=equipos&&action=editareporte&&id=".$id_reporte."&&id_equipo=".$getequipo."&&usermecanico=1'><i class='fa fa-circle text-warning'> ".$id_reporte."</i></a>");
+                    }elseif ($estadoreporte==3) {
+                         echo ("<a target='_blank' href='?controller=equipos&&action=editareporte&&id=".$id_reporte."&&id_equipo=".$getequipo."&&usermecanico=1'><i class='fa fa-circle text-success'>".$id_reporte." </i></a>");
+                    }
+
+
+                   
                 }
                 ?>
         </div>

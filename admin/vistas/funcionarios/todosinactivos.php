@@ -9,7 +9,7 @@ include_once 'controladores/gestiondocumentalempController.php';
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0 text-dark">Empleados</h1>
+          <h1 class="m-0 text-dark">Empleados Inactivos</h1>
         </div><!-- /.col -->
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
@@ -51,6 +51,7 @@ include_once 'controladores/gestiondocumentalempController.php';
                                     <th style="background-color: #fcf8e3" class="success"></th>
                                     <th style="background-color: #fcf8e3" class="success"></th>
                                     <th style="background-color: #fcf8e3" class="success"></th>
+                                    <th style="background-color: #fcf8e3" class="success"></th>
                                     
                                    
                             </tfoot>
@@ -69,6 +70,7 @@ include_once 'controladores/gestiondocumentalempController.php';
                <th>Empresa</th>
               
                 <th>Contacto</th>
+                 <th>Estado</th>
                
              
             </tr>
@@ -87,6 +89,7 @@ include_once 'controladores/gestiondocumentalempController.php';
                <th>Empresa</th>
                
                 <th>Contacto</th>
+                 <th>Estado</th>
                 
              
             </tr>
@@ -108,6 +111,7 @@ include_once 'controladores/gestiondocumentalempController.php';
             $salario = $campo['salario'];
             $celular = $campo['celular'];
             $correo = $campo['correo'];
+            $funcionario_publicado=$campo['funcionario_publicado'];
             $imagencontrato=gestiondocumentalemp::DocumentoExiste(28,$id_funcionario,3);
             $imagenarl=gestiondocumentalemp::DocumentoExiste(30,$id_funcionario,3);
              $imageneps=gestiondocumentalemp::DocumentoExiste(31,$id_funcionario,3);
@@ -191,6 +195,22 @@ include_once 'controladores/gestiondocumentalempController.php';
                 
                  <td><?php echo utf8_encode($celular); ?><br>
                  <?php echo utf8_encode($correo); ?></td>
+                 <td><?php
+if ($funcionario_publicado == 1) {
+        ?>
+                <a href="#" onclick="desactivarpermiso(<?php echo $id_funcionario; ?>);" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Desactivar Empleado">
+                <i class="fa fa-check bigger-110 "></i>
+               </a>
+               <?php
+} else {
+        ?>
+                <a href="#" onclick="activarpermiso(<?php echo $id_funcionario; ?>);" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Activar Empleado">
+                <i class="fa fa-close bigger-110 "></i>
+                </a>
+                <?php
+}
+
+    ?></td>
                   
             </tr>
             <?php
@@ -238,6 +258,28 @@ else
           <script src="dist/js/buttons.print.min.js"></script>
            <script src="dist/js/dataTables.select.min.js"></script>
            <script src="dist/js/buttons.flash.min.js"></script>
+
+<script>
+function desactivarpermiso(id){
+   desactivarpermiso=confirm("¿Deseas desactivar este empleado?");
+   if (desactivarpermiso)
+     window.location.href="?controller=funcionarios&&action=desactivarempleadoPor&&id="+id;
+else
+  //Y aquí pon cualquier cosa que quieras que salga si le diste al boton de cancelar
+    alert('No se ha podido desactivar este permiso...')
+}
+</script>
+
+<script>
+function activarpermiso(id,menu){
+   activarpermiso=confirm("¿Deseas activar este empleado?");
+   if (activarpermiso)
+     window.location.href="?controller=funcionarios&&action=activarempleadoPor&&id="+id;
+else
+  //Y aquí pon cualquier cosa que quieras que salga si le diste al boton de cancelar
+    alert('No se ha podido activar este permiso...')
+}
+</script>
 
 <script>
    function format2(n, currency) {

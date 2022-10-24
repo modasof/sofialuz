@@ -1902,6 +1902,7 @@ public static function ReporteCombustiblesporfechameseq($FechaStart,$FechaEnd){
 	}
 }
 
+
 /*******************************************************
 ** FUNCION PARA MOSTRAR TODOS LOS CAMPOS POR RANGO DE FECHA	  **
 ********************************************************/
@@ -1909,7 +1910,24 @@ public static function ReporteVolquetasporfechameseq($FechaStart,$FechaEnd){
 	try {
 		$db=Db::getConnect();
 
-		$select=$db->query("SELECT DISTINCT(equipo_id_equipo) FROM reporte_despachosclientes WHERE reporte_publicado='1' and fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."'");
+		$select=$db->query("SELECT DISTINCT(A.equipo_id_equipo) FROM reporte_despachosclientes as A, equipos as B WHERE A.reporte_publicado='1' and A.fecha_reporte >='".$FechaStart."' and A.fecha_reporte <='".$FechaEnd."' and A.equipo_id_equipo=B.id_equipo and B.propietario='2'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Reportes('',$camposs);
+		return $campos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/*******************************************************
+** FUNCION PARA MOSTRAR TODOS LOS CAMPOS POR RANGO DE FECHA	  **
+********************************************************/
+public static function ReporteVolquetasporfechameseqexternos($FechaStart,$FechaEnd){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT DISTINCT(A.equipo_id_equipo) FROM reporte_despachosclientes as A, equipos as B WHERE A.reporte_publicado='1' and A.fecha_reporte >='".$FechaStart."' and A.fecha_reporte <='".$FechaEnd."' and A.equipo_id_equipo=B.id_equipo and B.propietario<>'2'");
     	$camposs=$select->fetchAll();
     	$campos = new Reportes('',$camposs);
 		return $campos;
@@ -1927,7 +1945,24 @@ public static function ReporteHorasmqporfechameseq($FechaStart,$FechaEnd){
 	try {
 		$db=Db::getConnect();
 
-		$select=$db->query("SELECT DISTINCT(equipo_id_equipo) FROM reporte_horasmq WHERE reporte_publicado='1' and fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."'");
+		$select=$db->query("SELECT DISTINCT(A.equipo_id_equipo) FROM reporte_horasmq AS A, equipos as B WHERE A.reporte_publicado='1' and A.fecha_reporte >='".$FechaStart."' and A.fecha_reporte <='".$FechaEnd."' and A.equipo_id_equipo=B.id_equipo and B.propietario='2'");
+    	$camposs=$select->fetchAll();
+    	$campos = new Reportes('',$camposs);
+		return $campos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/*******************************************************
+** FUNCION PARA MOSTRAR TODOS LOS CAMPOS POR RANGO DE FECHA	  **
+********************************************************/
+public static function ReporteHorasmqporfechameseqexternos($FechaStart,$FechaEnd){
+	try {
+		$db=Db::getConnect();
+
+		$select=$db->query("SELECT DISTINCT(A.equipo_id_equipo) FROM reporte_horasmq AS A, equipos as B WHERE A.reporte_publicado='1' and A.fecha_reporte >='".$FechaStart."' and A.fecha_reporte <='".$FechaEnd."' and A.equipo_id_equipo=B.id_equipo and B.propietario<>'2'");
     	$camposs=$select->fetchAll();
     	$campos = new Reportes('',$camposs);
 		return $campos;
@@ -2709,7 +2744,7 @@ public static function guardarhoras($campos){
 		$campostraidos = $campos->getCampos();
 		extract($campostraidos);
 
-		$insert=$db->prepare('INSERT INTO reporte_horas VALUES (NULL,:fecha_reporte,:equipo_id_equipo,:despachado_por,:punto_despacho,:recibido_por,:valor_m3, :cantidad,:indicador,:hora_inactiva,:creado_por, :estado_reporte, :reporte_publicado,:marca_temporal, :observaciones)');
+		$insert=$db->prepare('INSERT INTO reporte_horas VALUES (NULL,:fecha_reporte,:equipo_id_equipo,:despachado_por,:punto_despacho,:recibido_por,:valor_m3, :cantidad,:indicador,:hora_inactiva,:registro_gps,:creado_por, :estado_reporte, :reporte_publicado,:marca_temporal, :observaciones)');
 
 		
 		$t = strtotime($fecha_reporte);
@@ -2724,6 +2759,7 @@ public static function guardarhoras($campos){
 		$insert->bindValue('cantidad',utf8_decode($cantidad));
 		$insert->bindValue('indicador',utf8_decode($indicador));
 		$insert->bindValue('hora_inactiva',utf8_decode($hora_inactiva));
+		$insert->bindValue('registro_gps',utf8_decode($registro_gps));
 		$insert->bindValue('creado_por',utf8_decode($creado_por));
 		$insert->bindValue('estado_reporte',utf8_decode($estado_reporte));
 		$insert->bindValue('reporte_publicado',utf8_decode($reporte_publicado));
@@ -2789,6 +2825,7 @@ public static function actualizarhoras($id,$campos){
 								cantidad=:cantidad,
 								indicador=:indicador,
 								hora_inactiva=:hora_inactiva,
+								registro_gps=:registro_gps,
 								creado_por=:creado_por,
 								estado_reporte=:estado_reporte,
 								reporte_publicado=:reporte_publicado,
@@ -2814,6 +2851,7 @@ public static function actualizarhoras($id,$campos){
 		$update->bindValue('cantidad',utf8_decode($cantidad));
 		$update->bindValue('indicador',utf8_decode($indicador));
 		$update->bindValue('hora_inactiva',utf8_decode($hora_inactiva));
+		$update->bindValue('registro_gps',utf8_decode($registro_gps));
 		$update->bindValue('creado_por',utf8_decode($creado_por));
 		$update->bindValue('estado_reporte',utf8_decode($estado_reporte));
 		$update->bindValue('reporte_publicado',utf8_decode($reporte_publicado));
@@ -3047,7 +3085,7 @@ where creado_por='".$idusuario."' and reporte_publicado='1'");
 public static function obtenerListaviajesCond($usuarioconductor,$mesactual,$anoactual){
 	try {
 		$db=Db::getConnect();
-		$select=$db->query("SELECT * FROM reporte_despachosclientes WHERE despachado_por='".$usuarioconductor."' and YEAR(fecha_reporte)='".$anoactual."' and MONTH(fecha_reporte)='".$mesactual."' order by fecha_reporte DESC");
+		$select=$db->query("SELECT * FROM reporte_despachosclientes WHERE despachado_por='".$usuarioconductor."' and YEAR(fecha_reporte)='".$anoactual."' and MONTH(fecha_reporte)='".$mesactual."' and reporte_publicado='1' order by fecha_reporte DESC");
     	$campos=$select->fetchAll();
 		$camposs = new Reportes('',$campos);
 		$campostraidos = $camposs->getCampos();
