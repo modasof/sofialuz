@@ -121,6 +121,12 @@
                 <span class="badge bg-green"></span>
                 <i class="fa fa-file-pdf-o"></i> Cotizaciones
               </a>
+
+                 <a href="?controller=maps&&action=todos" class="btn btn-app">
+                <span class="badge bg-green"></span>
+                <i class="fa fa-map-marker"></i> GPS
+              </a>
+
               
             </div>
             <!-- /.box-body -->

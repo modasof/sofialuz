@@ -245,13 +245,14 @@ if ($fechaform != "") {
               <th style="background-color: #fcf8e3" class="success"></th>
               <th style="background-color: #fcf8e3" class="success"></th>
               <th style="background-color: #fcf8e3" class="success"></th>
-              <th style="background-color: #fcf8e3" class="success"></th>
-              <th style="background-color: #fcf8e3" class="success"></th>
+              
+              
+             
              
                             </tfoot>
           <thead>
             <tr style="background-color: #4f5962;color: white;">
-
+              
               <th>Rm.</th>
               <th>Vr. Flete</th>
               <th>Vr. Material</th>
@@ -259,18 +260,19 @@ if ($fechaform != "") {
               <th>m3</th>
               <th>Origen</th>
               <th>Destino</th>
-              <th>Campamento</th>
-              <th>Facturado</th>
+             
+             
               <th>Fecha Despacho </th>
               <th>Cliente</th>
               <th>Trans.</th>
               <th>Placa</th>
               <th>Cond</th>
                <th>Material</th>
-               <th>Acción</th>
+               <th style="width: 10%;">Acción</th>
 
             </tr>
             <tr>
+             
               <th>Rm.</th>
               <th>Vr. Flete</th>
               <th>Vr. Material</th>
@@ -278,15 +280,15 @@ if ($fechaform != "") {
               <th>m3</th>
               <th>Origen</th>
               <th>Destino</th>
-              <th>Campamento</th>
-              <th>Facturado</th>
+              
+             
               <th>Fecha Despacho </th>
               <th>Cliente</th>
               <th>Trans.</th>
               <th>Placa</th>
               <th>Cond</th>
               <th>Material</th>
-               <th>Acción</th>
+               <th style="width: 10%;">Acción</th>
              
              
 
@@ -347,37 +349,10 @@ foreach ($campos as $campo) {
 
     ?>
             <tr>
+         
               <td><?php echo ($remision) ?>
                  <input style="display:none;" type="checkbox" id="<?php echo $remision; ?>" name="inputdespachos" onclick="marcardespacho()" style="cursor: pointer;">
-                  <div class="btn-group">
-                        <button data-toggle="dropdown" class="btn btn-info btn-sm dropdown-toggle">
-                          Acción
-                          <span class="ace-icon fa fa-caret-down icon-on-right"></span>
-                        </button>
-
-                        <ul class="dropdown-menu dropdown-info dropdown-menu-lg-left">
-                          <li>
-              <a target="_blank" href="?controller=reportes&&action=editardespachoclientes&&id=<?php echo $id; ?>&&vereditar=1" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Editar Despacho">
-                <i class="fa fa-edit bigger-110 "> Editar</i>
-              </a>
-                          </li>
-                          <li>
-              <a href="#" onclick="eliminar(<?php echo $id; ?>);" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Eliminar Despacho">
-                <i class="fa fa-trash bigger-110 "> Eliminar</i>
-              </a>
-                          </li>
-                          <li>
-                             <a target="_blank" href="<?php echo ($imagen); ?>"  class="tooltip-primary text-primary" title="Ver Soporte">
-                <i class="fa fa-eye bigger-110 "> Ver Soporte</i>
-              </a>
-                          </li>
-                          <li>
-                <a download="Soporte" href="<?php echo ($imagen); ?>"  class="tooltip-primary text-dark" title="Descargar Soporte">
-                <i class="fa fa-cloud-download bigger-110 "> Descargar</i>
-                </a>
-                          </li>
-                        </ul>
-                </div>
+                 
               </td>
                <td><?php echo utf8_encode("$" . number_format($valor_m3, 0)); ?></td>
                <td><?php echo utf8_encode("$" . number_format($valor_material, 0)); ?></td>
@@ -385,9 +360,9 @@ foreach ($campos as $campo) {
                <td><?php echo utf8_encode($cantidad); ?></td>
               <td><i class="text-success">  </i> <?php echo ($nomdest1); ?></td>
                <td><i class="text-danger"> </i> <?php echo ($nomdest2); ?></td>
-                <td> <?php echo ($nomdestCamp); ?></td>
+               
 
-              <td><?php echo ($id) ?></td>
+             
               <td><?php echo ($fecha_reporte) ?></td>
 
               <td><?php echo utf8_encode($nomcli); ?></td>
@@ -398,7 +373,18 @@ foreach ($campos as $campo) {
                <td><?php echo utf8_encode($nomprod); ?></td>
              
               <td>
-                
+              <a target="_blank" href="?controller=reportes&&action=editardespachoclientes&&id=<?php echo $id; ?>&&vereditar=1" class="tooltip-primary text-success" data-rel="tooltip" data-placement="top" title="" data-original-title="Editar Despacho">
+                <i class="fa fa-edit bigger-110 "> </i>
+              </a>
+               <a href="#" onclick="eliminar(<?php echo $id; ?>);" class="tooltip-primary text-danger" data-rel="tooltip" data-placement="top" title="" data-original-title="Eliminar Despacho">
+                <i class="fa fa-trash bigger-110 "> </i>
+              </a>
+               <a target="_blank" href="<?php echo ($imagen); ?>"  class="tooltip-primary text-primary" title="Ver Soporte">
+                <i class="fa fa-eye bigger-110 "> </i>
+              </a>
+               <a download="Soporte" href="<?php echo ($imagen); ?>"  class="tooltip-primary text-dark" title="Descargar Soporte">
+                <i class="fa fa-cloud-download bigger-110 "> </i>
+                </a>
                 
             
               
@@ -684,14 +670,14 @@ function formatmoneda(n, currency) {
 
             // Total over all pages
 
-
-
-              pageTotal5 = api
+              pageTotal6 = api
                 .column( 1, { page: 'current'} )
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
                 }, 0 );
+
+            
 
             pageTotal10 = api
                 .column( 2, { page: 'current'} )
@@ -714,26 +700,29 @@ function formatmoneda(n, currency) {
                     return intVal(a) + intVal(b);
                 }, 0 );
 
+              
+
 
 
              // Update footer
 
 
-
               $( api.column( 1 ).footer() ).html(
-                '$'+formatmoneda(pageTotal5,'' )
+                ''+formatmoneda(pageTotal6,'' )
             );
+          
 
                $( api.column( 2 ).footer() ).html(
-                '$'+formatmoneda(pageTotal10,'' )
+                ''+formatmoneda(pageTotal10,'' )
             );
 
                 $( api.column( 3 ).footer() ).html(
-                '$'+formatmoneda(pageTotal14,'' )
+                ''+formatmoneda(pageTotal14,'' )
             );
                  $( api.column( 4 ).footer() ).html(
-                ''+formatmoneda(pageTotal15,'m3' )
+                ''+formatmoneda(pageTotal15,'' )
             );
+                    
 
 
         },

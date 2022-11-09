@@ -791,4 +791,91 @@ id_usuario, imagen, nombre_usuario, telefono, email, celular, documento, rol_id_
         }
     }
 
+    /*******************************************************
+** FUNCION PARA MOSTRAR EL ULTIMO USUARIO CREADO **
+********************************************************/
+public static function obtenerultimoestado($id){
+    try {
+        $db=Db::getConnect();
+
+        $select=$db->query("SELECT estado_usuario FROM estado_conductores WHERE usuario_id='".$id."' ORDER BY id DESC LIMIT 1");
+        $camposs=$select->fetchAll();
+        $campos = new Usuarios('',$camposs);
+        $rubros = $campos->getCampos();
+        foreach($rubros as $nrubro){
+            $elrubro = $nrubro['estado_usuario'];
+        }
+        return $elrubro;
+    }
+    catch(PDOException $e) {
+        echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+    }
+}
+
+/*******************************************************
+** FUNCION PARA MOSTRAR EL ULTIMO USUARIO CREADO **
+********************************************************/
+public static function obtenerultimalat($id){
+    try {
+        $db=Db::getConnect();
+
+        $select=$db->query("SELECT latitud FROM estado_conductores WHERE usuario_id='".$id."' ORDER BY id DESC LIMIT 1");
+        $camposs=$select->fetchAll();
+        $campos = new Usuarios('',$camposs);
+        $rubros = $campos->getCampos();
+        foreach($rubros as $nrubro){
+            $elrubro = $nrubro['latitud'];
+        }
+        return $elrubro;
+    }
+    catch(PDOException $e) {
+        echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+    }
+}
+
+/*******************************************************
+** FUNCION PARA MOSTRAR EL ULTIMO USUARIO CREADO **
+********************************************************/
+public static function obtenerultimalong($id){
+    try {
+        $db=Db::getConnect();
+
+        $select=$db->query("SELECT longitud FROM estado_conductores WHERE usuario_id='".$id."' ORDER BY id DESC LIMIT 1");
+        $camposs=$select->fetchAll();
+        $campos = new Usuarios('',$camposs);
+        $rubros = $campos->getCampos();
+        foreach($rubros as $nrubro){
+            $elrubro = $nrubro['longitud'];
+        }
+        return $elrubro;
+    }
+    catch(PDOException $e) {
+        echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+    }
+}
+
+/*******************************************************
+** FUNCION PARA MOSTRAR EL ULTIMO USUARIO CREADO **
+********************************************************/
+public static function horaultimoreporte($id){
+    try {
+        $db=Db::getConnect();
+
+        $sql="SELECT marca_temporal FROM estado_conductores WHERE usuario_id='".$id."' ORDER BY id DESC LIMIT 1";
+        $select=$db->query($sql);
+        //echo($sql);
+        $camposs=$select->fetchAll();
+        $campos = new Usuarios('',$camposs);
+        $rubros = $campos->getCampos();
+        foreach($rubros as $nrubro){
+            $elrubro = $nrubro['marca_temporal'];
+        }
+        return $elrubro;
+    }
+    catch(PDOException $e) {
+        echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+    }
+}
+
+
 }

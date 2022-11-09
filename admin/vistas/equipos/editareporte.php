@@ -1,31 +1,31 @@
 <?php
-$IdSesion = $_SESSION['IdUser'];
+$IdSesion        = $_SESSION['IdUser'];
 $getusermecanico = $_GET['usermecanico'];
 $getordentrabajo = $_GET['id'];
 
-$campos   = $campos->getCampos();
+$campos = $campos->getCampos();
 foreach ($campos as $campo) {
     $id_reporte       = $campo['id_reporte'];
     $equipo_id_equipo = $campo['equipo_id_equipo'];
     $creado_por       = $campo['creado_por'];
     $fecha_reporte    = $campo['fecha_reporte'];
-    $estado_reporte    = $campo['estado_reporte'];
+    $estado_reporte   = $campo['estado_reporte'];
     $valor_reporte    = $campo['valor_reporte'];
-    $mecanico_id    = $campo['mecanico_id'];
+    $mecanico_id      = $campo['mecanico_id'];
     $problema         = $campo['problema'];
     $marca_temporal   = $campo['marca_temporal'];
     $actividad        = $campo['actividad'];
     $repuesto         = $campo['repuesto'];
     $num_salida_inv   = $campo['num_salida_inv'];
     $nombreq          = Equipos::obtenerNombreEquipo($equipo_id_equipo);
-    $nombremecanico = Usuarios::obtenerNombreUsuario($mecanico_id);
+    $nombremecanico   = Usuarios::obtenerNombreUsuario($mecanico_id);
 
-    if ($estado_reporte==1) {
-    	$labelreporte="Asignado";
-    }elseif ($estado_reporte==2) {
-    	$labelreporte="Acualizado por Mecanico";
-    }elseif ($estado_reporte==3) {
-    	$labelreporte="Terminado";
+    if ($estado_reporte == 1) {
+        $labelreporte = "Asignado";
+    } elseif ($estado_reporte == 2) {
+        $labelreporte = "Acualizado por Mecanico";
+    } elseif ($estado_reporte == 3) {
+        $labelreporte = "Terminado";
     }
 }
 ?>
@@ -54,6 +54,7 @@ foreach ($campos as $campo) {
       <div class="row mb-2">
         <div class="col-sm-6">
           <h1 class="m-0 text-dark">Editar Orden Trabajo:<?php echo utf8_decode($getordentrabajo); ?>
+
           	<br>
           	Equipo: <?php echo utf8_decode($nombreq); ?>
           </h1>
@@ -85,7 +86,7 @@ foreach ($campos as $campo) {
 						  <div class="card card-primary">
 							<!-- /.card-header -->
 							<!-- form start -->
-		<form role="form" action="?controller=equipos&&action=actualizareporte&&id_reporte=<?php echo ($id_reporte) ?>&&id_equipo=<?php echo ($equipo_id_equipo); ?>&&usermecanico=<?php echo($getusermecanico); ?>" method="POST" enctype="multipart/form-data" autocomplete="off">
+		<form role="form" action="?controller=equipos&&action=actualizareporte&&id_reporte=<?php echo ($id_reporte) ?>&&id_equipo=<?php echo ($equipo_id_equipo); ?>&&usermecanico=<?php echo ($getusermecanico); ?>" method="POST" enctype="multipart/form-data" autocomplete="off">
 
 					<input type="hidden" name="creado_por" value="<?php echo ($creado_por) ?>">
 					<input type="hidden" name="marca_temporal" value="<?php echo ($marca_temporal); ?>">
@@ -113,7 +114,7 @@ foreach ($campos as $campo) {
 											<div class="col-md-3">
 												<div class="form-group">
 													<label>Estado Orden Trabajo: <span>*</span></label>
-													
+
 													 <select class="form-control mi-selector" id="estado_reporte" name="estado_reporte" required="">
 															<option selected value="<?php echo utf8_encode($estado_reporte); ?>"><?php echo utf8_encode($labelreporte); ?></option>
 															<option value="1">Asignado</option>
@@ -122,6 +123,36 @@ foreach ($campos as $campo) {
 													</select>
 												</div>
 											</div>
+
+<?php 
+
+	if ($getusermecanico==0) {
+		echo ("<input type='hidden' name='mecanico_id' value='".$mecanico_id."'>");
+	}else{
+		?>
+			<div id="divplaca" class="col-md-3">
+												<div class="form-group">
+											<label> Mécanico: <span>*</span></label>
+							<select class="form-control mi-selector" id="mecanico_id" name="mecanico_id" required>	
+										<option value="<?php echo utf8_encode($mecanico_id); ?>" selected><?php echo utf8_encode($nombremecanico); ?></option>
+										<?php
+										$rubros = Usuarios::ListaUsuariosMec();
+										foreach ($rubros as $campo){
+											$id_usuario = $campo['id_usuario'];
+											$nombre_usuario = $campo['nombre_usuario'];
+										?>
+										<option value="<?php echo $id_usuario; ?>"><?php echo $nombre_usuario; ?></option>
+										<?php } ?>
+								</select>
+												</div>
+											</div>
+
+		<?php
+	}
+
+ ?>
+
+										
 
 								<div style="display: none;" id="divplaca" class="col-md-4">
 												<div class="form-group">
@@ -141,9 +172,9 @@ foreach ($rubros as $campo) {
 												</div>
 								</div>
 
-		<?php 
-		if ($getusermecanico==0) {
-			?>
+		<?php
+if ($getusermecanico == 0) {
+    ?>
 
 			<div class="col-md-12">
 												<div class="form-group">
@@ -154,8 +185,8 @@ foreach ($rubros as $campo) {
 												</div>
 											</div>
 			<?php
-		}else{
-			?>
+} else {
+    ?>
 			<div class="col-md-12">
 												<div class="form-group">
 													<label>Problemas Presentados<span>*</span></label>
@@ -163,12 +194,11 @@ foreach ($rubros as $campo) {
 												</div>
 											</div>
 			<?php
-		}
+}
+
+?>
 
 
-		 ?>
-
-								
 											<div class="col-md-12">
 												<div class="form-group">
 													<label>Actividad Realizada<span>*</span></label>

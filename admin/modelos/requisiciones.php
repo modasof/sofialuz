@@ -492,6 +492,24 @@ public static function reqalmacenestado($estado){
 /*******************************************************
 ** FUNCION PARA MOSTRAR TODOS LOS CAMPOS DE FECHAS	  **
 ********************************************************/
+public static function reqalmacenestadoporfecha($FechaStart,$FechaEnd,$estado){
+	try {
+		$db=Db::getConnect();
+		$sql="SELECT * FROM requisiciones_items WHERE estado_item='".$estado."' and fecha_reporte >='".$FechaStart."' and fecha_reporte <='".$FechaEnd."'order by fecha_reporte DESC";
+		echo($sql);
+		$select=$db->query($sql);
+    	$camposs=$select->fetchAll();
+    	$campos = new Requisiciones('',$camposs);
+		return $campos;
+	}
+	catch(PDOException $e) {
+		echo '{"error en obtener la pagina":{"text":'. $e->getMessage() .'}}';
+	}
+}
+
+/*******************************************************
+** FUNCION PARA MOSTRAR TODOS LOS CAMPOS DE FECHAS	  **
+********************************************************/
 public static function todosporusuarioestadoadmin($estado){
 	try {
 		$db=Db::getConnect();

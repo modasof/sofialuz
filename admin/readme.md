@@ -110,7 +110,7 @@
 - Solución de Bug en rutas de cliente
 
 # Actualización 30 de Agosto 
-- Informe general de combustible (incluye gráfica diaria, mes a mes e informes con tablas consolidadas por propietario y equipo)
+- Informe general de combustible (incluye gráfica diaria, mes a mes e informes con tablas consolidadas por propietario y equipo).
 - Vista de gestión documental por propietarios y externos 
 - Vista de estado de equipos 
 - Módulo de ordenes de trabajo por equipo
@@ -122,5 +122,9 @@
 - Carga masiva de horas máquina - Kilometraje en Excel 
 - Actualización de comisiones por rango en perfil conductor. 
 - Actualización de módulo empleados (se parámetriza para gestión de nómina).
-- Módulo de mecánicos, ordenes de trabajo
-- Vista calendario hoja de vida equipo, trazabilidad de viajes.  
+- Módulo de mecánicos, ordenes de trabajo 
+
+# Actualización 9 de Noviembre
+
+- Función de geolocalización de conductores (Prueba piloto)
+

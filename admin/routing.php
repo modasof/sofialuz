@@ -125,6 +125,9 @@ $controllers = array(
 	// Funcionalidad Inventarios
 	'inventario' => ['cargarentradaoc','guardarentradadetalletem','guardarsalidadetalletem','deletedellentradatemp','deletedellsalidatemp','actualizarentradaoc','actualizarsalidarq','totalentradas','totalsalidas','entradasporfecha','salidasporfecha','entradasdetalle','salidasdetalle','entradasdetalletotal','salidasdetalletotal','cargarsalidasrq','verinventario','kardexporinsumo','despachosporfecha','entregaspendientesusuario','recibirdespacho','entregasrecibidasusuario'],
 
+	// Funcionalidad Horas Máquinaria 
+	'maps' => ['todos','disponibles','ocupados','porusuario','reporteestadocond'],
+
 	// Funcionalidad Módulos
 	'modulos' => ['editar','guardar','actualizar','todos','nuevo','eliminar'],
 
@@ -416,6 +419,11 @@ function call($controller, $action) {
 	case 'inventario':
 		require_once 'modelos/inventario.php';
 		$controller = new InventarioController();
+		break;
+
+	case 'maps':
+		require_once 'modelos/maps.php';
+		$controller = new MapsController();
 		break;
 
 	case 'misdocumentos':

@@ -891,6 +891,7 @@ Group by equipo_id_equipo order by Galones DESC");
                                 repuesto=:repuesto,
                                 marca_temporal=:marca_temporal,
                                 creado_por=:creado_por,
+                                mecanico_id=:mecanico_id,
                                 reporte_publicado=:reporte_publicado,
                                 estado_reporte=:estado_reporte,
                                 num_salida_inv=:num_salida_inv
@@ -904,6 +905,7 @@ Group by equipo_id_equipo order by Galones DESC");
             $update->bindValue('repuesto', utf8_encode($repuesto));
             $update->bindValue('marca_temporal', utf8_encode($marca_temporal));
             $update->bindValue('creado_por', $creado_por);
+            $update->bindValue('mecanico_id', $mecanico_id);
             $update->bindValue('reporte_publicado', $reporte_publicado);
             $update->bindValue('estado_reporte', $estado_reporte);
             $update->bindValue('num_salida_inv', $num_salida_inv);

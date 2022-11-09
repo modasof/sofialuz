@@ -9,6 +9,10 @@ ini_set('display_errors', '0');
 $RolSesion = $_SESSION['IdRol'];
 $IdSesion = $_SESSION['IdUser'];
 
+$nomusuario = Usuarios::obtenerNombreUsuario($IdSesion);
+$estadousuarioactual = Usuarios::obtenerultimoestado($IdSesion);
+$horareporte         = Usuarios::horaultimoreporte($IdSesion);
+
 $idcajaporuser=Ingresos::obtenerIdcajaporUser($IdSesion);
 $_SESSION['idcajaporuser']=$idcajaporuser;
 
@@ -43,10 +47,97 @@ $gastoporconductor=GastoCombustiblediaUsuario($FechaInicio30dias,$FechaFinal30di
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-      <h1>
+      <h1 style="display: none;">
         DashBoard Perfil Conductor
         <small>version 1.0</small>
       </h1>
+      <div  class="col-md-12">
+         <i style="" id="ubicacion">
+<button id="obtener"><i class="fa fa-map-marker"></i> </button>
+</i>
+<?php echo ($nomusuario);
+
+if ($estadousuarioactual == "") {
+    // No tiene ningún estado reportado
+    $estadofinal = 1;
+    echo (" <button type='button' class='btn btn-block btn-default btn-xs'><strong>Estado Actual: Ausente </strong> <br><i class='fa fa-clock-o'> " . $horareporte . "</i></button>");
+} elseif ($estadousuarioactual == 1) {
+    // En estado disponible
+    $estadofinal = 2;
+    echo (" <button type='button' class='btn btn-block btn-success btn-xs'><strong>Estado Actual: Disponible</strong> <br><i class='fa fa-clock-o'> " . $horareporte . "</i></button>");
+} elseif ($estadousuarioactual == 2) {
+    // En estado Ocupado
+    $estadofinal = 1;
+    echo (" <button type='button' class='btn btn-block btn-danger btn-xs'><strong>Estado Actual: Ocupado</strong> <br><i class='fa fa-clock-o'> " . $horareporte . "</i></button>");
+}
+
+date_default_timezone_set("America/Bogota");
+$diaactual  = date('Y-m-d');
+$horaactual = date('Y-m-d H:i:s');
+
+?>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+
+
+<script type="text/javascript">
+  jQuery(document).ready(function($){
+    $(document).ready(function() {
+        $('.mi-selector').select2();
+    });
+});
+</script>
+
+       <form role="form" autocomplete="off" action="?controller=maps&&action=reporteestadocond" method="POST" enctype="multipart/form-data" >
+
+     
+                       
+           
+                <select  class="form-control mi-selector" id="equipo_id_equipo" name="equipo_id_equipo" required>
+                    <option value="" selected>Seleccionar...</option>
+                    <?php
+
+                    $rubros = Equipos::obtenerListaVolquetasAsf();
+                    foreach ($rubros as $campo){
+                      $id_equipo = $campo['id_equipo'];
+                      $nombre_equipo = $campo['nombre_equipo'];
+                    ?>
+                    <option value="<?php echo $id_equipo; ?>"><?php echo utf8_encode($nombre_equipo); ?></option>
+                    <?php } ?>
+                </select>
+                      
+                      
+
+<input type="hidden" id="fecha_reporte" name="fecha_reporte" value="<?php echo ($diaactual) ?>">
+<input type="hidden" id="usuario_id" name="usuario_id" value="<?php echo ($IdSesion) ?>">
+<input type="hidden" id="marca_temporal" name="marca_temporal" value="<?php echo ($horaactual) ?>">
+<input type="hidden" id="estado_usuario" name="estado_usuario" value="<?php echo ($estadofinal); ?>">
+<input type="hidden" id="autorizado" name="autorizado" value="">
+             <small>
+
+<?php
+
+if ($estadousuarioactual == "") {
+    // No tiene ningún estado reportado
+    $estadofinal = 0;
+    echo ("  <button style='display:none;' id='botonestado' type='submit' class='btn btn-block btn-success btn-sm'>Reportarse Disponible</button>");
+} elseif ($estadousuarioactual == 1) {
+    // En estado disponible
+    $estadofinal = 1;
+    echo ("  <button  style='display:none;' id='botonestado' type='submit' class='btn btn-block btn-danger btn-sm'>Reportarse Ocupado</button>");
+} elseif ($estadousuarioactual == 2) {
+    // En estado Ocupado
+    $estadofinal = 2;
+    echo ("  <button  style='display:none;' id='botonestado' type='submit' class='btn btn-block btn-success btn-sm'>Reportarse Disponible</button>");
+}
+
+?>
+            </small>
+        </form>
+
+      </div>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
         <li class="active">Dashboard</li>
@@ -194,6 +285,10 @@ $gastoporconductor=GastoCombustiblediaUsuario($FechaInicio30dias,$FechaFinal30di
 
                     <h5 class="description-header">
                       <?php 
+
+              if ($RolSesion==4) {
+               
+            
                       $ventamespro=ProduccionConductorpormes2022($mesactual,$anoactual,$IdSesion);
                       $totalpro=ProduccionMesConductor2022($i,$anoactual,$id_usuario);
 
@@ -222,6 +317,37 @@ $gastoporconductor=GastoCombustiblediaUsuario($FechaInicio30dias,$FechaFinal30di
                   {
                     echo("<td style='font-weight:-50;font-size:14px;background-color:#f2dede;'><a href='#' style='color:black;'><small style='color:#F08080;'><strong>0%</strong></small>$".number_format(0,0)."</a></td>");
                   } 
+            } elseif ($RolSesion==16) {
+
+                $ventamespro=ProduccionConductorpormes2022($mesactual,$anoactual,$IdSesion);
+                $totalpro=ProduccionMesConductor2022($i,$anoactual,$id_usuario);
+
+              if ($ventamespro>0) {
+
+                    if ($ventamespro>=1 && $ventamespro<=25000000) {
+                        
+                        $comision=$ventamespro*3/100;
+
+                       echo("<td style='font-weight:-50;font-size:14px;background-color:#dff0d8;'>$".number_format($ventamespro,0)." <span class='badge bg-red'>  3 %   </span><strong> $".number_format($comision,0)."</strong></a></td>");
+
+                    }elseif ($ventamespro>=25000001 && $ventamespro<=35000000) {
+                      
+                          $comision=$ventamespro*4/100;
+                       echo("<td style='font-weight:-50;font-size:14px;background-color:#dff0d8;'>$".number_format($ventamespro,0)." <span class='badge bg-yellow'>  4 %   </span><strong> $".number_format($comision,0)."</strong></a></td>");
+
+                    }elseif ($ventamespro>=35000001 && $ventamespro<=100000000) {
+                            
+                           $comision=$ventamespro*5/100;
+                       echo("<td style='font-weight:-50;font-size:14px;background-color:#dff0d8;'>$".number_format($ventamespro,0)." <span class='badge bg-green'>  5 %   </span><strong> $".number_format($comision,0)."</strong></a></td>"); 
+                    }
+
+                    
+                  }
+                  else
+                  {
+                    echo("<td style='font-weight:-50;font-size:14px;background-color:#f2dede;'><a href='#' style='color:black;'><small style='color:#F08080;'><strong>0%</strong></small>$".number_format(0,0)."</a></td>");
+                  } 
+            }
                   
                       ?>
                     </h5>
@@ -336,6 +462,60 @@ else
 }
 </script>
 <!-- Inicio Libreria formato moneda -->
+
+<script>
+  function pos_ok (posicion) {
+    console.log(posicion);
+    var latitud  = posicion.coords.latitude;
+    var longitud = posicion.coords.longitude;
+    document.getElementById('autorizado').value = latitud + ',' + longitud;
+
+     if (latitud!=""){
+      $('#botonestado').show();
+    }else{
+      $('#botonestado').hide();
+    }
+
+  }
+
+  function pos_fallo () {
+    console.log('Error al geolocalizar.');
+  }
+
+  if(!navigator.geolocation) {
+    alert('Geolocalización no disponible.');
+  } else {
+    //alert('Verificando Estado Actual de Conductor...');
+    navigator.geolocation.getCurrentPosition(pos_ok, pos_fallo);
+  }
+
+</script>
+
+
+<script type="text/javascript">
+
+
+function iniciar()
+{
+  var boton=document.getElementById('obtener'); 
+  boton.addEventListener('click', obtener, false);
+}
+
+function obtener(){
+  navigator.geolocation.getCurrentPosition(mostrar);
+}
+
+function mostrar(posicion)
+{
+  var ubicacion = document.getElementById('ubicacion');
+  var datos="";
+    datos+='Latitud: '  + posicion.coords.latitude + '<br/>';
+    datos+='Longitud: ' + posicion.coords.longitude + '<br/>';
+    datos+='Exactitud: ' + posicion.coords.accuracy + '<br/>';
+    ubicacion.innerHTML=datos;
+}
+window.addEventListener('load', iniciar, false);
+</script>
 
 <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
       <script src="https://cdn.datatables.net/buttons/1.5.2/js/dataTables.buttons.min.js"></script>
